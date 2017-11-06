@@ -25,7 +25,8 @@ public class signinTwo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/signinTemplates";
-     
+  
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -67,6 +68,13 @@ public class signinTwo extends HttpServlet {
 		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
 		SimpleHash root = new SimpleHash(df.build());
 		response.setContentType("text/html");
+		
+		String fname = request.getParameter("first-name");
+		String lname = request.getParameter("last-name");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+
+		
 		
 		try {	
 			String templateName = "signinTwo.ftl";
