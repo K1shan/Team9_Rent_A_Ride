@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+
+
+* {
+  box-sizing: border-box;
+}
+
+
+.container {
+    
+    max-width: 1170px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a {
+  
+  	text-decoration: none;
+  	color: rgba(34, 34, 34, 0.8);
+}
+
+
+a:hover, a :focus {
+
+  	color: black;
+}
+
+.menu-left a {
+	
+  	display: inline-block;
+  	position: relative;
+  	padding-bottom: 0px;
+  	transition: color .35s ease;
+ 	font-family: 'Open Sans', sans-serif;
+ 	text-transform: uppercase;
+}
+
+
+.menu-left a:before {
+  
+  	content: '';
+  	display: block;
+  	position: absolute;
+  	left: 0;
+  	bottom: 0;
+  	height: 2px;
+  	width: 0;
+  	transition: width 0s ease, background .35s ease;
+}
+
+
+.menu-left a:after {
+  
+  	content: '';
+  	display: block;
+  	position: absolute;
+  	right: 0;
+  	bottom: 0;
+  	height: 2px;
+  	width: 0;
+  	background: #000;
+  	transition: width .35s ease;
+}
+
+
+.menu-left a:hover:before {
+	
+  	width: 100%;
+  	background: #000;
+  	transition: width .35s ease;
+}
+
+
+.menu-left a:hover:after {
+	
+  	width: 100%;
+  	background: transparent;
+  	transition: all 0s ease;
+}
+
+
+header {
+	
+  	position: fixed;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	padding: .5rem 0;
+  	background: rgba(255, 255, 255, 0.92);
+  	z-index: 10;
+}
+
+
+header nav ul {
+	
+  	list-style: none;
+  	padding-left: 0;
+  	margin: 0;
+}
+
+ header nav ul li {
+ 
+    float: left;
+    margin-left: 1rem;
+    padding: .425rem 0rem;
+  }
+
+
+
+/* header nav ul li a {
+	
+  	display: block;
+} */
+
+/* same line with logo */
+
+ul.menu-left {
+	
+    display: block !important;
+    float: right;
+    max-height: none;
+}
+
+/* logo size */
+
+#logo{
+	
+	width: 190px;
+	padding-top: 4px;
+}
