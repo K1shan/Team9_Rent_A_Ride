@@ -34,7 +34,8 @@ public class LogicLayerImpl
 
 	@Override
 	public void createAccount1(String fName, String lName, String email, String password) throws RARException {
-		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
+		
+		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl (objectLayer);
 		ctrlCreateAccount.createAccount1(fName, lName, email, password);
 	}
 	

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.session.Session;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleHash;
@@ -22,19 +21,19 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class signinOne
+ * Servlet implementation class signin
  */
-@WebServlet("/signinOne")
-public class signinOne extends HttpServlet {
+@WebServlet("/signin")
+public class signin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/signinTemplates";
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public signinOne() {
+    public signin() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -68,31 +67,11 @@ public class signinOne extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		Template template = null;
 		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
 		SimpleHash root = new SimpleHash(df.build());
 		response.setContentType("text/html");
 		
-		String drive = request.getParameter("drive");
-		String card = request.getParameter("card");
-		String exp = request.getParameter("exp");
-		String add = request.getParameter("add");
-		String state = request.getParameter("state");
-		String zip = request.getParameter("zip");
-
-		long customerId;
-		HttpSession	httpSession = null;
-//		Session		session = null;
-		String 		ssid = null;
-		LogicLayer	logicLayer = null;
-		
-		try {
-			customerId = logicLayer.createAccount2(drive, card, exp, add, state, zip);
-		} catch (RARException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		try {	
 			String templateName = "signinOne.ftl";

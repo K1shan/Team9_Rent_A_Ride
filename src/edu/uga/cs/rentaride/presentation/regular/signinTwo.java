@@ -9,11 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.session.Session;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleHash;
@@ -77,12 +74,11 @@ public class signinTwo extends HttpServlet {
 		String lname = request.getParameter("last-name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		HttpSession	httpSession = null;
-		Session		session = null;
-		String 		ssid = null;
+		
 		LogicLayer	logicLayer = null;
 		
 		try {
+			
 			logicLayer.createAccount1(fname, lname, email, password);
 		} catch (RARException e1) {
 			// TODO Auto-generated catch block

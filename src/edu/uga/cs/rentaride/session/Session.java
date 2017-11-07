@@ -20,7 +20,10 @@ import edu.uga.cs.rentaride.*;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.object.ObjectLayer;
 import edu.uga.cs.rentaride.object.impl.ObjectLayerImpl;
-import edu.uga.cs.rentaride.logic.SigninLogic;
+import edu.uga.cs.rentaride.persistence.PersistenceLayer;
+import edu.uga.cs.rentaride.persistence.impl.PersistenceLayerImpl;
+import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.logic.impl.LogicLayerImpl;
 
 
 /***************************************************************
@@ -152,18 +155,18 @@ public class Session
             diff = expiration.getTime() - System.currentTimeMillis();
         }
         //System.out.println("Removing "+usr.name+"'s session");
-        try {
-            SessionManager.removeSession( this );
-        } 
-        catch( RARException e ) {
-            // log.error( e.toString(), e );
-            try {
-                throw e;
-            } 
-            catch (RARException e1) {
-                e1.printStackTrace();
-            }
-        }
+//        try {
+////            SessionManager.removeSession( this );
+//        } 
+//        catch( RARException e ) {
+//            // log.error( e.toString(), e );
+//            try {
+//                throw e;
+//            } 
+//            catch (RARException e1) {
+//                e1.printStackTrace();
+//            }
+//        }
     }
 
     /**

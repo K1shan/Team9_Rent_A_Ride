@@ -27,11 +27,11 @@ public class CreateAccountCtrl {
     }
     
     public void createAccount1( String fName, String lName, String email, String password ) throws RARException{
-    	this.fName = fName;
-    	this.lName = lName;
-    	this.email = email;
-    	this.pword = password;
-    	System.out.println("exit createAccount1");
+	    	this.fName = fName;
+	    	this.lName = lName;
+	    	this.email = email;
+	    	this.pword = password;
+	    	System.out.println("exit createAccount1");
     }
     
     public long createAccount2( String driverNo, String cardNo, String expDate, String address, String state, String zip ) throws RARException{
