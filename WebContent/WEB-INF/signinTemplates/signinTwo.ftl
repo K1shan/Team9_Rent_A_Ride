@@ -34,7 +34,7 @@
    				
    			<!-- Part two of the create account form will start from here and will go to the -->
    			<!-- servlet signinOne in presentation.regular package -->
-			<form class="form" action="signinOne" method='get'>
+			<form class="form" action="signin" method='get'>
 			
 				<!-- User input for Driver License No -->
   				<p class="float-label">
