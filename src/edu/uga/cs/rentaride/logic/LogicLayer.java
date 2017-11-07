@@ -1,7 +1,5 @@
 package edu.uga.cs.rentaride.logic;
 
-import java.util.Date;
-
 import edu.uga.cs.rentaride.*;
 
 public interface LogicLayer {
