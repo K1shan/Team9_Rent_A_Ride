@@ -24,17 +24,17 @@ import freemarker.template.TemplateExceptionHandler;
 /**
  * Servlet implementation class signinOne
  */
-@WebServlet("/signinOne")
-public class signinOne extends HttpServlet {
+@WebServlet("/SigninMenu")
+public class SigninMenu extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	Configuration cfg = null;
-	private String templateDir = "/WEB-INF/signinTemplates";
+	private String templateDir = "/WEB-INF/CreateAccountTemplates";
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public signinOne() {
+    public SigninMenu() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -74,28 +74,10 @@ public class signinOne extends HttpServlet {
 		SimpleHash root = new SimpleHash(df.build());
 		response.setContentType("text/html");
 		
-		String drive = request.getParameter("drive");
-		String card = request.getParameter("card");
-		String exp = request.getParameter("exp");
-		String add = request.getParameter("add");
-		String state = request.getParameter("state");
-		String zip = request.getParameter("zip");
-
-		long customerId;
-		HttpSession	httpSession = null;
-//		Session		session = null;
-		String 		ssid = null;
-		LogicLayer	logicLayer = null;
-		
-		try {
-			customerId = logicLayer.createAccount2(drive, card, exp, add, state, zip);
-		} catch (RARException e1) {
-			e1.printStackTrace();
-		}
-		
 		try {	
-			String templateName = "signinOne.ftl";
-			template = cfg.getTemplate(templateName );
+			
+			String templateName = "SigninCreateForm.ftl";
+			template = cfg.getTemplate(templateName);
 			response.setContentType("text/html");
 			Writer out = response.getWriter();
 			template.process(root, out);
@@ -108,7 +90,7 @@ public class signinOne extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println( "signinOne.doPost()" );
+		
 		doGet(request, response);
 	}
 

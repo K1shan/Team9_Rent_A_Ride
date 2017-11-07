@@ -25,6 +25,8 @@ public class contacts extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	Configuration cfg = null;
+	
+	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/regularTemplates";
 	
     /**
@@ -32,14 +34,13 @@ public class contacts extends HttpServlet {
      */
     public contacts() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init() throws ServletException {
-		// TODO Auto-generated method stub
 		// Create your Configuration instance, and specify if up to what FreeMarker
 		// version (here 2.3.25) do you want to apply the fixes that are not 100%
 		// backward-compatible. See the Configuration JavaDoc for details.
@@ -64,20 +65,22 @@ public class contacts extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println( "contacts.doGet()" );
+		
 		Template template = null;
 		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
 		SimpleHash root = new SimpleHash(df.build());
 		response.setContentType("text/html");
 		
 		try {	
+			
+			//This is the file it will return after contact is pressed on the nav bar
 			String templateName = "regularContact.ftl";
 			template = cfg.getTemplate(templateName );
 			response.setContentType("text/html");
 			Writer out = response.getWriter();
 			template.process(root, out);
 		}catch (TemplateException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	}
@@ -86,7 +89,7 @@ public class contacts extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println( "contacts.doPost()" );
+
 		doGet(request, response);
 	}
 

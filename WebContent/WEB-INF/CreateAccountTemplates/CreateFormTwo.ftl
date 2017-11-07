@@ -34,7 +34,7 @@
    				
    			<!-- Part two of the create account form will start from here and will go to the -->
    			<!-- servlet signinOne in presentation.regular package -->
-			<form class="form" action="signin" method='get'>
+			<form class="form" action="CreateAccount" method='get'>
 			
 				<!-- User input for Driver License No -->
   				<p class="float-label">
@@ -68,7 +68,7 @@
   	
   				<!-- This is a button and will submit the form -->
   				<p>
-    				<input type="submit" onclick="return registertwoNullCheck()" value="SIGN IN" />
+    				<input type="submit" name="register" onclick="return registertwoNullCheck()" value="SIGN IN" />
   				</p>
 			</form>
   		</div>

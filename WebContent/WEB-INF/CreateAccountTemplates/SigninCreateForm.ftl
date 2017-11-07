@@ -82,7 +82,7 @@
 		    		<!-- Part one of the create account form will start from here and will go to the -->
 		   		<!-- servlet signinTwo in presentation.regular package -->
 		   		
-		    		<form name="sign" class="form" action="signin" method="get">
+		    		<form name="sign" class="form" action="CreateAccount" method="get">
     		
     				<!-- User input for First name -->
 				<p class="float-label">
@@ -116,7 +116,7 @@
       			
       			<!-- This is a button and will submit the form -->
       			<p>
-        			<input id="view" type="submit" onclick="return registerNullCheck()" value="NEXT" />
+        			<input id="view" name="next" type="submit" onclick="return registerNullCheck()" value="NEXT" />
      			</p>
     		</form>
   		</div>
