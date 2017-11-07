@@ -144,7 +144,7 @@ public class Session
     {
         long diff = expiration.getTime() - System.currentTimeMillis();
         while (diff > 0) {
-            //System.out.println("Session not expired.  Sleeping for "+(diff/1000)+" seconds...");
+            System.out.println("Session not expired.  Sleeping for "+(diff/1000)+" seconds...");
             try {
                 sleep(diff);
             } 
@@ -154,34 +154,32 @@ public class Session
             }
             diff = expiration.getTime() - System.currentTimeMillis();
         }
-        //System.out.println("Removing "+usr.name+"'s session");
-//        try {
-////            SessionManager.removeSession( this );
-//        } 
-//        catch( RARException e ) {
-//            // log.error( e.toString(), e );
-//            try {
-//                throw e;
-//            } 
-//            catch (RARException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
+        System.out.println("Removing "+user.getUserName()+"'s session");
+        try {
+            SessionManager.removeSession( this );
+        } 
+        catch( RARException e ) {
+            // log.error( e.toString(), e );
+            try {
+                throw e;
+            } 
+            catch (RARException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     /**
      * @return the logicLayer
      */
-    public LogicLayer getLogicLayer()
-    {
+    public LogicLayer getLogicLayer(){
         return logicLayer;
     }
 
     /**
      * @param logicLayer the logicLayer to set
      */
-    public void setLogicLayer(LogicLayer logicLayer)
-    {
+    public void setLogicLayer(LogicLayer logicLayer){
         this.logicLayer = logicLayer;
     }
     

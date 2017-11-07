@@ -9,8 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.session.Session;
+import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleHash;
@@ -33,7 +37,6 @@ public class signinTwo extends HttpServlet {
      */
     public signinTwo() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -65,6 +68,7 @@ public class signinTwo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println( "signinTwo.doGet()" );
 		Template template = null;
 		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
 		SimpleHash root = new SimpleHash(df.build());
@@ -74,14 +78,31 @@ public class signinTwo extends HttpServlet {
 		String lname = request.getParameter("last-name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+		String status = "";
+		HttpSession    httpSession = null;
+        Session        session = null;
+        String         ssid;
 		LogicLayer	logicLayer = null;
+
+
+        
+        httpSession = request.getSession();
+        ssid = (String) httpSession.getAttribute( "ssid" );
+        if( ssid != null ) { // not logged in
+        	System.out.println( "Already have ssid: " + ssid );
+        	session = SessionManager.getSessionById( ssid );
+            System.out.println( "Connection: " + session.getConnection() );
+        }else{
+        	System.out.println( "ssid is null" );
+        }
+        
+        
+        
+		logicLayer = session.getLogicLayer();
 		
 		try {
-			
 			logicLayer.createAccount1(fname, lname, email, password);
 		} catch (RARException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -92,7 +113,6 @@ public class signinTwo extends HttpServlet {
 			Writer out = response.getWriter();
 			template.process(root, out);
 		}catch (TemplateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +121,7 @@ public class signinTwo extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println( "signinTwo.doPost()" );
 		doGet(request, response);
 	}
 

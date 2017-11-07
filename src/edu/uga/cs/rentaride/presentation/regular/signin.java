@@ -11,8 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
+
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.session.Session;
+import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleHash;
@@ -28,6 +32,7 @@ public class signin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	Configuration cfg = null;
+	private TemplateProcessor templateProcessor = null;
 	private String templateDir = "/WEB-INF/signinTemplates";
 	
     /**
@@ -35,7 +40,6 @@ public class signin extends HttpServlet {
      */
     public signin() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -49,7 +53,7 @@ public class signin extends HttpServlet {
 		cfg = new Configuration(Configuration.VERSION_2_3_25);
 
 		// Specify the source where the template files come from.
-		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+		//cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
 
 		// Sets how errors will appear.
 		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
@@ -61,35 +65,112 @@ public class signin extends HttpServlet {
 		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
 		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
 		//		cfg.setLogTemplateExceptions(false);
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), "/WEB-INF/signinTemplates");
+
 	}
 
+	public void registerUser1(HttpServletRequest request, HttpServletResponse response){
+    	System.out.println("signin.registerUser2()");
+		templateProcessor.setTemplate("signinTwo.ftl");
+		String status = "";
+    	String fname = request.getParameter("first-name");
+		String lname = request.getParameter("last-name");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		LogicLayer	logicLayer = null;
+		HttpSession    httpSession = null;
+        Session        session = null;
+        String         ssid;
+
+		httpSession = request.getSession();
+		ssid = (String) httpSession.getAttribute( "ssid" );
+		if( ssid != null ) {
+            System.out.println( "Already have ssid: " + ssid );
+            session = SessionManager.getSessionById( ssid );
+            System.out.println( "Connection: " + session.getConnection() );
+        }
+        else
+            System.out.println( "ssid is null" );
+		
+		if( session == null ){
+			try {
+				session = SessionManager.createSession();
+			} catch ( Exception e ){
+				status = e.toString();
+				templateProcessor.setTemplate("signinOne.ftl");
+				templateProcessor.addToRoot("status", status);
+				templateProcessor.processTemplate(response);
+			}
+		}
+		
+		logicLayer = session.getLogicLayer();
+		
+		try {
+			logicLayer.createAccount1(fname, lname, email, password);
+		} catch (RARException e) {
+			e.printStackTrace();
+		} finally {
+			templateProcessor.addToRoot("status", status);
+			templateProcessor.processTemplate(response);
+		}
+    }
+	
+	
+	public void registerUser2(HttpServletRequest request, HttpServletResponse response){
+    	System.out.println("signin.registerUser2()");
+		templateProcessor.setTemplate("signinOne.ftl");
+		String status = "";
+
+
+		templateProcessor.addToRoot("status", status);
+		templateProcessor.processTemplate(response);
+    }
+	
+	public void toSigninOne(HttpServletResponse response) {
+    	System.out.println("signin.toSigninOne()");
+		templateProcessor.setTemplate("signinOne.ftl");
+		templateProcessor.processTemplate(response);
+	} // toSigninOne
+	
+	public void toSigninTwo(HttpServletResponse response) {
+    	System.out.println("signin.toSigninTwo()");
+		templateProcessor.setTemplate("signinOneTwo.ftl");
+		templateProcessor.processTemplate(response);
+	} // toSigninTwo
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Template template = null;
-		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
-		SimpleHash root = new SimpleHash(df.build());
-		response.setContentType("text/html");
+		System.out.println( "signin.doGet()" );
+//		Template template = null;
+//		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
+//		SimpleHash root = new SimpleHash(df.build());
+//		response.setContentType("text/html");
 		
+		System.out.println("email: "+request.getParameter("email"));
 		
-		try {	
-			String templateName = "signinOne.ftl";
-			template = cfg.getTemplate(templateName );
-			response.setContentType("text/html");
-			Writer out = response.getWriter();
-			template.process(root, out);
-		}catch (TemplateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		if (!(request.getParameter("email").equals(""))) registerUser1(request, response);
+		else if (request.getParameter("address") != null) registerUser2(request, response);
+		else toSigninOne(response);
+
+		
+//		try {	
+//			String templateName = "signinOne.ftl";
+//			template = cfg.getTemplate(templateName );
+//			response.setContentType("text/html");
+//			Writer out = response.getWriter();
+//			template.process(root, out);
+//		}catch (TemplateException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println( "signin.doPost()" );
 		doGet(request, response);
 	}
 

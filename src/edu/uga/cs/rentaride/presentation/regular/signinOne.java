@@ -68,7 +68,7 @@ public class signinOne extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		System.out.println( "signinOne.doGet()" );
 		Template template = null;
 		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
 		SimpleHash root = new SimpleHash(df.build());
@@ -90,7 +90,6 @@ public class signinOne extends HttpServlet {
 		try {
 			customerId = logicLayer.createAccount2(drive, card, exp, add, state, zip);
 		} catch (RARException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -101,7 +100,6 @@ public class signinOne extends HttpServlet {
 			Writer out = response.getWriter();
 			template.process(root, out);
 		}catch (TemplateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -110,7 +108,7 @@ public class signinOne extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println( "signinOne.doPost()" );
 		doGet(request, response);
 	}
 
