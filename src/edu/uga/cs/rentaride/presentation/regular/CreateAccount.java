@@ -164,10 +164,8 @@ public class CreateAccount extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 			try {
-				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				
 				status = e.toString();
 				templateProcessor.setTemplate("SigninCreateForm.ftl");
 				templateProcessor.addToRoot("status", status);

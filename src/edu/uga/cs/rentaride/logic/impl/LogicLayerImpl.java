@@ -8,6 +8,7 @@ import edu.uga.cs.rentaride.object.*;
 import edu.uga.cs.rentaride.object.impl.*;
 import edu.uga.cs.rentaride.persistence.*;
 import edu.uga.cs.rentaride.persistence.impl.*;
+import edu.uga.cs.rentaride.session.Session;
 
 public class LogicLayerImpl 
 	implements LogicLayer 
@@ -30,5 +31,11 @@ public class LogicLayerImpl
 			throws RARException {
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
 		return ctrlCreateAccount.createAccount(fName, lName, email, password, driverNo, cardNo, expDate, address, state, zip);
+	}
+	
+	public String checkCredentials(Session session, String email, String password)
+			throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		return ctrlAccount.checkCredentials(session, email, password);
 	}
 }
