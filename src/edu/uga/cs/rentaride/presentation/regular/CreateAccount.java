@@ -143,6 +143,7 @@ public class CreateAccount extends HttpServlet {
 		String card = request.getParameter("card");
 		String exp = request.getParameter("exp");
 		String add = request.getParameter("add");
+		String city = request.getParameter("city");
 		String state = request.getParameter("state");
 		String zip = request.getParameter("zip");
 		
@@ -185,7 +186,7 @@ public class CreateAccount extends HttpServlet {
 		long num;
 		try {
 			
-			num = logicLayer.createAccount(fname, lname, email, password, drive, card, exp, add, state, zip);
+			num = logicLayer.createAccount(fname, lname, email, password, drive, card, exp, add, city, state, zip);
 		} catch (RARException e) {
 			
 			e.printStackTrace();

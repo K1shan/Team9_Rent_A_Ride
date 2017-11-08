@@ -27,10 +27,10 @@ public class LogicLayerImpl
     }
 	
 	@Override
-	public long createAccount(String fName, String lName, String email, String password, String driverNo, String cardNo, String expDate, String address, String state, String zip)
+	public long createAccount(String fName, String lName, String email, String password, String driverNo, String cardNo, String expDate, String address, String city, String state, String zip)
 			throws RARException {
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
-		return ctrlCreateAccount.createAccount(fName, lName, email, password, driverNo, cardNo, expDate, address, state, zip);
+		return ctrlCreateAccount.createAccount(fName, lName, email, password, driverNo, cardNo, expDate, address, city, state, zip);
 	}
 	
 	public String checkCredentials(Session session, String email, String password)
