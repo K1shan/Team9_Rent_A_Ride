@@ -31,7 +31,7 @@ public class SigninMenu extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	Configuration cfg = null;
-	private String templateDir = "/WEB-INF/CreateAccountTemplates";
+	private String templateDir = "/WEB-INF";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 
@@ -76,13 +76,12 @@ public class SigninMenu extends HttpServlet {
 		
 		
 		// File sent when login success
-		templateProcessor.setTemplate("SigninCreateForm.ftl");
+		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
 		templateProcessor.processTemplate(response);
 	} // toHomePage
 	
 	
 	public void toHomePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println( "signinMenu.toHomePage()" );
 
 		String status = "";
 		//Setting the session to null
@@ -92,7 +91,7 @@ public class SigninMenu extends HttpServlet {
         String 			email;
         String 			password;
         
-		templateProcessor.setTemplate("SigninCreateForm.ftl");
+		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
 
         
         email = request.getParameter("email");
@@ -104,15 +103,14 @@ public class SigninMenu extends HttpServlet {
         
 		//Here it will get the existing id
 		if( ssid != null ) {
-          
-			System.out.println( "Already have ssid: " + ssid );
+
             session = SessionManager.getSessionById( ssid );
-            System.out.println( "Connection: " + session.getConnection() );
         }
 		
 		//Here it will create the session id 
 		if( session == null ){
 			try {
+				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
 				status = e.toString();
@@ -124,23 +122,30 @@ public class SigninMenu extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		
    	 	try {
+   	 		
 			ssid = logicLayer.checkCredentials(session, email, password);
-			System.out.println( "Obtained ssid: " + ssid );
             httpSession.setAttribute( "ssid", ssid );
-            System.out.println( "Connection: " + session.getConnection() );
             Customer customer = session.getCustomer();
-            System.out.println("fname: "+customer.getFirstName());
+            
+            System.out.println("fname: "+ customer.getFirstName());
+            
 		} catch (RARException e) {
+			
 			e.printStackTrace();
-		} finally {
-			templateProcessor.setTemplate("HomeForm.ftl");
+		}
+			
+			System.out.println("Hello");
+			
+			templateProcessor.setTemplate("CustomerTemplates/index.ftl");
+			
+			System.out.println("session customer: "+session.getCustomer());
+			String str = "hi";
+			templateProcessor.addToRoot("user", session.getCustomer().getFirstName());
+			
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
-		}
-   	 	
-		// This is the default file sent
-		templateProcessor.addToRoot("status", status);
-		templateProcessor.processTemplate(response);
+
+
 	} // toLoginPage
 	
 	
@@ -148,7 +153,6 @@ public class SigninMenu extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println( "signinMenu.doGet()" );
 		
 		if(request.getParameter("signin") != null) toHomePage(request, response);
 		else toLoginPage(request, response);
