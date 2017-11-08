@@ -41,7 +41,7 @@
    				
    				<!-- Part two of the sign in form will start from here and will go to the -->
    				<!-- servlet customerSignin in presentation.customer package -->
-   				<form class="form" action="customerSignin" method='get'>
+   				<form class="form" action="SigninMenu" method='get'>
    				
    					<!-- User input for email -->
       				<p class="float-label">
@@ -65,7 +65,7 @@
       				
       				<!-- This is a button and will submit the form -->
       				<p>
-        				<input type="submit" onclick="return loginNullCheck()" value="Sign In" />
+        				<input type="submit" name="signin" onclick="return loginNullCheck()" value="Sign In" />
       				</p>
       				
     			</form>

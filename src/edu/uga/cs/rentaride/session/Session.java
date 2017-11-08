@@ -17,6 +17,7 @@ import java.util.Date;
 //import org.apache.log4j.Logger;
 
 import edu.uga.cs.rentaride.*;
+import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.object.ObjectLayer;
 import edu.uga.cs.rentaride.object.impl.ObjectLayerImpl;
@@ -36,7 +37,7 @@ public class Session
     private Connection conn;
     private ObjectLayer objectLayer;
     private LogicLayer logicLayer;
-    private User user;
+    private Customer customer;
     private String id;
     private Date expiration;
     // private static Logger log = SessionManager.getLog();
@@ -69,20 +70,20 @@ public class Session
      * Gets the GVUser for which the session is created.
      * @return the loggedIn user
      */
-    public User getUser()
+    public Customer getCustomer()
     {
         extendExpiration();
-        return user;
+        return customer;
     }
     
     /***********************************************************
      * Sets the loggedIn user to the new created session.
      * @param  person the user to be associated with the session.
      */
-    public void setUser(User user) 
+    public void setCustomer(Customer customer) 
             throws RARException {
         extendExpiration();
-        this.user = user;
+        this.customer = customer;
     }
     
     /***********************************************************
@@ -154,7 +155,7 @@ public class Session
             }
             diff = expiration.getTime() - System.currentTimeMillis();
         }
-        System.out.println("Removing "+user.getUserName()+"'s session");
+        System.out.println("Removing "+customer.getUserName()+"'s session");
         try {
             SessionManager.removeSession( this );
         } 

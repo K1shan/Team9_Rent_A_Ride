@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.session.Session;
+import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapperBuilder;
 import freemarker.template.SimpleHash;
@@ -30,6 +32,9 @@ public class SigninMenu extends HttpServlet {
     
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/CreateAccountTemplates";
+	private TemplateProcessor templateProcessor = null;
+	private LogicLayer logicLayer = null;
+
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -62,28 +67,91 @@ public class SigninMenu extends HttpServlet {
 		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
 		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
 		//		cfg.setLogTemplateExceptions(false);
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+
 	}
 
+	public void toLoginPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println( "signinMenu.toLoginPage()" );
+		
+		
+		// File sent when login success
+		templateProcessor.setTemplate("SigninCreateForm.ftl");
+		templateProcessor.processTemplate(response);
+	} // toHomePage
+	
+	
+	public void toHomePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println( "signinMenu.toHomePage()" );
+
+		String status = "";
+		//Setting the session to null
+		HttpSession    httpSession = null;
+        Session        session = null;
+        String         ssid;		
+        String 			email;
+        String 			password;
+        
+		templateProcessor.setTemplate("SigninCreateForm.ftl");
+
+        
+        email = request.getParameter("email");
+        password = request.getParameter("password");
+        
+        //Getting the http session and store it into the ssid
+        httpSession = request.getSession();
+		ssid = (String) httpSession.getAttribute( "ssid" );
+        
+		//Here it will get the existing id
+		if( ssid != null ) {
+          
+			System.out.println( "Already have ssid: " + ssid );
+            session = SessionManager.getSessionById( ssid );
+            System.out.println( "Connection: " + session.getConnection() );
+        }
+		
+		//Here it will create the session id 
+		if( session == null ){
+			try {
+				session = SessionManager.createSession();
+			} catch ( Exception e ){
+				status = e.toString();
+				templateProcessor.addToRoot("status", status);
+				templateProcessor.processTemplate(response);
+			}
+		}
+        
+		logicLayer = session.getLogicLayer();
+		
+   	 	try {
+			ssid = logicLayer.checkCredentials(session, email, password);
+			System.out.println( "Obtained ssid: " + ssid );
+            httpSession.setAttribute( "ssid", ssid );
+            System.out.println( "Connection: " + session.getConnection() );
+            Customer customer = session.getCustomer();
+            System.out.println("fname: "+customer.getFirstName());
+		} catch (RARException e) {
+			e.printStackTrace();
+		} finally {
+			templateProcessor.setTemplate("HomeForm.ftl");
+			templateProcessor.addToRoot("status", status);
+			templateProcessor.processTemplate(response);
+		}
+   	 	
+		// This is the default file sent
+		templateProcessor.addToRoot("status", status);
+		templateProcessor.processTemplate(response);
+	} // toLoginPage
+	
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println( "signinOne.doGet()" );
-		Template template = null;
-		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
-		SimpleHash root = new SimpleHash(df.build());
-		response.setContentType("text/html");
+		System.out.println( "signinMenu.doGet()" );
 		
-		try {	
-			
-			String templateName = "SigninCreateForm.ftl";
-			template = cfg.getTemplate(templateName);
-			response.setContentType("text/html");
-			Writer out = response.getWriter();
-			template.process(root, out);
-		}catch (TemplateException e) {
-			e.printStackTrace();
-		}
+		if(request.getParameter("signin") != null) toHomePage(request, response);
+		else toLoginPage(request, response);
 	}
 
 	/**
