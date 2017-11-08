@@ -56,6 +56,10 @@
     				<input type="text" id="add" name="add" placeholder="ADDRESS"/>
   				</p>
   				
+  				<p class="float-label">
+    				<input type="text" id="city" name="city" placeholder="CITY"/>
+  				</p>
+  				
   				<!-- User input for State -->
   				<p class="float-label">
     				<input type="text" id="state" name="state" placeholder="STATE"/>

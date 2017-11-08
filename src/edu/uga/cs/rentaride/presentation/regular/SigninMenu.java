@@ -125,23 +125,13 @@ public class SigninMenu extends HttpServlet {
    	 		
 			ssid = logicLayer.checkCredentials(session, email, password);
             httpSession.setAttribute( "ssid", ssid );
-            Customer customer = session.getCustomer();
-            
-            System.out.println("fname: "+ customer.getFirstName());
-            
 		} catch (RARException e) {
 			
 			e.printStackTrace();
 		}
-			
-			System.out.println("Hello");
-			
+   	 	
 			templateProcessor.setTemplate("CustomerTemplates/index.ftl");
-			
-			System.out.println("session customer: "+session.getCustomer());
-			String str = "hi";
 			templateProcessor.addToRoot("user", session.getCustomer().getFirstName());
-			
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
 
