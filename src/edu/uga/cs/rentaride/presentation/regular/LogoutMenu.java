@@ -80,7 +80,6 @@ public class LogoutMenu extends HttpServlet {
 
                   session = SessionManager.getSessionById( ssid );
               }
-
       		
       		//Here it will create the session id 
       		if( session == null ){

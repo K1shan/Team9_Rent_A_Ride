@@ -125,15 +125,22 @@ public class SigninMenu extends HttpServlet {
    	 		
 			ssid = logicLayer.checkCredentials(session, email, password);
             httpSession.setAttribute( "ssid", ssid );
-		} catch (RARException e) {
-			
-			e.printStackTrace();
-		}
-   	 	
-			templateProcessor.setTemplate("CustomerTemplates/index.ftl");
+            templateProcessor.setTemplate("CustomerTemplates/index.ftl");
 			templateProcessor.addToRoot("user", session.getCustomer().getFirstName());
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
+			
+		} catch (RARException e) {
+			
+
+			status = "Invalid User Name or Password";
+			System.out.println(status);
+			templateProcessor.addToRoot("status", status);
+			toLoginPage(request, response);
+			
+		}
+   	 	
+			
 
 
 	} // toLoginPage
