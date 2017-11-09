@@ -11,8 +11,7 @@
 <#include "AdminNavbar.ftl">
 
 <body>
-	
-		Hello!
+	<img class = "stretch" src="images/Artboard 1.png" alt="Smiley face">
 
 </body>
 
