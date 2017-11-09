@@ -17,5 +17,8 @@ public interface LogicLayer {
 
 	// check admin email/password
 	public String checkAdminCredentials ( Session session, String email, String password ) throws RARException;
+	
+	// admin sets customer to admin
+	public long setAdmin ( String username ) throws RARException;
 
 }

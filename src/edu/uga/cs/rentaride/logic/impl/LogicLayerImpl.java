@@ -53,4 +53,11 @@ public class LogicLayerImpl
 		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
 		return ctrlAccount.checkAdminCredentials(session, email, password);
 	}
+	
+	@Override
+	public long setAdmin(String username)
+			throws RARException {
+		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
+		return ctrlCreateAccount.setAdmin(username);
+	}
 }

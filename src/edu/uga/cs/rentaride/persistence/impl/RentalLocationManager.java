@@ -172,4 +172,13 @@ public class RentalLocationManager {
         		throw new RARException( "RentalLocationManager.delete: failed to delete a RentalLocation: " + e );       
             }
     }
+    
+    public void storePath( RentalLocation rentalLocation ) throws RARException{
+    	
+    }
+    
+    public List<RentalLocation> restorePath( RentalLocation modelRentalLocation ) throws RARException{
+		List<RentalLocation> rentalLocations = new ArrayList<RentalLocation>();
+		return rentalLocations;
+    }
 }
