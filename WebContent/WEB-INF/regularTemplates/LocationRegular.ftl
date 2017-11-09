@@ -12,7 +12,7 @@
 
 <body>
 	
-		Hello Admin!
+		Hello Location!
 
 </body>
 
