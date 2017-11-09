@@ -18,12 +18,12 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminView
+ * Servlet implementation class CustomerLocation
  */
-@WebServlet("/CustomerView")
-public class CustomerView extends HttpServlet {
+@WebServlet("/CustomerLocation")
+public class CustomerLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
@@ -34,7 +34,7 @@ public class CustomerView extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerView() {
+    public CustomerLocation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -99,7 +99,7 @@ public class CustomerView extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
-		templateProcessor.setTemplate("CustomerView.ftl");
+		templateProcessor.setTemplate("CustomerLocation.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.processTemplate(response);
 	}

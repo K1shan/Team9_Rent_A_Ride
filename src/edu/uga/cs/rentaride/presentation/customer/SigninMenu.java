@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.regular;
+package edu.uga.cs.rentaride.presentation.customer;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -15,6 +15,7 @@ import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
@@ -135,13 +136,12 @@ public class SigninMenu extends HttpServlet {
 			return;
    	 	} catch (RARException e1){
    	 		try {
+   	 			
    	 			ssid = logicLayer.checkCustomerCredentials(session,email,password);
    	 			httpSession.setAttribute( "ssid", ssid );
    	 			user = session.getUser();
 				templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
 				templateProcessor.addToRoot("user", user.getFirstName());
-				System.out.println(user);
-				System.out.println(templateProcessor.getTemplate());
 				templateProcessor.addToRoot("status", status);
 				templateProcessor.processTemplate(response);
 				return;

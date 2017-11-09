@@ -11,10 +11,10 @@
           <nav id="navigation">
           <img id = "logo" src="images/Asset 1.svg" alt="logo">
               <ul class="menu-left">
-                <li><a href="index">HOME</a></li>
-                <li><a href="customerCar">CARS</a></li>
-                <li><a href="customerLocation">LOCATIONS</a></li>
-                <li><a href="customerContact">CONTACT</a></li>
+                <li><a href="CustomerIndex">HOME</a></li>
+                <li><a href="CustomerCar">CARS</a></li>
+                <li><a href="CustomerLocation">LOCATIONS</a></li>
+                <li><a href="CustomerContact">CONTACT</a></li>
                 <li><a href="CustomerView">${user}</a></li>
                 <li><a href="LogoutMenu">Logout</a></li>
                 <li><a href="">BAG</a></li>

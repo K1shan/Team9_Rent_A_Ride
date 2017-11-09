@@ -2,19 +2,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Rent-A-Ride</title>
-<link href='index.css' rel='stylesheet' type='text/css'>
+<title>Rent-A-Ride | Admin View</title>
+<link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script type = "text/javascript" src="javascript/navbar.js"></script>
+<script type = "text/javascript" src="javascriptNavbar/navbar.js"></script>
 </head>
 
 <#include "AdminNavbar.ftl">
 
 <body>
 	
-	Hello Admin!
 
 </body>
 
 </html>
-

@@ -1,0 +1,258 @@
+@CHARSET "UTF-8";
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #374954;
+}
+
+.modal {
+  background-color: #fff;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 5%; 
+  margin: 25px 0px 0px 0px;
+  min-height: 620px;
+  position: absolute;
+}
+
+.modalTwo {
+  background-color: #fff;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 35%;
+  margin: 75px 0px 0px 0px;
+  min-height: 620px;
+  position: absolute;
+}
+
+.modalThree {
+  background-color: #fff;  width: 400px;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 65%;
+ margin: -675px 0px 0px 0px;
+  min-height: 620px;
+  position: absolute;
+}
+
+.head {
+  font-weight: 700;
+  font-size: 20px;
+  color: #bbb;
+  padding: 0 0 3px 0;
+  text-align: center;
+  color: #000;
+  border-bottom: 3px solid #000;
+}
+
+.form {
+  position: absolute;
+  top: 50%;
+  left: 30px;
+  width: calc(100% - 60px);
+  -webkit-transform: translateY(calc(-50% + 35px));
+          transform: translateY(calc(-50% + 35px));
+}
+
+.form p {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.float-label input {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: none;
+  border-bottom: 3px solid #000;
+}
+
+.float-label input:focus {
+  border-bottom: 3px solid #C0C0C0;
+}
+
+.float-label label {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 2px;
+  position: absolute;
+  top: 0px;
+  opacity: 0;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+
+.float-label label.show {
+  -webkit-transform: translateY(-10px);
+          transform: translateY(-10px);
+  opacity: 1;
+}
+
+.toggle input {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #000;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+
+.toggle input:focus {
+  border: 3px solid #C0C0C0;
+}
+.toggle input:checked {
+  background-color: #C0C0C0;
+} 
+.toggle label {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 2px;
+} 
+
+button,input[type="submit"] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: transparent;
+  border: none;
+}
+
+#add input[type="submit"] {
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #fff;
+  padding: 15px 30px;
+  display: block;
+  margin: 70px auto 0px 0px;
+  width: 100%;
+  background-color: #000;
+  
+  -webkit-transition: all 0.6s ease;
+     -moz-transition: all 0.6s ease;
+      -ms-transition: all 0.6s ease;
+       -o-transition: all 0.6s ease;
+          transition: all 0.6s ease;
+}
+
+#add input[type="submit"]:hover, input[type="submit"]:focus {
+  color: #000;
+  background-color: #C0C0C0;
+}
+
+#edit input[type="submit"] {
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #fff;
+  padding: 15px 30px;
+  display: block;
+  margin: 300px auto 0px 0px;
+  width: 100%;
+  background-color: #000;
+  
+  -webkit-transition: all 0.6s ease;
+     -moz-transition: all 0.6s ease;
+      -ms-transition: all 0.6s ease;
+       -o-transition: all 0.6s ease;
+          transition: all 0.6s ease;
+}
+
+#edit input[type="submit"]:hover, input[type="submit"]:focus {
+  color: #000;
+  background-color: #C0C0C0;
+}
+
+#delete input[type="submit"] {
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #fff;
+  padding: 15px 30px;
+  display: block;
+  margin: 345px auto 0px 0px;
+  width: 100%;
+  background-color: #000;
+  
+  -webkit-transition: all 0.6s ease;
+     -moz-transition: all 0.6s ease;
+      -ms-transition: all 0.6s ease;
+       -o-transition: all 0.6s ease;
+          transition: all 0.6s ease;
+}
+
+#delete input[type="submit"]:hover, input[type="submit"]:focus {
+  color: #000;
+  background-color: #C0C0C0;
+}
+
+#more input[type="submit"] {
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #fff;
+  padding: 15px 30px;
+  margin: 75px 0px 0px 0px;
+  display: block;
+  width: 100%;
+  background-color: #000;
+  
+  -webkit-transition: all 0.6s ease;
+     -moz-transition: all 0.6s ease;
+      -ms-transition: all 0.6s ease;
+       -o-transition: all 0.6s ease;
+          transition: all 0.6s ease;
+}
+
+#more input[type="submit"]:hover, input[type="submit"]:focus {
+  color: #000;
+  background-color: #fff;
+}
+
+input:focus,
+button:focus {
+  outline: none;
+}
+
+.forgot {
+  text-align: center;
+}
+.forgot a {
+  display: inline-block;
+  padding-bottom: 3px;
+}
+
+::-webkit-input-placeholder {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #000;
+}
+
+:-moz-placeholder {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #000;
+}
+
+::-moz-placeholder {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #000;
+}
+
+:-ms-input-placeholder {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #000;
+}
+
+

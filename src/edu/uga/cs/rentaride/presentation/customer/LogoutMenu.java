@@ -1,5 +1,6 @@
 package edu.uga.cs.rentaride.presentation.customer;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,32 +10,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
+import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminView
+ * Servlet implementation class LogoutMenu
  */
-@WebServlet("/CustomerView")
-public class CustomerView extends HttpServlet {
+@WebServlet("/LogoutMenu")
+public class LogoutMenu extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
-	
-	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates";
+	private String templateDir = "/WEB-INF";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
+
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerView() {
+    public LogoutMenu() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,13 +44,14 @@ public class CustomerView extends HttpServlet {
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init() throws ServletException {
+		
 		// Create your Configuration instance, and specify if up to what FreeMarker
 		// version (here 2.3.25) do you want to apply the fixes that are not 100%
 		// backward-compatible. See the Configuration JavaDoc for details.
 		cfg = new Configuration(Configuration.VERSION_2_3_25);
 
 		// Specify the source where the template files come from.
-		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+		//cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
 
 		// Sets how errors will appear.
 		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
@@ -63,45 +65,51 @@ public class CustomerView extends HttpServlet {
 		//		cfg.setLogTemplateExceptions(false);
 		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
-
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
-		//Setting the session to null
+		
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
-		
-		//Getting the http session and store it into the ssid
-        httpSession = request.getSession();
-		ssid = (String) httpSession.getAttribute( "ssid" );
+        String         ssid;
+        String status = "";
         
-		//Here it will get the existing id
-		if( ssid != null ) {
-
-            session = SessionManager.getSessionById( ssid );
-        }
-		
-		//Here it will create the session id 
-		if( session == null ){
-		 	try {
-				
-				session = SessionManager.createSession();
-			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
-				templateProcessor.processTemplate(response);
-			}
-		}
-        
-		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
-		templateProcessor.setTemplate("CustomerView.ftl");
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.processTemplate(response);
+        //Getting the http session and store it into the ssid
+  		httpSession = request.getSession( false );
+  		if( httpSession != null ){
+  			ssid = (String) httpSession.getAttribute( "ssid" );
+  			if( ssid != null ){
+  				System.out.println( "Already have ssid" );
+  				session = SessionManager.getSessionById( ssid );
+  				if( session == null ){
+  					status = "Session expired or illegal; please log in";
+  					return;
+  				}
+  				LogicLayer logicLayer = session.getLogicLayer();
+  				try {
+  					logicLayer.logout( ssid );
+  					httpSession.removeAttribute( "ssid" );
+  				} catch ( RARException e ){
+  					status = "Try catch";
+  				}
+  			}else{
+  				System.out.println( "ssid is null" );
+  				templateProcessor.setTemplate("CreateAccountTemplates/index.ftl");
+  				templateProcessor.processTemplate(response);
+  				return;
+  			}
+  		}else{
+			System.out.println( "No http session" );
+			templateProcessor.setTemplate("CreateAccountTemplates/index.ftl");
+			templateProcessor.processTemplate(response);
+			return;
+  		}
+  		
+		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
+		templateProcessor.addToRoot("status", status);
+		templateProcessor.processTemplate(response);  			
 	}
 
 	/**

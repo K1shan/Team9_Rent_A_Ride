@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.customer;
+package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
 import javax.servlet.ServletConfig;
@@ -18,23 +18,23 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminView
+ * Servlet implementation class AdminIndex
  */
-@WebServlet("/CustomerView")
-public class CustomerView extends HttpServlet {
+@WebServlet("/AdminIndex")
+public class AdminIndex extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates";
+	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerView() {
+    public AdminIndex() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -44,24 +44,24 @@ public class CustomerView extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
-		// version (here 2.3.25) do you want to apply the fixes that are not 100%
-		// backward-compatible. See the Configuration JavaDoc for details.
-		cfg = new Configuration(Configuration.VERSION_2_3_25);
+				// version (here 2.3.25) do you want to apply the fixes that are not 100%
+				// backward-compatible. See the Configuration JavaDoc for details.
+				cfg = new Configuration(Configuration.VERSION_2_3_25);
 
-		// Specify the source where the template files come from.
-		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+				// Specify the source where the template files come from.
+				cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
 
-		// Sets how errors will appear.
-		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
-		// This handler outputs the stack trace information to the client, formatting it so 
-		// that it will be usually well readable in the browser, and then re-throws the exception.
-		//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+				// Sets how errors will appear.
+				// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
+				// This handler outputs the stack trace information to the client, formatting it so 
+				// that it will be usually well readable in the browser, and then re-throws the exception.
+				//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+				cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 
-		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
-		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
-		//		cfg.setLogTemplateExceptions(false);
-		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+				// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
+				// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
+				//		cfg.setLogTemplateExceptions(false);
+				templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class CustomerView extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
-		templateProcessor.setTemplate("CustomerView.ftl");
+		templateProcessor.setTemplate("AdminIndex.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.processTemplate(response);
 	}

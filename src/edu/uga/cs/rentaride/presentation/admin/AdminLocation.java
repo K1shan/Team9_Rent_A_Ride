@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.customer;
+package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
 import javax.servlet.ServletConfig;
@@ -18,23 +18,23 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminView
+ * Servlet implementation class AdminLocation
  */
-@WebServlet("/CustomerView")
-public class CustomerView extends HttpServlet {
+@WebServlet("/AdminLocation")
+public class AdminLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates";
+	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerView() {
+    public AdminLocation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -99,7 +99,7 @@ public class CustomerView extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
-		templateProcessor.setTemplate("CustomerView.ftl");
+		templateProcessor.setTemplate("AdminLocation.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.processTemplate(response);
 	}
