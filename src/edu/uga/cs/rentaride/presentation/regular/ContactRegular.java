@@ -20,19 +20,19 @@ import freemarker.template.TemplateExceptionHandler;
 /**
  * Servlet implementation class contacts
  */
-@WebServlet("/contacts")
-public class contacts extends HttpServlet {
+@WebServlet("/ContactRegular")
+public class ContactRegular extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/regularTemplates";
+	private String templateDir = "/WEB-INF/RegularTemplates";
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public contacts() {
+    public ContactRegular() {
         super();
 
     }
@@ -74,7 +74,7 @@ public class contacts extends HttpServlet {
 		try {	
 			
 			//This is the file it will return after contact is pressed on the nav bar
-			String templateName = "regularContact.ftl";
+			String templateName = "RegularContact.ftl";
 			template = cfg.getTemplate(templateName );
 			response.setContentType("text/html");
 			Writer out = response.getWriter();
