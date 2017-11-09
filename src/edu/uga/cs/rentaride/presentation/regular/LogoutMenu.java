@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
@@ -26,6 +28,8 @@ public class LogoutMenu extends HttpServlet {
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF";
 	private TemplateProcessor templateProcessor = null;
+	private LogicLayer logicLayer = null;
+
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -60,7 +64,7 @@ public class LogoutMenu extends HttpServlet {
 		//		cfg.setLogTemplateExceptions(false);
 		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
-
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -71,30 +75,40 @@ public class LogoutMenu extends HttpServlet {
         String         ssid;
         String status = "";
         
-      //Getting the http session and store it into the ssid
-      		httpSession = request.getSession();
-      		ssid = (String) httpSession.getAttribute( "ssid" );
-      		
-      		//Here it will get the existing id
-      		if( ssid != null ) {
-
-                  session = SessionManager.getSessionById( ssid );
-              }
-      		
-      		//Here it will create the session id 
-      		if( session == null ){
-      			
-      			try {
-      				
-      				session = SessionManager.createSession();
-      			} catch ( Exception e ){
-      				
-      				status = e.toString();
-      				templateProcessor.setTemplate("SigninCreateForm.ftl");
-      				templateProcessor.addToRoot("status", status);
-      				templateProcessor.processTemplate(response);
-      			}
-      		}
+        //Getting the http session and store it into the ssid
+  		httpSession = request.getSession( false );
+  		if( httpSession != null ){
+  			ssid = (String) httpSession.getAttribute( "ssid" );
+  			if( ssid != null ){
+  				System.out.println( "Already have ssid" );
+  				session = SessionManager.getSessionById( ssid );
+  				if( session == null ){
+  					status = "Session expired or illegal; please log in";
+  					return;
+  				}
+  				LogicLayer logicLayer = session.getLogicLayer();
+  				try {
+  					logicLayer.logout( ssid );
+  					httpSession.removeAttribute( "ssid" );
+  				} catch ( RARException e ){
+  					status = "Try catch";
+  				}
+  			}else{
+  				System.out.println( "ssid is null" );
+  				templateProcessor.setTemplate("CreateAccountTemplates/index.ftl");
+  				templateProcessor.processTemplate(response);
+  				return;
+  			}
+  		}else{
+			System.out.println( "No http session" );
+			templateProcessor.setTemplate("CreateAccountTemplates/index.ftl");
+			templateProcessor.processTemplate(response);
+			return;
+  		}
+  		
+		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
+		templateProcessor.addToRoot("status", status);
+		templateProcessor.processTemplate(response);  			
 	}
 
 	/**
