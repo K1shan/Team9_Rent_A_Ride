@@ -273,5 +273,17 @@ public class CustomerImpl
 				"]";
 	}
 
+	@Override
+	public void setIsAdmin(boolean isAdmin) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean getIsAdmin() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 }

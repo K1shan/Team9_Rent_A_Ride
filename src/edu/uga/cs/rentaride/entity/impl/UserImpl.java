@@ -15,7 +15,7 @@ import edu.uga.cs.rentaride.RARException;
 
 public class UserImpl extends Persistent implements User {
 
-	
+		private boolean isAdmin;
 		private String firstName;
 		private String lastName;
 		private String userName;
@@ -36,6 +36,7 @@ public class UserImpl extends Persistent implements User {
 		this.createdDate = null;
 		this.address = null;
 		this.userStatus = null;
+		this.isAdmin = false;
 	}
 	
 	public UserImpl(String firstName, String lastName, String userName, String email, String password, Date createdDate, String address, UserStatus userStatus) {
@@ -48,6 +49,15 @@ public class UserImpl extends Persistent implements User {
 		this.createdDate = createdDate;
 		this.address = address;
 		this.userStatus = userStatus;
+		this.isAdmin = false;
+	}
+	
+	public boolean getIsAdmin(){
+		return isAdmin;
+	}
+	
+	public void setIsAdmin(boolean isAdmin){
+		this.isAdmin = isAdmin;
 	}
 	
 	@Override
@@ -145,6 +155,13 @@ public class UserImpl extends Persistent implements User {
 	public void setUserStatus(UserStatus userStatus) {
 
 		this.userStatus = userStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "UserImpl [isAdmin=" + isAdmin + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
+				+ userName + ", email=" + email + ", password=" + password + ", createdDate=" + createdDate
+				+ ", address=" + address + ", userStatus=" + userStatus + "]";
 	}
 	
 }

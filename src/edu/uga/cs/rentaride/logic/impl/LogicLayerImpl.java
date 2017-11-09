@@ -35,14 +35,22 @@ public class LogicLayerImpl
 		return ctrlCreateAccount.createAccount(fName, lName, email, password, driverNo, cardNo, expDate, address, city, state, zip);
 	}
 	
-	public String checkCredentials(Session session, String email, String password)
-			throws RARException {
-		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
-		return ctrlAccount.checkCredentials(session, email, password);
-	}
-	
 	public void logout( String ssid ) throws RARException
     {
         SessionManager.logout( ssid );
     }
+	
+	@Override
+	public String checkCustomerCredentials(Session session, String email, String password)
+			throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		return ctrlAccount.checkCustomerCredentials(session, email, password);
+	}
+
+	@Override
+	public String checkAdminCredentials(Session session, String email, String password) 
+			throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		return ctrlAccount.checkAdminCredentials(session, email, password);
+	}
 }

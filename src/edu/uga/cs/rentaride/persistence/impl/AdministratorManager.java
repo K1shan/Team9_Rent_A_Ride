@@ -204,7 +204,7 @@ public class AdministratorManager {
 			if( modelAdministrator.getId() >= 0 ){
 				query.append( " where ADMIN.admin_id = " + modelAdministrator.getId() );
 			}else if( modelAdministrator.getUserName() != null) {
-				query.append( " where USER.admin_id = " + modelAdministrator.getUserName());
+				query.append( " where USER.uname = " + modelAdministrator.getUserName());
 			}else {
 				
 				if(modelAdministrator.getPassword() != null){
@@ -245,7 +245,11 @@ public class AdministratorManager {
                     }
                     condition.append( " USER.create_date = '" + modelAdministrator.getCreatedDate() + "'" );
                 }
-
+				
+				if( condition.length() > 0 ) {
+                    query.append(  " where " );
+                    query.append( condition );
+                }
 			}
 			
 		}
