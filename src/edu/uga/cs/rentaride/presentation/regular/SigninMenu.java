@@ -125,7 +125,7 @@ public class SigninMenu extends HttpServlet {
    	 		
 			ssid = logicLayer.checkCredentials(session, email, password);
             httpSession.setAttribute( "ssid", ssid );
-            templateProcessor.setTemplate("CustomerTemplates/index.ftl");
+            templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
 			templateProcessor.addToRoot("user", session.getCustomer().getFirstName());
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
@@ -139,9 +139,6 @@ public class SigninMenu extends HttpServlet {
 			toLoginPage(request, response);
 			
 		}
-   	 	
-			
-
 
 	} // toLoginPage
 	
