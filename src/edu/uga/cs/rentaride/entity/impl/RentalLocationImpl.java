@@ -16,6 +16,7 @@ public class RentalLocationImpl
 {
 	private String name;
 	private String address;
+	private String path;
 	private int capacity;
 	private List<Reservation> reservations;
 	private List<Vehicle> vehicles;
@@ -27,6 +28,7 @@ public class RentalLocationImpl
 		this.capacity = 0;
 		this.reservations = null;
 		this.vehicles = null;
+		this.path = null;
 	}
 	
 	public RentalLocationImpl(String name, String address, int capacity){
@@ -36,6 +38,7 @@ public class RentalLocationImpl
 		this.capacity = capacity;
 		this.reservations = null;
 		this.vehicles = null;
+		this.path = null;
 	}
 
 	public String getName() {
@@ -90,6 +93,16 @@ public class RentalLocationImpl
 	public String toString() {
 		return "RentalLocationImpl [name=" + name + ", address=" + address + ", capacity=" + capacity
 				+ ", reservations=" + reservations + ", vehicles=" + vehicles + "]";
+	}
+
+	@Override
+	public void setPath(String path) throws RARException {
+		this.path = path;
+	}
+
+	@Override
+	public String getPath() throws RARException {
+		return this.path;
 	}
 
 	

@@ -612,4 +612,7 @@ public interface PersistenceLayer
      */
     public void deleteVehicleRental( Vehicle vehicle, Rental rental ) throws RARException;
 
+    public void storePath( RentalLocation rentalLocation) throws RARException;
+    
+    public List<RentalLocation> restorePath( RentalLocation rentalLocation) throws RARException;
 }

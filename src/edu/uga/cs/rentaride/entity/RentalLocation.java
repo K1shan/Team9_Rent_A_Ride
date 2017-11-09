@@ -61,4 +61,7 @@ public interface RentalLocation
     // Not needed;  vehicles located at this location are added one-by-one by creating
     // Vehicle objects or re-assigning existing ones to this rental location.
     // void setVehicles( List<Reservation> reservations );}
+    
+    public void setPath(String path)throws RARException;
+    public String getPath()throws RARException;
 }

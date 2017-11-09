@@ -3,9 +3,16 @@ package edu.uga.cs.rentaride.logic.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
 import edu.uga.cs.rentaride.*;
+import edu.uga.cs.rentaride.entity.Administrator;
 import edu.uga.cs.rentaride.entity.Customer;
+import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.impl.AdministratorImpl;
+import edu.uga.cs.rentaride.entity.impl.UserImpl;
 import edu.uga.cs.rentaride.object.*;
+import edu.uga.cs.rentaride.session.SessionManager;
 
 
 public class CreateAccountCtrl {
@@ -37,4 +44,18 @@ public class CreateAccountCtrl {
 	    	objectLayer.storeCustomer(customer);
 	    	return customer.getId();
     }
+	
+	public long setAdmin(String username) throws RARException{
+		Customer modelCustomer = objectLayer.createCustomer();
+		Customer customer = null;
+		modelCustomer.setUserName(username);
+   	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+   	 	if(customers.size() > 0){
+	 		customer = customers.get( 0 );
+	 	}
+   	 	objectLayer.deleteCustomer(customer);
+		Administrator admin = objectLayer.createAdministrator(customer.getFirstName(), customer.getLastName(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getAddress(), customer.getCreatedDate());
+		objectLayer.storeAdministrator(admin);
+		return admin.getId();
+	}
 }
