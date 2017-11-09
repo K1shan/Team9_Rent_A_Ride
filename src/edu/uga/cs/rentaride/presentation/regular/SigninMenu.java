@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.Customer;
+import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -74,9 +75,12 @@ public class SigninMenu extends HttpServlet {
 	public void toLoginPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println( "signinMenu.toLoginPage()" );
 		
-		
+		System.out.println(templateProcessor.getTemplate());
+
 		// File sent when login success
 		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
+		System.out.println(templateProcessor.getTemplate());
+
 		templateProcessor.processTemplate(response);
 	} // toHomePage
 	
@@ -90,8 +94,6 @@ public class SigninMenu extends HttpServlet {
         String         ssid;		
         String 			email;
         String 			password;
-        
-		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
 
         
         email = request.getParameter("email");
@@ -120,25 +122,57 @@ public class SigninMenu extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
+		User user;
 		
    	 	try {
-   	 		
-			ssid = logicLayer.checkCredentials(session, email, password);
+			ssid = logicLayer.checkAdminCredentials(session,email,password);
             httpSession.setAttribute( "ssid", ssid );
-            templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
-			templateProcessor.addToRoot("user", session.getCustomer().getFirstName());
+			user = session.getUser();
+			templateProcessor.setTemplate("AdminTemplates/AdminIndex.ftl");
+			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
-			
-		} catch (RARException e) {
-			
-
-			status = "Invalid User Name or Password";
-			System.out.println(status);
-			templateProcessor.addToRoot("status", status);
-			toLoginPage(request, response);
-			
-		}
+			return;
+   	 	} catch (RARException e1){
+   	 		try {
+   	 			ssid = logicLayer.checkCustomerCredentials(session,email,password);
+   	 			httpSession.setAttribute( "ssid", ssid );
+   	 			user = session.getUser();
+				templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
+				templateProcessor.addToRoot("user", user.getFirstName());
+				System.out.println(user);
+				System.out.println(templateProcessor.getTemplate());
+				templateProcessor.addToRoot("status", status);
+				templateProcessor.processTemplate(response);
+				return;
+   	 		} catch (RARException e2){
+	   	 		status = "Invalid User Name or Password";
+				templateProcessor.addToRoot("status", status);
+				templateProcessor.processTemplate(response);
+   	 		}
+   	 	}
+   	 	
+//   	 	try {
+//			
+//			if(user.getIsAdmin()){
+//				templateProcessor.setTemplate("AdminTemplates/AdminIndex.ftl");
+//			}else{
+//				templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
+//			}
+//			
+//			templateProcessor.addToRoot("user", user.getFirstName());
+//			templateProcessor.addToRoot("status", status);
+//			templateProcessor.processTemplate(response);
+//			
+//		} catch (RARException e) {
+//			
+//
+//			status = "Invalid User Name or Password";
+//			System.out.println(status);
+//			templateProcessor.addToRoot("status", status);
+//			toLoginPage(request, response);
+//			
+//		}
 
 	} // toLoginPage
 	

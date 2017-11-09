@@ -1,22 +1,11 @@
 package edu.uga.cs.rentaride.session;
 
-/*******************************************
- * Based on the modified code from Matthew Eavenson
- * 
- * @file    Session.java
- * @author  Matthew Everson
- * @see     LICENSE (MIT style license file)
- * @version 0.8
- * @date    Sat May 2 18:00:51 EDT 2011
- */
-
 import java.sql.Connection;
 import java.util.Calendar;
 import java.util.Date;
 
-//import org.apache.log4j.Logger;
-
 import edu.uga.cs.rentaride.*;
+import edu.uga.cs.rentaride.entity.Administrator;
 import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.object.ObjectLayer;
@@ -37,7 +26,7 @@ public class Session
     private Connection conn;
     private ObjectLayer objectLayer;
     private LogicLayer logicLayer;
-    private Customer customer;
+    private User user;
     private String id;
     private Date expiration;
     // private static Logger log = SessionManager.getLog();
@@ -70,20 +59,20 @@ public class Session
      * Gets the GVUser for which the session is created.
      * @return the loggedIn user
      */
-    public Customer getCustomer()
+    public User getUser()
     {
         extendExpiration();
-        return customer;
+        return user;
     }
     
     /***********************************************************
      * Sets the loggedIn user to the new created session.
      * @param  person the user to be associated with the session.
      */
-    public void setCustomer(Customer customer) 
+    public void setUser(User user) 
             throws RARException {
         extendExpiration();
-        this.customer = customer;
+        this.user = user;
     }
     
     /***********************************************************
@@ -155,7 +144,7 @@ public class Session
             }
             diff = expiration.getTime() - System.currentTimeMillis();
         }
-        System.out.println("Removing "+customer.getUserName()+"'s session");
+        System.out.println("Removing "+user.getUserName()+"'s session");
         try {
             SessionManager.removeSession( this );
         } 

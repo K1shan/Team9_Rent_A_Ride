@@ -92,4 +92,8 @@ public interface User
      * @param userStatus the new status of this user (must be ACTIVE, CANCELLED, or TERMINATED)
      */
     public void setUserStatus( UserStatus userStatus );
+
+	public void setIsAdmin(boolean isAdmin);
+	
+	public boolean getIsAdmin();
 }

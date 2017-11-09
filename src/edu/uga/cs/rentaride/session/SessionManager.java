@@ -18,17 +18,6 @@ import edu.uga.cs.rentaride.entity.impl.*;
 import edu.uga.cs.rentaride.persistence.impl.DbUtils;
 
 
-
-
-/**
- * Based on the modified code from Matthew Eavenson
- * 
- * @author Matthew Eavenson
- */
-
-/** This class provides different operations for the Sessions such as 
- *  creating new sessions, removing, login and logout.
- */
 public class SessionManager
 {
     /** 
@@ -72,20 +61,20 @@ public class SessionManager
     public static String storeSession( Session session ) 
             throws RARException
     {
-
-        Customer customer = session.getCustomer();
     	
-        if( loggedIn.containsKey(customer.getUserName()) ) {
-            Session qs = loggedIn.get(customer.getUserName());
-            qs.setCustomer(customer);
+        User user = session.getUser();
+    	
+        if( loggedIn.containsKey(user.getUserName()) ) {
+            Session qs = loggedIn.get(user.getUserName());
+            qs.setUser(user);
             return qs.getSessionId();
         }
                 
-        String ssid = secureHash( "CLUBS" + System.nanoTime() );
+        String ssid = secureHash( "RAR" + System.nanoTime() );
         session.setSessionId( ssid );
         
         sessions.put( ssid, session );
-        loggedIn.put( customer.getUserName(), session );
+        loggedIn.put( user.getUserName(), session );
         session.start();
         return ssid;
     }
@@ -133,7 +122,7 @@ public class SessionManager
             throw new RARException( "SessionManager.removeSession: Cannot close connection" );
         } // try
         sessions.remove( s.getSessionId() );
-        loggedIn.remove( s.getCustomer().getUserName() );
+        loggedIn.remove( s.getUser().getUserName() );
     }
     
     /****************************************************
