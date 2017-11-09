@@ -12,7 +12,22 @@
 
 <body>
 	
+	<div class="modal">
+ 		<div class="tab">
+    			<label class="head">MAKE ADMIN</label>
+   				<form class="form" id="add" action="AdminCreate" method='post' name="add">
+   				
+      				<p class="float-label">
+        					<input type="text" id="email" name="email" placeholder="Email"/>
+      				</p>
+      					
+      				<p>
+        				<input class = "add" type="submit" onclick="return productNullCheck()" value="ADD ADMIN" />
+      				</p>
+    				</form>
+  			</div>
+  		</div>
+	</div>
 
 </body>
-
 </html>

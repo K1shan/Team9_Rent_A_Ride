@@ -74,14 +74,8 @@ public class SigninMenu extends HttpServlet {
 	}
 
 	public void toLoginPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println( "signinMenu.toLoginPage()" );
-		
-		System.out.println(templateProcessor.getTemplate());
-
 		// File sent when login success
 		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
-		System.out.println(templateProcessor.getTemplate());
-
 		templateProcessor.processTemplate(response);
 	} // toHomePage
 	
@@ -146,7 +140,9 @@ public class SigninMenu extends HttpServlet {
 				templateProcessor.processTemplate(response);
 				return;
    	 		} catch (RARException e2){
+   	 			
 	   	 		status = "Invalid User Name or Password";
+	   	 		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
 				templateProcessor.addToRoot("status", status);
 				templateProcessor.processTemplate(response);
    	 		}
