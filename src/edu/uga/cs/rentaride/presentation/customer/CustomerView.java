@@ -1,4 +1,4 @@
-package edu.uga.cs.rentareide.presentation.customer;
+package edu.uga.cs.rentaride.presentation.customer;
 
 import java.io.IOException;
 import javax.servlet.ServletConfig;
