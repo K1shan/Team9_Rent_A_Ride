@@ -15,7 +15,7 @@
                 <li><a href="customerCar">CARS</a></li>
                 <li><a href="customerLocation">LOCATIONS</a></li>
                 <li><a href="customerContact">CONTACT</a></li>
-                <li><a href="customerView">${user}</a></li>
+                <li><a href="AdminView">${user}</a></li>
                 <li><a href="LogoutMenu">Logout</a></li>
                 <li><a href="">BAG</a></li>
               </ul>
