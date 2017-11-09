@@ -1,5 +1,6 @@
 package edu.uga.cs.rentaride.logic;
 
+import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.*;
 import edu.uga.cs.rentaride.session.Session;
 
@@ -10,4 +11,6 @@ public interface LogicLayer {
 	
 	// check email/password
 	public String checkCredentials ( Session session, String email, String password ) throws RARException;
+	
+	public void logout( String ssid ) throws RARException;
 }

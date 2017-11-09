@@ -2,6 +2,8 @@ package edu.uga.cs.rentaride.logic.impl;
 
 import com.mysql.jdbc.Connection;
 
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.session.SessionManager;
 import edu.uga.cs.rentaride.*;
 import edu.uga.cs.rentaride.logic.*;
 import edu.uga.cs.rentaride.object.*;
@@ -38,4 +40,9 @@ public class LogicLayerImpl
 		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
 		return ctrlAccount.checkCredentials(session, email, password);
 	}
+	
+	public void logout( String ssid ) throws RARException
+    {
+        SessionManager.logout( ssid );
+    }
 }
