@@ -9,10 +9,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.RentalLocation;
+import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.object.ObjectLayer;
+import edu.uga.cs.rentaride.object.impl.ObjectLayerImpl;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
+import edu.uga.cs.rentaride.session.Session;
+import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
@@ -28,6 +36,7 @@ public class LocationCreate extends HttpServlet {
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
+	private ObjectLayer objectLayer = null;
 	private static final String SAVE_DIR = "city";
 	
     /**
@@ -68,7 +77,11 @@ public class LocationCreate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		
+		String status = "";
+		//Setting the session to null
+		HttpSession    httpSession = null;
+        Session        session = null;
+        String         ssid;
 		String savePath = getServletContext().getRealPath("/city"); 
 		
 		File fileSaveDir = new File(savePath);
@@ -95,6 +108,48 @@ public class LocationCreate extends HttpServlet {
 		System.out.println(zip);
 		System.out.println(ava);
 		System.out.println(accessOne);
+		
+		//Getting the http session and store it into the ssid
+        httpSession = request.getSession();
+		ssid = (String) httpSession.getAttribute( "ssid" );
+        
+		//Here it will get the existing id
+		if( ssid != null ) {
+
+            session = SessionManager.getSessionById( ssid );
+        }
+		
+		//Here it will create the session id 
+		if( session == null ){
+		 	try {
+				
+				session = SessionManager.createSession();
+			} catch ( Exception e ){
+				status = e.toString();
+				templateProcessor.addToRoot("status", status);
+				templateProcessor.processTemplate(response);
+			}
+		}
+		objectLayer = new ObjectLayerImpl();
+		RentalLocation rentalLocation = null;
+		logicLayer = session.getLogicLayer();
+		User user = null;
+		user = session.getUser();
+		int num = Integer.parseInt(ava);
+		try {
+			rentalLocation = objectLayer.createRentalLocation(city, address+", "+city+", "+state, num);
+			logicLayer.persistLocation(rentalLocation);
+			rentalLocation.setPath(savePath);
+		} catch (RARException e){
+			System.out.println("LocationCreate: "+e);
+		}
+		
+		
+		
+		templateProcessor.setTemplate("AdminView.ftl");
+		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.processTemplate(response);
+		
 		
 		pic.write(savePath + File.separator + oneName);
 	}

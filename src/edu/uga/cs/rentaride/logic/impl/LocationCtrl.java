@@ -24,4 +24,12 @@ public class LocationCtrl {
 	public List<RentalLocation> getLocationList() throws RARException{
 		return objectLayer.findRentalLocation(null);
 	}
+	
+	public void persistLocation(RentalLocation rentalLocation) throws RARException{
+		objectLayer.storeRentalLocation(rentalLocation);
+	}
+	
+	public void persistPath(RentalLocation rentalLocation) throws RARException{
+		objectLayer.storePath(rentalLocation);
+	}
 }

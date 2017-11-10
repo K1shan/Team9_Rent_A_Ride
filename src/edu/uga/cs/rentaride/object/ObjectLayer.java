@@ -465,6 +465,7 @@ public interface ObjectLayer
     
     public void setPersistence( PersistenceLayer persistence);
 
+    public void storePath(RentalLocation rentalLocation) throws RARException;
     
     public void deleteCustomer(Customer customer) throws RARException;
 
