@@ -1,0 +1,122 @@
+package edu.uga.cs.rentaride.presentation.admin;
+
+import java.io.File;
+import java.io.IOException;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateExceptionHandler;
+
+/**
+ * Servlet implementation class LocationCreate
+ */
+@WebServlet("/LocationCreate")
+@MultipartConfig(maxFileSize = 16177215)
+public class LocationCreate extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	Configuration cfg = null;
+	private String templateDir = "/WEB-INF/AdminTemplates";
+	private TemplateProcessor templateProcessor = null;
+	private LogicLayer logicLayer = null;
+	private static final String SAVE_DIR = "city";
+	
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LocationCreate() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see Servlet#init(ServletConfig)
+	 */
+	public void init() throws ServletException {
+		// Create your Configuration instance, and specify if up to what FreeMarker
+				// version (here 2.3.25) do you want to apply the fixes that are not 100%
+				// backward-compatible. See the Configuration JavaDoc for details.
+				cfg = new Configuration(Configuration.VERSION_2_3_25);
+
+				// Specify the source where the template files come from.
+				cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+
+				// Sets how errors will appear.
+				// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
+				// This handler outputs the stack trace information to the client, formatting it so 
+				// that it will be usually well readable in the browser, and then re-throws the exception.
+				//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+				cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+
+				// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
+				// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
+				//		cfg.setLogTemplateExceptions(false);
+				templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		
+		String savePath = getServletContext().getRealPath("/city"); 
+		
+		File fileSaveDir = new File(savePath);
+        if(!fileSaveDir.exists()){
+
+            fileSaveDir.mkdir();
+        }
+        
+		String address = request.getParameter("address");
+		String city = request.getParameter("city");
+		String state = request.getParameter("state");
+		String zip = request.getParameter("zip");
+		String ava = request.getParameter("ava");
+		
+		Part pic = request.getPart("pic");
+        String oneName = extractFileName(pic);
+		
+        //Send this to query for path
+		String accessOne = SAVE_DIR + File.separator + oneName;
+		
+		System.out.println(address);
+		System.out.println(city);
+		System.out.println(state);
+		System.out.println(zip);
+		System.out.println(ava);
+		System.out.println(accessOne);
+		
+		pic.write(savePath + File.separator + oneName);
+	}
+
+	private String extractFileName(Part part) {
+		
+	    String contentDisp = part.getHeader("content-disposition");
+	    String[] items = contentDisp.split(";");
+	    for (String s : items) {
+	        if (s.trim().startsWith("filename")) {
+	            return s.substring(s.indexOf("=") + 2, s.length()-1);
+	        }
+	    }
+	    return "";
+	}
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}
