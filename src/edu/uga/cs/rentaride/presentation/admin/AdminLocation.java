@@ -1,6 +1,8 @@
 package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +18,8 @@ import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.RentalLocation;
 
 /**
  * Servlet implementation class AdminLocation
@@ -25,6 +29,7 @@ public class AdminLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
+	List<RentalLocation> locationList = null;
 	
 	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/AdminTemplates";
@@ -99,6 +104,24 @@ public class AdminLocation extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
+		
+		try {
+			locationList = logicLayer.getLocationList();
+			//get all location images
+			// for each object of our locationList
+			// for(RentalLocation location : locationList){
+			//   location.setPath(logicLayer.getLocationImage(location.getId()));
+		    //}
+			
+			templateProcessor.addToRoot("locationList", locationList);
+		} catch (RARException e){
+			
+		}
+		
+		
+		
+		
+		
 		templateProcessor.setTemplate("AdminLocation.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.processTemplate(response);
