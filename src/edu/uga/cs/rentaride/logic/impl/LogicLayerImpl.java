@@ -1,8 +1,11 @@
 package edu.uga.cs.rentaride.logic.impl;
 
+import java.util.List;
+
 import com.mysql.jdbc.Connection;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.session.SessionManager;
 import edu.uga.cs.rentaride.*;
 import edu.uga.cs.rentaride.logic.*;
@@ -12,7 +15,7 @@ import edu.uga.cs.rentaride.persistence.*;
 import edu.uga.cs.rentaride.persistence.impl.*;
 import edu.uga.cs.rentaride.session.Session;
 
-public class LogicLayerImpl 
+public class LogicLayerImpl
 	implements LogicLayer 
 {
 	
@@ -59,5 +62,11 @@ public class LogicLayerImpl
 			throws RARException {
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
 		return ctrlCreateAccount.setAdmin(username);
+	}
+
+	@Override
+	public List<RentalLocation> getLocationList() throws RARException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
