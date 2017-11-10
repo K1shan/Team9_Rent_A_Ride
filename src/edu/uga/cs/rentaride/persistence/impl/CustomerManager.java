@@ -401,8 +401,11 @@ public class CustomerManager{
 		PreparedStatement pstmt;
 		int inscnt;
 		
-		if (!customer.isPersistent()) // checks if Customer object is persistent. If not, nothing to delete
-			return;
+//		if (!customer.isPersistent()) // checks if Customer object is persistent. If not, nothing to delete
+//			return;
+//		
+		
+		System.out.println( "customer: "+customer );
 		
 		try {
 			pstmt = (PreparedStatement) con.prepareStatement(deleteCustomerSql);
