@@ -66,7 +66,14 @@ public class LogicLayerImpl
 
 	@Override
 	public List<RentalLocation> getLocationList() throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		return ctrlLocation.getLocationList();
 	}
+	
+	@Override
+	public void persistLocation(RentalLocation rentalLocation) throws RARException{
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		ctrlLocation.persistLocation(rentalLocation);
+	}
+	
 }

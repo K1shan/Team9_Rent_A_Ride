@@ -175,9 +175,44 @@ public class RentalLocationManager {
     }
     
     public void storePath( RentalLocation rentalLocation ) throws RARException{
+    	String insertRentalLocationPathQuery = 
+				"INSERT INTO LOCATION_IMAGE "
+				+ "( location_id, image_path) "
+				+ "VALUES "
+				+ "(?, ?)";
     	
-    }
-    
+    	PreparedStatement pstmt;
+		int inscnt;
+		long locationId;
+    	
+		try {
+			pstmt = (PreparedStatement) con.prepareStatement( insertRentalLocationPathQuery );
+			
+			if( rentalLocation.getId() != 0 ){
+				pstmt.setLong( 1, rentalLocation.getId());
+			}else{
+				throw new RARException( "RentalLocationManager.save: can't save a location_path: id undefined" );
+			}
+			
+			if( rentalLocation.getPath() != null ){
+				pstmt.setString( 2, rentalLocation.getPath());
+			}else{
+				throw new RARException( "RentalLocationManager.save: can't save a location: Address undefined" );
+			}
+			
+			System.out.println("query: " + pstmt.asSql());
+	        inscnt = pstmt.executeUpdate();
+        
+	        if( inscnt < 1 ){
+	    		throw new RARException( "RentalLocationManager.save: failed to save a location_path" );	
+	        }
+	        
+		} catch( SQLException e ) {
+    		e.printStackTrace();
+    		throw new RARException( "RentalLocationManager.delete: failed to save a RentalLocation_path: " + e );       
+        }
+	}
+
     public List<RentalLocation> restorePath( RentalLocation modelRentalLocation ) throws RARException{
 		List<RentalLocation> rentalLocations = new ArrayList<RentalLocation>();
 		return rentalLocations;

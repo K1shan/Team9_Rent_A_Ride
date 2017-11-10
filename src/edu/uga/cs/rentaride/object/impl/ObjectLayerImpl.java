@@ -431,6 +431,11 @@ public class ObjectLayerImpl
         return params;
 	}
 
+	@Override
+	public void storePath(RentalLocation rentalLocation) throws RARException{
+		persistence.storePath(rentalLocation);
+	}
+	
 	//Object Layer for Store Rent A Rider Params 
 	
 	@Override
