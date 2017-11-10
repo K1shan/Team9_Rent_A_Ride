@@ -154,6 +154,7 @@ public class RentalLocationManager {
 		PreparedStatement stmt = null;
 		int inscnt = 0;
 		             
+		
         if( !rentalLocation.isPersistent() ) // is the Club object persistent?  If not, nothing to actually delete
             return;
         try {

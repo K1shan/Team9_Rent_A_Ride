@@ -52,6 +52,8 @@ public class CreateAccountCtrl {
    	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
    	 	if(customers.size() > 0){
 	 		customer = customers.get( 0 );
+	 	}else{
+	 		return -1;
 	 	}
    	 	objectLayer.deleteCustomer(customer);
 		Administrator admin = objectLayer.createAdministrator(customer.getFirstName(), customer.getLastName(), customer.getUserName(), customer.getPassword(), customer.getEmail(), customer.getAddress(), customer.getCreatedDate());
