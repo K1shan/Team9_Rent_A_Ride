@@ -28,8 +28,4 @@ public class LocationCtrl {
 	public void persistLocation(RentalLocation rentalLocation) throws RARException{
 		objectLayer.storeRentalLocation(rentalLocation);
 	}
-	
-	public void persistPath(RentalLocation rentalLocation) throws RARException{
-		objectLayer.storePath(rentalLocation);
-	}
 }

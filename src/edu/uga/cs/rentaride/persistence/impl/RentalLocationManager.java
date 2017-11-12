@@ -23,15 +23,15 @@ public class RentalLocationManager {
 	public void store( RentalLocation rentalLocation ) throws RARException{
 		String insertRentalLocationQuery = 
 				"INSERT INTO LOCATION "
-				+ "(name, address, capacity) "
+				+ "(name, addr, addr_city, addr_state, addr_zip, image_path, capacity) "
 				+ "VALUES "
-				+ "(?, ?, ?)";
+				+ "(?, ?, ?, ?, ?, ?, ?)";
 		
 		String updateRentalLocationQuery =
 				"UPDATE INTO LOCATION "
-				+ "(name, address, capacity) "
+				+ "(name, addr, addr_city, addr_state, addr_zip, image_path, capacity) "
 				+ "VALUES "
-				+ "(?, ?, ?)";
+				+ "(?, ?, ?, ?, ?, ?, ?)";
 		
 		PreparedStatement pstmt;
 		int inscnt;
@@ -56,8 +56,32 @@ public class RentalLocationManager {
 				throw new RARException( "RentalLocationManager.save: can't save a location: Address undefined" );
 			}
 			
+			if( rentalLocation.getCity() != null ){
+				pstmt.setString( 3, rentalLocation.getCity());
+			}else{
+				throw new RARException( "RentalLocationManager.save: can't save a location: City undefined" );
+			}
+			
+			if( rentalLocation.getState() != null ){
+				pstmt.setString( 4, rentalLocation.getState());
+			}else{
+				throw new RARException( "RentalLocationManager.save: can't save a location: State undefined" );
+			}
+			
+			if( rentalLocation.getZip() != null ){
+				pstmt.setString( 5, rentalLocation.getZip());
+			}else{
+				throw new RARException( "RentalLocationManager.save: can't save a location: Zip undefined" );
+			}
+			
+			if( rentalLocation.getPath() != null ){
+				pstmt.setString( 6, rentalLocation.getPath());
+			}else{
+				throw new RARException( "RentalLocationManager.save: can't save a location: Path undefined" );
+			}
+			
 			if( rentalLocation.getCapacity() != 0 ){
-				pstmt.setLong( 3, rentalLocation.getCapacity());
+				pstmt.setLong( 7, rentalLocation.getCapacity());
 			}else{
 				throw new RARException( "RentalLocationManager.save: can't save a location: Capacity undefined" );
 			}
@@ -91,7 +115,10 @@ public class RentalLocationManager {
     }
 	
 	public List<RentalLocation> restore( RentalLocation modelRentalLocation ) throws RARException{
-		String selectRentalLocationQuery = "SELECT * FROM LOCATION ";
+		String selectRentalLocationQuery = 
+				"SELECT "
+				+ "location_id, name, addr, addr_city, addr_state, addr_zip, image_path, capacity "
+				+ "FROM LOCATION";
 		
 		Statement 	stmt = null;
 		StringBuffer query = new StringBuffer(100);
@@ -108,7 +135,7 @@ public class RentalLocationManager {
 				query.append( " where LOCATION.name='" + modelRentalLocation.getName() + "'" );
 			}else{
 				if( modelRentalLocation.getAddress() != null ){
-					condition.append( " where LOCATION.address='" + modelRentalLocation.getAddress() + "'" );
+					condition.append( " where LOCATION.addr='" + modelRentalLocation.getAddress() + "'" );
 					if( modelRentalLocation.getCapacity() > 0 ){
 						condition.append( " AND LOCATION.capacity=" + modelRentalLocation.getCapacity() );
 					}
@@ -129,15 +156,22 @@ public class RentalLocationManager {
 				ResultSet rs = stmt.getResultSet();
 				int 	location_location_id;
 				String 	location_name;
-				String 	location_address;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
 				int 	location_capacity;
 				while( rs.next() ){
 					location_location_id= rs.getInt(1);
 					location_name 		= rs.getString(2);
-					location_address 	= rs.getString(3);
-					location_capacity 	= rs.getInt(4);
-					
-					RentalLocation rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_capacity);
+					location_addr	 	= rs.getString(3);
+					location_addr_city	 = rs.getString(4);
+					location_addr_state	= rs.getString(5);
+					location_addr_zip	= rs.getString(6);
+					location_image_path	= rs.getString(7);
+					location_capacity 	= rs.getInt(8);
+					RentalLocation rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
 					rentalLocation.setId(location_location_id);
 					rentalLocations.add(rentalLocation);
 				}
@@ -172,49 +206,5 @@ public class RentalLocationManager {
         		e.printStackTrace();
         		throw new RARException( "RentalLocationManager.delete: failed to delete a RentalLocation: " + e );       
             }
-    }
-    
-    public void storePath( RentalLocation rentalLocation ) throws RARException{
-    	String insertRentalLocationPathQuery = 
-				"INSERT INTO LOCATION_IMAGE "
-				+ "( location_id, image_path) "
-				+ "VALUES "
-				+ "(?, ?)";
-    	
-    	PreparedStatement pstmt;
-		int inscnt;
-		long locationId;
-    	
-		try {
-			pstmt = (PreparedStatement) con.prepareStatement( insertRentalLocationPathQuery );
-			
-			if( rentalLocation.getId() != 0 ){
-				pstmt.setLong( 1, rentalLocation.getId());
-			}else{
-				throw new RARException( "RentalLocationManager.save: can't save a location_path: id undefined" );
-			}
-			
-			if( rentalLocation.getPath() != null ){
-				pstmt.setString( 2, rentalLocation.getPath());
-			}else{
-				throw new RARException( "RentalLocationManager.save: can't save a location: Address undefined" );
-			}
-			
-			System.out.println("query: " + pstmt.asSql());
-	        inscnt = pstmt.executeUpdate();
-        
-	        if( inscnt < 1 ){
-	    		throw new RARException( "RentalLocationManager.save: failed to save a location_path" );	
-	        }
-	        
-		} catch( SQLException e ) {
-    		e.printStackTrace();
-    		throw new RARException( "RentalLocationManager.delete: failed to save a RentalLocation_path: " + e );       
-        }
-	}
-
-    public List<RentalLocation> restorePath( RentalLocation modelRentalLocation ) throws RARException{
-		List<RentalLocation> rentalLocations = new ArrayList<RentalLocation>();
-		return rentalLocations;
     }
 }

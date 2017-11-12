@@ -141,8 +141,8 @@ public class ObjectLayerImpl
 	//Object Layer for Create Rental Location 
 	
 	@Override
-	public RentalLocation createRentalLocation(String name, String address, int capacity) throws RARException {
-		RentalLocationImpl rentalLocation = new RentalLocationImpl(name, address, capacity);
+	public RentalLocation createRentalLocation(String name, String address, String city, String state, String zip, String path, int capacity) throws RARException {
+		RentalLocationImpl rentalLocation = new RentalLocationImpl(name, address, city, state, zip, path, capacity);
 		Persistent.setPersistenceLayer( persistence );
 		return rentalLocation;
 	}
@@ -151,7 +151,7 @@ public class ObjectLayerImpl
 	
 	@Override
 	public RentalLocation createRentalLocation() {
-		RentalLocationImpl rentalLocation = new RentalLocationImpl( null, null, 0 );
+		RentalLocationImpl rentalLocation = new RentalLocationImpl();
         rentalLocation.setId( -1 );
         Persistent.setPersistenceLayer( persistence);
         return rentalLocation;
@@ -429,11 +429,6 @@ public class ObjectLayerImpl
         params.setId( -1 );
         Persistent.setPersistenceLayer( persistence);
         return params;
-	}
-
-	@Override
-	public void storePath(RentalLocation rentalLocation) throws RARException{
-		persistence.storePath(rentalLocation);
 	}
 	
 	//Object Layer for Store Rent A Rider Params 

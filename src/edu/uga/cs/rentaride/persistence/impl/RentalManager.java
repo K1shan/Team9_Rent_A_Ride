@@ -309,7 +309,7 @@ public class RentalManager {
 					vehicleType.setId(vehicleType_type_id);
 					vehicleType.setName(vehicleType_name);
 					
-					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_capacity);
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_address, location_address, location_address, location_address, location_capacity);
 					rentalLocation.setId(location_location_id);
 					rentalLocation.setName(location_name);
 					

@@ -112,19 +112,14 @@ public class RetriveLocation extends HttpServlet {
 		user = session.getUser();
 
 		try {
-			ArrayList<RentalLocation> product  = null;
-			product = (ArrayList<RentalLocation>) logicLayer.getLocationList();
+			List<RentalLocation> product  = null;
+			product = logicLayer.getLocationList();
 			// Making json objects
-			
-			System.out.println(product);
-			
 			Gson gson = new Gson();
 			JsonElement element = gson.toJsonTree(product, new TypeToken<List<RentalLocation>>() {}.getType());
-			
+			System.out.println("gson element: "+element);
 			// Sending object to js
-			
-			JsonArray jsonArray = element.getAsJsonArray();
-			response.setContentType("application/json");
+			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
 			response.getWriter().print(jsonArray);
 		} catch (RARException e) {
 			

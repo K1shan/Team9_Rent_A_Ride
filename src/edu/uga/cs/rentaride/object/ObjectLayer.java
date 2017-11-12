@@ -174,7 +174,7 @@ public interface ObjectLayer
      * @return the new RentalLocation object instance with the given attribute values
      * @throws RARException in case the name is non-unique or the capacity is non-positive
      */
-    public RentalLocation createRentalLocation( String name, String address, int capacity ) throws RARException;
+    public RentalLocation createRentalLocation( String name, String address, String city, String state, String zip, String path, int capacity ) throws RARException;
 
     /**
      * Create a new RentalLocation object with undefined attribute values.
@@ -464,8 +464,6 @@ public interface ObjectLayer
     public void storeRentARideParams( RentARideParams rentARideParams ) throws RARException;
     
     public void setPersistence( PersistenceLayer persistence);
-
-    public void storePath(RentalLocation rentalLocation) throws RARException;
     
     public void deleteCustomer(Customer customer) throws RARException;
 

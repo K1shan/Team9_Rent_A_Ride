@@ -477,7 +477,7 @@ public class ReservationManager {
 					vehicleType = objectLayer.createVehicleType(type_name);
 					vehicleType.setId(type_type_id);
 					
-					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_capacity);
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_address, location_address, location_address, location_address, location_capacity);
 					rentalLocation.setId(location_location_id);
 					
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
@@ -734,7 +734,7 @@ public class ReservationManager {
 					
 					customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);
 					customer.setId(customer_customer_id);
-					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_capacity);
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_address, location_address, location_address, location_address, location_capacity);
 					rentalLocation.setId(location_location_id);
                 	reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
                 	reservation.setId(reservation_reservation_id);

@@ -203,11 +203,16 @@ public class CommentManager {
 				int	hourly_price;
 				
 				// LOCATION
-                int 	location_location_id;
+				int 	location_location_id;
 				String 	location_name;
-				String 	location_address;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
 				int 	location_capacity;
 				
+				// USER
 				String 	user_fname;
 	            String 	user_lname;
 	            String 	user_uname;
@@ -223,6 +228,8 @@ public class CommentManager {
 	            String 	customer_licNum;
 	            String 	customer_ccNum;
 	            Date 	customer_ccExp;
+	            
+	            // OBJECTS
 	            Vehicle vehicle = null;
                 Reservation reservation = null;
                 Customer customer = null;
@@ -273,49 +280,54 @@ public class CommentManager {
 					hourly_price = rs.getInt(24);
 					
 					// LOCATION
-					location_location_id = rs.getInt(25);
-					location_name = rs.getString(26);
-					location_address = rs.getString(27);
-					location_capacity = rs.getInt(28);
+					location_location_id= rs.getInt(25);
+					location_name 		= rs.getString(26);
+					location_addr	 	= rs.getString(27);
+					location_addr_city	= rs.getString(28);
+					location_addr_state	= rs.getString(29);
+					location_addr_zip	= rs.getString(30);
+					location_image_path	= rs.getString(31);
+					location_capacity 	= rs.getInt(32);
 
-					rs.getInt(29);
-	           	 	user_fname = rs.getString(30);
-	           	 	user_lname = rs.getString(31);
-	           	 	user_uname = rs.getString(32);
-	           	 	user_pword = rs.getString(33);
-	           	 	user_email = rs.getString(34);
-	           	 	user_address = rs.getString(35);
-	           	 	user_createDate = rs.getDate(36);
-	                customer_customer_id = rs.getInt(37);
-	                rs.getInt(38);
-	                customer_memberUntil = rs.getDate(39);
-	                customer_licState = rs.getString(40);
-	                customer_licNum = rs.getString(41);
-	                customer_ccNum = rs.getString(42);
-	                customer_ccExp = rs.getDate(43);
-	                rs.getInt(44);
+					// USER
+					rs.getInt(33);
+	           	 	user_fname = rs.getString(34);
+	           	 	user_lname = rs.getString(35);
+	           	 	user_uname = rs.getString(36);
+	           	 	user_pword = rs.getString(37);
+	           	 	user_email = rs.getString(38);
+	           	 	user_address = rs.getString(39);
+	           	 	user_createDate = rs.getDate(40);
+	                customer_customer_id = rs.getInt(41);
+	                rs.getInt(42);
+	                customer_memberUntil = rs.getDate(43);
+	                customer_licState = rs.getString(44);
+	                customer_licNum = rs.getString(45);
+	                customer_ccNum = rs.getString(46);
+	                customer_ccExp = rs.getDate(47);
+	                rs.getInt(48);
 	                
 	                // RENTAL
-					rental_rental_id = rs.getInt(45);
-					rs.getInt(46);
-					rs.getInt(47);
-					rental_pickupTime = rs.getDate(48);
-					rs.getDate(49);
+					rental_rental_id = rs.getInt(49);
 					rs.getInt(50);
 					rs.getInt(51);
+					rental_pickupTime = rs.getDate(52);
+					rs.getDate(53);
+					rs.getInt(54);
+					rs.getInt(55);
 	                
 	                // COMMENT
-					comment_comment_id = rs.getInt(52);
-					rs.getInt(53);
-					comment_text = rs.getString(54);
-					comment_date = rs.getDate(55);
+					comment_comment_id = rs.getInt(56);
+					rs.getInt(57);
+					comment_text = rs.getString(58);
+					comment_date = rs.getDate(59);
 					
 					// VEHICLE_TYPE
                     vehicleType = objectLayer.createVehicleType(type_name);
                     vehicleType.setId( type_type_id );
                     
                     // LOCATION
-                    rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_capacity);
+                    rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
                     rentalLocation.setId(location_location_id);
                     
                     // VEHICLE
