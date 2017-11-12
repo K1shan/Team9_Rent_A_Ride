@@ -84,9 +84,11 @@ public class LocationCreate extends HttpServlet {
         String         ssid;
 		String savePath = getServletContext().getRealPath("/city"); 
 		
+		System.out.println(savePath);
+		
 		File fileSaveDir = new File(savePath);
         if(!fileSaveDir.exists()){
-
+        		System.out.println(fileSaveDir);
             fileSaveDir.mkdir();
         }
         
@@ -130,6 +132,7 @@ public class LocationCreate extends HttpServlet {
 				templateProcessor.processTemplate(response);
 			}
 		}
+		
 		objectLayer = new ObjectLayerImpl();
 		RentalLocation rentalLocation = null;
 		logicLayer = session.getLogicLayer();

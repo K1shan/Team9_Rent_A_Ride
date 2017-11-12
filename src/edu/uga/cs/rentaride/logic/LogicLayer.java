@@ -4,6 +4,7 @@ import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.logic.impl.LocationCtrl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uga.cs.rentaride.*;

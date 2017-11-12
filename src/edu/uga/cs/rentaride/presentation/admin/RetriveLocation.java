@@ -17,8 +17,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
@@ -26,26 +24,28 @@ import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.RentalLocation;
 
 /**
- * Servlet implementation class RetriveLocation
+ * Servlet implementation class AdminLocation
  */
-@WebServlet("/AdminLocation")
-public class AdminLocation extends HttpServlet {
+@WebServlet("/RetriveLocation")
+public class RetriveLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
+	List<RentalLocation> locationList = null;
 	
 	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
-	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminLocation() {
+    public RetriveLocation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -55,26 +55,25 @@ public class AdminLocation extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
-				// version (here 2.3.25) do you want to apply the fixes that are not 100%
-				// backward-compatible. See the Configuration JavaDoc for details.
-				cfg = new Configuration(Configuration.VERSION_2_3_25);
+		// version (here 2.3.25) do you want to apply the fixes that are not 100%
+		// backward-compatible. See the Configuration JavaDoc for details.
+		cfg = new Configuration(Configuration.VERSION_2_3_25);
 
-				// Specify the source where the template files come from.
-				cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+		// Specify the source where the template files come from.
+		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
 
-				// Sets how errors will appear.
-				// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
-				// This handler outputs the stack trace information to the client, formatting it so 
-				// that it will be usually well readable in the browser, and then re-throws the exception.
-				//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-				cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+		// Sets how errors will appear.
+		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
+		// This handler outputs the stack trace information to the client, formatting it so 
+		// that it will be usually well readable in the browser, and then re-throws the exception.
+		//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 
-				// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
-				// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
-				//		cfg.setLogTemplateExceptions(false);
-				templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
+		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
+		//		cfg.setLogTemplateExceptions(false);
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
-	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -110,11 +109,32 @@ public class AdminLocation extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = null;
-		user = session.getUser();	
+		user = session.getUser();
+
+		try {
+			ArrayList<RentalLocation> product  = null;
+			product = (ArrayList<RentalLocation>) logicLayer.getLocationList();
+			// Making json objects
+			
+			System.out.println(product);
+			
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(product, new TypeToken<List<RentalLocation>>() {}.getType());
+			
+			// Sending object to js
+			
+			JsonArray jsonArray = element.getAsJsonArray();
+			response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		} catch (RARException e) {
+			
+			e.printStackTrace();
+		}
 		
-		templateProcessor.setTemplate("AdminLocation.ftl");
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.processTemplate(response);
+		
+//		templateProcessor.setTemplate("AdminLocation.ftl");
+//		templateProcessor.addToRoot("user", user.getFirstName());
+//		templateProcessor.processTemplate(response);
 	}
 
 	/**

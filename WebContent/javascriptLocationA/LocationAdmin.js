@@ -1,6 +1,6 @@
 $(document).ready(function() {
 		$.ajax({
-			url: "http://localhost:8080/Team9_Rent_A_Ride/AdminLocation",
+			url: "http://localhost:8080/Team9_Rent_A_Ride/RetriveLocation",
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
@@ -8,11 +8,11 @@ $(document).ready(function() {
 				
 				 $.each(data, function(index, element) {
 
-					 var image = element.photo;
-					 var ava = element.availability;
-					 var city_state = element.city_state;
+					 var image = 'city/Athens.png';
+					 var ava = element.capacity;
+					 var city_state = element.name;
 					 var address = element.address;
-					 var city_state_zip = element.city_state_zip;
+					 var city_state_zip = '2';
 					 
 					 html += '<div class="ui">';
 					 	html += '<div class="screen">';
@@ -35,7 +35,6 @@ $(document).ready(function() {
 					html += '</div>';
 						 
 				 });
-				
 				 
 				 $('#main').html(html);
 			},

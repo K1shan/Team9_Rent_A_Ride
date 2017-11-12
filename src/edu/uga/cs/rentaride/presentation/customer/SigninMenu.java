@@ -131,6 +131,7 @@ public class SigninMenu extends HttpServlet {
    	 	} catch (RARException e1){
    	 		try {
    	 			
+   	 			
    	 			ssid = logicLayer.checkCustomerCredentials(session,email,password);
    	 			httpSession.setAttribute( "ssid", ssid );
    	 			user = session.getUser();

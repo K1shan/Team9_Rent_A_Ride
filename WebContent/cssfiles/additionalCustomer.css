@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #374954;
+}
+
+button,input[type="submit"] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: transparent;
+  border: none;
+}

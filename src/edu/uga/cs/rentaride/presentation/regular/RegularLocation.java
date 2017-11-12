@@ -1,8 +1,7 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.regular;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Writer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,42 +9,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
-import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
-import edu.uga.cs.rentaride.session.Session;
-import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapperBuilder;
+import freemarker.template.SimpleHash;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class RetriveLocation
+ * Servlet implementation class RegularLocation
  */
-@WebServlet("/AdminLocation")
-public class AdminLocation extends HttpServlet {
+@WebServlet("/RegularLocation")
+public class RegularLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/AdminTemplates";
-	private TemplateProcessor templateProcessor = null;
-	private LogicLayer logicLayer = null;
-	
+	private String templateDir = "/WEB-INF/RegularTemplates";
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminLocation() {
+    public RegularLocation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -72,49 +59,30 @@ public class AdminLocation extends HttpServlet {
 				// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
 				// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
 				//		cfg.setLogTemplateExceptions(false);
-				templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
-	
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
-		//Setting the session to null
-		HttpSession    httpSession = null;
-        Session        session = null;
-        String         ssid;		
 		
-		//Getting the http session and store it into the ssid
-        httpSession = request.getSession();
-		ssid = (String) httpSession.getAttribute( "ssid" );
-        
-		//Here it will get the existing id
-		if( ssid != null ) {
+		Template template = null;
+		DefaultObjectWrapperBuilder df = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
+		SimpleHash root = new SimpleHash(df.build());
+		response.setContentType("text/html");
+		
+		try {	
+			
+			//This is the file it will return after contact is pressed on the nav bar
+			String templateName = "RegularLocation.ftl";
+			template = cfg.getTemplate(templateName );
+			response.setContentType("text/html");
+			Writer out = response.getWriter();
+			template.process(root, out);
+		}catch (TemplateException e) {
 
-            session = SessionManager.getSessionById( ssid );
-        }
-		
-		//Here it will create the session id 
-		if( session == null ){
-		 	try {
-				
-				session = SessionManager.createSession();
-			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
-				templateProcessor.processTemplate(response);
-			}
+			e.printStackTrace();
 		}
-        
-		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();	
-		
-		templateProcessor.setTemplate("AdminLocation.ftl");
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.processTemplate(response);
 	}
 
 	/**

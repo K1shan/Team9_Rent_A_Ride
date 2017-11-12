@@ -6,6 +6,8 @@
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script type = "text/javascript" src="javascriptNavbar/navbar.js"></script>
+<script type = "text/javascript" src="javascriptNull/addAdmin.js"></script>
+<script type = "text/javascript" src="javascriptNull/addLocation.js"></script>
 </head>
 
 <#include "AdminNavbar.ftl">
@@ -21,7 +23,7 @@
         					<input type="text" id="email" name="email" placeholder="Email"/>
       				</p>
       				<p>
-        				<input class = "admin" type="submit" onclick="return productNullCheck()" value="ADD ADMIN" />
+        				<input class = "admin" type="submit" onclick="return adminNullCheck()" value="ADD ADMIN" />
       				</p>
     				</form>
   			</div>
@@ -58,7 +60,7 @@
         					<input type="file" id="pic" name="pic"/>
       				</p>			
       				<p>
-        					<input class = "location" type="submit" onclick="return productNullCheck()" value="ADD LOCATION" />
+        					<input class = "location" type="submit" onclick="return locationNullCheck()" value="ADD LOCATION" />
       				</p>
     			</form>
   			</div>
