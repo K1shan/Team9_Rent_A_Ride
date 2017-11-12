@@ -1,6 +1,5 @@
 package edu.uga.cs.rentaride.presentation.customer;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -16,7 +15,6 @@ import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
-import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
@@ -29,15 +27,12 @@ public class LogoutMenu extends HttpServlet {
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF";
 	private TemplateProcessor templateProcessor = null;
-	private LogicLayer logicLayer = null;
 
-	
     /**
      * @see HttpServlet#HttpServlet()
      */
     public LogoutMenu() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -71,10 +66,10 @@ public class LogoutMenu extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession    httpSession = null;
-        Session        session = null;
-        String         ssid;
-        String status = "";
+		HttpSession 	httpSession = null;
+        Session        	session = null;
+        String         	ssid;
+        String 			status = "";
         
         //Getting the http session and store it into the ssid
   		httpSession = request.getSession( false );
@@ -91,8 +86,9 @@ public class LogoutMenu extends HttpServlet {
   				try {
   					logicLayer.logout( ssid );
   					httpSession.removeAttribute( "ssid" );
+  					httpSession.invalidate();
   				} catch ( RARException e ){
-  					status = "Try catch";
+  					e.printStackTrace();
   				}
   			}else{
   				System.out.println( "ssid is null" );
@@ -116,8 +112,7 @@ public class LogoutMenu extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 		doGet(request, response);
 	}
-
 }

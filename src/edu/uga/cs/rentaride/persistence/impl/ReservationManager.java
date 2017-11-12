@@ -14,6 +14,7 @@ import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.Reservation;
+import edu.uga.cs.rentaride.entity.UserStatus;
 import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.object.ObjectLayer;
 
@@ -128,11 +129,12 @@ public class ReservationManager {
 	
 	public List<Reservation> restore( Reservation modelReservation ) throws RARException{
     	String selectReservationQuery =
-				"SELECT RESERVATION.*, "
-				+ "CUSTOMER.customer_id, "
-				+ "USER.fname, USER.lname, "
-				+ "VEHICLE_TYPE.type_id, VEHICLE_TYPE.name, "
-				+ "LOCATION.location_id, LOCATION.name "
+				"SELECT "
+				+ "RESERVATION.*, "
+				+ "USER.*, "
+				+ "CUSTOMER.*, "
+				+ "VEHICLE_TYPE.*, "
+				+ "LOCATION.* "
 				+ "FROM RESERVATION "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
@@ -261,7 +263,7 @@ public class ReservationManager {
                 }
 				
 				if( modelReservation.getRentalLocation().getAddress() != null ){
-					condition.append( " where LOCATION.address='" + modelReservation.getRentalLocation().getAddress() + "'" );
+					condition.append( " where LOCATION.addr='" + modelReservation.getRentalLocation().getAddress() + "'" );
 					if( condition.length() > 0 ){
 						condition.append( " AND LOCATION.capacity=" + modelReservation.getRentalLocation().getAddress() );
 					}
@@ -280,7 +282,6 @@ public class ReservationManager {
 					}
 				}
 			}
-			
 		}
 				
 		try {
@@ -289,77 +290,117 @@ public class ReservationManager {
 			if( stmt.execute(query.toString()) ){
 				ResultSet rs = stmt.getResultSet();
 				
-				//"(location_id, type_id, customer_id, pickup_date, length, cancelled ) "
-
-				
 				// RESERVATION
-				int reservation_id;
-				Date pickupTime;
-				int rentalLength;
-				// USER / CUSTOMER
-				int 	customer_customer_id;
-	            String 	user_fname;
+				int 	reservation_reservation_id;
+				int 	reservation_location_id;
+				int		reservation_type_id;
+				int 	reservation_customer_id;
+				Date 	reservation_pickupTime;
+				int 	reservation_rentalLength;
+				int		reservation_cancelled;
+				
+				// CUSTOMER
+	            int		customer_customer_id;
+	            int 	customer_user_id;
+	            Date 	customer_memberUntil;
+	            String 	customer_licState;
+	            String 	customer_licNum;
+	            String 	customer_ccNum;
+	            Date 	customer_ccExp;
+	            int		customer_status = 0;
+	            
+	            // USER
+				int		user_user_id;
+				String 	user_fname;
 	            String 	user_lname;
+	            String 	user_uname;
+	            String 	user_pword;
+	            String 	user_email;
+	            String 	user_address;
+	            Date 	user_createDate;
 	            
 	            // VEHICLE_TYPE
 	            int		vehicleType_type_id;
 	            String	vehicleType_name;
 	            
 	            // LOCATION
-	            int		location_location_id;
-	            String	location_name;
+				int 	location_location_id;
+				String 	location_name;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
+				int 	location_capacity;
 				
-				
+				// OBJECTS
 				VehicleType vehicleType = null;
 				RentalLocation rentalLocation = null;
 				Customer customer = null;
 				Reservation reservation = null;
+				UserStatus userStatus = UserStatus.ACTIVE;
 				
 				while( rs.next() ){
 					
 					// RESERVATION
-					reservation_id = rs.getInt(1);
-					rs.getInt(2);
-					rs.getInt(3);
-					rs.getInt(4);
-					pickupTime = rs.getDate(5);
-					rentalLength = rs.getInt(6);
-					rs.getInt(7);
+					reservation_reservation_id 	= rs.getInt(1);
+					reservation_location_id		= rs.getInt(2);
+					reservation_type_id 		= rs.getInt(3);
+					reservation_customer_id		= rs.getInt(4);
+					reservation_pickupTime 		= rs.getDate(5);
+					reservation_rentalLength 	= rs.getInt(6);
+					reservation_cancelled		= rs.getInt(7);
 					
 					// USER
-					customer_customer_id	= rs.getInt(8);
-					user_fname = rs.getString(9);
-					user_lname = rs.getString(10);
-					
+					user_user_id = rs.getInt(8);
+	           	 	user_fname = rs.getString(9);
+	           	 	user_lname = rs.getString(10);
+	           	 	user_uname = rs.getString(11);
+	           	 	user_pword = rs.getString(12);
+	           	 	user_email = rs.getString(13);
+	           	 	user_address = rs.getString(14);
+	           	 	user_createDate = rs.getDate(15);
+	           	 	
+	           	 	// CUSTOMER
+	                customer_customer_id = rs.getInt(16);
+	                customer_user_id = rs.getInt(17);
+	                customer_memberUntil = rs.getDate(18);
+	                customer_licState = rs.getString(19);
+	                customer_licNum = rs.getString(20);
+	                customer_ccNum = rs.getString(21);
+	                customer_ccExp = rs.getDate(22);
+	                customer_status = rs.getInt(23);
+	                if(customer_status == 1)
+	                	userStatus = UserStatus.CANCELLED;
+	                else if(customer_status == 2)
+	                	userStatus = UserStatus.TERMINATED;
+	                
 					// VEHICLE_TYPE
-					vehicleType_type_id = rs.getInt(11);
-					vehicleType_name = rs.getString(12);
+					vehicleType_type_id = rs.getInt(24);
+					vehicleType_name = rs.getString(25);
 					
 					// LOCATION
-					location_location_id = rs.getInt(13);
-					location_name = rs.getString(14);
+					location_location_id		= rs.getInt(26);
+					location_name 				= rs.getString(27);
+					location_addr	 			= rs.getString(28);
+					location_addr_city			= rs.getString(29);
+					location_addr_state			= rs.getString(30);
+					location_addr_zip			= rs.getString(31);
+					location_image_path			= rs.getString(32);
+					location_capacity 			= rs.getInt(33);
 					
 					
-					customer = objectLayer.createCustomer();
+					customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);
 					customer.setId(customer_customer_id);
-					customer.setFirstName(user_fname);
-					customer.setLastName(user_lname);
 					
-					vehicleType = objectLayer.createVehicleType();
+					vehicleType = objectLayer.createVehicleType(vehicleType_name);
 					vehicleType.setId(vehicleType_type_id);
-					vehicleType.setName(vehicleType_name);
 					
-					rentalLocation = objectLayer.createRentalLocation();
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
 					rentalLocation.setId(location_location_id);
-					rentalLocation.setName(location_name);
-//					
-//					rental = objectLayer.createRental(rental_pickupTime, reservation, vehicle);
-//					rental.setId(rental_id);
-//					rental.setRental(rental);
 					
-					reservation = objectLayer.createReservation(pickupTime, rentalLength, vehicleType, rentalLocation, customer);
-					reservation.setId(reservation_id);
-//					reservation.setRental(rental);
+					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
+					reservation.setId(reservation_reservation_id);
 					reservations.add(reservation);
 				}
 			}

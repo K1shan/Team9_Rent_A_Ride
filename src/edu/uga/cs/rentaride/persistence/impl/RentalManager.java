@@ -175,22 +175,35 @@ public class RentalManager {
 				ResultSet rs = stmt.getResultSet();
 				
 				// RENTAL
-				int		rental_id;
+				int		rental_rental_id;
+				int		rental_reservation_id;
+				int		rental_vehicle_id;
 				Date 	rental_pickupTime = null;
+				Date	rental_returnTime = null;
+				int 	rental_late;
+				int 	rental_charges;
+				
 				// RESERVATION
 				int 	reservation_reservation_id;
+				int 	reservation_location_id;
+				int		reservation_type_id;
+				int 	reservation_customer_id;
 				Date 	reservation_pickupTime;
 				int 	reservation_rentalLength;
+				int		reservation_cancelled;
+				
 				// VEHICLE
 				int 	vehicle_vehicle_id;
+                int		vehicle_type_id;
+                int 	vehicle_location_id;
 				String 	vehicle_make;
 				String 	vehicle_model;
 				int 	vehicle_year;
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status;
-				int 	vehicle_cond;
+				int 	vehicle_status = 0;
+				int 	vehicle_cond = 0;
 				
 				// VEHICLE_TYPE
 				int   	vehicleType_type_id;
@@ -199,9 +212,14 @@ public class RentalManager {
                 // LOCATION
                 int 	location_location_id;
 				String 	location_name;
-				String 	location_address;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
 				int 	location_capacity;
                 
+				// USER
 				String 	user_fname;
 	            String 	user_lname;
 	            String 	user_uname;
@@ -217,9 +235,15 @@ public class RentalManager {
 	            String 	customer_licNum;
 	            String 	customer_ccNum;
 	            Date 	customer_ccExp;
+	            
 	            // COMMENT
 	            int		comment_comment_id;
-				String	comment_text;
+				int		comment_rental_id;
+				int		comment_customer_id;
+				String 	comment_text;
+				Date	comment_date;
+				
+				// OBJECTS
 				VehicleStatus vehicle_vehicleStatus = VehicleStatus.INLOCATION;
 				VehicleCondition vehicle_vehicleCondition = VehicleCondition.GOOD;
 				Reservation	reservation = null;
@@ -234,13 +258,13 @@ public class RentalManager {
 				while( rs.next() ){
 					
 					// RENTAL
-					rental_id = rs.getInt(1);
-					rs.getInt(2);
-					rs.getInt(3);
+					rental_rental_id = rs.getInt(1);
+					rental_reservation_id = rs.getInt(2);
+					rental_vehicle_id = rs.getInt(3);
 					rental_pickupTime = rs.getDate(4);
-					rs.getDate(5);
-					rs.getInt(6);
-					rs.getInt(7);
+					rental_returnTime = rs.getDate(5);
+					rental_late = rs.getInt(6);
+					rental_charges = rs.getInt(7);
 					
 					// RESERVATION
 					reservation_reservation_id = rs.getInt(8);
@@ -275,48 +299,51 @@ public class RentalManager {
 					vehicleType_name = rs.getString(27);
 					
 					// LOCATION
-					location_location_id = rs.getInt(28);
-					location_name = rs.getString(29);
-					location_address = rs.getString(30);
-					location_capacity = rs.getInt(31);
+					location_location_id= rs.getInt(28);
+					location_name 		= rs.getString(29);
+					location_addr	 	= rs.getString(30);
+					location_addr_city	 = rs.getString(31);
+					location_addr_state	= rs.getString(32);
+					location_addr_zip	= rs.getString(33);
+					location_image_path	= rs.getString(34);
+					location_capacity 	= rs.getInt(35);
 					
-					rs.getInt(32);
-					user_fname = rs.getString(33);
-					user_lname = rs.getString(34);
-					user_uname = rs.getString(35);
-					user_pword = rs.getString(36);
-					user_email = rs.getString(37);
-					user_address = rs.getString(38);
-					user_createDate = rs.getDate(39);
+					// USER
+					rs.getInt(36);
+					user_fname = rs.getString(37);
+					user_lname = rs.getString(38);
+					user_uname = rs.getString(39);
+					user_pword = rs.getString(40);
+					user_email = rs.getString(41);
+					user_address = rs.getString(42);
+					user_createDate = rs.getDate(43);
 					
 					// CUSTOMER
-					customer_customer_id = rs.getInt(40);
-					rs.getInt(41);
-					customer_memberUntil = rs.getDate(42);
-					customer_licState = rs.getString(43);
-					customer_licNum = rs.getString(44);
-					customer_ccNum = rs.getString(45);
-					customer_ccExp = rs.getDate(46);
-					rs.getInt(47);
+					customer_customer_id = rs.getInt(44);
+					rs.getInt(45);
+					customer_memberUntil = rs.getDate(46);
+					customer_licState = rs.getString(47);
+					customer_licNum = rs.getString(48);
+					customer_ccNum = rs.getString(49);
+					customer_ccExp = rs.getDate(50);
+					rs.getInt(51);
 					
 					// COMMENT
-					comment_comment_id = rs.getInt(48);
-					rs.getInt(49);
-					comment_text = rs.getString(50);
-					rs.getDate(51);
+					comment_comment_id = rs.getInt(51);
+					comment_rental_id = rs.getInt(52);
+					comment_customer_id = rs.getInt(53);
+					comment_text = rs.getString(54);
+					comment_date = rs.getDate(55);
 					
 					vehicleType = objectLayer.createVehicleType(vehicleType_name);
 					vehicleType.setId(vehicleType_type_id);
 					vehicleType.setName(vehicleType_name);
 					
-					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_address, location_address, location_address, location_address, location_capacity);
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
 					rentalLocation.setId(location_location_id);
-					rentalLocation.setName(location_name);
 					
 					customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);
 					customer.setId(customer_customer_id);
-					customer.setFirstName(user_fname);
-					customer.setLastName(user_lname);
 					
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
 					reservation.setId(reservation_reservation_id);
@@ -325,7 +352,7 @@ public class RentalManager {
 					vehicle.setId(vehicle_vehicle_id);
 					
 					rental = objectLayer.createRental(rental_pickupTime, reservation, vehicle);
-					rental.setId(rental_id);
+					rental.setId(rental_rental_id);
 					
 					comment = objectLayer.createComment();
 					rental = objectLayer.createRental();
@@ -334,7 +361,7 @@ public class RentalManager {
 					comment.setText(comment_text);
 					comment.setDate(vehicle_service_date);
 					
-					rental.setId(rental_id);
+					rental.setId(rental_rental_id);
 					rental.setPickupTime(rental_pickupTime);
 					rental.setReservation(reservation);
 					rental.setVehicle(vehicle);
