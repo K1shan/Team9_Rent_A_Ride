@@ -374,15 +374,4 @@ public class PersistenceLayerImpl
 		customerManager.delete(customer);
 		
 	}
-
-	@Override
-	public void storePath(RentalLocation rentalLocation) throws RARException {
-		rentalLocationManager.storePath(rentalLocation);
-		
-	}
-
-	@Override
-	public List<RentalLocation> restorePath(RentalLocation rentalLocation) throws RARException {
-		return rentalLocationManager.restorePath(rentalLocation);
-	}
 }

@@ -102,14 +102,14 @@ public class LocationCreate extends HttpServlet {
         String oneName = extractFileName(pic);
 		
         //Send this to query for path
-		String accessOne = SAVE_DIR + File.separator + oneName;
+		String path = SAVE_DIR + File.separator + oneName;
 		
 		System.out.println(address);
 		System.out.println(city);
 		System.out.println(state);
 		System.out.println(zip);
 		System.out.println(ava);
-		System.out.println(accessOne);
+		System.out.println(path);
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -140,9 +140,8 @@ public class LocationCreate extends HttpServlet {
 		user = session.getUser();
 		int num = Integer.parseInt(ava);
 		try {
-			rentalLocation = objectLayer.createRentalLocation(city, address+", "+city+", "+state, num);
+			rentalLocation = objectLayer.createRentalLocation(city, address, city, state, zip, path, num);
 			logicLayer.persistLocation(rentalLocation);
-			rentalLocation.setPath(savePath);
 		} catch (RARException e){
 			System.out.println("LocationCreate: "+e);
 		}

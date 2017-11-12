@@ -7,7 +7,6 @@ import com.mysql.jdbc.Connection;
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.session.SessionManager;
-import edu.uga.cs.rentaride.*;
 import edu.uga.cs.rentaride.logic.*;
 import edu.uga.cs.rentaride.object.*;
 import edu.uga.cs.rentaride.object.impl.*;

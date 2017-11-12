@@ -8,11 +8,11 @@ $(document).ready(function() {
 				
 				 $.each(data, function(index, element) {
 
-					 var image = 'city/Athens.png';
+					 var image = element.path;
 					 var ava = element.capacity;
-					 var city_state = element.name;
-					 var address = element.address;
-					 var city_state_zip = '2';
+					 var name = element.name;
+					 var address = element.address+", "+element.city+", "+element.state;
+					 var zip = element.zip;
 					 
 					 html += '<div class="ui">';
 					 	html += '<div class="screen">';
@@ -21,10 +21,10 @@ $(document).ready(function() {
 				 			html += '</div>';
 				 			html += '<div class="product-des">';
 				 				html += '<form id = "formOne" action="customerCar" method="post">';
-				 					html += '<div class="product-price" id="price">' +  ava + '<div class="sub">AVAIILABILITY</div></div>';
-				 					html += '<div class="product-name">' + city_state + '</div>';
+				 					html += '<div class="product-price" id="price">' +  ava + '<div class="sub"> AVAIILABILITY</div></div>';
+				 					html += '<div class="product-name">' + name + '</div>';
 				 					html += '<div class="product-description">' + address + '</div>';
-				 					html += '<div class="product-description">' + city_state_zip + '</div>';
+				 					html += '<div class="product-description">' + zip + '</div>';
 				 					html += '<div class="product-cta">';
 				 						html += '<input type="submit" class = "cta" value="RENT" />';
 			 						html += '</div>';

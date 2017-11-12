@@ -548,7 +548,7 @@ public class VehicleManager {
 					location_address 	= rs.getString(14);
 					location_capacity 	= rs.getInt(15);
 					//OBJECTS
-					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_capacity);
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_address, location_address, location_address, location_address, location_capacity);
 					rentalLocation.setId(location_location_id);
                 	vehicle = objectLayer.createVehicle(vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_service_date, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
                 	vehicle.setId(vehicle_vehicle_id);

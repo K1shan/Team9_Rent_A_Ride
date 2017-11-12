@@ -30,4 +30,5 @@ public interface LogicLayer {
 	public List<RentalLocation> getLocationList() throws RARException;
 	
 	public void persistLocation(RentalLocation rentalLocation) throws RARException;
+	
 }
