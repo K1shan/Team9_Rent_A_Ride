@@ -95,14 +95,14 @@ public class LocationCreate extends HttpServlet {
             fileSaveDir.mkdir();
         }
 		templateProcessor.setTemplate("AdminView.ftl");
-        String name = request.getParameter("name");
-		String address = request.getParameter("address");
-		String city = request.getParameter("city");
-		String state = request.getParameter("state");
-		String zip = request.getParameter("zip");
-		String ava = request.getParameter("ava");
+        String name = request.getParameter("nameAdd");
+		String address = request.getParameter("addressAdd");
+		String city = request.getParameter("cityAdd");
+		String state = request.getParameter("stateAdd");
+		String zip = request.getParameter("zipAdd");
+		String ava = request.getParameter("avaAdd");
 		
-		Part pic = request.getPart("pic");
+		Part pic = request.getPart("picAdd");
         String oneName = extractFileName(pic);
 		
         //Send this to query for path

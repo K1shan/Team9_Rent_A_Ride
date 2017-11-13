@@ -16,100 +16,100 @@
 	
 	<div class="modal">
  		<div class="tab">
-    			<label class="head">ADD ADMIN</label>
-   				<form class="form" id="admin" action="AdminCreate" method='post' name="admin">
-   				
-      				<p class="float-label">
-        					<input type="text" id="email" name="email" placeholder="Email"/>
-      				</p>
-      				<p>
-        				<input class = "admin" type="submit" onclick="return adminNullCheck()" value="ADD ADMIN" />
-      				</p>
-    				</form>
-  			</div>
+			<label class="head">ADD ADMIN</label>
+			<form class="form" id="admin" action="AdminCreate" method='post' name="admin">
+			
+  				<p class="float-label">
+    					<input type="text" id="email" name="email" placeholder="Email"/>
+  				</p>
+  				<p>
+    				<input class = "admin" type="submit" onclick="return adminNullCheck()" value="ADD ADMIN" />
+  				</p>
+			</form>
   		</div>
 	</div>
 	
 	<div class="modalTwo">
- 			 <div class="tab">
-    			<label class="head">ADD LOCATION</label>
-   				
-   				<form enctype="multipart/form-data" class="form" id="location" action="LocationCreate" method='post' name="location">
-      				
-      				<p class="float-label">
-        					<input type="text" id="name" name="name" placeholder="NAME"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="address" name="address" placeholder="ADDRESS"/>
-      				</p>
-      				
-     				<p class="float-label">
-        					<input type="text" id="city" name="city" placeholder="CITY"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="state" name="state" placeholder="STATE"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="zip" name="zip" placeholder="ZIP CODE"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="ava" name="ava" placeholder="AVAIILABILITY"/>
-      				</p>
-      				
-      				<p>
-        					<input type="file" id="pic" name="pic"/>
-      				</p>			
-      				<p>
-        					<input class = "location" type="submit" onclick="return locationNullCheck()" value="ADD LOCATION" />
-      				</p>
-    			</form>
-  			</div>
-  		</div>
+		 <div class="tab">
+			<label class="head">ADD LOCATION</label>
+			
+			<form enctype="multipart/form-data" class="form" id="location" action="LocationCreate" method='post' name="location">
+  				
+  				<p class="float-label">
+    					<input type="text" id="nameAdd" name="nameAdd" placeholder="NAME"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="addressAdd" name="addressAdd" placeholder="ADDRESS"/>
+  				</p>
+  				
+ 				<p class="float-label">
+    					<input type="text" id="cityAdd" name="cityAdd" placeholder="CITY"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="stateAdd" name="stateAdd" placeholder="STATE"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="zipAdd" name="zipAdd" placeholder="ZIP CODE"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="avaAdd" name="avaAdd" placeholder="AVAIILABILITY"/>
+  				</p>
+  				
+  				<p>
+    					<input type="file" id="picAdd" name="picAdd"/>
+  				</p>			
+  				<p>
+    					<input class = "location" type="submit" onclick="return locationAddNullCheck()" value="ADD LOCATION" />
+  				</p>
+			</form>
+		</div>
 	</div>
 
-		<div class="modalThree">
- 			 <div class="tab">
-    			<label class="head">UPDATE LOCATION</label>
-   				
-   				<form enctype="multipart/form-data" class="form" id="location" action="LocationUpdate" method='post' name="location">
-      				
-      				<p class="float-label">
-        					<input type="text" id="name" name="name" placeholder="NAME"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="address" name="address" placeholder="ADDRESS"/>
-      				</p>
-      				
-     				<p class="float-label">
-        					<input type="text" id="city" name="city" placeholder="CITY"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="state" name="state" placeholder="STATE"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="zip" name="zip" placeholder="ZIP CODE"/>
-      				</p>
-      				
-      				<p class="float-label">
-        					<input type="text" id="ava" name="ava" placeholder="AVAIILABILITY"/>
-      				</p>
-      				
-      				<p>
-        					<input type="file" id="pic" name="pic"/>
-      				</p>			
-      				<p>
-        					<input class = "location" type="submit" onclick="return locationNullCheck()" value="UPDATE LOCATION" />
-      				</p>
-    			</form>
-  			</div>
-  		</div>
+	<div class="modalThree">
+		 <div class="tab">
+			<label class="head">UPDATE LOCATION</label>
+			
+			<form enctype="multipart/form-data" class="form" id="location" action="LocationUpdate" method='post' name="location">
+  				
+  				<p class="float-label">
+    					<input type="text" id="nameUpdate" name="nameUpdate" placeholder="NAME"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="addressUpdate" name="addressUpdate" placeholder="ADDRESS"/>
+  				</p>
+  				
+ 				<p class="float-label">
+    					<input type="text" id="cityUpdate" name="cityUpdate" placeholder="CITY"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="stateUpdate" name="stateUpdate" placeholder="STATE"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="zipUpdate" name="zipUpdate" placeholder="ZIP CODE"/>
+  				</p>
+  				
+  				<p class="float-label">
+    					<input type="text" id="avaUpdate" name="avaUpdate" placeholder="AVAIILABILITY"/>
+  				</p>
+  				
+  				<p>
+    					<input type="file" id="picUpdate" name="picUpdate"/>
+  				</p>			
+  				<p>
+    					<input class = "location" type="submit" onclick="return locationUpdateNullCheck()" value="UPDATE LOCATION" />
+  				</p>
+  				<#if status??>
+  					<p>${status}</p>
+  				</#if>
+			</form>
+		</div>
 	</div>
 
 </body>

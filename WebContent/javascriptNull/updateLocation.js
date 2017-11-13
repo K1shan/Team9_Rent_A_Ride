@@ -1,12 +1,12 @@
 // This will check if the user and password field are null in sign in form
-function locationAddNullCheck(){
+function locationUpdateNullCheck(){
 	
-	var name = document.getElementById("nameAdd").value;
-	var add = document.getElementById("addressAdd").value;
-	var city = document.getElementById("cityAdd").value;
-	var state = document.getElementById("stateAdd").value;
-	var zip = document.getElementById("zipAdd").value;
-	var ava = document.getElementById("avaAdd").value;
+	var name = document.getElementById("nameUpdate").value;
+	var add = document.getElementById("addressUpdate").value;
+	var city = document.getElementById("cityUpdate").value;
+	var state = document.getElementById("stateUpdate").value;
+	var zip = document.getElementById("zipUpdate").value;
+	var ava = document.getElementById("avaUpdate").value;
 	
 	if(name === ""){
 		alert("Name field is blank");
