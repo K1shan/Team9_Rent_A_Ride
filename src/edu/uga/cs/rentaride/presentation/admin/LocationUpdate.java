@@ -2,6 +2,8 @@ package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -81,7 +83,7 @@ public class LocationUpdate extends HttpServlet {
         Session        session = null;
         String         ssid;
 		String savePath = getServletContext().getRealPath("/city"); 
-		
+		templateProcessor.setTemplate("AdminView.ftl");
 		System.out.println(savePath);
 		
 		File fileSaveDir = new File(savePath);
@@ -89,14 +91,24 @@ public class LocationUpdate extends HttpServlet {
         		System.out.println(fileSaveDir);
             fileSaveDir.mkdir();
         }
-        
-		String address = request.getParameter("address");
-		String city = request.getParameter("city");
-		String state = request.getParameter("state");
-		String zip = request.getParameter("zip");
-		String ava = request.getParameter("ava");
+        String name = request.getParameter("nameUpdate");
+		String address = request.getParameter("addressUpdate");
+		String city = request.getParameter("cityUpdate");
+		String state = request.getParameter("stateUpdate");
+		String zip = request.getParameter("zipUpdate");
+		String ava = request.getParameter("avaUpdate");
 		
-		Part pic = request.getPart("pic");
+		
+		Part pic = request.getPart("picUpdate");
+		
+		System.out.println("name"+name);
+		System.out.println(address);
+		System.out.println(city);
+		System.out.println(state);
+		System.out.println(zip);
+		System.out.println(ava);
+		System.out.println(pic);
+		
         String oneName = extractFileName(pic);
 		
         //Send this to query for path
@@ -130,16 +142,28 @@ public class LocationUpdate extends HttpServlet {
 		User user = null;
 		user = session.getUser();
 		int num = Integer.parseInt(ava);
+		
 		try {
-			rentalLocation = objectLayer.createRentalLocation(city, address, city, state, zip, path, num);
+			RentalLocation rentalLocationCheck = objectLayer.createRentalLocation();
+			rentalLocationCheck.setName(name);
+			List<RentalLocation> nameCheck = logicLayer.getLocationList( rentalLocationCheck );
+	        if( nameCheck.size() < 1 ){
+	        	templateProcessor.addToRoot("user", user.getFirstName());
+	        	templateProcessor.addToRoot("status", "Location does not exist.");
+	    		templateProcessor.processTemplate(response);
+	    		return;
+	        }
+		} catch (RARException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, num);
 			logicLayer.persistLocation(rentalLocation);
 		} catch (RARException e){
 			System.out.println("LocationCreate: "+e);
 		}
 		
-		
-		
-		templateProcessor.setTemplate("AdminView.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.processTemplate(response);
 		

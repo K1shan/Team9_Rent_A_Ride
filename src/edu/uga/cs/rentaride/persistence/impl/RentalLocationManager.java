@@ -28,11 +28,16 @@ public class RentalLocationManager {
 				+ "(?, ?, ?, ?, ?, ?, ?)";
 		
 		String updateRentalLocationQuery =
-				"UPDATE INTO LOCATION "
-				+ "(name, addr, addr_city, addr_state, addr_zip, image_path, capacity) "
-				+ "VALUES "
-				+ "(?, ?, ?, ?, ?, ?, ?)";
-		
+				"UPDATE LOCATION SET "
+				+ "name=?, "
+				+ "addr=?, "
+				+ "addr_city=?, "
+				+ "addr_state=?, "
+				+ "addr_zip=?, "
+				+ "image_path=?, "
+				+ "capacity=? "
+				+ "WHERE location_id=?";
+
 		PreparedStatement pstmt;
 		int inscnt;
 		long locationId;
@@ -84,6 +89,10 @@ public class RentalLocationManager {
 				pstmt.setLong( 7, rentalLocation.getCapacity());
 			}else{
 				throw new RARException( "RentalLocationManager.save: can't save a location: Capacity undefined" );
+			}
+			
+			if( rentalLocation.isPersistent() ){
+				pstmt.setLong( 8, rentalLocation.getId() );
 			}
 			
 			System.out.println("query: " + pstmt.asSql());
