@@ -1,2 +1,12 @@
 
 *.class
+
+*.class
+
+*.class
+
+build/classes/edu/uga/cs/rentaride/persistence/impl/PersistenceLayerImpl.class
+
+build/classes/edu/uga/cs/rentaride/persistence/impl/PersistenceLayerImpl.class
+
+build/classes/edu/uga/cs/rentaride/persistence/impl/RentalManager.class
