@@ -37,6 +37,10 @@
    				<form enctype="multipart/form-data" class="form" id="location" action="LocationCreate" method='post' name="location">
       				
       				<p class="float-label">
+        					<input type="text" id="name" name="name" placeholder="NAME"/>
+      				</p>
+      				
+      				<p class="float-label">
         					<input type="text" id="address" name="address" placeholder="ADDRESS"/>
       				</p>
       				
@@ -72,6 +76,10 @@
     			<label class="head">UPDATE LOCATION</label>
    				
    				<form enctype="multipart/form-data" class="form" id="location" action="LocationUpdate" method='post' name="location">
+      				
+      				<p class="float-label">
+        					<input type="text" id="name" name="name" placeholder="NAME"/>
+      				</p>
       				
       				<p class="float-label">
         					<input type="text" id="address" name="address" placeholder="ADDRESS"/>

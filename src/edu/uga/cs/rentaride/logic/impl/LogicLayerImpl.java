@@ -64,9 +64,9 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public List<RentalLocation> getLocationList() throws RARException {
+	public List<RentalLocation> getLocationList(RentalLocation rentalLocation) throws RARException {
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
-		return ctrlLocation.getLocationList();
+		return ctrlLocation.getLocationList(rentalLocation);
 	}
 	
 	@Override

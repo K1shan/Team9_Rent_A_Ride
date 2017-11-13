@@ -15,8 +15,10 @@ public class LocationCtrl {
         this.objectLayer = objectLayer;
     }
 	
-	public List<RentalLocation> getLocationList() throws RARException{
-		return objectLayer.findRentalLocation(null);
+	public List<RentalLocation> getLocationList(RentalLocation rentalLocation) throws RARException{
+		if(rentalLocation == null)
+			return objectLayer.findRentalLocation(null);
+		return objectLayer.findRentalLocation(rentalLocation);
 	}
 	
 	public void persistLocation(RentalLocation rentalLocation) throws RARException{

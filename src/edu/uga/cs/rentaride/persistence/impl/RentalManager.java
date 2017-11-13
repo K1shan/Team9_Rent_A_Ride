@@ -520,7 +520,7 @@ public class RentalManager {
 	public Rental restoreComment(Comment comment) throws RARException {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	} 
 
 	public Comment restoreRentalComment(Rental rental) throws RARException {
 		// TODO Auto-generated method stub

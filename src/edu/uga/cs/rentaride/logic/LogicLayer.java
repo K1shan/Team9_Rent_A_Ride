@@ -24,7 +24,7 @@ public interface LogicLayer {
 	// admin sets customer to admin
 	public long setAdmin ( String username ) throws RARException;
 	
-	public List<RentalLocation> getLocationList() throws RARException;
+	public List<RentalLocation> getLocationList(RentalLocation rentalLocation) throws RARException;
 	
 	public void persistLocation(RentalLocation rentalLocation) throws RARException;
 	

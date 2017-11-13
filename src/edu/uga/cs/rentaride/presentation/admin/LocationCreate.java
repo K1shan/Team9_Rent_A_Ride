@@ -2,6 +2,9 @@ package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -91,7 +94,8 @@ public class LocationCreate extends HttpServlet {
         		System.out.println(fileSaveDir);
             fileSaveDir.mkdir();
         }
-        
+		templateProcessor.setTemplate("AdminView.ftl");
+        String name = request.getParameter("name");
 		String address = request.getParameter("address");
 		String city = request.getParameter("city");
 		String state = request.getParameter("state");
@@ -104,6 +108,7 @@ public class LocationCreate extends HttpServlet {
         //Send this to query for path
 		String path = SAVE_DIR + File.separator + oneName;
 		
+		System.out.println(name);
 		System.out.println(address);
 		System.out.println(city);
 		System.out.println(state);
@@ -138,17 +143,29 @@ public class LocationCreate extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
+		
+		try {
+			RentalLocation rentalLocationCheck = objectLayer.createRentalLocation();
+			rentalLocationCheck.setName(name);
+			List<RentalLocation> nameCheck = logicLayer.getLocationList( rentalLocationCheck );
+	        if( nameCheck.size() > 0 ){
+	        	templateProcessor.addToRoot("user", user.getFirstName());
+	        	templateProcessor.addToRoot("status", "Location already exists.");
+	    		templateProcessor.processTemplate(response);
+	    		return;
+	        }
+		} catch (RARException e1) {
+			e1.printStackTrace();
+		}
+		
 		int num = Integer.parseInt(ava);
 		try {
-			rentalLocation = objectLayer.createRentalLocation(city, address, city, state, zip, path, num);
+			rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, num);
 			logicLayer.persistLocation(rentalLocation);
 		} catch (RARException e){
 			System.out.println("LocationCreate: "+e);
 		}
-		
-		
-		
-		templateProcessor.setTemplate("AdminView.ftl");
+
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.processTemplate(response);
 		
