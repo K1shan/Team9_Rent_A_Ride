@@ -28,26 +28,32 @@ public class HourlyPriceImpl
 		this.vehicleType = vehicleType;
 	}
 
+	@Override
 	public int getMaxHours() {
 		return maxHours;
 	}
 
+	@Override
 	public void setMaxHours(int maxHours) {
 		this.maxHours = maxHours;
 	}
 
+	@Override
 	public int getPrice() {
 		return price;
 	}
 
+	@Override
 	public void setPrice(int price) {
 		this.price = price;
 	}
 
+	@Override
 	public VehicleType getVehicleType() {
 		return vehicleType;
 	}
 
+	@Override
 	public void setVehicleType(VehicleType vehicleType) {
 		this.vehicleType = vehicleType;
 	}

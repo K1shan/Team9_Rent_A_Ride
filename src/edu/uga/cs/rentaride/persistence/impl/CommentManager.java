@@ -312,24 +312,24 @@ public class CommentManager {
 					location_capacity 			= rs.getInt(32);
 
 					// USER
-					user_user_id = rs.getInt(33);
-	           	 	user_fname = rs.getString(34);
-	           	 	user_lname = rs.getString(35);
-	           	 	user_uname = rs.getString(36);
-	           	 	user_pword = rs.getString(37);
-	           	 	user_email = rs.getString(38);
-	           	 	user_address = rs.getString(39);
+					user_user_id 	= rs.getInt(33);
+	           	 	user_fname 		= rs.getString(34);
+	           	 	user_lname 		= rs.getString(35);
+	           	 	user_uname 		= rs.getString(36);
+	           	 	user_pword 		= rs.getString(37);
+	           	 	user_email 		= rs.getString(38);
+	           	 	user_address 	= rs.getString(39);
 	           	 	user_createDate = rs.getDate(40);
 	           	 	
 	           	 	// CUSTOMER
-	                customer_customer_id = rs.getInt(41);
-	                customer_user_id = rs.getInt(42);
-	                customer_memberUntil = rs.getDate(43);
-	                customer_licState = rs.getString(44);
-	                customer_licNum = rs.getString(45);
-	                customer_ccNum = rs.getString(46);
-	                customer_ccExp = rs.getDate(47);
-	                customer_status = rs.getInt(48);
+	                customer_customer_id= rs.getInt(41);
+	                customer_user_id 	= rs.getInt(42);
+	                customer_memberUntil= rs.getDate(43);
+	                customer_licState 	= rs.getString(44);
+	                customer_licNum 	= rs.getString(45);
+	                customer_ccNum 		= rs.getString(46);
+	                customer_ccExp 		= rs.getDate(47);
+	                customer_status 	= rs.getInt(48);
 	                if(customer_status == 1)
 	                	userStatus = UserStatus.CANCELLED;
 	                else if(customer_status == 2)
@@ -383,6 +383,7 @@ public class CommentManager {
 					// COMMENT
 					comment = objectLayer.createComment(comment_text, comment_date, rental);
 					comment.setId(comment_comment_id);
+					rental.setComment(comment);
 					comments.add(comment);
 				}
 			}

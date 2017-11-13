@@ -21,6 +21,7 @@ public class CommentImpl
 	private String text;
 	private Date date;
 	private Rental rental;
+	private Customer customer;
 	
 	public CommentImpl(){
 		super( -1 );
@@ -64,18 +65,15 @@ public class CommentImpl
 	@Override
 	public void setRental(Rental rental) throws RARException {
 		this.rental = rental;
-		
 	}
 
 	@Override
 	public Customer getCustomer() {
-		return this.getCustomer();
+		return rental.getCustomer();
 	}
 
 	@Override
 	public String toString() {
 		return "CommentImpl [text=" + text + ", date=" + date + ", rentalId=" + rental.getId() + "]";
 	}
-	
-	
 }

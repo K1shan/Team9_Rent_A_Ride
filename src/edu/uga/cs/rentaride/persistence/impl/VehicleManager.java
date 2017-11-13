@@ -309,23 +309,23 @@ public class VehicleManager {
 					vehicle_status 		= rs.getInt(10);
 					if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
-					vehicle_cond = rs.getInt(11);
+					vehicle_cond 		= rs.getInt(11);
 					if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
 					
 					// VEHICLE_TYPE
-	                type_type_id = rs.getInt(1);
-	                type_name = rs.getString(2);
+	                type_type_id 		= rs.getInt(12);
+	                type_name 			= rs.getString(13);
 					
 	                // LOCATION
-					location_location_id		= rs.getInt(25);
-					location_name 				= rs.getString(26);
-					location_addr	 			= rs.getString(27);
-					location_addr_city			= rs.getString(28);
-					location_addr_state			= rs.getString(29);
-					location_addr_zip			= rs.getString(30);
-					location_image_path			= rs.getString(31);
-					location_capacity 			= rs.getInt(32);
+					location_location_id= rs.getInt(14);
+					location_name 		= rs.getString(15);
+					location_addr	 	= rs.getString(16);
+					location_addr_city	= rs.getString(17);
+					location_addr_state	= rs.getString(18);
+					location_addr_zip	= rs.getString(19);
+					location_image_path	= rs.getString(20);
+					location_capacity 	= rs.getInt(21);
 					
 					// OBJECTS
 					rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);

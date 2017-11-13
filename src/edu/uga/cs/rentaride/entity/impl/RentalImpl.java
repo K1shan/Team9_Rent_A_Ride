@@ -21,6 +21,7 @@ public class RentalImpl
 	private Reservation reservation;
 	private Vehicle vehicle;
 	private Comment comment;
+	private Customer customer;
 	
 	public RentalImpl(){
 		super( -1 );
@@ -30,6 +31,7 @@ public class RentalImpl
 		this.reservation = null;
 		this.vehicle = null;
 		this.comment = null;
+		customer = null;
 	}
 	
 	public RentalImpl(Date pickupTime, Reservation reservation, Vehicle vehicle){
@@ -40,6 +42,7 @@ public class RentalImpl
 		this.reservation = reservation;
 		this.vehicle = vehicle;
 		this.comment = null;
+		customer = null;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -65,7 +68,7 @@ public class RentalImpl
 
 	@Override
 	public Customer getCustomer() {
-		return this.reservation.getCustomer();
+		return reservation.getCustomer();
 	}
 
 	public Date getPickupTime() {
