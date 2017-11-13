@@ -67,5 +67,42 @@
   		</div>
 	</div>
 
+		<div class="modalThree">
+ 			 <div class="tab">
+    			<label class="head">UPDATE LOCATION</label>
+   				
+   				<form enctype="multipart/form-data" class="form" id="location" action="LocationUpdate" method='post' name="location">
+      				
+      				<p class="float-label">
+        					<input type="text" id="address" name="address" placeholder="ADDRESS"/>
+      				</p>
+      				
+     				<p class="float-label">
+        					<input type="text" id="city" name="city" placeholder="CITY"/>
+      				</p>
+      				
+      				<p class="float-label">
+        					<input type="text" id="state" name="state" placeholder="STATE"/>
+      				</p>
+      				
+      				<p class="float-label">
+        					<input type="text" id="zip" name="zip" placeholder="ZIP CODE"/>
+      				</p>
+      				
+      				<p class="float-label">
+        					<input type="text" id="ava" name="ava" placeholder="AVAIILABILITY"/>
+      				</p>
+      				
+      				<p>
+        					<input type="file" id="pic" name="pic"/>
+      				</p>			
+      				<p>
+        					<input class = "location" type="submit" onclick="return locationNullCheck()" value="UPDATE LOCATION" />
+      				</p>
+    			</form>
+  			</div>
+  		</div>
+	</div>
+
 </body>
 </html>
