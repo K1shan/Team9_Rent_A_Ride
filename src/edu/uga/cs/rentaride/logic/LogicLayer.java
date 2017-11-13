@@ -2,12 +2,9 @@ package edu.uga.cs.rentaride.logic;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.RentalLocation;
-import edu.uga.cs.rentaride.logic.impl.LocationCtrl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import edu.uga.cs.rentaride.*;
 import edu.uga.cs.rentaride.session.Session;
 
 public interface LogicLayer {
@@ -27,7 +24,7 @@ public interface LogicLayer {
 	// admin sets customer to admin
 	public long setAdmin ( String username ) throws RARException;
 	
-	public List<RentalLocation> getLocationList() throws RARException;
+	public List<RentalLocation> getLocationList(RentalLocation rentalLocation) throws RARException;
 	
 	public void persistLocation(RentalLocation rentalLocation) throws RARException;
 	

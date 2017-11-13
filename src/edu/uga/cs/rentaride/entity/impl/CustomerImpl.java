@@ -229,18 +229,17 @@ public class CustomerImpl
 	@Override
 	public List<Comment> getComments() throws RARException{
 		if(comments == null){
-			if(rentals != null ){
-				if(isPersistent() ){
-					Iterator<Rental> rentalIter = rentals.iterator();
-					Rental rental = null;
-					while(rentalIter.hasNext()){
-						rental = rentalIter.next();
-						comments.addAll(getPersistenceLayer().restoreRentalComment(rental));
+			if(rentals != null){
+				if(isPersistent()){
+					Comment comment = new CommentImpl();
+					for(Rental rental : rentals){
+						comment = getPersistenceLayer().restoreRentalComment(rental);
+						comments.add(comment);	
 					}
-				}else{
-	                throw new RARException( "This Customer object is not persistent" );
-				}
-			}
+				}else
+					throw new RARException( "This Customer object is not persistent" );
+			}else
+				throw new RARException( "This Customer object has no rentals.");
 		}
         return comments;
 	}
@@ -254,12 +253,11 @@ public class CustomerImpl
 					for(Reservation reservation : reservations){
 						rental = getPersistenceLayer().restoreRentalReservation(reservation);
 						rentals.add(rental);
-				        return rentals;
 					}
-				}else{
+				}else
 	                throw new RARException( "This Customer object is not persistent" );
-				}
-			}
+			}else
+				throw new RARException( "This Customer object has no reservations." );
 		}
         return rentals;
 	}

@@ -262,22 +262,31 @@ public class VehicleManager {
 				ResultSet rs = stmt.getResultSet();
 				
 				// VEHICLE
-				int 	vehicle_vehicle_id;
-				int 	vehicle_type_id;
-				int 	vehicle_location_id;
+                int 	vehicle_vehicle_id;
+                int		vehicle_type_id;
+                int 	vehicle_location_id;
 				String 	vehicle_make;
 				String 	vehicle_model;
 				int 	vehicle_year;
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status;
-				int 	vehicle_cond;
+				int 	vehicle_status = 0;
+				int 	vehicle_cond = 0;
 				
-				String 	type_name;
+				// VEHICLE_TYPE
+                int 	type_type_id;
+                String 	type_name;
 				
 				// LOCATION
-				String location_name;
+				int 	location_location_id;
+				String 	location_name;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
+				int 	location_capacity;
 				
 				VehicleType vehicleType = null;
 				RentalLocation rentalLocation = null;
@@ -286,6 +295,8 @@ public class VehicleManager {
 				VehicleCondition vehicleCondition = VehicleCondition.GOOD;
 				
 				while( rs.next() ){
+					
+					// VEHICLE
 					vehicle_vehicle_id 	= rs.getInt(1);
 					vehicle_type_id 	= rs.getInt(2);
 					vehicle_location_id = rs.getInt(3);
@@ -296,23 +307,32 @@ public class VehicleManager {
 					vehicle_tag 		= rs.getString(8);
 					vehicle_service_date= rs.getDate(9);
 					vehicle_status 		= rs.getInt(10);
-					if(vehicle_status == 1){
+					if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
-					}
-					vehicle_cond = rs.getInt(11);
-					if(vehicle_cond == 1){
+					vehicle_cond 		= rs.getInt(11);
+					if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
-					}
-					type_name 			= rs.getString(12);
-					location_name 		= rs.getString(13);
 					
-					rentalLocation = objectLayer.createRentalLocation();
+					// VEHICLE_TYPE
+	                type_type_id 		= rs.getInt(12);
+	                type_name 			= rs.getString(13);
+					
+	                // LOCATION
+					location_location_id= rs.getInt(14);
+					location_name 		= rs.getString(15);
+					location_addr	 	= rs.getString(16);
+					location_addr_city	= rs.getString(17);
+					location_addr_state	= rs.getString(18);
+					location_addr_zip	= rs.getString(19);
+					location_image_path	= rs.getString(20);
+					location_capacity 	= rs.getInt(21);
+					
+					// OBJECTS
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
 					rentalLocation.setId(vehicle_location_id);
-					rentalLocation.setName(location_name);
 					
-					vehicleType = objectLayer.createVehicleType();
+					vehicleType = objectLayer.createVehicleType(type_name);
 					vehicleType.setId(vehicle_type_id);
-					vehicleType.setName(type_name);
 					
 					vehicle = objectLayer.createVehicle(vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_service_date, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
 					vehicle.setId(vehicle_vehicle_id);
@@ -399,28 +419,44 @@ public class VehicleManager {
             System.out.println("query: "+ query.toString());
             if( stmt.execute( query.toString() ) ) {
                 ResultSet rs = stmt.getResultSet();
+                
                 // VEHICLE
-				int 	vehicle_vehicle_id;
+                int 	vehicle_vehicle_id;
+                int		vehicle_type_id;
+                int 	vehicle_location_id;
 				String 	vehicle_make;
 				String 	vehicle_model;
 				int 	vehicle_year;
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status;
-				int 	vehicle_cond;
+				int 	vehicle_status = 0;
+				int 	vehicle_cond = 0;
+				
 				// VEHICLE_TYPE
 				int		type_type_id;
 				String	type_name;
+				
+				// LOCATION
+				int 	location_location_id;
+				String 	location_name;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
+				int 	location_capacity;
+				
 				Vehicle vehicle = null;
 				VehicleType vehicleType = null;
 				VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
 				VehicleCondition vehicleCondition = VehicleCondition.GOOD;
                 while( rs.next() ){
+                	
                 	// VEHICLE
                 	vehicle_vehicle_id 	= rs.getInt(1);
-					rs.getInt(2);
-					rs.getInt(3);
+                	vehicle_type_id		= rs.getInt(2);
+					vehicle_location_id = rs.getInt(3);
 					vehicle_make 		= rs.getString(4);
 					vehicle_model 		= rs.getString(5);
 					vehicle_year 		= rs.getInt(6);
@@ -428,23 +464,30 @@ public class VehicleManager {
 					vehicle_tag 		= rs.getString(8);
 					vehicle_service_date= rs.getDate(9);
 					vehicle_status 		= rs.getInt(10);
-					if(vehicle_status == 1){
+					if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
-					}
 					vehicle_cond 		= rs.getInt(11);
-					if(vehicle_cond == 1){
+					if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
-					}
+					
 					// VEHICLE_TYPE
 					type_type_id		= rs.getInt(12);
 					type_name			= rs.getString(13);
-					rs.getInt(14);
-					rs.getString(15);
-					rs.getString(16);
-					rs.getInt(17);
+					
+					// LOCATION
+					location_location_id		= rs.getInt(14);
+					location_name 				= rs.getString(15);
+					location_addr	 			= rs.getString(16);
+					location_addr_city			= rs.getString(17);
+					location_addr_state			= rs.getString(18);
+					location_addr_zip			= rs.getString(19);
+					location_image_path			= rs.getString(20);
+					location_capacity 			= rs.getInt(21);
+					
 					//OBJECTS
 					vehicleType = objectLayer.createVehicleType(type_name);
 					vehicleType.setId(type_type_id);
+					
                 	vehicle = objectLayer.createVehicle(vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_service_date, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
                 	vehicle.setId(vehicle_vehicle_id);
                 	vehicles.add(vehicle);
@@ -505,29 +548,37 @@ public class VehicleManager {
             if( stmt.execute( query.toString() ) ) {
                 ResultSet rs = stmt.getResultSet();
                 // VEHICLE
-				int 	vehicle_vehicle_id;
+                int 	vehicle_vehicle_id;
+                int		vehicle_type_id;
+                int 	vehicle_location_id;
 				String 	vehicle_make;
 				String 	vehicle_model;
 				int 	vehicle_year;
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status;
-				int 	vehicle_cond;
-				Vehicle vehicle = null;
-				//LOCATION
+				int 	vehicle_status = 0;
+				int 	vehicle_cond = 0;
+				// LOCATION
 				int 	location_location_id;
 				String 	location_name;
-				String 	location_address;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
 				int 	location_capacity;
+				// OBJECTS
+				Vehicle vehicle = null;
 				RentalLocation rentalLocation = null;
 				VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
 				VehicleCondition vehicleCondition = VehicleCondition.GOOD;
                 while( rs.next() ){
+                	
                 	// VEHICLE
                 	vehicle_vehicle_id 	= rs.getInt(1);
-					rs.getInt(2);
-					rs.getInt(3);
+                	vehicle_type_id		= rs.getInt(2);
+					vehicle_location_id = rs.getInt(3);
 					vehicle_make 		= rs.getString(4);
 					vehicle_model 		= rs.getString(5);
 					vehicle_year 		= rs.getInt(6);
@@ -535,20 +586,24 @@ public class VehicleManager {
 					vehicle_tag 		= rs.getString(8);
 					vehicle_service_date= rs.getDate(9);
 					vehicle_status 		= rs.getInt(10);
-					if(vehicle_status == 1){
+					if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
-					}
 					vehicle_cond 		= rs.getInt(11);
-					if(vehicle_cond == 1){
+					if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
-					}
-					//LOCATION
-					location_location_id = rs.getInt(12);
-					location_name 		= rs.getString(13);
-					location_address 	= rs.getString(14);
-					location_capacity 	= rs.getInt(15);
+					
+					// LOCATION
+					location_location_id		= rs.getInt(12);
+					location_name 				= rs.getString(13);
+					location_addr	 			= rs.getString(14);
+					location_addr_city			= rs.getString(15);
+					location_addr_state			= rs.getString(16);
+					location_addr_zip			= rs.getString(17);
+					location_image_path			= rs.getString(18);
+					location_capacity 			= rs.getInt(19);
+					
 					//OBJECTS
-					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_address, location_address, location_address, location_address, location_capacity);
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
 					rentalLocation.setId(location_location_id);
                 	vehicle = objectLayer.createVehicle(vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_service_date, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
                 	vehicle.setId(vehicle_vehicle_id);
