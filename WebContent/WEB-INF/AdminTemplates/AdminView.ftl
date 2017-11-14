@@ -8,13 +8,16 @@
 <script type = "text/javascript" src="javascriptNavbar/navbar.js"></script>
 <script type = "text/javascript" src="javascriptNull/addAdmin.js"></script>
 <script type = "text/javascript" src="javascriptNull/addLocation.js"></script>
+<script type = "text/javascript" src="javascriptNull/updateLocation.js"></script>
 </head>
 
 <#include "AdminNavbar.ftl">
 
 <body>
-	
 	<div class="modal">
+		<#if status??>
+			<p>${status}</p>
+		</#if>
  		<div class="tab">
 			<label class="head">ADD ADMIN</label>
 			<form class="form" id="admin" action="AdminCreate" method='post' name="admin">
@@ -105,9 +108,6 @@
   				<p>
     					<input class = "location" type="submit" onclick="return locationUpdateNullCheck()" value="UPDATE LOCATION" />
   				</p>
-  				<#if status??>
-  					<p>${status}</p>
-  				</#if>
 			</form>
 		</div>
 	</div>

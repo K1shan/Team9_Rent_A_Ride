@@ -1,17 +1,14 @@
 package edu.uga.cs.rentaride.presentation.admin;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
@@ -25,21 +22,19 @@ import freemarker.template.TemplateExceptionHandler;
 /**
  * Servlet implementation class LocationCreate
  */
-@WebServlet("/LocationCreate")
-@MultipartConfig(maxFileSize = 16177215)
-public class LocationCreate extends HttpServlet {
+@WebServlet("/LocationDelete")
+public class LocationDelete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private static final String SAVE_DIR = "city";
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LocationCreate() {
+    public LocationDelete() {
         super();
     }
 
@@ -78,26 +73,9 @@ public class LocationCreate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-		String savePath = getServletContext().getRealPath("/city"); 
 		templateProcessor.setTemplate("AdminView.ftl");
-		System.out.println(savePath);
 		
-		File fileSaveDir = new File(savePath);
-        if(!fileSaveDir.exists()){
-        		System.out.println(fileSaveDir);
-            fileSaveDir.mkdir();
-        }
-        String name = request.getParameter("nameAdd");
-		String address = request.getParameter("addressAdd");
-		String city = request.getParameter("cityAdd");
-		String state = request.getParameter("stateAdd");
-		String zip = request.getParameter("zipAdd");
-		String ava = request.getParameter("avaAdd");
-		Part pic = request.getPart("picAdd");
-        String oneName = extractFileName(pic);
-		
-        //Send this to query for path
-		String path = SAVE_DIR + File.separator + oneName;
+        String name = request.getParameter("nameDelete");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -116,7 +94,7 @@ public class LocationCreate extends HttpServlet {
 			} catch ( Exception e ){
 				status = "Failed to create a session";
 				templateProcessor.addToRoot("status", status);
-				System.out.println("LocationCreate: "+e.toString());
+				System.out.println("LocationDelete: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -125,32 +103,21 @@ public class LocationCreate extends HttpServlet {
 		User user = null;
 		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		int num = Integer.parseInt(ava);
+		
+		// TODO
+		int locationId = 0;
 		try {
-			logicLayer.createLocation(name, address, city, state, zip, path, num);
-			status = "Successfully created location.";
+			logicLayer.deleteLocation(locationId);
+			status = "Successfully deleted location.";
 		} catch (RARException e){
-			status = "Failed to create location.";
+			status = "Failed to delete location.";
 			templateProcessor.addToRoot("status", status);
-			System.out.println("LocationCreate: "+e.toString());
+			System.out.println("LocationDelete: "+e.toString());
     		templateProcessor.processTemplate(response);
     		return;
 		}
 		templateProcessor.addToRoot("status", status);
 		templateProcessor.processTemplate(response);
-		pic.write(savePath + File.separator + oneName);
-	}
-
-	private String extractFileName(Part part) {
-		
-	    String contentDisp = part.getHeader("content-disposition");
-	    String[] items = contentDisp.split(";");
-	    for (String s : items) {
-	        if (s.trim().startsWith("filename")) {
-	            return s.substring(s.indexOf("=") + 2, s.length()-1);
-	        }
-	    }
-	    return "";
 	}
 	
 	/**

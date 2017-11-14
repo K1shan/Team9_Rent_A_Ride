@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +14,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.object.ObjectLayer;
-import edu.uga.cs.rentaride.object.impl.ObjectLayerImpl;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -28,6 +26,7 @@ import freemarker.template.TemplateExceptionHandler;
  * Servlet implementation class LocationUpdate
  */
 @WebServlet("/LocationUpdate")
+@MultipartConfig(maxFileSize = 16177215)
 public class LocationUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -42,7 +41,6 @@ public class LocationUpdate extends HttpServlet {
      */
     public LocationUpdate() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -95,18 +93,7 @@ public class LocationUpdate extends HttpServlet {
 		String state = request.getParameter("stateUpdate");
 		String zip = request.getParameter("zipUpdate");
 		String ava = request.getParameter("avaUpdate");
-		
-		
 		Part pic = request.getPart("picUpdate");
-		
-		System.out.println("name"+name);
-		System.out.println(address);
-		System.out.println(city);
-		System.out.println(state);
-		System.out.println(zip);
-		System.out.println(ava);
-		System.out.println(pic);
-		
         String oneName = extractFileName(pic);
 		
         //Send this to query for path
@@ -128,8 +115,9 @@ public class LocationUpdate extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
+				status = "Failed to create a session";
 				templateProcessor.addToRoot("status", status);
+				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -141,13 +129,16 @@ public class LocationUpdate extends HttpServlet {
 		int num = Integer.parseInt(ava);
 		try {
 			logicLayer.updateLocation(name, address, city, state, zip, path, num);
+			status = "Successfully updated location.";
 		} catch (RARException e){
-			templateProcessor.addToRoot("status", e);
-			System.out.println("LocationUpdate: "+e);
+			status = "Failed to update location.";
+			templateProcessor.addToRoot("status", status);
+			System.out.println("LocationUpdate: "+e.toString());
     		templateProcessor.processTemplate(response);
+    		return;
 		}
-		
-		
+		templateProcessor.addToRoot("status", status);
+		templateProcessor.processTemplate(response);
 		pic.write(savePath + File.separator + oneName);
 	}
 
@@ -167,8 +158,6 @@ public class LocationUpdate extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

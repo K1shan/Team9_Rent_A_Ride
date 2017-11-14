@@ -47,19 +47,24 @@ public class LocationCtrl {
 		RentalLocation rentalLocation = null;
 		RentalLocation modelRentalLocation = null;
 		List<RentalLocation> rentalLocations = null;
+		long locationId = 0;
 		
 		// check if location already exists
 		modelRentalLocation = objectLayer.createRentalLocation();
 		modelRentalLocation.setName(name);
 		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
-		if(rentalLocations.size() > 0)
+		if(rentalLocations.size() > 0){
 			rentalLocation = rentalLocations.get(0);
+			locationId = rentalLocation.getId();
+		}
 			
 		// check if location exists
 		if(rentalLocation == null)
 			throw new RARException( "A location with this name does not exist" );
 
+		rentalLocation = null;
 		rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, capacity);
+		rentalLocation.setId(locationId);
 		objectLayer.storeRentalLocation(rentalLocation);
 	}
 }
