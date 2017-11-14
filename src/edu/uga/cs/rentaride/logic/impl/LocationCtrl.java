@@ -10,6 +10,9 @@ import edu.uga.cs.rentaride.entity.RentalLocation;
 public class LocationCtrl {
 	
 	private ObjectLayer objectLayer = null;
+	private RentalLocation rentalLocation = null;
+	private RentalLocation modelRentalLocation = null;
+	private List<RentalLocation> rentalLocations = null;
 	
 	public LocationCtrl( ObjectLayer objectLayer ){
         this.objectLayer = objectLayer;
@@ -23,18 +26,17 @@ public class LocationCtrl {
 	
 	public void createLocation (String name, String address, String city, String state, String zip, String path,
 			int capacity) throws RARException {
-		RentalLocation rentalLocation = null;
-		RentalLocation modelRentalLocation = null;
-		List<RentalLocation> rentalLocations = null;
 		
 		// check if location already exists
+		//
 		modelRentalLocation = objectLayer.createRentalLocation();
 		modelRentalLocation.setName(name);
 		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
 		if(rentalLocations.size() > 0)
 			rentalLocation = rentalLocations.get(0);
 		
-		// check if location exists
+		// check if location found
+		//
 		if(rentalLocation != null)
 			throw new RARException( "A location with this name already exists" );
 		
@@ -44,12 +46,10 @@ public class LocationCtrl {
 	
 	public void updateLocation (String name, String address, String city,
 			String state, String zip, String path, int capacity) throws RARException{
-		RentalLocation rentalLocation = null;
-		RentalLocation modelRentalLocation = null;
-		List<RentalLocation> rentalLocations = null;
 		long locationId = 0;
 		
 		// check if location already exists
+		//
 		modelRentalLocation = objectLayer.createRentalLocation();
 		modelRentalLocation.setName(name);
 		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
@@ -58,7 +58,8 @@ public class LocationCtrl {
 			locationId = rentalLocation.getId();
 		}
 			
-		// check if location exists
+		// check if location found
+		//
 		if(rentalLocation == null)
 			throw new RARException( "A location with this name does not exist" );
 
@@ -66,5 +67,24 @@ public class LocationCtrl {
 		rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, capacity);
 		rentalLocation.setId(locationId);
 		objectLayer.storeRentalLocation(rentalLocation);
+	}
+	
+	public void deleteLocation ( int id ) throws RARException{
+		
+		// check if location already exists
+		//
+		modelRentalLocation = objectLayer.createRentalLocation();
+		modelRentalLocation.setId(id);
+		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
+		if(rentalLocations.size() > 0){
+			rentalLocation = rentalLocations.get(0);
+		}
+		
+		// check if location found
+		//
+		if(rentalLocation == null)
+			throw new RARException( "A location with this name does not exist." );
+	
+		objectLayer.deleteRentalLocation(rentalLocation);
 	}
 }
