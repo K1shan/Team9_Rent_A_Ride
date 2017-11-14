@@ -35,7 +35,6 @@ public class RetriveLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
-	List<RentalLocation> locationList = null;
 	
 	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/AdminTemplates";
@@ -112,11 +111,11 @@ public class RetriveLocation extends HttpServlet {
 		user = session.getUser();
 
 		try {
-			List<RentalLocation> product  = null;
-			product = logicLayer.getLocationList( null );
+			List<RentalLocation> rentalLocations  = null;
+			rentalLocations = logicLayer.findLocations( null );
 			// Making json objects
 			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(product, new TypeToken<List<RentalLocation>>() {}.getType());
+			JsonElement element = gson.toJsonTree(rentalLocations, new TypeToken<List<RentalLocation>>() {}.getType());
 			System.out.println("gson element: "+element);
 			// Sending object to js
 			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");

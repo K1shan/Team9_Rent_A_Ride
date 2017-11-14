@@ -2,10 +2,10 @@ package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +14,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.object.ObjectLayer;
-import edu.uga.cs.rentaride.object.impl.ObjectLayerImpl;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -29,6 +26,7 @@ import freemarker.template.TemplateExceptionHandler;
  * Servlet implementation class LocationUpdate
  */
 @WebServlet("/LocationUpdate")
+@MultipartConfig(maxFileSize = 16177215)
 public class LocationUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,7 +34,6 @@ public class LocationUpdate extends HttpServlet {
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private ObjectLayer objectLayer = null;
 	private static final String SAVE_DIR = "city";
 	
     /**
@@ -44,7 +41,6 @@ public class LocationUpdate extends HttpServlet {
      */
     public LocationUpdate() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -97,18 +93,7 @@ public class LocationUpdate extends HttpServlet {
 		String state = request.getParameter("stateUpdate");
 		String zip = request.getParameter("zipUpdate");
 		String ava = request.getParameter("avaUpdate");
-		
-		
 		Part pic = request.getPart("picUpdate");
-		
-		System.out.println("name"+name);
-		System.out.println(address);
-		System.out.println(city);
-		System.out.println(state);
-		System.out.println(zip);
-		System.out.println(ava);
-		System.out.println(pic);
-		
         String oneName = extractFileName(pic);
 		
         //Send this to query for path
@@ -130,44 +115,30 @@ public class LocationUpdate extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
+				status = "Failed to create a session";
 				templateProcessor.addToRoot("status", status);
+				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
 		
-		objectLayer = new ObjectLayerImpl();
-		RentalLocation rentalLocation = null;
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
-		int num = Integer.parseInt(ava);
-		
-		try {
-			RentalLocation rentalLocationCheck = objectLayer.createRentalLocation();
-			rentalLocationCheck.setName(name);
-			List<RentalLocation> nameCheck = logicLayer.getLocationList( rentalLocationCheck );
-	        if( nameCheck.size() < 1 ){
-	        	templateProcessor.addToRoot("user", user.getFirstName());
-	        	templateProcessor.addToRoot("status", "Location does not exist.");
-	    		templateProcessor.processTemplate(response);
-	    		return;
-	        }
-		} catch (RARException e1) {
-			e1.printStackTrace();
-		}
-		
-		try {
-			rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, num);
-			logicLayer.persistLocation(rentalLocation);
-		} catch (RARException e){
-			System.out.println("LocationCreate: "+e);
-		}
-		
 		templateProcessor.addToRoot("user", user.getFirstName());
+		int num = Integer.parseInt(ava);
+		try {
+			logicLayer.updateLocation(name, address, city, state, zip, path, num);
+			status = "Successfully updated location.";
+		} catch (RARException e){
+			status = "Failed to update location.";
+			templateProcessor.addToRoot("status", status);
+			System.out.println("LocationUpdate: "+e.toString());
+    		templateProcessor.processTemplate(response);
+    		return;
+		}
+		templateProcessor.addToRoot("status", status);
 		templateProcessor.processTemplate(response);
-		
-		
 		pic.write(savePath + File.separator + oneName);
 	}
 
@@ -187,8 +158,6 @@ public class LocationUpdate extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }
