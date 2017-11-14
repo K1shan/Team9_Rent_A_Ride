@@ -2,7 +2,6 @@ package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -36,7 +35,6 @@ public class LocationUpdate extends HttpServlet {
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private ObjectLayer objectLayer = null;
 	private static final String SAVE_DIR = "city";
 	
     /**
@@ -136,36 +134,18 @@ public class LocationUpdate extends HttpServlet {
 			}
 		}
 		
-		objectLayer = new ObjectLayerImpl();
-		RentalLocation rentalLocation = null;
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
-		int num = Integer.parseInt(ava);
-		
-		try {
-			RentalLocation rentalLocationCheck = objectLayer.createRentalLocation();
-			rentalLocationCheck.setName(name);
-			List<RentalLocation> nameCheck = logicLayer.getLocationList( rentalLocationCheck );
-	        if( nameCheck.size() < 1 ){
-	        	templateProcessor.addToRoot("user", user.getFirstName());
-	        	templateProcessor.addToRoot("status", "Location does not exist.");
-	    		templateProcessor.processTemplate(response);
-	    		return;
-	        }
-		} catch (RARException e1) {
-			e1.printStackTrace();
-		}
-		
-		try {
-			rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, num);
-			logicLayer.persistLocation(rentalLocation);
-		} catch (RARException e){
-			System.out.println("LocationCreate: "+e);
-		}
-		
 		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.processTemplate(response);
+		int num = Integer.parseInt(ava);
+		try {
+			logicLayer.updateLocation(name, address, city, state, zip, path, num);
+		} catch (RARException e){
+			templateProcessor.addToRoot("status", e);
+			System.out.println("LocationUpdate: "+e);
+    		templateProcessor.processTemplate(response);
+		}
 		
 		
 		pic.write(savePath + File.separator + oneName);

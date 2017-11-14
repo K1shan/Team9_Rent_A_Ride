@@ -2,8 +2,6 @@ package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -16,11 +14,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.object.ObjectLayer;
-import edu.uga.cs.rentaride.object.impl.ObjectLayerImpl;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -39,7 +34,6 @@ public class LocationCreate extends HttpServlet {
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private ObjectLayer objectLayer = null;
 	private static final String SAVE_DIR = "city";
 	
     /**
@@ -138,35 +132,19 @@ public class LocationCreate extends HttpServlet {
 			}
 		}
 		
-		objectLayer = new ObjectLayerImpl();
-		RentalLocation rentalLocation = null;
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
-		
-		try {
-			RentalLocation rentalLocationCheck = objectLayer.createRentalLocation();
-			rentalLocationCheck.setName(name);
-			List<RentalLocation> nameCheck = logicLayer.getLocationList( rentalLocationCheck );
-	        if( nameCheck.size() > 0 ){
-	        	templateProcessor.addToRoot("user", user.getFirstName());
-	        	templateProcessor.addToRoot("status", "Location already exists.");
-	    		templateProcessor.processTemplate(response);
-	    		return;
-	        }
-		} catch (RARException e1) {
-			e1.printStackTrace();
-		}
-		
+		templateProcessor.addToRoot("user", user.getFirstName());
 		int num = Integer.parseInt(ava);
 		try {
-			rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, num);
-			logicLayer.persistLocation(rentalLocation);
+			logicLayer.createLocation(name, address, city, state, zip, path, num);
 		} catch (RARException e){
+			templateProcessor.addToRoot("status", e);
 			System.out.println("LocationCreate: "+e);
+    		templateProcessor.processTemplate(response);
 		}
 
-		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.processTemplate(response);
 		
 		
