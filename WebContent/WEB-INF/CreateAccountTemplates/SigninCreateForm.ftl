@@ -60,7 +60,7 @@
       				
       				<!-- Link to forgot password -->
       				<p class="forgot">
-       					 <a href=""/> FORGOT PASSWORD </a>
+       					 <a href="ForgotPassword"/> FORGOT PASSWORD </a>
       				</p>
       				
       				<!-- This is a button and will submit the form -->
