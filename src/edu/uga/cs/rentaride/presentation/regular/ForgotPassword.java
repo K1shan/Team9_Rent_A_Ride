@@ -37,7 +37,7 @@ public class ForgotPassword extends HttpServlet {
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/Test";
+	private String templateDir = "/WEB-INF";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	

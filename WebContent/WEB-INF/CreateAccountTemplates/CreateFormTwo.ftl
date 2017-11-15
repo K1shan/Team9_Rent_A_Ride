@@ -15,10 +15,10 @@
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 
 <!-- The navbar.js will help import navbar.html -->
-<script type = "text/javascript" src="javascriptNavbar/navbar.js"></script>
+<script type = "text/javascript" src="Javascript/Navbar/navbar.js"></script>
 
 <!-- The will check the user input and empty fields -->
-<script type = "text/javascript" src="javascriptNull/createNull.js"></script>
+<script type = "text/javascript" src="Javascript/Null/SignCreate/createNull.js"></script>
 </head>
 
 <body>
