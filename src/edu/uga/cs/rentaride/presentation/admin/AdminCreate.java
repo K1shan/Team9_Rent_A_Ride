@@ -101,25 +101,28 @@ public class AdminCreate extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
+		templateProcessor.addToRoot("user", user.getFirstName());
 		long num;
 		try {
 			
-			num = logicLayer.setAdmin(uname);
+			logicLayer.setAdmin(uname);
+			status = "Okie dokie";
 		} catch(RARException e){
-			templateProcessor.setTemplate("AdminView.ftl");
-			templateProcessor.addToRoot("user", user.getFirstName());
+			
+			status = "Who are you!?";
+			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
 			return;
 		}
 		
-		if(num < 0){
-			templateProcessor.setTemplate("AdminView.ftl");
-			templateProcessor.addToRoot("user", user.getFirstName());
-			
-		}
+//		if(num < 0){
+//			templateProcessor.setTemplate("AdminView.ftl");
+//			templateProcessor.addToRoot("user", user.getFirstName());
+//			
+//		}
 		
-		templateProcessor.setTemplate("AdminView.ftl");
-		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("status", status);
+//		templateProcessor.setTemplate("AdminView.ftl");
 		templateProcessor.processTemplate(response);
 	}
 

@@ -112,7 +112,7 @@ public class RetriveLocation extends HttpServlet {
 
 		try {
 			List<RentalLocation> rentalLocations  = null;
-			rentalLocations = logicLayer.findLocations( null );
+			rentalLocations = logicLayer.findLocations( -1 );
 			// Making json objects
 			Gson gson = new Gson();
 			JsonElement element = gson.toJsonTree(rentalLocations, new TypeToken<List<RentalLocation>>() {}.getType());

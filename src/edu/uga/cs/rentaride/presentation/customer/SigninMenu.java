@@ -142,7 +142,7 @@ public class SigninMenu extends HttpServlet {
 				return;
    	 		} catch (RARException e2){
    	 			
-	   	 		status = "Invalid User Name or Password";
+	   	 		status = "1";
 	   	 		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
 				templateProcessor.addToRoot("status", status);
 				templateProcessor.processTemplate(response);
