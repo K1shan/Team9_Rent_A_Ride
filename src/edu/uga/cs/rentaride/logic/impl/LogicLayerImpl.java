@@ -225,5 +225,11 @@ public class LogicLayerImpl
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void resetUserPassword(String email, String password) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
