@@ -47,7 +47,7 @@ public class AccountCtrl {
    	 		session.setUser( user );
    	 		ssid = SessionManager.storeSession(session);
    	 	}else
-   	 		throw new RARException( "SessionManager.login: Invalid User Name or Password" );
+   	 		throw new RARException( "AccountCtrl.login: Invalid User Name or Password" );
    	 	return ssid;
     } // checkCustomer
 
@@ -73,7 +73,25 @@ public class AccountCtrl {
    	 		session.setUser( user );
 			ssid = SessionManager.storeSession(session);
    	 	}else
-   	 		throw new RARException( "SessionManager.login: Invalid User Name or Password" );
+   	 		throw new RARException( "AccountCtrl.login: Invalid User Name or Password" );
    	 	return ssid;
 	} // checkAdmin
+	
+	public void resetUserPassword(String email, String password) throws RARException{
+		Customer customer;
+		Customer modelCustomer = objectLayer.createCustomer();
+		long customerid;
+   	 	modelCustomer.setEmail(email);
+   	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+   	 	if(customers.size() > 0){
+	 		customer = customers.get( 0 );
+   	 	}
+ 		else
+   	 		throw new RARException( "AccountCtrl.login: Invalid Username" );
+   	 	
+   	 	customer.setPassword(password);
+   	 	objectLayer.storeCustomer(customer);
+   	 	
+	}
+	
 }

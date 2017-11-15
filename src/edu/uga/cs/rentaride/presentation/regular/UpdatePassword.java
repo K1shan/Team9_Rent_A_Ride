@@ -1,8 +1,6 @@
-package edu.uga.cs.rentaride.presentation.customer;
+package edu.uga.cs.rentaride.presentation.regular;
 
 import java.io.IOException;
-import java.io.Writer;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,46 +9,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.Customer;
-import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapperBuilder;
-import freemarker.template.SimpleHash;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import edu.uga.cs.rentaride.RARException;
 
 /**
- * Servlet implementation class signinOne
+ * Servlet implementation class UpdatePassword
  */
-@WebServlet("/SigninMenu")
-public class SigninMenu extends HttpServlet {
+@WebServlet("/UpdatePassword")
+public class UpdatePassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+	
 	Configuration cfg = null;
-	private String templateDir = "/WEB-INF";
+	
+	//This the folder the it will return too
+	private String templateDir = "/WEB-INF/CreateAccountTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SigninMenu() {
+    public UpdatePassword() {
         super();
         // TODO Auto-generated constructor stub
     }
-
+    
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init() throws ServletException {
-		// TODO Auto-generated method stub
 		// Create your Configuration instance, and specify if up to what FreeMarker
 		// version (here 2.3.25) do you want to apply the fixes that are not 100%
 		// backward-compatible. See the Configuration JavaDoc for details.
@@ -70,31 +62,25 @@ public class SigninMenu extends HttpServlet {
 		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
 		//		cfg.setLogTemplateExceptions(false);
 		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
-
 	}
 
-	public void toLoginPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// File sent when login success
-		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
-		templateProcessor.processTemplate(response);
-	} // toHomePage
-	
-	
-	public void toHomePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
-        String 			email;
-        String 			password;
-
+        String         ssid;
+        String         username;
+        String		   password;
         
-        email = request.getParameter("email");
+        username = request.getParameter("username");
         password = request.getParameter("password");
-        
-        //Getting the http session and store it into the ssid
+		
+		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
         
@@ -106,7 +92,7 @@ public class SigninMenu extends HttpServlet {
 		
 		//Here it will create the session id 
 		if( session == null ){
-			try {
+		 	try {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
@@ -117,56 +103,27 @@ public class SigninMenu extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user;
 		
-   	 	try {
-			ssid = logicLayer.checkAdminCredentials(session,email,password);
-            httpSession.setAttribute( "ssid", ssid );
-			user = session.getUser();
-			templateProcessor.setTemplate("AdminTemplates/AdminIndex.ftl");
-			templateProcessor.addToRoot("user", user.getFirstName());
+		try {
+			logicLayer.resetUserPassword(username, password);
+			status = "Password successfully changed";
+			templateProcessor.setTemplate("SigninCreateForm.ftl");
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
-			return;
-   	 	} catch (RARException e1){
-   	 		try {
-   	 			
-   	 			
-   	 			ssid = logicLayer.checkCustomerCredentials(session,email,password);
-   	 			httpSession.setAttribute( "ssid", ssid );
-   	 			user = session.getUser();
-				templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
-				templateProcessor.addToRoot("user", user.getFirstName());
-				templateProcessor.addToRoot("status", status);
-				templateProcessor.processTemplate(response);
-				return;
-   	 		} catch (RARException e2){
-   	 			
-	   	 		status = "Invalid User Name or Password";
-	   	 		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
-				templateProcessor.addToRoot("status", status);
-				templateProcessor.processTemplate(response);
-   	 		}
-   	 	}
-   	 	
-
-	} // toLoginPage
-	
-	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		if(request.getParameter("signin") != null) toHomePage(request, response);
-		else toLoginPage(request, response);
+		}
+		catch(RARException e){
+			status = "Invalid username";
+			templateProcessor.setTemplate("ForgotPassword.ftl");
+			templateProcessor.addToRoot("status", status);
+			templateProcessor.processTemplate(response);
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

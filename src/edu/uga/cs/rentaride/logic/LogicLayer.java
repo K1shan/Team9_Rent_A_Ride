@@ -103,7 +103,6 @@ public interface LogicLayer {
 	 */
 	public List<Administrator> findAdministrators( int id ) throws RARException;
 	
-	
 	/******************************************
 	 *  CREATION
 	 */
@@ -387,4 +386,6 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public String checkAdminCredentials ( Session session, String email, String password ) throws RARException;
+
+	public void resetUserPassword (String email, String password) throws RARException;
 }
