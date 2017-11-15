@@ -12,7 +12,7 @@ body {
   position: fixed;
   left: 5%; 
   margin: 75px 0px 0px 0px;
-  min-height: 620px;
+  min-height: 650px;
   position: absolute;
 }
 
@@ -23,7 +23,7 @@ body {
   position: fixed;
   left: 35%;
   margin: 75px 0px 0px 0px;
-  min-height: 620px;
+  min-height: 650px;
   position: absolute;
 }
 
@@ -34,7 +34,7 @@ body {
   position: fixed;
   left: 65%;
  margin: 75px 0px 0px 0px;
-  min-height: 620px;
+  min-height: 650px;
   position: absolute;
 }
 
@@ -129,7 +129,7 @@ button,input[type="submit"] {
   color: #fff;
   padding: 15px 30px;
   display: block;
-  margin: 400px auto 0px 0px;
+  margin: auto auto 0px 0px;
   width: 100%;
   background-color: #000;
   
@@ -152,7 +152,7 @@ button,input[type="submit"] {
   color: #fff;
   padding: 15px 30px;
   display: block;
-  margin: 65px auto 0px 0px;
+  margin: auto auto 0px 0px;
   width: 100%;
   background-color: #000;
   
@@ -256,3 +256,12 @@ button:focus {
 }
 
 
+.error label{
+
+	display: block;
+	color: red;
+	text-align: center;
+  	text-transform: uppercase;
+  	font-size: 12px;
+  	letter-spacing: 2px;
+}

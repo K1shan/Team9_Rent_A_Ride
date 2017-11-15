@@ -157,28 +157,17 @@ button:focus {
   font-size: 10px;
 }
 
+.error label{
+
+	display: block;
+	color: red;
+	text-align: center;
+  	text-transform: uppercase;
+  	font-size: 12px;
+  	letter-spacing: 2px;
+}
+
 ::-webkit-input-placeholder {
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: #000;
-}
-
-:-moz-placeholder {
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: #000;
-}
-
-::-moz-placeholder {
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: #000;
-}
-
-:-ms-input-placeholder {
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 2px;

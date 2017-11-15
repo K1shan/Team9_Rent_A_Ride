@@ -32,12 +32,6 @@
 		<!-- This is where we start part one of the create account and sign in -->
   		<div class="modal">
   		
-  				
-		<#if status??>
-			<p>${status}</p>
-		</#if>
-	
-  		
   			<!-- This is the tab for sign in -->
  			 <div class="tab">
     			<input type="radio" id="sign-in" name="options" class="option" checked/>
@@ -73,6 +67,14 @@
       				<p>
         				<input type="submit" name="signin" onclick="return loginNullCheck()" value="Sign In" />
       				</p>
+      				
+					<#if status??>
+					
+						<p class="error">
+       						 <label> IT&#8217S NOT NICE TO FOOL OUR SYSTEM </label>
+      					</p>
+						
+					</#if>
       				
     			</form>
     			

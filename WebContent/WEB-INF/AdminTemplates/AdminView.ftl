@@ -15,11 +15,7 @@
 
 <body>
 	<div class="modal">
-	
-	
-		<#if status??>
-			<p>${status}</p>
-		</#if>
+
 	
  		<div class="tab">
 			<label class="head">ADD ADMIN</label>
@@ -31,6 +27,15 @@
   				<p>
     				<input class = "admin" type="submit" onclick="return adminNullCheck()" value="ADD ADMIN" />
   				</p>
+  				
+  				<#if status??>
+					
+					<p class="error">
+   						 <label> ${status} </label>
+  					</p>
+						
+				</#if>
+  				
 			</form>
   		</div>
 	</div>
@@ -72,6 +77,16 @@
   				<p>
     					<input class = "location" type="submit" onclick="return locationAddNullCheck()" value="ADD LOCATION" />
   				</p>
+  				
+  				<#if status??>
+					
+					<p class="error">
+   						 <label> IT&#8217S NOT NICE TO FOOL OUR SYSTEM </label>
+  					</p>
+						
+				</#if>
+  				
+  				
 			</form>
 		</div>
 	</div>
@@ -112,6 +127,15 @@
   				<p>
     					<input class = "location" type="submit" onclick="return locationUpdateNullCheck()" value="UPDATE LOCATION" />
   				</p>
+  				
+  				<#if status??>
+					
+					<p class="error">
+   						 <label> IT&#8217S NOT NICE TO FOOL OUR SYSTEM </label>
+  					</p>
+						
+				</#if>
+
 			</form>
 		</div>
 	</div>
