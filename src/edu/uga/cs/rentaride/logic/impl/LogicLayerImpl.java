@@ -228,7 +228,8 @@ public class LogicLayerImpl
 
 	@Override
 	public void resetUserPassword(String email, String password) throws RARException {
-		// TODO Auto-generated method stub
+		AccountCtrl accountControl = new AccountCtrl(objectLayer);
+		accountControl.resetUserPassword(email, password);
 		
 	}
 	

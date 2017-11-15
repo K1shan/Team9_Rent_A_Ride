@@ -39,8 +39,9 @@
    				
    				<!-- Part two of the sign in form will start from here and will go to the -->
    				<!-- servlet customerSignin in presentation.customer package -->
-   				<form class="form" action="ForgotPassoword" method='get'>
-   				
+
+   				<form class="form" action="UpdatePassword" method='get'>
+
    					<!-- User input for email -->
       				<p class="float-label">
         				<input type="text" id="username" name="email" placeholder="Email"/>
