@@ -5,19 +5,22 @@
 <title>Rent-A-Ride | Admin View</title>
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script type = "text/javascript" src="javascriptNavbar/navbar.js"></script>
-<script type = "text/javascript" src="javascriptNull/addAdmin.js"></script>
-<script type = "text/javascript" src="javascriptNull/addLocation.js"></script>
-<script type = "text/javascript" src="javascriptNull/updateLocation.js"></script>
+<script type = "text/javascript" src="Javascript/Navbar/navbar.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/addAdmin.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/addLocation.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
 </head>
 
 <#include "AdminNavbar.ftl">
 
 <body>
 	<div class="modal">
+	
+	
 		<#if status??>
 			<p>${status}</p>
 		</#if>
+	
  		<div class="tab">
 			<label class="head">ADD ADMIN</label>
 			<form class="form" id="admin" action="AdminCreate" method='post' name="admin">
@@ -31,6 +34,7 @@
 			</form>
   		</div>
 	</div>
+	
 	
 	<div class="modalTwo">
 		 <div class="tab">
@@ -112,5 +116,6 @@
 		</div>
 	</div>
 
+	
 </body>
 </html>
