@@ -6,7 +6,10 @@ import java.util.List;
 import com.mysql.jdbc.Connection;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.Administrator;
+import edu.uga.cs.rentaride.entity.Comment;
 import edu.uga.cs.rentaride.entity.Customer;
+import edu.uga.cs.rentaride.entity.HourlyPrice;
 import edu.uga.cs.rentaride.entity.Rental;
 import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.Reservation;
@@ -36,6 +39,68 @@ public class LogicLayerImpl
         this.objectLayer = objectLayer;
     }
 	
+    @Override
+	public List<RentalLocation> findLocations( int locationId ) throws RARException {
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		return ctrlLocation.findLocations(locationId);
+	}
+
+	@Override
+	public List<Reservation> findLocationReservations( int locationId ) throws RARException {
+		// TODO
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		return null;
+	}
+	
+	@Override
+	public List<Vehicle> findVehicles( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		return null;
+	}
+
+	@Override
+	public List<VehicleType> findVehicleTypes( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<HourlyPrice> findHourlyPrices( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Reservation> findReservations( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Rental> findRentals( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Comment> findComments( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Customer> findCustomers( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Administrator> findAdministrators( int id ) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
 	@Override
 	public long createAccount(String fName, String lName, String email, String password, String driverNo, String cardNo, String expDate, String address, String city, String state, String zip)
 			throws RARException {
@@ -67,19 +132,6 @@ public class LogicLayerImpl
 			throws RARException {
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
 		return ctrlCreateAccount.setAdmin(username);
-	}
-
-	@Override
-	public List<RentalLocation> findLocations(RentalLocation rentalLocation) throws RARException {
-		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
-		return ctrlLocation.findLocations(rentalLocation);
-	}
-
-	@Override
-	public List<Vehicle> findLocationVehicles(RentalLocation rentalLocation) throws RARException {
-		// TODO
-		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
-		return null;
 	}
 
 	@Override
@@ -141,12 +193,6 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public List<Vehicle> findVehicles(Vehicle vehicle) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void updateVehicle(VehicleType vehicleType, RentalLocation rentalLocation, String make, String model,
 			int year, int mileadge, String tag, Date lastServiced, int status, int cond) throws RARException {
 		// TODO Auto-generated method stub
@@ -186,8 +232,8 @@ public class LogicLayerImpl
 
 	@Override
 	public void deleteLocation(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		ctrlLocation.deleteLocation(id);
 	}
 
 	@Override
@@ -232,5 +278,5 @@ public class LogicLayerImpl
 		accountControl.resetUserPassword(email, password);
 		
 	}
-	
+
 }

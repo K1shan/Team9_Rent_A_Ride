@@ -75,7 +75,8 @@ public class LocationDelete extends HttpServlet {
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
 		
-        String name = request.getParameter("nameDelete");
+        String id = request.getParameter("id");
+        int locationId = Integer.parseInt(id);
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -104,8 +105,6 @@ public class LocationDelete extends HttpServlet {
 		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
-		// TODO
-		int locationId = 0;
 		try {
 			logicLayer.deleteLocation(locationId);
 			status = "Successfully deleted location.";
