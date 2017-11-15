@@ -53,6 +53,12 @@ public class LogicLayerImpl
 	}
 	
 	@Override
+	public List<Vehicle> findLocationVehicles(int locationId) throws RARException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public List<Vehicle> findVehicles( int id ) throws RARException {
 		// TODO Auto-generated method stub
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
@@ -278,5 +284,4 @@ public class LogicLayerImpl
 		accountControl.resetUserPassword(email, password);
 		
 	}
-
 }
