@@ -149,27 +149,6 @@ public class SigninMenu extends HttpServlet {
    	 		}
    	 	}
    	 	
-//   	 	try {
-//			
-//			if(user.getIsAdmin()){
-//				templateProcessor.setTemplate("AdminTemplates/AdminIndex.ftl");
-//			}else{
-//				templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
-//			}
-//			
-//			templateProcessor.addToRoot("user", user.getFirstName());
-//			templateProcessor.addToRoot("status", status);
-//			templateProcessor.processTemplate(response);
-//			
-//		} catch (RARException e) {
-//			
-//
-//			status = "Invalid User Name or Password";
-//			System.out.println(status);
-//			templateProcessor.addToRoot("status", status);
-//			toLoginPage(request, response);
-//			
-//		}
 
 	} // toLoginPage
 	

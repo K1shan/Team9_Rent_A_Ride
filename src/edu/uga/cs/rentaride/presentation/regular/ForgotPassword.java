@@ -79,7 +79,54 @@ public class ForgotPassword extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String status = "";
+		//Setting the session to null
+		HttpSession    httpSession = null;
+        Session        session = null;
+        String         ssid;
+        String         username;
+        String		   password;
+        
+        username = request.getParameter("username");
+        password = request.getParameter("password");
+		
+		//Getting the http session and store it into the ssid
+        httpSession = request.getSession();
+		ssid = (String) httpSession.getAttribute( "ssid" );
+        
+		//Here it will get the existing id
+		if( ssid != null ) {
+
+            session = SessionManager.getSessionById( ssid );
+        }
+		
+		//Here it will create the session id 
+		if( session == null ){
+		 	try {
+				
+				session = SessionManager.createSession();
+			} catch ( Exception e ){
+				status = e.toString();
+				templateProcessor.addToRoot("status", status);
+				templateProcessor.processTemplate(response);
+			}
+		}
+        
+		logicLayer = session.getLogicLayer();
+		
+		try {
+			logicLayer.resetUserPassword(username, password);
+			status = "Password successfully changed";
+			templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
+			templateProcessor.addToRoot("status", status);
+			templateProcessor.processTemplate(response);
+		}
+		catch(RARException e){
+			status = "Invalid username";
+			templateProcessor.setTemplate("CreateAccountTemplates/ForgotPassword.ftl");
+			templateProcessor.addToRoot("status", status);
+			templateProcessor.processTemplate(response);
+		}
 	}
 
 	/**
