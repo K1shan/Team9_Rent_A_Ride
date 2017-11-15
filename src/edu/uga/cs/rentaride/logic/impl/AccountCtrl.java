@@ -92,4 +92,6 @@ public class AccountCtrl {
    	 	customer.setPassword(password);
    	 	objectLayer.storeCustomer(customer);
    	 	
+	}
+	
 }
