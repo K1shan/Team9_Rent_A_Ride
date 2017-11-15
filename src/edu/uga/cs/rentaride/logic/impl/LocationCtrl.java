@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.uga.cs.rentaride.object.ObjectLayer;
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
+import edu.uga.cs.rentaride.entity.*;
 
 
 public class LocationCtrl {
@@ -18,10 +18,48 @@ public class LocationCtrl {
         this.objectLayer = objectLayer;
     }
 	
-	public List<RentalLocation> findLocations(RentalLocation rentalLocation) throws RARException{
-		if(rentalLocation == null)
+	public List<RentalLocation> findLocations( int locationId ) throws RARException{
+		if(locationId < 0)
 			return objectLayer.findRentalLocation(null);
-		return objectLayer.findRentalLocation(rentalLocation);
+		
+		modelRentalLocation.setId(locationId);
+		return objectLayer.findRentalLocation(modelRentalLocation);
+	}
+	
+	public List<Vehicle> findLocationVehicles( int locationId ) throws RARException{
+		
+		// check if locatio already exists
+		//
+		modelRentalLocation = objectLayer.createRentalLocation();
+		modelRentalLocation.setId(locationId);
+		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
+		if(rentalLocations.size() > 0)
+			rentalLocation = rentalLocations.get(0);
+		
+		// check if location found
+		//
+		if(rentalLocation == null)
+			throw new RARException( "Location does not exist" );
+		
+		return rentalLocation.getVehicles();
+	}
+	
+	public List<Reservation> findLocationReservations( int locationId ) throws RARException{
+		
+		// check if locatio already exists
+		//
+		modelRentalLocation = objectLayer.createRentalLocation();
+		modelRentalLocation.setId(locationId);
+		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
+		if(rentalLocations.size() > 0)
+			rentalLocation = rentalLocations.get(0);
+		
+		// check if location found
+		//
+		if(rentalLocation == null)
+			throw new RARException( "Location does not exist" );
+		
+		return rentalLocation.getReservations();
 	}
 	
 	public void createLocation (String name, String address, String city, String state, String zip, String path,

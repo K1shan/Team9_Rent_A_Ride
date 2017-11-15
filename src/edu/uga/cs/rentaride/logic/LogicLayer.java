@@ -20,7 +20,7 @@ public interface LogicLayer {
 	 * @return
 	 * @throws RARException
 	 */
-	public List<RentalLocation> findLocations(RentalLocation rentalLocation) throws RARException;	
+	public List<RentalLocation> findLocations( int locationId ) throws RARException;	
 	
 	/**
 	 * 
@@ -28,16 +28,80 @@ public interface LogicLayer {
 	 * @return
 	 * @throws RARException
 	 */
-	public List<Vehicle> findLocationVehicles(RentalLocation rentalLocation) throws RARException;
+	public List<Vehicle> findLocationVehicles( int locationId ) throws RARException;
 
+	/**
+	 * 
+	 * @param rentalLocation
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Reservation> findLocationReservations( int locationId ) throws RARException;
+	
+	
 	/**
 	 * 
 	 * @param vehicle
 	 * @return
 	 * @throws RARException
 	 */
-	public List<Vehicle> findVehicles(Vehicle vehicle) throws RARException;
+	public List<Vehicle> findVehicles( int id ) throws RARException;
 
+	/**
+	 * 
+	 * @param vehicleType
+	 * @return
+	 * @throws RARException
+	 */
+	public List<VehicleType> findVehicleTypes( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param hourlyPrice
+	 * @return
+	 * @throws RARException
+	 */
+	public List<HourlyPrice> findHourlyPrices( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param reservation
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Reservation> findReservations( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param rental
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Rental> findRentals( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param comment
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Comment> findComments( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param customer
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Customer> findCustomers( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param administrator
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Administrator> findAdministrators( int id ) throws RARException;
 	
 	
 	/******************************************
