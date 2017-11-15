@@ -128,10 +128,12 @@ public class LocationUpdate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		int num = Integer.parseInt(ava);
 		try {
+			
 			logicLayer.updateLocation(name, address, city, state, zip, path, num);
-			status = "Successfully updated location.";
+			status = "Your god!";
 		} catch (RARException e){
-			status = "IT&#8217S NOT NICE TO FOOL OUR SYSTEM";
+			
+			status = "You can&#8217t do that!";
 			templateProcessor.addToRoot("status", status);
     			templateProcessor.processTemplate(response);
     			return;

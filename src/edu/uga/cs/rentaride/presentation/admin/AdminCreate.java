@@ -106,10 +106,10 @@ public class AdminCreate extends HttpServlet {
 		try {
 			
 			logicLayer.setAdmin(uname);
-			status = "Successfully created admin.";
+			status = "Okie dokie";
 		} catch(RARException e){
 			
-			status = "Go away. You don’t exist";
+			status = "Who are you!?";
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
 			return;
