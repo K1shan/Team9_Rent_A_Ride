@@ -68,7 +68,8 @@ public class VehicleTypeCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusAddTypeG = "";
+		String statusAddTypeB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -76,7 +77,7 @@ public class VehicleTypeCreate extends HttpServlet {
 		templateProcessor.setTemplate("AdminView.ftl");
 		
 		// TODO
-		String typeName = request.getParameter("vehicleTypeName");
+		String typeName = request.getParameter("type");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -91,10 +92,12 @@ public class VehicleTypeCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				
+				statusAddTypeB = "Failed to create a session";
+				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -106,16 +109,20 @@ public class VehicleTypeCreate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
 		try {
+			
 			logicLayer.createType(typeName);
-			status = "Successfully created vehicle type.";
+			statusAddTypeG = "Woohoo!";
+			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			status = "Failed to create vehicle type.";
-			templateProcessor.addToRoot("status", status);
+			
+			statusAddTypeB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
 			System.out.println("VehicleTypeCreate: "+e.toString());
-    		templateProcessor.processTemplate(response);
+    			templateProcessor.processTemplate(response);
+    			return;
 		}
-		templateProcessor.addToRoot("status", status);
-		templateProcessor.processTemplate(response);
+
 	}
 
 	/**

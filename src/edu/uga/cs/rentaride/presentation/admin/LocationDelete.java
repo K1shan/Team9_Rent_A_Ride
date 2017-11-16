@@ -68,7 +68,8 @@ public class LocationDelete extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String status = "";
+		String statusDeleteLocationG = "";
+		String statusDeleteLocationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -93,8 +94,8 @@ public class LocationDelete extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				statusDeleteLocationB = "Failed to create a session";
+				templateProcessor.addToRoot("statusDeleteLocationB", statusDeleteLocationB);
 				System.out.println("LocationDelete: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -106,17 +107,17 @@ public class LocationDelete extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
 		try {
+			
 			logicLayer.deleteLocation(locationId);
-			status = "Successfully deleted location.";
-			templateProcessor.addToRoot("status", status);
+			statusDeleteLocationG = "Yay!";
+			templateProcessor.addToRoot("statusDeleteLocationG", statusDeleteLocationG);
 			templateProcessor.processTemplate(response);
-			return;
 		} catch (RARException e){
-			status = "Failed to delete location.";
-			templateProcessor.addToRoot("status", status);
-			System.out.println("LocationDelete: "+e.toString());
-    		templateProcessor.processTemplate(response);
-    		return;
+			
+			statusDeleteLocationB = "very funny";
+			templateProcessor.addToRoot("statusDeleteLocationB", statusDeleteLocationB);
+//			System.out.println("LocationDelete: "+e.toString());
+    			templateProcessor.processTemplate(response);
 		}
 	}
 	

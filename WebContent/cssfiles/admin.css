@@ -38,6 +38,51 @@ body {
   position: absolute;
 }
 
+.modalFour {
+  background-color: #fff;  width: 400px;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 5%;
+  margin: 750px 0px 0px 0px;
+  min-height: 650px;
+  position: absolute;
+}
+
+.modalFive {
+  background-color: #fff;  width: 400px;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 35%;
+  margin: 750px 0px 0px 0px;
+  min-height: 650px;
+  position: absolute;
+}
+
+.modalSix {
+  background-color: #fff;  width: 400px;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 65%;
+  margin: 750px 0px 0px 0px;
+  min-height: 650px;
+  position: absolute;
+}
+
+.modalSeven {
+  background-color: #fff;  width: 400px;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 5%;
+  margin: 1425px 0px 0px 0px;
+  min-height: 650px;
+  position: absolute;
+}
+
+
 .head {
   font-weight: 700;
   font-size: 20px;
@@ -264,4 +309,82 @@ button:focus {
   	text-transform: uppercase;
   	font-size: 12px;
   	letter-spacing: 2px;
+}
+
+.good label{
+
+	display: block;
+	color: green;
+	text-align: center;
+  	text-transform: uppercase;
+  	font-size: 12px;
+  	letter-spacing: 2px;
+}
+
+
+select {
+
+	/* styling */
+	 background-color: white;
+	 border-bottom:solid black 3px;
+	 border-top:solid black 0px;
+	 border-left:solid black 0px;
+	 border-right:solid black 0px;
+	/* display: inline-block; */
+	font: sans-serif;
+	line-height: 1.5em;
+	padding: 0 0 1em 0;
+	width: 100%;
+	text-transform: uppercase;
+	border-radius: 0px;
+	 font-size: 12px;
+  letter-spacing: 2px;
+	
+	 /* reset */
+	
+	margin: 0;      
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-appearance: none;
+}
+select:active {
+    	 border-bottom:solid black 4px;
+	 border-top:solid black 0px;
+	 border-left:solid black 0px;
+	 border-right:solid black 0px;
+}
+
+select.minimal {
+	
+  background-image:
+    linear-gradient(45deg, transparent 50%, black 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+}
+
+select.minimal:focus {
+  background-image:
+    linear-gradient(45deg, green 50%, transparent 50%),
+    linear-gradient(135deg, transparent 50%, black 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:
+    calc(100% - 15px) 1em,
+    calc(100% - 20px) 1em,
+    calc(100% - 2.5em) 0.5em;
+  background-size:
+    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+  border-color: black;
+  outline: 0;
 }

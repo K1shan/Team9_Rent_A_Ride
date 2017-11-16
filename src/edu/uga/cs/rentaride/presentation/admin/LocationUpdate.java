@@ -73,7 +73,9 @@ public class LocationUpdate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String status = "";
+		
+		String statusUpdateLocationG = "";
+		String statusUpdateLocationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -115,8 +117,9 @@ public class LocationUpdate extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				
+				statusUpdateLocationB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateLocationB", statusUpdateLocationB);
 				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -130,15 +133,17 @@ public class LocationUpdate extends HttpServlet {
 		try {
 			
 			logicLayer.updateLocation(name, address, city, state, zip, path, num);
-			status = "Your god!";
+			statusUpdateLocationG = "Your god!";
 		} catch (RARException e){
 			
-			status = "You can&#8217t do that!";
-			templateProcessor.addToRoot("status", status);
+			statusUpdateLocationB = "You can&#8217t do that!";
+			System.out.print(statusUpdateLocationB);
+			templateProcessor.addToRoot("statusUpdateLocationB", statusUpdateLocationB);
     			templateProcessor.processTemplate(response);
     			return;
 		}
-		templateProcessor.addToRoot("status", status);
+		
+		templateProcessor.addToRoot("statusUpdateLocationG", statusUpdateLocationG);
 		templateProcessor.processTemplate(response);
 		pic.write(savePath + File.separator + oneName);
 	}

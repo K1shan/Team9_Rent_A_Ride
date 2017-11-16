@@ -67,7 +67,8 @@ public class AdminCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusAddAdminG = "";
+		String statusAddAdminB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -90,8 +91,8 @@ public class AdminCreate extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				statusAddAdminB = e.toString();
+				templateProcessor.addToRoot("statusAddAdminB", statusAddAdminB);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -106,24 +107,19 @@ public class AdminCreate extends HttpServlet {
 		try {
 			
 			logicLayer.setAdmin(uname);
-			status = "Okie dokie";
+			statusAddAdminG = "Okie dokie";
+			templateProcessor.addToRoot("statusAddAdminG", statusAddAdminG);
+			templateProcessor.setTemplate("AdminView.ftl");
+			templateProcessor.processTemplate(response);
 		} catch(RARException e){
 			
-			status = "Who are you!?";
-			templateProcessor.addToRoot("status", status);
+			statusAddAdminB = "Who are you!?";
+			templateProcessor.addToRoot("statusAddAdminB", statusAddAdminB);
+			templateProcessor.setTemplate("AdminView.ftl");
 			templateProcessor.processTemplate(response);
-			return;
 		}
 		
-//		if(num < 0){
-//			templateProcessor.setTemplate("AdminView.ftl");
-//			templateProcessor.addToRoot("user", user.getFirstName());
-//			
-//		}
-		
-		templateProcessor.addToRoot("status", status);
-//		templateProcessor.setTemplate("AdminView.ftl");
-		templateProcessor.processTemplate(response);
+;
 	}
 
 	/**

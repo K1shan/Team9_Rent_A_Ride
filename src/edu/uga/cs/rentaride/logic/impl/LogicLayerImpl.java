@@ -151,6 +151,7 @@ public class LogicLayerImpl
 	public void createType(String name) throws RARException {
 		// TODO Auto-generated method stub
 		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
+		ctrlType.createType(name);
 		
 	}
 

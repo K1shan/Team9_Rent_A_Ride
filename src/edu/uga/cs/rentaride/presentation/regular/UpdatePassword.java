@@ -69,7 +69,8 @@ public class UpdatePassword extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String status = "";
+		String statusUpdatePasswordG = "";
+		String statusUpdatePasswordB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -96,8 +97,8 @@ public class UpdatePassword extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				statusUpdatePasswordB = e.toString();
+				templateProcessor.addToRoot("statusUpdatePasswordB", statusUpdatePasswordB);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -106,15 +107,15 @@ public class UpdatePassword extends HttpServlet {
 		
 		try {
 			logicLayer.resetUserPassword(username, password);
-			status = "Password successfully changed";
+			statusUpdatePasswordG = "Woohoo!";
 			templateProcessor.setTemplate("SigninCreateForm.ftl");
-			templateProcessor.addToRoot("status", status);
+			templateProcessor.addToRoot("statusUpdatePasswordG", statusUpdatePasswordG);
 			templateProcessor.processTemplate(response);
 		}
 		catch(RARException e){
-			status = "Invalid username";
+			statusUpdatePasswordB = "BAD.";
 			templateProcessor.setTemplate("ForgotPassword.ftl");
-			templateProcessor.addToRoot("status", status);
+			templateProcessor.addToRoot("statusUpdatePasswordB", statusUpdatePasswordB);
 			templateProcessor.processTemplate(response);
 		}
 	}

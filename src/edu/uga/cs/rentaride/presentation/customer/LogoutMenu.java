@@ -76,10 +76,8 @@ public class LogoutMenu extends HttpServlet {
   		if( httpSession != null ){
   			ssid = (String) httpSession.getAttribute( "ssid" );
   			if( ssid != null ){
-  				System.out.println( "Already have ssid" );
   				session = SessionManager.getSessionById( ssid );
   				if( session == null ){
-  					status = "Session expired or illegal; please log in";
   					return;
   				}
   				LogicLayer logicLayer = session.getLogicLayer();
@@ -91,20 +89,17 @@ public class LogoutMenu extends HttpServlet {
   					e.printStackTrace();
   				}
   			}else{
-  				System.out.println( "ssid is null" );
   				templateProcessor.setTemplate("CreateAccountTemplates/index.ftl");
   				templateProcessor.processTemplate(response);
   				return;
   			}
   		}else{
-			System.out.println( "No http session" );
 			templateProcessor.setTemplate("CreateAccountTemplates/index.ftl");
 			templateProcessor.processTemplate(response);
 			return;
   		}
   		
 		templateProcessor.setTemplate("CreateAccountTemplates/SigninCreateForm.ftl");
-		templateProcessor.addToRoot("status", status);
 		templateProcessor.processTemplate(response);  			
 	}
 

@@ -73,7 +73,8 @@ public class LocationCreate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		String status = "";
+		String statusAddLocationG = "";
+		String statusAddLocationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -114,8 +115,8 @@ public class LocationCreate extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				statusAddLocationB = "Failed to create a session";
+				templateProcessor.addToRoot("statusAddLocationB", statusAddLocationB);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -128,17 +129,17 @@ public class LocationCreate extends HttpServlet {
 		int num = Integer.parseInt(ava);
 		try {
 			logicLayer.createLocation(name, address, city, state, zip, path, num);
-			status = "Successfully created location.";
+			statusAddLocationG = "Cool Beans!";
 		} catch (RARException e){
-			status = "Failed to create location.";
-			templateProcessor.addToRoot("status", status);
+			statusAddLocationB = "IMPOSSIBLE.";
+			templateProcessor.addToRoot("statusAddLocationB", statusAddLocationB);
 			System.out.println("LocationCreate: "+e.toString());
-    		templateProcessor.processTemplate(response);
-    		return;
+    			templateProcessor.processTemplate(response);
+    			return;
 		}
-		templateProcessor.addToRoot("status", status);
-		templateProcessor.processTemplate(response);
-		pic.write(savePath + File.separator + oneName);
+			templateProcessor.addToRoot("statusAddLocationG", statusAddLocationG);
+			templateProcessor.processTemplate(response);
+			pic.write(savePath + File.separator + oneName);
 	}
 
 	private String extractFileName(Part part) {

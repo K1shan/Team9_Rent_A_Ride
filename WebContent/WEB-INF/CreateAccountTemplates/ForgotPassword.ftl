@@ -61,6 +61,23 @@
       				<p>
         				<input type="submit" name="signin" onclick="return forgotNullCheck()" value="Sign In" />
       				</p>	
+      				
+		      			<#if statusUpdatePasswordG??>
+							
+							<p class="good">
+			   					<label> ${statusUpdatePasswordG} </label>
+			  				</p>
+								
+						</#if>
+  				
+						<#if statusUpdatePasswordB??>
+						
+							<p class="error">
+		   						 <label> ${statusUpdatePasswordB} </label>
+		  					</p>
+							
+						</#if>
+      				
     				</form>
 			</div>
 		</div>

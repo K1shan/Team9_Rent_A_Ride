@@ -28,12 +28,20 @@
     				<input class = "admin" type="submit" onclick="return adminNullCheck()" value="ADD ADMIN" />
   				</p>
   				
-  				<#if status??>
+  				<#if statusAddAdminG??>
 					
-					<p class="error">
-   						 <label> ${status} </label>
-  					</p>
+					<p class="good">
+	   					<label> ${statusAddAdminG} </label>
+	  				</p>
 						
+				</#if>
+  				
+				<#if statusAddAdminB??>
+				
+					<p class="error">
+   						 <label> ${statusAddAdminB} </label>
+  					</p>
+					
 				</#if>
   				
 			</form>
@@ -78,15 +86,22 @@
     					<input class = "location" type="submit" onclick="return locationAddNullCheck()" value="ADD LOCATION" />
   				</p>
   				
-  				<#if status??>
+  				<#if statusAddLocationG??>
 					
-					<p class="error">
-   						 <label> IT&#8217S NOT NICE TO FOOL OUR SYSTEM </label>
-  					</p>
+					<p class="good">
+	   					<label> ${statusAddLocationG} </label>
+	  				</p>
 						
 				</#if>
   				
-  				
+				<#if statusAddLocationB??>
+				
+					<p class="error">
+   						 <label> ${statusAddLocationB} </label>
+  					</p>
+					
+				</#if>
+
 			</form>
 		</div>
 	</div>
@@ -118,7 +133,7 @@
   				</p>
   				
   				<p class="float-label">
-    					<input type="text" id="avaUpdate" name="avaUpdate" placeholder="AVAIILABILITY"/>
+    					<input type="text" id="avaUpdate" name="avaUpdate" placeholder="AVAILABILITY"/>
   				</p>
   				
   				<p>
@@ -128,18 +143,170 @@
     					<input class = "location" type="submit" onclick="return locationUpdateNullCheck()" value="UPDATE LOCATION" />
   				</p>
   				
-  				<#if status??>
+  					<#if statusUpdateLocationG??>
 					
-					<p class="error">
-   						 <label> IT&#8217S NOT NICE TO FOOL OUR SYSTEM </label>
-  					</p>
+						<p class="good">
+	   						 <label> ${statusUpdateLocationG} </label>
+	  					</p>
 						
-				</#if>
+					</#if>
+  				
+  					<#if statusUpdateLocationB??>
+					
+						<p class="error">
+	   						 <label> ${statusUpdateLocationB} </label>
+	  					</p>
+						
+					</#if>
 
 			</form>
 		</div>
 	</div>
 
+
+		<div class="modalFour">
+			<div class="tab">
+					<label class="head">DELETE LOCATION </label>
+					<form class="form" id="admin" action="LocationDelete" method='post' name="admin">
+					
+		  				<p class="float-label">
+		    					<input type="text" id="id" name="id" placeholder="LOCATION ID"/>
+		  				</p>
+		  				<p>
+		    				<input class = "type" type="submit" onclick="return locationDeleteNullCheck()" value="DELETE LOCATION" />
+		  				</p>
+		  				
+		  				<#if statusDeleteLocationG??>
+							
+							<p class="good">
+			   					<label> ${statusDeleteLocationG} </label>
+			  				</p>
+								
+						</#if>
+		  				
+  						<#if statusDeleteLocationB??>
+					
+						<p class="error">
+	   						 <label> ${statusDeleteLocationB} </label>
+	  					</p>
+						
+						</#if>
+					</form>
+		  		</div>
+			</div>
+		</div>
+
+
+
+		<div class="modalFive">
+			<div class="tab">
+					<label class="head">ADD VEHICLE TYPE </label>
+					<form class="form" id="admin" action="VehicleTypeCreate" method='post' name="admin">
+					
+		  				<p class="float-label">
+		    					<input type="text" id="type" name="type" placeholder="Vehicle Type Name"/>
+		  				</p>
+		  				<p>
+		    				<input class = "type" type="submit" onclick="return typeCreateNullCheck()" value="ADD VEHICLE TYPE" />
+		  				</p>
+		  				
+		  				<#if statusAddTypeG??>
+							
+							<p class="good">
+			   					<label> ${statusAddTypeG} </label>
+			  				</p>
+								
+						</#if>
+		  				
+						<#if statusAddTypeB??>
+						
+							<p class="error">
+		   						 <label> ${statusAddTypeB} </label>
+		  					</p>
+							
+						</#if>
+					</form>
+		  		</div>
+			</div>
+		</div>
+		
+		<div class="modalSix">
+			<div class="tab">
+					<label class="head">UPDATE VEHICLE TYPE </label>
+					<form class="form" id="admin" action="VehicleTypeUpdate" method='post' name="admin">
+					
+					
+						<select id="select1" name="select1" class="minimal">
+							<option value="">Select</option>
+							<option value="USD">United States Dollar</option>
+							<option value="ARS">Argentinean Peso</option>
+						</select>
+					
+		  				<p class="float-label">
+		    					<input type="text" id="type" name="type" placeholder="Vehicle Type ID"/>
+		  				</p>
+		  				<p>
+		    				<input class = "type" type="submit" onclick="return typeCreateNullCheck()" value="UPDATE VEHICLE TYPE" />
+		  				</p>
+		  				
+		  				<#if statusUpdateTypeG??>
+							
+							<p class="good">
+			   					<label> ${statusUpdateTypeG} </label>
+			  				</p>
+								
+						</#if>
+		  				
+						<#if statusUpdateTypeB??>
+						
+							<p class="error">
+		   						 <label> ${statusUpdateTypeB} </label>
+		  					</p>
+							
+						</#if>
+					</form>
+		  		</div>
+			</div>
+		</div>
+		
+		<div class="modalSeven">
+			<div class="tab">
+					<label class="head">DELETE VEHICLE TYPE </label>
+					<form class="form" id="admin" action="VehicleTypeDelete" method='post' name="admin">
+					
+					
+						<select id="select1" name="select1" class="minimal">
+							<option value="">Select</option>
+							<option value="USD">United States Dollar</option>
+							<option value="ARS">Argentinean Peso</option>
+						</select>
+					
+		  				<p class="float-label">
+		    					<input type="text" id="type" name="type" placeholder="Vehicle Type ID"/>
+		  				</p>
+		  				<p>
+		    				<input class = "type" type="submit" onclick="return typeCreateNullCheck()" value="DELETE VEHICLE TYPE" />
+		  				</p>
+		  				
+		  				<#if statusDeleteTypeB??>
+							
+							<p class="good">
+			   					<label> ${statusDeleteTypeB} </label>
+			  				</p>
+								
+						</#if>
+		  				
+						<#if statusDeleteTypeB??>
+						
+							<p class="error">
+		   						 <label> ${statusDeleteTypeB} </label>
+		  					</p>
+							
+						</#if>
+					</form>
+		  		</div>
+			</div>
+		</div>
 	
 </body>
 </html>
