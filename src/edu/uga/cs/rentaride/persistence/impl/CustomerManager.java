@@ -383,30 +383,25 @@ public class CustomerManager{
 	}
 
 	public void delete(Customer customer) throws RARException{
-		String deleteCustomerSql = 
+		String deleteCustomerQuery = 
 				"DELETE `USER` "
 				+ "FROM `USER` "
-				+ "INNER JOIN CUSTOMER ON CUSTOMER.user_id=USER.user_id "
-				+ "WHERE CUSTOMER.customer_id=?";
-		PreparedStatement pstmt;
-		int inscnt;
+				+ "INNER JOIN CUSTOMER ON USER.user_id=CUSTOMER.user_id";
 		
-//		if (!customer.isPersistent()) // checks if Customer object is persistent. If not, nothing to delete
-//			return;
-//		
-		
-		System.out.println( "customer: "+customer );
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(deleteCustomerQuery);
+
+		if ( customer != null ){
+			query.append( " WHERE CUSTOMER.user_id=" + customer.getId() );
+		}
 		
 		try {
-			pstmt = (PreparedStatement) con.prepareStatement(deleteCustomerSql);
-			pstmt.setLong(1, customer.getId() );
-			System.out.println( "query: " + pstmt.asSql() );
-			inscnt = pstmt.executeUpdate();
-			if(inscnt == 1) {
-				return;
-			}
-			else
-				throw new RARException("CustomerManager.delete: failed to delete a customer");
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			stmt.executeUpdate(query.toString());
 		}
 		catch(SQLException e) {
 			e.printStackTrace();

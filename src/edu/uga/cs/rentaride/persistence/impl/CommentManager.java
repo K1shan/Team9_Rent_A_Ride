@@ -41,15 +41,15 @@ public class CommentManager {
     	
     	String insertCommentQuery =
 				"INSERT INTO COMMENT "
-				+ "( rental_id, text, comment_date ) "
+				+ "( rental_id, customer_id, text, comment_date ) "
 				+ "VALUES "
-				+ "( ?, ?, ? )";
+				+ "( ?, ?, ?, ? )";
 		
 		String updateCommentQuery =
-				"UPDATE INTO COMMENT "
-				+ "( rental_id, text, comment_date ) "
+				"UPDATE COMMENT SET "
+				+ "( rental_id, customer_id, text, comment_date ) "
 				+ "VALUES "
-				+ "( ?, ?, ? )";
+				+ "( ?, ?, ?, ? )";
 		
 		PreparedStatement pstmt;
 		int inscnt;
@@ -71,8 +71,14 @@ public class CommentManager {
 				throw new RARException( "Comment.save: can't save a comment: rental undefined" );
 			}
 			
+			if( comment.getCustomer().getId() > 0 ){
+				pstmt.setLong( 2, comment.getRental().getId() );
+			}else{
+				throw new RARException( "Comment.save: can't save a comment: customer undefined" );
+			}
+			
 			if( comment.getText() != null ){
-				pstmt.setString( 2, comment.getText() );
+				pstmt.setString( 3, comment.getText() );
 			}else{
 				throw new RARException( "Comment.save: can't save a comment: text undefined" );
 			}
@@ -80,7 +86,7 @@ public class CommentManager {
 			if( comment.getDate() != null ){
 				java.util.Date myDate = comment.getDate();
 	        	java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-				pstmt.setDate( 3, sqlDate );
+				pstmt.setDate( 4, sqlDate );
 			}else{
 				throw new RARException( "Comment.save: can't save a comment: date undefined" );
 			}

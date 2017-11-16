@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
+import java.sql.Statement;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.HourlyPrice;
@@ -145,30 +145,29 @@ public class VehicleTypeManager{
 	
 	
     public void delete( VehicleType vehicleType ) throws RARException{
-    	String deleteVehicleT = 
-    			"DELETE VEHICLE_TYPE "
-    			+ "FROM VEHICLE_TYPE "
-    			+ "WHERE type_id=?";              
-		PreparedStatement pstmt = null;
-		int inscnt = 0;
-		             
-        if( !vehicleType.isPersistent() )
-            return;
-        
-        try {
-            pstmt = (PreparedStatement) con.prepareStatement( deleteVehicleT );         
-            pstmt.setLong( 1, vehicleType.getId() );
-			System.out.println( "query: " + pstmt.asSql() );
-            inscnt = pstmt.executeUpdate();          
-            if( inscnt == 1 ) {
-                return;
-            }
-            else
-                throw new RARException( "VehicleTypeManager.delete: failed to delete a vehicleType" );
-        } catch( SQLException e ) {
-            e.printStackTrace();
-            throw new RARException( "VehicleTypeManager.delete: failed to delete a vehicleType: " + e );       
-        }
+    	String deleteTypeQuery = 
+				"DELETE VEHICLE_TYPE "
+				+ "FROM VEHICLE_TYPE";
+		
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(deleteTypeQuery);
+		
+		if ( vehicleType != null ){
+			query.append( " WHERE VEHICLE_TYPE.type_id=" + vehicleType.getId() );
+		}
+		
+		try {
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			stmt.executeUpdate(query.toString());
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new RARException("VehicleTypeManager.delete: failed to delete a vehicle type" + e);
+		}
     }
     
     
