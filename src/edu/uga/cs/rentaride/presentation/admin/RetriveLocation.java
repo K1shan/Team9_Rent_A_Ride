@@ -107,12 +107,11 @@ public class RetriveLocation extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
+		templateProcessor.addToRoot("user", user.getFirstName());
 
 		try {
-			List<RentalLocation> rentalLocations  = null;
-			rentalLocations = logicLayer.findLocations( -1 );
+			List<RentalLocation> rentalLocations = logicLayer.findLocations( -1 );
 			// Making json objects
 			Gson gson = new Gson();
 			JsonElement element = gson.toJsonTree(rentalLocations, new TypeToken<List<RentalLocation>>() {}.getType());

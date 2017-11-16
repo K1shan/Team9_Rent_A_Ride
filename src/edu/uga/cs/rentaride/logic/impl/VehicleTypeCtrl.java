@@ -18,6 +18,14 @@ public class VehicleTypeCtrl {
         this.objectLayer = objectLayer;
     }
 	
+	public List<VehicleType> findVehicleTypes( int typeId ) throws RARException{
+		if(typeId < 0)
+			return objectLayer.findVehicleType(null);
+		
+		modelVehicleType.setId(typeId);
+		return objectLayer.findVehicleType(modelVehicleType);
+	}
+	
 	public void createType(String name) throws RARException{
 		// check if type already exists
 		modelVehicleType = objectLayer.createVehicleType();
