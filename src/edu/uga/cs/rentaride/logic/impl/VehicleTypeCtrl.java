@@ -19,6 +19,7 @@ public class VehicleTypeCtrl {
     }
 	
 	public List<VehicleType> findVehicleTypes( int typeId ) throws RARException{
+		modelVehicleType = objectLayer.createVehicleType();
 		if(typeId < 0)
 			return objectLayer.findVehicleType(null);
 		

@@ -1,7 +1,6 @@
 package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -17,7 +16,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
-import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -46,7 +44,6 @@ public class RetriveLocation extends HttpServlet {
      */
     public RetriveLocation() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -107,8 +104,6 @@ public class RetriveLocation extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = session.getUser();
-		templateProcessor.addToRoot("user", user.getFirstName());
 
 		try {
 			List<RentalLocation> rentalLocations = logicLayer.findLocations( -1 );

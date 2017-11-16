@@ -19,6 +19,7 @@ public class LocationCtrl {
     }
 	
 	public List<RentalLocation> findLocations( int locationId ) throws RARException{
+		modelRentalLocation = objectLayer.createRentalLocation();
 		if(locationId < 0)
 			return objectLayer.findRentalLocation(null);
 		

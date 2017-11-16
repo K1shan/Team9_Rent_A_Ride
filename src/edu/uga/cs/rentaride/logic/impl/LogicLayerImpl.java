@@ -61,9 +61,8 @@ public class LogicLayerImpl
 	
 	@Override
 	public List<Vehicle> findVehicles( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
-		return null;
+		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
+		return ctrlVehicle.findVehicles(id);
 	}
 
 	@Override
@@ -80,26 +79,26 @@ public class LogicLayerImpl
 
 	@Override
 	public List<Reservation> findReservations( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		return ctrlReservation.findReservation(id);
 	}
 
 	@Override
 	public List<Rental> findRentals( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
+		return ctrlRental.findRentals(id);
 	}
 
 	@Override
 	public List<Comment> findComments( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
+		return ctrlComment.findComments(id);
 	}
 
 	@Override
 	public List<Customer> findCustomers( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		return ctrlAccount.findCustomers(id);
 	}
 
 	@Override
