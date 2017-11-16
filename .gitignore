@@ -22,3 +22,4 @@ build/classes/edu/uga/cs/rentaride/entity/impl/CommentImpl.class
 *.class
 
 *.class
+*.class

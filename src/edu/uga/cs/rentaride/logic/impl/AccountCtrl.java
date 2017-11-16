@@ -78,20 +78,56 @@ public class AccountCtrl {
 	} // checkAdmin
 	
 	public void resetUserPassword(String email, String password) throws RARException{
+		String fname;
+		String lname;
+		String uname;
+		String address;
+		Date createDate;
+		Date membershipExpiration;
+		String licState;
+		String licNum;
+		String ccNum;
+		Date ccExp;
 		Customer customer;
 		Customer modelCustomer = objectLayer.createCustomer();
-		long customerid;
+		long customerId;
    	 	modelCustomer.setEmail(email);
    	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
    	 	if(customers.size() > 0){
 	 		customer = customers.get( 0 );
-   	 	}
- 		else
-   	 		throw new RARException( "AccountCtrl.login: Invalid Username" );
-   	 	
-   	 	customer.setPassword(password);
-   	 	objectLayer.storeCustomer(customer);
-   	 	
+	 		customerId = customer.getId();
+	 		fname = customer.getFirstName();
+	 		lname = customer.getLastName();
+	 		address = customer.getAddress();
+	 		createDate = customer.getCreatedDate();
+	 		membershipExpiration = customer.getMemberUntil();
+	 		licState = customer.getLicenseState();
+	 		licNum = customer.getLicenseNumber();
+	 		ccNum = customer.getCreditCardNumber();
+	 		ccExp = customer.getCreditCardExpiration();
+	 		customer = objectLayer.createCustomer(fname, lname, email, password, email, address, createDate, membershipExpiration, licState, licNum, ccNum, ccExp);
+	 		customer.setId(customerId);
+	   	 	objectLayer.storeCustomer(customer);
+	   	 	return;
+   	 	}else{
+ 			Administrator administrator;
+ 			Administrator modelAdministrator = objectLayer.createAdministrator();
+ 			long adminId;
+ 			modelAdministrator.setEmail(email);
+ 			List<Administrator> administrators = objectLayer.findAdministrator(modelAdministrator);
+ 			if(administrators.size() > 0){
+ 				administrator = administrators.get( 0 );
+ 				adminId = administrator.getId();
+ 				fname = administrator.getFirstName();
+ 				lname = administrator.getLastName();
+ 				address = administrator.getAddress();
+ 				createDate = administrator.getCreatedDate();
+ 				administrator = objectLayer.createAdministrator(fname, lname, email, password, email, address, createDate);
+ 				administrator.setId(adminId);
+ 				objectLayer.storeAdministrator(administrator);
+ 				return;
+ 			}
+ 		}
+   	 	throw new RARException( "AccountCtrl.login: Invalid Username" );
 	}
-	
 }
