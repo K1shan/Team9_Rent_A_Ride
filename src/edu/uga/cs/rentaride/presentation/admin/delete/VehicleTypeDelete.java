@@ -105,12 +105,10 @@ public class VehicleTypeDelete extends HttpServlet {
 			status = "Your god!";
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
-			return;
 		} catch (RARException e){
 			status = "You can&#8217t do that!";
 			templateProcessor.addToRoot("status", status);
-    		templateProcessor.processTemplate(response);
-    		return;
+    			templateProcessor.processTemplate(response);
 		}
 	}
 	
