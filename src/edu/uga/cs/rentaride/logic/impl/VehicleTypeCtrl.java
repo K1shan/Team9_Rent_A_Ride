@@ -10,10 +10,27 @@ import edu.uga.cs.rentaride.entity.*;
 public class VehicleTypeCtrl {
 	
 	private ObjectLayer objectLayer = null;
+	private VehicleType modelVehicleType = null;
+	private VehicleType vehicleType = null;
+	private List<VehicleType> vehicleTypes = null;
 	
 	public VehicleTypeCtrl( ObjectLayer objectLayer ){
         this.objectLayer = objectLayer;
     }
 	
-	
+	public void createType(String name) throws RARException{
+		// check if type already exists
+		modelVehicleType = objectLayer.createVehicleType();
+		modelVehicleType.setName(name);
+		vehicleTypes = objectLayer.findVehicleType(modelVehicleType);
+		if(vehicleTypes.size() > 0) {
+			vehicleType = vehicleTypes.get(0);
+		}
+		if(vehicleType != null) {
+			throw new RARException("A vehicle type with this name already exists");
+		}
+		
+		vehicleType = objectLayer.createVehicleType(name);
+		objectLayer.storeVehicleType(modelVehicleType);		
+	}
 }
