@@ -46,8 +46,8 @@ public class CustomerManager{
 		
 		String updateUserQuery = 
 				"UPDATE USER SET "
-				+ "fname=?, lname=?, uname=?, pword=?, email=?, create_date=? "
-				+ "WHERE user_id=?";               
+				+ "fname=?, lname=?, uname=?, pword=?, email=?, address=?, create_date=? "
+				+ "WHERE email=?";               
 		
 		String updateCustomerQuery = 
 				"UPDATE CUSTOMER SET "
@@ -108,11 +108,10 @@ public class CustomerManager{
             }else
                 throw new RARException( "CustomerManager.save: can't save a user: CreatedDate undefined" );
             if( customer.isPersistent() )
-                pstmt.setLong( 8, customer.getId() );
+                pstmt.setString( 8, customer.getEmail() );
 
 			System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
-
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new RARException( "CustomerManager.save: failed to save a user: " + e );
@@ -348,7 +347,6 @@ public class CustomerManager{
 	            String ccNum;
 	            Date ccExp;
 	            while( r.next() ) {
-	            	r.getLong(1);
 	           	 	fname = r.getString(2);
 	                lname = r.getString(3);
 	                uname = r.getString(4);

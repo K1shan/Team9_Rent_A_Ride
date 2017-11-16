@@ -50,8 +50,8 @@ public class AdministratorManager {
 		
 		String updateAdministratorQuery = 
 				"UPDATE ADMIN SET "
-						+ "user_id=? "
-						+ "WHERE admin_id=?";
+				+ "user_id=? "
+				+ "WHERE admin_id=?";
 		
 		String selectUserIdQuery = 
 				"SELECT user_id "
