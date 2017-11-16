@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.*;
@@ -49,16 +47,16 @@ public class RentARideTester
          Vehicle		convertible1;
          Vehicle		convertible2;
          
-         Reservation 	reservation1;
-         Reservation 	reservation2;
-         Reservation 	reservation3;
-         Reservation 	reservation4;
+         Reservation 	reservationWayne1;
+         Reservation 	reservationRafael1;
+         Reservation 	reservationKishan1;
+         Reservation 	reservationAlex1;
 
-         Rental			rental1;
-         Rental			rental2;
+         Rental			rentalWayne1;
+         Rental			rentalRafael1;
          
-         Comment		comment1;
-         Comment		comment2;
+         Comment		commentWayne1;
+         Comment		commentRafael1;
          
          
          
@@ -83,14 +81,14 @@ public class RentARideTester
          objectLayer.setPersistence( persistence ); 
          
          try {
+        	 long membershipLength = 24*60*60*1000;
         	 Date createDate = new Date();
-        	 Date dateMemberTill = new Date();
+        	 Date dateMemberTill = new Date(createDate.getTime() + membershipLength);
         	 Date dateReservation1 = new Date();
         	 Date dateReservation2 = new Date();
         	 Date dateReservation3 = new Date();
         	 Date dateReservation4 = new Date();
         	 DateFormat df1 = new SimpleDateFormat( "yyyy-MM-dd" );
-        	 dateMemberTill = df1.parse( "2017-10-05" );
         	 dateReservation1 = df1.parse( "2017-10-20" );
         	 dateReservation2 = df1.parse( "2017-10-22" );
         	 dateReservation3 = df1.parse( "2017-10-24" );
@@ -121,24 +119,29 @@ public class RentARideTester
         	 objectLayer.deleteRentalLocation( null );
         	 
         	 // 4 ADMINS
-        	 adminWayne = objectLayer.createAdministrator("Wayne", "Kung", "wayne@uga.edu", "w", "wayne@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);             
-             adminRafael = objectLayer.createAdministrator("Rafael", "Caraballo", "rbb@uga.edu", "r", "rbb@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate);
-             adminKishan = objectLayer.createAdministrator("Kishan", "Patel", "kb021995@uga.edu", "k", "kb021995@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);             
-             adminAlex = objectLayer.createAdministrator("Alex", "White", "alexAdmin@uga.edu", "a", "alexAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
-             persistence.storeAdministrator(adminWayne);
+        	 adminWayne = objectLayer.createAdministrator("Wayne", "Kung", "wayneAdmin@uga.edu", "w", "wayneAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
+        	 persistence.storeAdministrator(adminWayne);
+             adminRafael = objectLayer.createAdministrator("Rafael", "Caraballo", "rbbAdmin@uga.edu", "r", "rbbAdmin@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate);
              persistence.storeAdministrator(adminRafael);
+             adminKishan = objectLayer.createAdministrator("Kishan", "Patel", "kp021995Admin@uga.edu", "k", "kp021995Admin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
              persistence.storeAdministrator(adminKishan);
+             adminAlex = objectLayer.createAdministrator("Alex", "White", "alexAdmin@uga.edu", "a", "alexAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
              persistence.storeAdministrator(adminAlex);
              
-             // 1 CUSTOMER
-             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexCustomer@uga.edu", "a", "alexCustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, createDate, "GA", "222221", "11111", createDate );
-             persistence.storeCustomer( customerAlex );
-             
+             // 4 CUSTOMERS
+             customerWayne = objectLayer.createCustomer("Wayne", "Kung", "wayneCustomer@uga.edu", "w", "wayneCustomer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "111111111", "1111111111111111", createDate);
+             persistence.storeCustomer(customerWayne);
+             customerRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbCustomer@uga.edu", "r", "rbbCustomer@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "222222222", "2222222222222222", createDate);
+             persistence.storeCustomer(customerRafael);
+             customerKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995Customer@uga.edu", "k", "kp021995Customer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "333333333", "3333333333333333", createDate);
+             persistence.storeCustomer(customerKishan);
+             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexCustomer@uga.edu", "a", "alexCustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "444444444", "4444444444444444", createDate );
+             persistence.storeCustomer(customerAlex);
         	 
         	 // 2 LOCATIONS
-             rentalLocationAtlanta = objectLayer.createRentalLocation("Atlanta", "999 Broad St.", "Atlanta", "GA", "30101", "city/Atlanta.png", 500);
-             rentalLocationAthens = objectLayer.createRentalLocation("Athens", "123 Broad St.", "Athens", "GA", "30605", "city/Athens.png", 250);
+             rentalLocationAtlanta = objectLayer.createRentalLocation("Atlanta", "999 Broad St.", "Atlanta", "GA", "30301", "city/Atlanta.png", 500);
              persistence.storeRentalLocation( rentalLocationAtlanta );
+             rentalLocationAthens = objectLayer.createRentalLocation("Athens", "123 Broad St.", "Athens", "GA", "30605", "city/Athens.png", 250);
              persistence.storeRentalLocation( rentalLocationAthens );
         	 
         	 // 2 VEHICLE_TYPES
@@ -151,13 +154,11 @@ public class RentARideTester
              // 4 HOURLY PRICES
              truckHourlyPrice1 = objectLayer.createHourlyPrice(maxHours, 50, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice1 );
-             
              truckHourlyPrice2 = objectLayer.createHourlyPrice(maxHours, 75, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice2 );
              
              convertibleHourlyPrice1 = objectLayer.createHourlyPrice(maxHours, 100, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice1 );
-             
              convertibleHourlyPrice2 = objectLayer.createHourlyPrice(maxHours, 150, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice2 );
         	 
@@ -175,35 +176,35 @@ public class RentARideTester
              persistence.storeVehicle( convertible2 );
         	 
         	 // 4 RESERVATIONS
-             reservation1 = objectLayer.createReservation(dateReservation1, lengthReservation1, truckVehicleType, rentalLocationAtlanta, customerAlex);
-             persistence.storeReservation(reservation1);
+             reservationWayne1 = objectLayer.createReservation(dateReservation1, lengthReservation1, truckVehicleType, rentalLocationAtlanta, customerWayne);
+             persistence.storeReservation(reservationWayne1);
              
-//             reservation2 = objectLayer.createReservation(dateReservation2, lengthReservation2, convertibleVehicleType, rentalLocationAthens, customerMichael);
-//             persistence.storeReservation(reservation2);
-//             
-//             reservation3 = objectLayer.createReservation(dateReservation3, lengthReservation3, truckVehicleType, rentalLocationAtlanta, customerLuke);
-//             persistence.storeReservation(reservation3);
-//             
-//             reservation4 = objectLayer.createReservation(dateReservation4, lengthReservation4, convertibleVehicleType, rentalLocationAthens, customerLuke);
-//             persistence.storeReservation(reservation4);
+             reservationRafael1 = objectLayer.createReservation(dateReservation2, lengthReservation2, convertibleVehicleType, rentalLocationAthens, customerRafael);
+             persistence.storeReservation(reservationRafael1);
+             
+             reservationKishan1 = objectLayer.createReservation(dateReservation3, lengthReservation3, truckVehicleType, rentalLocationAtlanta, customerKishan);
+             persistence.storeReservation(reservationKishan1);
+             
+             reservationAlex1 = objectLayer.createReservation(dateReservation4, lengthReservation4, convertibleVehicleType, rentalLocationAthens, customerAlex);
+             persistence.storeReservation(reservationAlex1);
         	 
         	 // 2 RENTALS
-             rental1 = objectLayer.createRental(rentalPickup1, reservation1, truck1);
-             rental1.setCharges(100);
-             persistence.storeRental(rental1);
+             rentalWayne1 = objectLayer.createRental(rentalPickup1, reservationWayne1, truck1);
+             rentalWayne1.setCharges(100);
+             persistence.storeRental(rentalWayne1);
              
-//             rental2 = objectLayer.createRental(rentalPickup2, reservation3, convertible1);
-//             rental2.setCharges(200);
-//             persistence.storeRental(rental2);
+             rentalRafael1 = objectLayer.createRental(rentalPickup2, reservationRafael1, convertible1);
+             rentalRafael1.setCharges(200);
+             persistence.storeRental(rentalRafael1);
              
              // 2 COMMENTS
-             comment1 = objectLayer.createComment("great experience", commentDate1, rental1);
-             rental1.setComment(comment1);
-             persistence.storeComment(comment1);
-             
-//             comment2 = objectLayer.createComment("horrible experience", commentDate2, rental2);
-//             rental2.setComment(comment2);
-//             persistence.storeComment(comment2);
+             commentWayne1 = objectLayer.createComment("great experience", commentDate1, rentalWayne1);
+             rentalWayne1.setComment(commentWayne1);
+             persistence.storeComment(commentWayne1);
+             		
+             commentRafael1 = objectLayer.createComment("horrible experience", commentDate2, rentalRafael1);
+             rentalRafael1.setComment(commentRafael1);
+             persistence.storeComment(commentRafael1);
          }
          
          catch (RARException re) {

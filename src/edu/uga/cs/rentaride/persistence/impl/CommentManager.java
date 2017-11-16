@@ -72,7 +72,7 @@ public class CommentManager {
 			}
 			
 			if( comment.getCustomer().getId() > 0 ){
-				pstmt.setLong( 2, comment.getRental().getId() );
+				pstmt.setLong( 2, comment.getRental().getCustomer().getId() );
 			}else{
 				throw new RARException( "Comment.save: can't save a comment: customer undefined" );
 			}
