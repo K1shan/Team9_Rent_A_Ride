@@ -45,13 +45,13 @@ public class AdministratorManager {
 		
 		String updateUserQuery = 
 				"UPDATE USER SET "
-				+ "fname=?, lname=?, uname=?, pword=?, email=?, create_date=? "
+				+ "fname=?, lname=?, uname=?, pword=?, email=?, address=?, create_date=? "
 				+ "WHERE user_id=?";
 		
 		String updateAdministratorQuery = 
 				"UPDATE ADMIN SET "
 						+ "user_id=? "
-						+ "WHERE administrator_id=?";
+						+ "WHERE admin_id=?";
 		
 		String selectUserIdQuery = 
 				"SELECT user_id "
@@ -146,7 +146,7 @@ public class AdministratorManager {
             }
 			
             if( persist )
-                pstmt.setLong( 8, administrator.getId() );
+                pstmt.setLong( 2, administrator.getId() );
 
             System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
@@ -189,10 +189,10 @@ public class AdministratorManager {
 				"SELECT "
 				+ "USER.user_id, USER.fname, USER.lname, USER.uname, USER.pword, USER.email, USER.address, USER.create_date, "
 				+ "ADMIN.admin_id "
-				+ "FROM USER INNER JOIN ADMIN ON USER.user_id = ADMIN.user_id";
+				+ "FROM USER INNER JOIN ADMIN ON USER.user_id=ADMIN.user_id";
 		
-		StringBuffer query = new StringBuffer(100);
-		StringBuffer condition = new StringBuffer(100);
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
 		List<Administrator> administrators = new ArrayList<Administrator>();
 		Statement stmt = null;
 		condition.setLength(0);
@@ -200,7 +200,6 @@ public class AdministratorManager {
 		
 		// NULL CHECKER
 		if( modelAdministrator != null ){
-			
 			if( modelAdministrator.getId() >= 0 ){
 				query.append( " where ADMIN.admin_id = " + modelAdministrator.getId() );
 			}else if( modelAdministrator.getUserName() != null) {

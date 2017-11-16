@@ -77,7 +77,7 @@ public class UpdatePassword extends HttpServlet {
         String         username;
         String		   password;
         
-        username = request.getParameter("username");
+        username = request.getParameter("email");
         password = request.getParameter("password");
 		
 		//Getting the http session and store it into the ssid

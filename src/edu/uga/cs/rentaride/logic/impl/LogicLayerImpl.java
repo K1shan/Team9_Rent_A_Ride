@@ -47,15 +47,14 @@ public class LogicLayerImpl
 
 	@Override
 	public List<Reservation> findLocationReservations( int locationId ) throws RARException {
-		// TODO
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
-		return null;
+		return ctrlLocation.findLocationReservations(locationId);
 	}
 	
 	@Override
 	public List<Vehicle> findLocationVehicles(int locationId) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		return ctrlLocation.findLocationVehicles(locationId);
 	}
 	
 	@Override

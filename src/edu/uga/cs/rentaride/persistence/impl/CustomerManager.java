@@ -222,18 +222,15 @@ public class CustomerManager{
 	public List<Customer> restore(Customer modelCustomer ) 
 		throws RARException{
 		
-    	//Queries
-		
+    	// Queries
 		String selectCustomerQuery = 
 				"SELECT "
 				+ "USER.user_id, USER.fname, USER.lname, USER.uname, USER.pword, USER.email, USER.address, USER.create_date, "
 				+ "CUSTOMER.customer_id, CUSTOMER.member_until, CUSTOMER.lic_state, CUSTOMER.lic_num, CUSTOMER.cc_num, CUSTOMER.cc_exp, CUSTOMER.status "
-				+ "FROM USER INNER JOIN CUSTOMER ON USER.user_id = CUSTOMER.user_id";
+				+ "FROM USER INNER JOIN CUSTOMER ON USER.user_id=CUSTOMER.user_id";
 		
-		
-		
-		StringBuffer query = new StringBuffer(100);
-		StringBuffer condition = new StringBuffer(100);
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
 		List<Customer> customers = new ArrayList<Customer>();
 		Statement stmt = null;
 		condition.setLength(0);
@@ -318,13 +315,6 @@ public class CustomerManager{
                         condition.append( " and" );
                     }
                     condition.append( " CUSTOMER.cc_exp = '" + modelCustomer.getCreditCardExpiration() + "'" );
-                }
-				
-				if(modelCustomer.getUserStatus() != null ) {
-                    if( condition.length() > 0 ){
-                        condition.append( " and" );
-                    }
-                    condition.append( " CUSTOMER.status = '" + modelCustomer.getUserStatus() + "'" );
                 }
 				
 				if( condition.length() > 0 ) {
