@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin.admin.update;
+package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,6 +1,10 @@
-package edu.uga.cs.rentaride.presentation.admin.admin.update;
+package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,6 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleCondition;
+import edu.uga.cs.rentaride.entity.VehicleStatus;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -20,12 +26,12 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class LocationUpdate
+ * Servlet implementation class LocationCreate
  */
-@WebServlet("/VehicleTypeUpdate")
-public class VehicleTypeUpdate extends HttpServlet {
+@WebServlet("/VehicleUpdate")
+public class VehicleUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
@@ -34,7 +40,7 @@ public class VehicleTypeUpdate extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleTypeUpdate() {
+    public VehicleUpdate() {
         super();
     }
 
@@ -71,11 +77,26 @@ public class VehicleTypeUpdate extends HttpServlet {
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;
+        String         ssid; 
 		templateProcessor.setTemplate("AdminView.ftl");
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
-		
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
+		int typeId = Integer.parseInt(request.getParameter("typeId"));
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+		String make = request.getParameter("make");
+		String model = request.getParameter("model");
+		int year = Integer.parseInt(request.getParameter("year"));
+		int mileadge = Integer.parseInt(request.getParameter("mileadge"));
+		String tag = request.getParameter("tag");
+		String serviced = request.getParameter("lastServiced");
+		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
+		VehicleCondition vehicleCondition = VehicleCondition.GOOD;
+		Date lastServiced = null;
+		try {
+			lastServiced = df.parse(serviced);
+		} catch (ParseException e1) {
+			System.out.println("can't parse date.");
+		}
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -94,22 +115,22 @@ public class VehicleTypeUpdate extends HttpServlet {
 			} catch ( Exception e ){
 				status = "Failed to create a session";
 				templateProcessor.addToRoot("status", status);
-				System.out.println("LocationUpdate: "+e.toString());
+				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
-		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		try {
-			logicLayer.updateVehicleType(id, name);
-			status = "Your god!";
+			logicLayer.updateVehicle(vehicleId, typeId, locationId, make, model, year, mileadge, tag, lastServiced, vehicleStatus, vehicleCondition);
+			status = "Successfully updated Vehicle.";
 			templateProcessor.addToRoot("status", status);
-			templateProcessor.processTemplate(response);
-			return;
+    		templateProcessor.processTemplate(response);
+    		return;
 		} catch (RARException e){
-			status = "You can&#8217t do that!";
+			System.out.println("VehicleUpdate: "+e.toString());
+			status = "Failed to update Vehicle.";
 			templateProcessor.addToRoot("status", status);
     		templateProcessor.processTemplate(response);
     		return;
