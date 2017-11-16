@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.create;
 
 import java.io.IOException;
 import java.text.DateFormat;

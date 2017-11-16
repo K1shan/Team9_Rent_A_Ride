@@ -37,7 +37,7 @@ public class RentalImpl
 	public RentalImpl(Date pickupTime, Reservation reservation, Vehicle vehicle){
 		super( -1 );
 		this.pickupTime = pickupTime;
-		this.returnTime = null;
+		this.returnTime = new Date(pickupTime.getTime() + (reservation.getLength()*60*60*1000));
 		this.charges = 0;//vehicle.getVehicleType().getHourlyPrices().get(0).getPrice();
 		this.reservation = reservation;
 		this.vehicle = vehicle;
@@ -59,7 +59,7 @@ public class RentalImpl
 			}
 		}
 		
-		if(this.returnTime.getTime() - this.pickupTime.getTime() > this.reservation.getLength()){
+		if(this.returnTime.getTime() - this.pickupTime.getTime() > this.reservation.getLength()*60*60*1000){
 			return true;
 		}else{
 			return false;

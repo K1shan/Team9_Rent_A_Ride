@@ -193,27 +193,28 @@ public class RentalLocationManager {
 	}
     
     public void delete( RentalLocation rentalLocation ) throws RARException{
-    	String deleteRentalLoco = "DELETE FROM LOCATION WHERE location_id = ?";              
-		PreparedStatement stmt = null;
-		int inscnt = 0;
-		             
+    	String deleteLocationQuery = 
+				"DELETE LOCATION "
+				+ "FROM LOCATION";
 		
-        if( !rentalLocation.isPersistent() ) // is the Club object persistent?  If not, nothing to actually delete
-            return;
-        try {
-            stmt = (PreparedStatement) con.prepareStatement(deleteRentalLoco);         
-            stmt.setLong( 1, rentalLocation.getId() );
-			System.out.println("query: " + stmt.asSql());
-            inscnt = stmt.executeUpdate();          
-            if( inscnt == 1 ) {
-                return;
-            }
-            else
-                throw new RARException( "RentalLocationManager.delete: failed to delete a RentalLocation" );
-        }
-        catch( SQLException e ) {
-        		e.printStackTrace();
-        		throw new RARException( "RentalLocationManager.delete: failed to delete a RentalLocation: " + e );       
-            }
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(deleteLocationQuery);
+		
+		if ( rentalLocation != null ){
+			query.append( " WHERE LOCATION.location_id=" + rentalLocation.getId() );
+		}
+		
+		try {
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			stmt.executeUpdate(query.toString());
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new RARException("RentalLocationManager.delete: failed to delete a location" + e);
+		}
     }
 }

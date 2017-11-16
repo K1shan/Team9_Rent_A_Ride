@@ -29,50 +29,56 @@ public class CustomerManager{
 	@SuppressWarnings("resource")
 	public void store(Customer customer) throws RARException{
 		
-		boolean persist = false;
-		
     	//Queries
 		
-		String userInsertQuery = 
+		String insertUserQuery = 
 				"INSERT INTO USER "
-				+ "(fname, lname, uname, pword, email, address, create_date) "
+				+ "( fname, lname, uname, pword, email, address, create_date ) "
 				+ "VALUES "
-				+ "( ?, ?, ?, ?, ?, ?, ?)"; 
+				+ "( ?, ?, ?, ?, ?, ?, ? )"; 
 		
-		String customerInsertQuery = 
+		String insertCustomerQuery = 
 				"INSERT INTO CUSTOMER "
-				+ "(user_id, member_until, lic_state, lic_num, cc_num, cc_exp, status) "
-				+ "VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+				+ "( user_id, member_until, lic_state, lic_num, cc_num, cc_exp, status ) "
+				+ "VALUES "
+				+ "( ?, ?, ?, ?, ?, ?, ? )";
 		
 		String updateUserQuery = 
 				"UPDATE USER SET "
-				+ "fname=?, lname=?, uname=?, pword=?, email=?, create_date=? "
-				+ "WHERE user_id=?";               
+				+ "fname=?, "
+				+ "lname=?, "
+				+ "uname=?, "
+				+ "pword=?, "
+				+ "email=?, "
+				+ "address=?, "
+				+ "create_date=? "
+				+ "WHERE email=?";               
 		
 		String updateCustomerQuery = 
 				"UPDATE CUSTOMER SET "
-				+ "user_id=?, member_until=?, lic_state=?, lic_num=?, cc_num=?, cc_exp=?, status=? "
+				+ "user_id=?, "
+				+ "member_until=?, "
+				+ "lic_state=?, "
+				+ "lic_num=?, "
+				+ "cc_num=?, "
+				+ "cc_exp=?, "
+				+ "status=? "
 				+ "WHERE customer_id=?";
 		
-		String selectUserIdQuery = 
-				"SELECT user_id "
-				+ "FROM USER "
-				+ "WHERE USER.email=?";
-		
-		PreparedStatement pstmt;
-		int inscnt;
-		long customerID;
-		long userId = 0;
+		PreparedStatement 	pstmt;
+		int 				inscnt;
+		long 				customerId;
+		long 				userId = 0;
 	    
 		/*
 		 * USER
 		 */
 		try {
+			// check if persistent
+			//
 			if( !customer.isPersistent() ){
-				persist = false;
-                pstmt = (PreparedStatement) con.prepareStatement( userInsertQuery );
+                pstmt = (PreparedStatement) con.prepareStatement( insertUserQuery );
 			}else{
-				persist = true;
                 pstmt = (PreparedStatement) con.prepareStatement( updateUserQuery );
 			}
 			
@@ -108,43 +114,41 @@ public class CustomerManager{
             }else
                 throw new RARException( "CustomerManager.save: can't save a user: CreatedDate undefined" );
             if( customer.isPersistent() )
-                pstmt.setLong( 8, customer.getId() );
+                pstmt.setString( 8, customer.getEmail() );
 
 			System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
-
+            
+            // retrieve last incremented id
+            //
+            if( inscnt > 0 ) {
+                String sql = "select last_insert_id()";
+                if( pstmt.execute( sql ) ) {
+                    ResultSet r = pstmt.getResultSet();
+                    while( r.next() ) {
+                        userId = r.getLong( 1 );
+                    }
+                }
+            }
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new RARException( "CustomerManager.save: failed to save a user: " + e );
 		}
 		
-		
-		
-		/*
-		 * Get userId
-		 */
-		try {
-			pstmt = (PreparedStatement) con.prepareStatement( selectUserIdQuery );
-			pstmt.setString(1, customer.getEmail());
-			System.out.println("query: "+pstmt.asSql());
-			ResultSet rs = pstmt.executeQuery();
-			while( rs.next() ) {
-                userId = rs.getLong( 1 );
-            }
-		} catch(SQLException e){
-			e.printStackTrace();
-			throw new RARException( "CustomerManager.save: failed to get userId: " + e );
-		}
+
 
 		/*
 		 * CUSTOMER
 		 */
 		try {
-			if( !persist ){
-				pstmt = (PreparedStatement) con.prepareStatement( customerInsertQuery );
+			// check if persistent
+			//
+			if( !customer.isPersistent() ){
+				pstmt = (PreparedStatement) con.prepareStatement( insertCustomerQuery );
 			}else{
 				pstmt = (PreparedStatement) con.prepareStatement( updateCustomerQuery );
 			}
+			
 			if( userId != 0 )
                 pstmt.setLong( 1, userId );
             else{
@@ -181,29 +185,24 @@ public class CustomerManager{
                 pstmt.setLong( 7, 0);
             else
                 throw new RARException( "CustomerManager.save: can't save a customer: UserStatus undefined" );
-         
         
-            if( persist )
+            if( customer.isPersistent() )
                 pstmt.setLong( 8, customer.getId() );
 
             System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
             
-
+            // retrieve last incremented value if persistent for pk
+            //
             if( !customer.isPersistent() ) {
-                // in case this this object is stored for the first time,
-                // we need to establish its persistent identifier (primary key)
                 if( inscnt == 1 ) {
                     String sql = "select last_insert_id()";
-                    if( pstmt.execute( sql ) ) { // statement returned a result
-                        // retrieve the result
+                    if( pstmt.execute( sql ) ) {
                         ResultSet r = pstmt.getResultSet();
-                        // we will use only the first row!
                         while( r.next() ) {
-                            // retrieve the last insert auto_increment value
-                            customerID = r.getLong( 1 );
-                            if( customerID > 0 )
-                                customer.setId( customerID ); // set this person's db id (proxy object)
+                            customerId = r.getLong( 1 );
+                            if( customerId > 0 )
+                                customer.setId( customerId );
                         }
                     }
                 }
@@ -348,7 +347,6 @@ public class CustomerManager{
 	            String ccNum;
 	            Date ccExp;
 	            while( r.next() ) {
-	            	r.getLong(1);
 	           	 	fname = r.getString(2);
 	                lname = r.getString(3);
 	                uname = r.getString(4);
@@ -383,30 +381,25 @@ public class CustomerManager{
 	}
 
 	public void delete(Customer customer) throws RARException{
-		String deleteCustomerSql = 
+		String deleteCustomerQuery = 
 				"DELETE `USER` "
 				+ "FROM `USER` "
-				+ "INNER JOIN CUSTOMER ON CUSTOMER.user_id=USER.user_id "
-				+ "WHERE CUSTOMER.customer_id=?";
-		PreparedStatement pstmt;
-		int inscnt;
+				+ "INNER JOIN CUSTOMER ON USER.user_id=CUSTOMER.user_id";
 		
-//		if (!customer.isPersistent()) // checks if Customer object is persistent. If not, nothing to delete
-//			return;
-//		
-		
-		System.out.println( "customer: "+customer );
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(deleteCustomerQuery);
+
+		if ( customer != null ){
+			query.append( " WHERE CUSTOMER.user_id=" + customer.getId() );
+		}
 		
 		try {
-			pstmt = (PreparedStatement) con.prepareStatement(deleteCustomerSql);
-			pstmt.setLong(1, customer.getId() );
-			System.out.println( "query: " + pstmt.asSql() );
-			inscnt = pstmt.executeUpdate();
-			if(inscnt == 1) {
-				return;
-			}
-			else
-				throw new RARException("CustomerManager.delete: failed to delete a customer");
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			stmt.executeUpdate(query.toString());
 		}
 		catch(SQLException e) {
 			e.printStackTrace();

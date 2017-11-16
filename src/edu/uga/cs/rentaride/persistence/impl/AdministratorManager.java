@@ -28,48 +28,47 @@ public class AdministratorManager {
 	@SuppressWarnings("resource")
 	public void store(Administrator administrator) throws RARException{
 		
-		boolean persist = false;
-		
-		//Quariers 
-		
-		String userInsertQuery = 
+		// Queries 
+		//
+		String insertUserQuery = 
 				"INSERT INTO USER "
-				+ "(fname, lname, uname, pword, email, address, create_date) "
+				+ "( fname, lname, uname, pword, email, address, create_date ) "
 				+ "VALUES "
 				+ "( ?, ?, ?, ?, ?, ?, ?)";
 		
-		String administratorInsertQuery = 
+		String insertAdministratorQuery = 
 				"INSERT INTO ADMIN "
-				+ "(user_id) "
-				+ "VALUES ( ?)";
+				+ "( user_id ) "
+				+ "VALUES "
+				+ "( ? )";
 		
 		String updateUserQuery = 
 				"UPDATE USER SET "
-				+ "fname=?, lname=?, uname=?, pword=?, email=?, address=?, create_date=? "
-				+ "WHERE user_id=?";
+				+ "fname=?, "
+				+ "lname=?, "
+				+ "uname=?, "
+				+ "pword=?, "
+				+ "email=?, "
+				+ "address=?, "
+				+ "create_date=? "
+				+ "WHERE email=?";
 		
 		String updateAdministratorQuery = 
 				"UPDATE ADMIN SET "
-						+ "user_id=? "
-						+ "WHERE admin_id=?";
-		
-		String selectUserIdQuery = 
-				"SELECT user_id "
-				+ "FROM USER "
-				+ "WHERE USER.email=?";
+				+ "user_id=? "
+				+ "WHERE admin_id=?";
 		
 		PreparedStatement	pstmt;
 		int 				inscnt;
-		long 				administratorID;
-		long userId = 0;
+		long 				administratorId;
+		long 				userId = 0;
 		
 		try {
-			//check if exists
+			//check if persistent
+			//
 			if(!administrator.isPersistent()){
-				persist = false;
-				pstmt = (PreparedStatement) con.prepareStatement(userInsertQuery);
+				pstmt = (PreparedStatement) con.prepareStatement(insertUserQuery);
 			}else{
-				persist = true;
 				pstmt = (PreparedStatement) con.prepareStatement(updateUserQuery);
 			}
 			
@@ -105,74 +104,71 @@ public class AdministratorManager {
             }else
                 throw new RARException( "AdministratorManager.save: can't save a user: CreatedDate undefined" );
             if( administrator.isPersistent() )
-                pstmt.setLong( 8, administrator.getId() );
+                pstmt.setString( 8, administrator.getEmail() );
 
 			System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
-		} catch(SQLException e){
-			e.printStackTrace();
-            throw new RARException( "AdministratorManager.save: failed to save an Administrator: " + e );
-		}
-		
-		/*
-		 * Get userId
-		 */
-		try {
-			pstmt = (PreparedStatement) con.prepareStatement( selectUserIdQuery );
-			pstmt.setString(1, administrator.getEmail());
-			System.out.println("query: "+pstmt.asSql());
-			ResultSet rs = pstmt.executeQuery();
-			while( rs.next() ) {
-                userId = rs.getLong( 1 );
+            
+            // retrieve last incremented id
+            //
+            if( inscnt > 0 ) {
+                String sql = "select last_insert_id()";
+                if( pstmt.execute( sql ) ) {
+                    ResultSet r = pstmt.getResultSet();
+                    while( r.next() ) {
+                        userId = r.getLong( 1 );
+                    }
+                }
+            }else {
+                throw new RARException( "AdministratorManager.save: failed to get userId" ); 
             }
+            
 		} catch(SQLException e){
 			e.printStackTrace();
-			throw new RARException( "AdministratorManager.save: failed to get userId: " + e );
+            throw new RARException( "AdministratorManager.save: failed to save a user: " + e );
 		}
 
 		/*
 		 * ADMIN
 		 */
 		try {
-			if( !persist ){
-				pstmt = (PreparedStatement) con.prepareStatement( administratorInsertQuery );
+			// check if persistent
+			//
+			if( !administrator.isPersistent() ){
+				pstmt = (PreparedStatement) con.prepareStatement( insertAdministratorQuery );
 			}else{
 				pstmt = (PreparedStatement) con.prepareStatement( updateAdministratorQuery );
 			}
+			
 			if( userId != 0 )
                 pstmt.setLong( 1, userId );
             else{
                 throw new RARException( "AdminsitratorManager.save: can't save a administrator: userId undefined" );
             }
 			
-            if( persist )
+            if( administrator.isPersistent() )
                 pstmt.setLong( 2, administrator.getId() );
 
             System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
             
-
+            // retrieve last incremented value if persistent for pk
+            //
             if( !administrator.isPersistent() ) {
-                // in case this this object is stored for the first time,
-                // we need to establish its persistent identifier (primary key)
-                if( inscnt == 1 ) {
+                if( inscnt > 0 ) {
                     String sql = "select last_insert_id()";
-                    if( pstmt.execute( sql ) ) { // statement returned a result
-                        // retrieve the result
+                    if( pstmt.execute( sql ) ) {
                         ResultSet r = pstmt.getResultSet();
-                        // we will use only the first row!
                         while( r.next() ) {
-                            // retrieve the last insert auto_increment value
-                            administratorID = r.getLong( 1 );
-                            if( administratorID > 0 )
-                                administrator.setId( administratorID ); // set this person's db id (proxy object)
+                            administratorId = r.getLong( 1 );
+                            if( administratorId > 0 )
+                                administrator.setId( administratorId );
                         }
                     }
                 }
             }
             else {
-                if( inscnt < 1 )
-                    throw new RARException( "AdministratorManager.save: failed to save a administrator" ); 
+                throw new RARException( "AdministratorManager.save: failed to save a administrator" ); 
             }
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -181,9 +177,7 @@ public class AdministratorManager {
 	}//store
 	
 	
-	public List<Administrator> restore(Administrator modelAdministrator)
-
-			throws RARException{
+	public List<Administrator> restore(Administrator modelAdministrator) throws RARException{
 		
 		String selectAdministratorQuery = 
 				"SELECT "
@@ -299,27 +293,25 @@ public class AdministratorManager {
 	}//restore
 	
 	public void delete(Administrator admin) throws RARException {
-		String deleteAdministratorSql = 
+		String deleteAdministratorQuery = 
 				"DELETE `USER` "
 				+ "FROM `USER` "
-				+ "INNER JOIN ADMIN ON USER.user_id=ADMIN.user_id "
-				+ "WHERE ADMIN.admin_id=?;";
-		PreparedStatement pstmt;
-		int inscnt;
+				+ "INNER JOIN ADMIN ON USER.user_id=ADMIN.user_id";
+		
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(deleteAdministratorQuery);
 
-		if (!admin.isPersistent()) // checks if Administrator object is persistent. If not, nothing to delete
-			return;
+		if ( admin != null ){
+			query.append( " WHERE ADMIN.user_id=" + admin.getId() );
+		}
 		
 		try {
-			pstmt = (PreparedStatement) con.prepareStatement(deleteAdministratorSql);
-			pstmt.setLong( 1, admin.getId() );
-			System.out.println( "query: " + pstmt.asSql() );
-			inscnt = pstmt.executeUpdate();
-			if(inscnt == 1) {
-				return;
-			}
-			else
-				throw new RARException("AdministratorManager.delete: failed to delete an administrator");
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			stmt.executeUpdate(query.toString());
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
