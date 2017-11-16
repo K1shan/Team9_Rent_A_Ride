@@ -28,8 +28,8 @@ import edu.uga.cs.rentaride.entity.RentalLocation;
 /**
  * Servlet implementation class AdminLocation
  */
-@WebServlet("/RetriveLocation")
-public class RetriveLocation extends HttpServlet {
+@WebServlet("/RetrieveLocation")
+public class RetrieveLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -42,7 +42,7 @@ public class RetriveLocation extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetriveLocation() {
+    public RetrieveLocation() {
         super();
     }
 

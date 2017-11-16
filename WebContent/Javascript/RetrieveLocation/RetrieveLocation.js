@@ -1,6 +1,6 @@
 $(document).ready(function() {
 		$.ajax({
-			url: "http://localhost:8080/Team9_Rent_A_Ride/RetriveLocation",
+			url: "http://localhost:8080/Team9_Rent_A_Ride/RetrieveLocation",
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
