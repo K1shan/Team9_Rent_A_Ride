@@ -1,7 +1,6 @@
 package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -18,6 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -25,13 +25,12 @@ import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
 
 /**
  * Servlet implementation class AdminLocation
  */
-@WebServlet("/RetriveLocation")
-public class RetriveLocation extends HttpServlet {
+@WebServlet("/RetrieveType")
+public class RetrieveType extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -44,9 +43,8 @@ public class RetriveLocation extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetriveLocation() {
+    public RetrieveType() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -111,10 +109,10 @@ public class RetriveLocation extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 
 		try {
-			List<RentalLocation> rentalLocations = logicLayer.findLocations( -1 );
+			List<VehicleType> vehicleTypes = logicLayer.findVehicleTypes( -1 );
 			// Making json objects
 			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(rentalLocations, new TypeToken<List<RentalLocation>>() {}.getType());
+			JsonElement element = gson.toJsonTree(vehicleTypes, new TypeToken<List<VehicleType>>() {}.getType());
 			System.out.println("gson element: "+element);
 			// Sending object to js
 			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");

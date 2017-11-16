@@ -15,6 +15,7 @@ import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.Reservation;
 import edu.uga.cs.rentaride.entity.Vehicle;
 import edu.uga.cs.rentaride.entity.VehicleCondition;
+import edu.uga.cs.rentaride.entity.VehicleStatus;
 import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.session.SessionManager;
 import edu.uga.cs.rentaride.logic.*;
@@ -67,8 +68,8 @@ public class LogicLayerImpl
 
 	@Override
 	public List<VehicleType> findVehicleTypes( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
+		return ctrlType.findVehicleTypes(id);
 	}
 
 	@Override
@@ -240,13 +241,6 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
-			int year, int mileadge, String tag, Date lastServiced, int status, int cond) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void updateVehicleType(int typeId, String name) throws RARException {
 		// TODO Auto-generated method stub
 		
@@ -278,8 +272,16 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public void createVehicle(int typeId, int locationId, String make, String model, int year, String mileadge,
-			String tag, String lastServiced, String status, VehicleCondition cond) throws RARException {
+	public void createVehicle(int typeId, int locationId, String make, String model, int year, int mileadge, String tag,
+			Date lastServiced, VehicleStatus vehicleStatus, VehicleCondition vehicleCondition) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
+			int year, int mileadge, String tag, Date lastServiced, VehicleStatus vehicleStatus,
+			VehicleCondition vehicleCondition) throws RARException {
 		// TODO Auto-generated method stub
 		
 	}
