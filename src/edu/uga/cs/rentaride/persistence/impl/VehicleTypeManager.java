@@ -128,9 +128,9 @@ public class VehicleTypeManager{
 	                type_name = rs.getString(2);
                     VehicleType vehicleType = objectLayer.createVehicleType(type_name);
                     vehicleType.setId( type_type_id );
-					vehicleType.getVehicles();
-					vehicleType.getReservations();
-                    vehicleType.getHourlyPrices();
+					//vehicleType.getVehicles();
+					//vehicleType.getReservations();
+                    //vehicleType.getHourlyPrices();
 					vehicleTypes.add( vehicleType );
                 }
                 return vehicleTypes;
