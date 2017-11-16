@@ -33,25 +33,37 @@ public class CustomerManager{
 		
     	//Queries
 		
-		String userInsertQuery = 
+		String insertUserQuery = 
 				"INSERT INTO USER "
-				+ "(fname, lname, uname, pword, email, address, create_date) "
+				+ "( fname, lname, uname, pword, email, address, create_date ) "
 				+ "VALUES "
 				+ "( ?, ?, ?, ?, ?, ?, ?)"; 
 		
-		String customerInsertQuery = 
+		String insertCustomerQuery = 
 				"INSERT INTO CUSTOMER "
-				+ "(user_id, member_until, lic_state, lic_num, cc_num, cc_exp, status) "
+				+ "( user_id, member_until, lic_state, lic_num, cc_num, cc_exp, status ) "
 				+ "VALUES ( ?, ?, ?, ?, ?, ?, ? )";
 		
 		String updateUserQuery = 
 				"UPDATE USER SET "
-				+ "fname=?, lname=?, uname=?, pword=?, email=?, address=?, create_date=? "
+				+ "fname=?, "
+				+ "lname=?, "
+				+ "uname=?, "
+				+ "pword=?, "
+				+ "email=?, "
+				+ "address=?, "
+				+ "create_date=? "
 				+ "WHERE email=?";               
 		
 		String updateCustomerQuery = 
 				"UPDATE CUSTOMER SET "
-				+ "user_id=?, member_until=?, lic_state=?, lic_num=?, cc_num=?, cc_exp=?, status=? "
+				+ "user_id=?, "
+				+ "member_until=?, "
+				+ "lic_state=?, "
+				+ "lic_num=?, "
+				+ "cc_num=?, "
+				+ "cc_exp=?, "
+				+ "status=? "
 				+ "WHERE customer_id=?";
 		
 		String selectUserIdQuery = 
@@ -70,7 +82,7 @@ public class CustomerManager{
 		try {
 			if( !customer.isPersistent() ){
 				persist = false;
-                pstmt = (PreparedStatement) con.prepareStatement( userInsertQuery );
+                pstmt = (PreparedStatement) con.prepareStatement( insertUserQuery );
 			}else{
 				persist = true;
                 pstmt = (PreparedStatement) con.prepareStatement( updateUserQuery );
@@ -140,7 +152,7 @@ public class CustomerManager{
 		 */
 		try {
 			if( !persist ){
-				pstmt = (PreparedStatement) con.prepareStatement( customerInsertQuery );
+				pstmt = (PreparedStatement) con.prepareStatement( insertCustomerQuery );
 			}else{
 				pstmt = (PreparedStatement) con.prepareStatement( updateCustomerQuery );
 			}

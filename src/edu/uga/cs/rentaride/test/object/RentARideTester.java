@@ -84,11 +84,14 @@ public class RentARideTester
         	 long membershipLength = 24*60*60*1000;
         	 Date createDate = new Date();
         	 Date dateMemberTill = new Date(createDate.getTime() + membershipLength);
+        	 Date ccExp = new Date();
         	 Date dateReservation1 = new Date();
         	 Date dateReservation2 = new Date();
         	 Date dateReservation3 = new Date();
         	 Date dateReservation4 = new Date();
         	 DateFormat df1 = new SimpleDateFormat( "yyyy-MM-dd" );
+        	 DateFormat ccFormat = new SimpleDateFormat( "MM-yy" );
+        	 ccExp = ccFormat.parse( "11-19" );
         	 dateReservation1 = df1.parse( "2017-10-20" );
         	 dateReservation2 = df1.parse( "2017-10-22" );
         	 dateReservation3 = df1.parse( "2017-10-24" );
@@ -129,13 +132,13 @@ public class RentARideTester
              persistence.storeAdministrator(adminAlex);
              
              // 4 CUSTOMERS
-             customerWayne = objectLayer.createCustomer("Wayne", "Kung", "wayneCustomer@uga.edu", "w", "wayneCustomer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "111111111", "1111111111111111", createDate);
+             customerWayne = objectLayer.createCustomer("Wayne", "Kung", "wayneCustomer@uga.edu", "w", "wayneCustomer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "111111111", "1111111111111111", ccExp);
              persistence.storeCustomer(customerWayne);
-             customerRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbCustomer@uga.edu", "r", "rbbCustomer@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "222222222", "2222222222222222", createDate);
+             customerRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbCustomer@uga.edu", "r", "rbbCustomer@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "222222222", "2222222222222222", ccExp);
              persistence.storeCustomer(customerRafael);
-             customerKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995Customer@uga.edu", "k", "kp021995Customer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "333333333", "3333333333333333", createDate);
+             customerKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995Customer@uga.edu", "k", "kp021995Customer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "333333333", "3333333333333333", ccExp);
              persistence.storeCustomer(customerKishan);
-             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexCustomer@uga.edu", "a", "alexCustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "444444444", "4444444444444444", createDate );
+             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexCustomer@uga.edu", "a", "alexCustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "444444444", "4444444444444444", ccExp );
              persistence.storeCustomer(customerAlex);
         	 
         	 // 2 LOCATIONS
