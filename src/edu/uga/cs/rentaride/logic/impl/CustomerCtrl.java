@@ -19,7 +19,7 @@ public class CustomerCtrl {
 		if(id < 0)
 			return objectLayer.findCustomer(null);
 		
-		Customer modelCustomer = null;
+		Customer modelCustomer = objectLayer.createCustomer();
 		modelCustomer.setId(id);
 		return objectLayer.findCustomer(modelCustomer);
 	}

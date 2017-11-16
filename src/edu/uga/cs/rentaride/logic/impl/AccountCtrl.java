@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import edu.uga.cs.rentaride.*;
-import edu.uga.cs.rentaride.entity.Administrator;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.entity.Customer;
+import edu.uga.cs.rentaride.entity.Rental;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.entity.impl.UserImpl;
 import edu.uga.cs.rentaride.object.*;
@@ -21,6 +22,25 @@ public class AccountCtrl {
     public AccountCtrl( ObjectLayer objectModel ){
         this.objectLayer = objectModel;
     }
+    
+    public List<Customer> findCustomers( int id ) throws RARException{
+    	Customer modelCustomer = objectLayer.createCustomer();
+		if(id < 0)
+			return objectLayer.findCustomer(null);
+		
+		modelCustomer.setId(id);
+		return objectLayer.findCustomer(modelCustomer);
+	}
+    
+    public List<Administrator> findAdministrators( int id ) throws RARException{
+    	Administrator modelAdministrator = objectLayer.createAdministrator();
+    	
+		if(id < 0)
+			return objectLayer.findAdministrator(null);
+		
+		modelAdministrator.setId(id);
+		return objectLayer.findAdministrator(modelAdministrator);
+	}
     
     //check isCustomer
 	public String checkCustomerCredentials( Session session, String email, String password ) throws RARException{
