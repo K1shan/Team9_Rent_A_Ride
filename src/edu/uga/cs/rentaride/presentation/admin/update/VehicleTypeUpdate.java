@@ -67,14 +67,15 @@ public class VehicleTypeUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusUpdateTypeG = "";
+		String statusUpdateTypeB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		int id = Integer.parseInt(request.getParameter("id"));
-		String name = request.getParameter("name");
+		int id = Integer.parseInt(request.getParameter("select1"));
+		String name = request.getParameter("type");
 		
 		
 		//Getting the http session and store it into the ssid
@@ -92,8 +93,8 @@ public class VehicleTypeUpdate extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				statusUpdateTypeB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
 				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -104,15 +105,13 @@ public class VehicleTypeUpdate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		try {
 			logicLayer.updateVehicleType(id, name);
-			status = "Your god!";
-			templateProcessor.addToRoot("status", status);
+			statusUpdateTypeG = "Amazing!";
+			templateProcessor.addToRoot("statusUpdateTypeG", statusUpdateTypeG);
 			templateProcessor.processTemplate(response);
-			return;
 		} catch (RARException e){
-			status = "You can&#8217t do that!";
-			templateProcessor.addToRoot("status", status);
-    		templateProcessor.processTemplate(response);
-    		return;
+			statusUpdateTypeB = "Huh ?";
+			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
+    			templateProcessor.processTemplate(response);
 		}
 	}
 	

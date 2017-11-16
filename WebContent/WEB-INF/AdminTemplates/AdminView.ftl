@@ -12,12 +12,15 @@
 <script type = "text/javascript" src="Javascript/Null/AdminView/deleteLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addType.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveType/RetrieveType.js"></script>
+
 </head>
 
 <#include "AdminNavbar.ftl">
 
-<body>
-	<div class="modal">
+<body>	
+
+<div class="modal">
 
 	
  		<div class="tab">
@@ -240,9 +243,7 @@
 					
 					
 						<select id="select1" name="select1" class="minimal">
-							<option value="">Select</option>
-							<option value="USD">United States Dollar</option>
-							<option value="ARS">Argentinean Peso</option>
+								<option value="">Select</option>
 						</select>
 					
 		  				<p class="float-label">
@@ -278,10 +279,8 @@
 					<form class="form" id="admin" action="VehicleTypeDelete" method='post' name="admin">
 					
 					
-						<select id="select1" name="select1" class="minimal">
-							<option value="">Select</option>
-							<option value="USD">United States Dollar</option>
-							<option value="ARS">Argentinean Peso</option>
+						<select id="select2" name="select2" class="minimal">
+								<option value="">Select</option>
 						</select>
 					
 		  				<p class="float-label">
@@ -310,6 +309,6 @@
 		  		</div>
 			</div>
 		</div>
-	
+
 </body>
 </html>
