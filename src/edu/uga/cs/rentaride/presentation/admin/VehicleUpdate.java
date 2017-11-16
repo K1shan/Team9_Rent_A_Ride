@@ -1,6 +1,10 @@
 package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,6 +16,8 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleCondition;
+import edu.uga.cs.rentaride.entity.VehicleStatus;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -22,8 +28,8 @@ import freemarker.template.TemplateExceptionHandler;
 /**
  * Servlet implementation class LocationCreate
  */
-@WebServlet("/LocationDelete")
-public class LocationDelete extends HttpServlet {
+@WebServlet("/VehicleUpdate")
+public class VehicleUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	Configuration cfg = null;
@@ -34,7 +40,7 @@ public class LocationDelete extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LocationDelete() {
+    public VehicleUpdate() {
         super();
     }
 
@@ -43,40 +49,54 @@ public class LocationDelete extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
-				// version (here 2.3.25) do you want to apply the fixes that are not 100%
-				// backward-compatible. See the Configuration JavaDoc for details.
-				cfg = new Configuration(Configuration.VERSION_2_3_25);
+		// version (here 2.3.25) do you want to apply the fixes that are not 100%
+		// backward-compatible. See the Configuration JavaDoc for details.
+		cfg = new Configuration(Configuration.VERSION_2_3_25);
 
-				// Specify the source where the template files come from.
-				cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+		// Specify the source where the template files come from.
+		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
 
-				// Sets how errors will appear.
-				// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
-				// This handler outputs the stack trace information to the client, formatting it so 
-				// that it will be usually well readable in the browser, and then re-throws the exception.
-				//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-				cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+		// Sets how errors will appear.
+		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
+		// This handler outputs the stack trace information to the client, formatting it so 
+		// that it will be usually well readable in the browser, and then re-throws the exception.
+		//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 
-				// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
-				// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
-				//		cfg.setLogTemplateExceptions(false);
-				templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
+		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
+		//		cfg.setLogTemplateExceptions(false);
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
 		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;
+        String         ssid; 
 		templateProcessor.setTemplate("AdminView.ftl");
-		
-        String id = request.getParameter("id");
-        int locationId = Integer.parseInt(id);
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
+		int typeId = Integer.parseInt(request.getParameter("typeId"));
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+		String make = request.getParameter("make");
+		String model = request.getParameter("model");
+		int year = Integer.parseInt(request.getParameter("year"));
+		int mileadge = Integer.parseInt(request.getParameter("mileadge"));
+		String tag = request.getParameter("tag");
+		String serviced = request.getParameter("lastServiced");
+		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
+		VehicleCondition vehicleCondition = VehicleCondition.GOOD;
+		Date lastServiced = null;
+		try {
+			lastServiced = df.parse(serviced);
+		} catch (ParseException e1) {
+			System.out.println("can't parse date.");
+		}
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -95,26 +115,23 @@ public class LocationDelete extends HttpServlet {
 			} catch ( Exception e ){
 				status = "Failed to create a session";
 				templateProcessor.addToRoot("status", status);
-				System.out.println("LocationDelete: "+e.toString());
+				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
-		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		
 		try {
-			logicLayer.deleteLocation(locationId);
-			status = "Successfully deleted location.";
+			logicLayer.updateVehicle(vehicleId, typeId, locationId, make, model, year, mileadge, tag, lastServiced, vehicleStatus, vehicleCondition);
+			status = "Successfully updated Vehicle.";
 			templateProcessor.addToRoot("status", status);
-			templateProcessor.processTemplate(response);
-			return;
+    		templateProcessor.processTemplate(response);
+    		return;
 		} catch (RARException e){
-			status = "Failed to delete location.";
+			System.out.println("VehicleUpdate: "+e.toString());
+			status = "Failed to update Vehicle.";
 			templateProcessor.addToRoot("status", status);
-			System.out.println("LocationDelete: "+e.toString());
     		templateProcessor.processTemplate(response);
     		return;
 		}

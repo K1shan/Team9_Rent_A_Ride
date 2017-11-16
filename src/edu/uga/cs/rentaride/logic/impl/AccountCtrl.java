@@ -1,16 +1,12 @@
 package edu.uga.cs.rentaride.logic.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import edu.uga.cs.rentaride.*;
 import edu.uga.cs.rentaride.entity.Administrator;
 import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.impl.CustomerImpl;
 import edu.uga.cs.rentaride.entity.impl.UserImpl;
 import edu.uga.cs.rentaride.object.*;
 import edu.uga.cs.rentaride.session.Session;
@@ -80,7 +76,6 @@ public class AccountCtrl {
 	public void resetUserPassword(String email, String password) throws RARException{
 		String fname;
 		String lname;
-		String uname;
 		String address;
 		Date createDate;
 		Date membershipExpiration;

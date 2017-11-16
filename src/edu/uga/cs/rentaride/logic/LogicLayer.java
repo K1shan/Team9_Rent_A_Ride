@@ -143,8 +143,8 @@ public interface LogicLayer {
 
 	/**
 	 * 
-	 * @param vehicleType
-	 * @param rentalLocation
+	 * @param typeId
+	 * @param locationId
 	 * @param make
 	 * @param model
 	 * @param year
@@ -156,8 +156,8 @@ public interface LogicLayer {
 	 * @return
 	 * @throws RARException
 	 */
-	public void createVehicle( VehicleType vehicleType, RentalLocation rentalLocation, String make, String model, int year, int mileadge, 
-			String tag, Date lastServiced, int status, int cond ) throws RARException;
+	public void createVehicle( int typeId, int locationId, String make, String model, int year, int mileadge, 
+			String tag, Date lastServiced, VehicleStatus vehicleStatus, VehicleCondition vehicleCondition ) throws RARException;
 	
 	/**
 	 * 
@@ -241,15 +241,15 @@ public interface LogicLayer {
 	 * @param cond
 	 * @throws RARException
 	 */
-	public void updateVehicle ( VehicleType vehicleType, RentalLocation rentalLocation, String make, String model, int year, int mileadge, 
-			String tag, Date lastServiced, int status, int cond ) throws RARException;
+	public void updateVehicle ( int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model, int year, int mileadge, 
+			String tag, Date lastServiced, VehicleStatus vehicleStatus, VehicleCondition vehicleCondition ) throws RARException;
 	
 	/**
 	 * 
 	 * @param name
 	 * @throws RARException
 	 */
-	public void updateVehicleType ( String name ) throws RARException;
+	public void updateVehicleType ( int typeId, String name ) throws RARException;
 	
 	/**
 	 * 
@@ -258,7 +258,7 @@ public interface LogicLayer {
 	 * @param price
 	 * @throws RARException
 	 */
-	public void updateHourlyPrice ( VehicleType vehicleType, int maxHrs, int price ) throws RARException;
+	public void updateHourlyPrice ( int hourlyPriceId, int vehicleTypeId, int maxHrs, int price ) throws RARException;
 	
 	/**
 	 * 
@@ -269,8 +269,8 @@ public interface LogicLayer {
 	 * @param customer
 	 * @throws RARException
 	 */
-	public void updateReservation ( Date pickupTime, int rentalLength, VehicleType type, 
-			RentalLocation rentalLocation, Customer customer ) throws RARException;
+	public void updateReservation ( int reservationId, Date pickupTime, int rentalLength, int typeId, 
+			int rentalLocationId, int customerId ) throws RARException;
 	
 	/**
 	 * 
@@ -279,7 +279,7 @@ public interface LogicLayer {
 	 * @param vehicle
 	 * @throws RARException
 	 */
-	public void updateRental ( Date pickupTime, Reservation reservation, Vehicle vehicle ) throws RARException;
+	public void updateRental ( int rentalId, Date pickupTime, int reservationId, int vehicleId ) throws RARException;
 	
 	/**
 	 * 
@@ -288,7 +288,7 @@ public interface LogicLayer {
 	 * @param commentDate
 	 * @throws RARException
 	 */
-	public void updateComment ( Rental rental, String text, Date commentDate ) throws RARException;
+	public void updateComment ( int commentId, int rentalId, String text, Date commentDate ) throws RARException;
 	
 	/**
 	 * 
