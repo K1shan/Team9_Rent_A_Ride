@@ -1,7 +1,5 @@
 package edu.uga.cs.rentaride.logic.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -9,13 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import edu.uga.cs.rentaride.*;
-import edu.uga.cs.rentaride.entity.Administrator;
-import edu.uga.cs.rentaride.entity.Customer;
-import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.impl.AdministratorImpl;
-import edu.uga.cs.rentaride.entity.impl.UserImpl;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.object.*;
-import edu.uga.cs.rentaride.session.SessionManager;
 
 
 public class CreateAccountCtrl {

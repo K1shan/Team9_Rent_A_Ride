@@ -73,8 +73,8 @@ public class LogicLayerImpl
 
 	@Override
 	public List<HourlyPrice> findHourlyPrices( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		HourlyPriceCtrl ctrlPrice = new HourlyPriceCtrl ( objectLayer );
+		return ctrlPrice.findHourlyPrices(id);
 	}
 
 	@Override
@@ -103,8 +103,8 @@ public class LogicLayerImpl
 
 	@Override
 	public List<Administrator> findAdministrators( int id ) throws RARException {
-		// TODO Auto-generated method stub
-		return null;
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		return ctrlAccount.findAdministrators(id);
 	}
     
 	@Override
@@ -140,6 +140,8 @@ public class LogicLayerImpl
 		return ctrlCreateAccount.setAdmin(username);
 	}
 
+	
+	
 	@Override
 	public void createLocation(String name, String address, String city, String state, String zip, String path,
 			int capacity) throws RARException {
@@ -149,38 +151,39 @@ public class LogicLayerImpl
 
 	@Override
 	public void createType(String name) throws RARException {
-		// TODO Auto-generated method stub
 		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
 		ctrlType.createType(name);
-		
 	}
 
 	@Override
-	public void createHourlyPrice(VehicleType vehicleType, int maxHrs, int price) throws RARException {
-		// TODO Auto-generated method stub
+	public void createHourlyPrice(int vehicleTypeId, int maxHrs, int price) throws RARException {
 		HourlyPriceCtrl ctrlPrice = new HourlyPriceCtrl ( objectLayer );
-		
-	}
-
-	@Override
-	public void createReservation(Date pickupTime, int rentalLength, VehicleType type, RentalLocation rentalLocation,
-			Customer customer) throws RARException {
-		// TODO Auto-generated method stub
-		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
-
-	}
-
-	@Override
-	public void createRental(Date pickupTime, Reservation reservation, Vehicle vehicle) throws RARException {
-		// TODO Auto-generated method stub
-		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
-
+		ctrlPrice.createHourlyPrice(vehicleTypeId, maxHrs, price);
 	}
 	
 	@Override
-	public void createComment(Rental rental, String text, Date commentDate) throws RARException {
+	public void createVehicle(int typeId, int locationId, String make, String model, int year, int mileadge, String tag,
+			Date lastServiced, VehicleStatus vehicleStatus, VehicleCondition vehicleCondition) throws RARException {
 		// TODO Auto-generated method stub
-		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
+		
+	}
+	
+	@Override
+	public void createReservation(Date pickupTime, int rentalLength, int vehicleTypeId, int locationId, int customerId)
+			throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createRental(Date pickupTime, int reservationId, int vehicleId) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createComment(int rentalId, String text, Date commentDate) throws RARException {
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -189,6 +192,45 @@ public class LogicLayerImpl
 			int capacity) throws RARException {
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
 		ctrlLocation.updateLocation(name, address, city, state, zip, path, capacity);
+	}
+	
+	@Override
+	public void updateVehicleType(int typeId, String name) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateReservation(int reservationId, Date pickupTime, int rentalLength, int typeId,
+			int rentalLocationId, int customerId) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
+			int year, int mileadge, String tag, Date lastServiced, VehicleStatus vehicleStatus,
+			VehicleCondition vehicleCondition) throws RARException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -237,52 +279,6 @@ public class LogicLayerImpl
 	public void resetUserPassword(String email, String password) throws RARException {
 		AccountCtrl accountControl = new AccountCtrl(objectLayer);
 		accountControl.resetUserPassword(email, password);
-		
-	}
-
-	@Override
-	public void updateVehicleType(int typeId, String name) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateReservation(int reservationId, Date pickupTime, int rentalLength, int typeId,
-			int rentalLocationId, int customerId) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void createVehicle(int typeId, int locationId, String make, String model, int year, int mileadge, String tag,
-			Date lastServiced, VehicleStatus vehicleStatus, VehicleCondition vehicleCondition) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
-			int year, int mileadge, String tag, Date lastServiced, VehicleStatus vehicleStatus,
-			VehicleCondition vehicleCondition) throws RARException {
-		// TODO Auto-generated method stub
 		
 	}
 }

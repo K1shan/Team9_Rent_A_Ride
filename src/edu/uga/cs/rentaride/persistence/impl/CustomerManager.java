@@ -26,7 +26,6 @@ public class CustomerManager{
 		this.objectLayer = objectLayer;
 	}//constructor
 	
-	@SuppressWarnings("resource")
 	public void store(Customer customer) throws RARException{
 		
     	//Queries
@@ -128,13 +127,19 @@ public class CustomerManager{
                     while( r.next() ) {
                         userId = r.getLong( 1 );
                     }
+                    pstmt.close();
                 }
             }
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new RARException( "CustomerManager.save: failed to save a user: " + e );
 		}
-		
+		try {
+			pstmt.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 
 		/*
