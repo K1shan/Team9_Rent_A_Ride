@@ -29,20 +29,19 @@ public class CustomerManager{
 	@SuppressWarnings("resource")
 	public void store(Customer customer) throws RARException{
 		
-		boolean persist = false;
-		
     	//Queries
 		
 		String insertUserQuery = 
 				"INSERT INTO USER "
 				+ "( fname, lname, uname, pword, email, address, create_date ) "
 				+ "VALUES "
-				+ "( ?, ?, ?, ?, ?, ?, ?)"; 
+				+ "( ?, ?, ?, ?, ?, ?, ? )"; 
 		
 		String insertCustomerQuery = 
 				"INSERT INTO CUSTOMER "
 				+ "( user_id, member_until, lic_state, lic_num, cc_num, cc_exp, status ) "
-				+ "VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+				+ "VALUES "
+				+ "( ?, ?, ?, ?, ?, ?, ? )";
 		
 		String updateUserQuery = 
 				"UPDATE USER SET "
@@ -66,25 +65,20 @@ public class CustomerManager{
 				+ "status=? "
 				+ "WHERE customer_id=?";
 		
-		String selectUserIdQuery = 
-				"SELECT user_id "
-				+ "FROM USER "
-				+ "WHERE USER.email=?";
-		
-		PreparedStatement pstmt;
-		int inscnt;
-		long customerID;
-		long userId = 0;
+		PreparedStatement 	pstmt;
+		int 				inscnt;
+		long 				customerId;
+		long 				userId = 0;
 	    
 		/*
 		 * USER
 		 */
 		try {
+			// check if persistent
+			//
 			if( !customer.isPersistent() ){
-				persist = false;
                 pstmt = (PreparedStatement) con.prepareStatement( insertUserQuery );
 			}else{
-				persist = true;
                 pstmt = (PreparedStatement) con.prepareStatement( updateUserQuery );
 			}
 			
@@ -124,38 +118,37 @@ public class CustomerManager{
 
 			System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
+            
+            // retrieve last incremented id
+            //
+            if( inscnt > 0 ) {
+                String sql = "select last_insert_id()";
+                if( pstmt.execute( sql ) ) {
+                    ResultSet r = pstmt.getResultSet();
+                    while( r.next() ) {
+                        userId = r.getLong( 1 );
+                    }
+                }
+            }
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new RARException( "CustomerManager.save: failed to save a user: " + e );
 		}
 		
-		
-		
-		/*
-		 * Get userId
-		 */
-		try {
-			pstmt = (PreparedStatement) con.prepareStatement( selectUserIdQuery );
-			pstmt.setString(1, customer.getEmail());
-			System.out.println("query: "+pstmt.asSql());
-			ResultSet rs = pstmt.executeQuery();
-			while( rs.next() ) {
-                userId = rs.getLong( 1 );
-            }
-		} catch(SQLException e){
-			e.printStackTrace();
-			throw new RARException( "CustomerManager.save: failed to get userId: " + e );
-		}
+
 
 		/*
 		 * CUSTOMER
 		 */
 		try {
-			if( !persist ){
+			// check if persistent
+			//
+			if( !customer.isPersistent() ){
 				pstmt = (PreparedStatement) con.prepareStatement( insertCustomerQuery );
 			}else{
 				pstmt = (PreparedStatement) con.prepareStatement( updateCustomerQuery );
 			}
+			
 			if( userId != 0 )
                 pstmt.setLong( 1, userId );
             else{
@@ -192,29 +185,24 @@ public class CustomerManager{
                 pstmt.setLong( 7, 0);
             else
                 throw new RARException( "CustomerManager.save: can't save a customer: UserStatus undefined" );
-         
         
-            if( persist )
+            if( customer.isPersistent() )
                 pstmt.setLong( 8, customer.getId() );
 
             System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
             
-
+            // retrieve last incremented value if persistent for pk
+            //
             if( !customer.isPersistent() ) {
-                // in case this this object is stored for the first time,
-                // we need to establish its persistent identifier (primary key)
                 if( inscnt == 1 ) {
                     String sql = "select last_insert_id()";
-                    if( pstmt.execute( sql ) ) { // statement returned a result
-                        // retrieve the result
+                    if( pstmt.execute( sql ) ) {
                         ResultSet r = pstmt.getResultSet();
-                        // we will use only the first row!
                         while( r.next() ) {
-                            // retrieve the last insert auto_increment value
-                            customerID = r.getLong( 1 );
-                            if( customerID > 0 )
-                                customer.setId( customerID ); // set this person's db id (proxy object)
+                            customerId = r.getLong( 1 );
+                            if( customerId > 0 )
+                                customer.setId( customerId );
                         }
                     }
                 }

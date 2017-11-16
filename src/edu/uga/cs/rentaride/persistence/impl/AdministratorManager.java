@@ -60,11 +60,12 @@ public class AdministratorManager {
 		
 		PreparedStatement	pstmt;
 		int 				inscnt;
-		long 				administratorID;
+		long 				administratorId;
 		long 				userId = 0;
 		
 		try {
-			//check if exists
+			//check if persistent
+			//
 			if(!administrator.isPersistent()){
 				pstmt = (PreparedStatement) con.prepareStatement(insertUserQuery);
 			}else{
@@ -108,14 +109,13 @@ public class AdministratorManager {
 			System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
             
+            // retrieve last incremented id
+            //
             if( inscnt > 0 ) {
                 String sql = "select last_insert_id()";
-                if( pstmt.execute( sql ) ) { // statement returned a result
-                    // retrieve the result
+                if( pstmt.execute( sql ) ) {
                     ResultSet r = pstmt.getResultSet();
-                    // we will use only the first row!
                     while( r.next() ) {
-                        // retrieve the last insert auto_increment value
                         userId = r.getLong( 1 );
                     }
                 }
@@ -132,6 +132,8 @@ public class AdministratorManager {
 		 * ADMIN
 		 */
 		try {
+			// check if persistent
+			//
 			if( !administrator.isPersistent() ){
 				pstmt = (PreparedStatement) con.prepareStatement( insertAdministratorQuery );
 			}else{
@@ -150,20 +152,17 @@ public class AdministratorManager {
             System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
             
+            // retrieve last incremented value if persistent for pk
+            //
             if( !administrator.isPersistent() ) {
-                // in case this this object is stored for the first time,
-                // we need to establish its persistent identifier (primary key)
                 if( inscnt > 0 ) {
                     String sql = "select last_insert_id()";
-                    if( pstmt.execute( sql ) ) { // statement returned a result
-                        // retrieve the result
+                    if( pstmt.execute( sql ) ) {
                         ResultSet r = pstmt.getResultSet();
-                        // we will use only the first row!
                         while( r.next() ) {
-                            // retrieve the last insert auto_increment value
-                            administratorID = r.getLong( 1 );
-                            if( administratorID > 0 )
-                                administrator.setId( administratorID ); // set this person's db id (proxy object)
+                            administratorId = r.getLong( 1 );
+                            if( administratorId > 0 )
+                                administrator.setId( administratorId );
                         }
                     }
                 }
