@@ -1,7 +1,10 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.admin.update;
 
 import java.io.IOException;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,30 +14,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleCondition;
+import edu.uga.cs.rentaride.entity.VehicleStatus;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.*;
 
 /**
- * Servlet implementation class AdminLocation
+ * Servlet implementation class LocationCreate
  */
-@WebServlet("/RetrieveCustomers")
-public class RetrieveCustomers extends HttpServlet {
+@WebServlet("/VehicleUpdate")
+public class VehicleUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	Configuration cfg = null;
 	
-	//This the folder the it will return too
+	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
@@ -42,7 +40,7 @@ public class RetrieveCustomers extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetrieveCustomers() {
+    public VehicleUpdate() {
         super();
     }
 
@@ -79,7 +77,26 @@ public class RetrieveCustomers extends HttpServlet {
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
+        String         ssid; 
+		templateProcessor.setTemplate("AdminView.ftl");
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
+		int typeId = Integer.parseInt(request.getParameter("typeId"));
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+		String make = request.getParameter("make");
+		String model = request.getParameter("model");
+		int year = Integer.parseInt(request.getParameter("year"));
+		int mileadge = Integer.parseInt(request.getParameter("mileadge"));
+		String tag = request.getParameter("tag");
+		String serviced = request.getParameter("lastServiced");
+		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
+		VehicleCondition vehicleCondition = VehicleCondition.GOOD;
+		Date lastServiced = null;
+		try {
+			lastServiced = df.parse(serviced);
+		} catch (ParseException e1) {
+			System.out.println("can't parse date.");
+		}
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -94,32 +111,32 @@ public class RetrieveCustomers extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
+				status = "Failed to create a session";
 				templateProcessor.addToRoot("status", status);
+				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
-        
 		logicLayer = session.getLogicLayer();
-
+		User user = session.getUser();
+		templateProcessor.addToRoot("user", user.getFirstName());
 		try {
-			List<Customer> customers = logicLayer.findCustomers( -1 );
-			// Making json objects
-			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(customers, new TypeToken<List<Customer>>() {}.getType());
-			System.out.println("gson element: "+element);
-			// Sending object to js
-			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
-			response.getWriter().print(jsonArray);
-		} catch (RARException e) {
-			
-			e.printStackTrace();
+			logicLayer.updateVehicle(vehicleId, typeId, locationId, make, model, year, mileadge, tag, lastServiced, vehicleStatus, vehicleCondition);
+			status = "Successfully updated Vehicle.";
+			templateProcessor.addToRoot("status", status);
+    		templateProcessor.processTemplate(response);
+    		return;
+		} catch (RARException e){
+			System.out.println("VehicleUpdate: "+e.toString());
+			status = "Failed to update Vehicle.";
+			templateProcessor.addToRoot("status", status);
+    		templateProcessor.processTemplate(response);
+    		return;
 		}
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

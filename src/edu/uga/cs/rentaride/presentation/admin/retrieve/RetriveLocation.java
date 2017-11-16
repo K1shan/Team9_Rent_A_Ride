@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.retrieve;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,13 +23,13 @@ import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.*;
+import edu.uga.cs.rentaride.entity.RentalLocation;
 
 /**
  * Servlet implementation class AdminLocation
  */
-@WebServlet("/RetrieveRental")
-public class RetrieveRental extends HttpServlet {
+@WebServlet("/RetriveLocation")
+public class RetriveLocation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -42,7 +42,7 @@ public class RetrieveRental extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetrieveRental() {
+    public RetriveLocation() {
         super();
     }
 
@@ -106,10 +106,10 @@ public class RetrieveRental extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 
 		try {
-			List<Rental> rentals = logicLayer.findRentals( -1 );
+			List<RentalLocation> rentalLocations = logicLayer.findLocations( -1 );
 			// Making json objects
 			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(rentals, new TypeToken<List<Rental>>() {}.getType());
+			JsonElement element = gson.toJsonTree(rentalLocations, new TypeToken<List<RentalLocation>>() {}.getType());
 			System.out.println("gson element: "+element);
 			// Sending object to js
 			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
@@ -118,12 +118,19 @@ public class RetrieveRental extends HttpServlet {
 			
 			e.printStackTrace();
 		}
+		
+		
+//		templateProcessor.setTemplate("AdminLocation.ftl");
+//		templateProcessor.addToRoot("user", user.getFirstName());
+//		templateProcessor.processTemplate(response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
 }

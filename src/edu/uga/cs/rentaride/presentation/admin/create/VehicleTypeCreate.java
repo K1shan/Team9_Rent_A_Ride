@@ -1,7 +1,6 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.create;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,39 +10,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.*;
 
 /**
- * Servlet implementation class AdminLocation
+ * Servlet implementation class VehicleTypeCreate
  */
-@WebServlet("/RetrieveReservation")
-public class RetrieveReservation extends HttpServlet {
+@WebServlet("/VehicleTypeCreate")
+public class VehicleTypeCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	Configuration cfg = null;
 	
-	//This the folder the it will return too
+	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetrieveReservation() {
+    public VehicleTypeCreate() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -75,11 +68,16 @@ public class RetrieveReservation extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusAddTypeG = "";
+		String statusAddTypeB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
+        String         ssid;
+		templateProcessor.setTemplate("AdminView.ftl");
+		
+		// TODO
+		String typeName = request.getParameter("type");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -94,30 +92,37 @@ public class RetrieveReservation extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-				
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				
+				statusAddTypeB = "Failed to create a session";
+				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
-        
+		
 		logicLayer = session.getLogicLayer();
-
+		User user = null;
+		user = session.getUser();
+		templateProcessor.addToRoot("user", user.getFirstName());
+		
 		try {
-			List<Reservation> reservations = logicLayer.findReservations( -1 );
-			// Making json objects
-			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(reservations, new TypeToken<List<Reservation>>() {}.getType());
-			System.out.println("gson element: "+element);
-			// Sending object to js
-			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
-			response.getWriter().print(jsonArray);
-		} catch (RARException e) {
 			
-			e.printStackTrace();
+			logicLayer.createType(typeName);
+			statusAddTypeG = "Woohoo!";
+			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			templateProcessor.processTemplate(response);
+		} catch (RARException e){
+			
+			statusAddTypeB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+			System.out.println("VehicleTypeCreate: "+e.toString());
+    			templateProcessor.processTemplate(response);
+    			return;
 		}
+
 	}
 
 	/**
@@ -126,4 +131,5 @@ public class RetrieveReservation extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

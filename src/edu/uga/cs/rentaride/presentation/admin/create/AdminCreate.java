@@ -1,7 +1,6 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.create;
 
 import java.io.IOException;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.persistence.PersistenceLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -20,23 +20,22 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class VehicleTypeCreate
+ * Servlet implementation class AdminView
  */
-@WebServlet("/VehicleTypeCreate")
-public class VehicleTypeCreate extends HttpServlet {
+@WebServlet("/AdminCreate")
+public class AdminCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-       
+	private PersistenceLayer persistenceLayer = null;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleTypeCreate() {
+    public AdminCreate() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -61,23 +60,20 @@ public class VehicleTypeCreate extends HttpServlet {
 		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
 		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
 		//		cfg.setLogTemplateExceptions(false);
-		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);	
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusAddTypeG = "";
-		String statusAddTypeB = "";
+		String statusAddAdminG = "";
+		String statusAddAdminB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-		templateProcessor.setTemplate("AdminView.ftl");
-		
-		// TODO
-		String typeName = request.getParameter("type");
+        String uname = request.getParameter("username");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -92,37 +88,38 @@ public class VehicleTypeCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-		 		
+				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				
-				statusAddTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-				System.out.println("LocationCreate: "+e.toString());
+				statusAddAdminB = e.toString();
+				templateProcessor.addToRoot("statusAddAdminB", statusAddAdminB);
 				templateProcessor.processTemplate(response);
 			}
 		}
+		
+		
 		
 		logicLayer = session.getLogicLayer();
 		User user = null;
 		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		
+		long num;
 		try {
 			
-			logicLayer.createType(typeName);
-			statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			logicLayer.setAdmin(uname);
+			statusAddAdminG = "Okie dokie";
+			templateProcessor.addToRoot("statusAddAdminG", statusAddAdminG);
+			templateProcessor.setTemplate("AdminView.ftl");
 			templateProcessor.processTemplate(response);
-		} catch (RARException e){
+		} catch(RARException e){
 			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("VehicleTypeCreate: "+e.toString());
-    			templateProcessor.processTemplate(response);
-    			return;
+			statusAddAdminB = "Who are you!?";
+			templateProcessor.addToRoot("statusAddAdminB", statusAddAdminB);
+			templateProcessor.setTemplate("AdminView.ftl");
+			templateProcessor.processTemplate(response);
 		}
-
+		
+;
 	}
 
 	/**

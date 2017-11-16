@@ -1,6 +1,7 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.retrieve;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,23 +11,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.uga.cs.rentaride.RARException;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.Vehicle;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import edu.uga.cs.rentaride.RARException;
 
 /**
- * Servlet implementation class LocationUpdate
+ * Servlet implementation class AdminLocation
  */
-@WebServlet("/VehicleTypeDelete")
-public class VehicleTypeDelete extends HttpServlet {
+@WebServlet("/RetrieveVehicle")
+public class RetrieveVehicle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
+	
+	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
@@ -34,7 +43,7 @@ public class VehicleTypeDelete extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleTypeDelete() {
+    public RetrieveVehicle() {
         super();
     }
 
@@ -71,9 +80,7 @@ public class VehicleTypeDelete extends HttpServlet {
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;
-		templateProcessor.setTemplate("AdminView.ftl");
-		int id = Integer.parseInt(request.getParameter("name"));
+        String         ssid;		
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -88,32 +95,34 @@ public class VehicleTypeDelete extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
+				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
+				status = e.toString();
 				templateProcessor.addToRoot("status", status);
-				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
-		
+        
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+
 		try {
-			logicLayer.deleteVehicleType(id);
-			status = "Your god!";
-			templateProcessor.addToRoot("status", status);
-			templateProcessor.processTemplate(response);
-			return;
-		} catch (RARException e){
-			status = "You can&#8217t do that!";
-			templateProcessor.addToRoot("status", status);
-    		templateProcessor.processTemplate(response);
-    		return;
+			List<Vehicle> vehicles = logicLayer.findVehicles( -1 );
+			// Making json objects
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(vehicles, new TypeToken<List<Vehicle>>() {}.getType());
+			System.out.println("gson element: "+element);
+			// Sending object to js
+			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		} catch (RARException e) {
+			
+			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

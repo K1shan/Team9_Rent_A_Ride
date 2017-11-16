@@ -1,6 +1,7 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.admin.update;
 
 import java.io.IOException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.persistence.PersistenceLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -20,21 +20,21 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminView
+ * Servlet implementation class LocationUpdate
  */
-@WebServlet("/AdminCreate")
-public class AdminCreate extends HttpServlet {
+@WebServlet("/VehicleTypeUpdate")
+public class VehicleTypeUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private PersistenceLayer persistenceLayer = null;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminCreate() {
+    public VehicleTypeUpdate() {
         super();
     }
 
@@ -60,20 +60,22 @@ public class AdminCreate extends HttpServlet {
 		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
 		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
 		//		cfg.setLogTemplateExceptions(false);
-		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);	
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusAddAdminG = "";
-		String statusAddAdminB = "";
+		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-        String uname = request.getParameter("username");
+		templateProcessor.setTemplate("AdminView.ftl");
+		int id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -88,45 +90,36 @@ public class AdminCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusAddAdminB = e.toString();
-				templateProcessor.addToRoot("statusAddAdminB", statusAddAdminB);
+				status = "Failed to create a session";
+				templateProcessor.addToRoot("status", status);
+				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
 		
-		
-		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		long num;
 		try {
-			
-			logicLayer.setAdmin(uname);
-			statusAddAdminG = "Okie dokie";
-			templateProcessor.addToRoot("statusAddAdminG", statusAddAdminG);
-			templateProcessor.setTemplate("AdminView.ftl");
+			logicLayer.updateVehicleType(id, name);
+			status = "Your god!";
+			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
-		} catch(RARException e){
-			
-			statusAddAdminB = "Who are you!?";
-			templateProcessor.addToRoot("statusAddAdminB", statusAddAdminB);
-			templateProcessor.setTemplate("AdminView.ftl");
-			templateProcessor.processTemplate(response);
+			return;
+		} catch (RARException e){
+			status = "You can&#8217t do that!";
+			templateProcessor.addToRoot("status", status);
+    		templateProcessor.processTemplate(response);
+    		return;
 		}
-		
-;
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

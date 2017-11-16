@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.retrieve;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,8 +28,8 @@ import edu.uga.cs.rentaride.entity.*;
 /**
  * Servlet implementation class AdminLocation
  */
-@WebServlet("/RetrieveAdministrators")
-public class RetrieveAdministrators extends HttpServlet {
+@WebServlet("/RetrieveCustomers")
+public class RetrieveCustomers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -42,7 +42,7 @@ public class RetrieveAdministrators extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetrieveAdministrators() {
+    public RetrieveCustomers() {
         super();
     }
 
@@ -106,10 +106,10 @@ public class RetrieveAdministrators extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 
 		try {
-			List<Administrator> administrators = logicLayer.findAdministrators( -1 );
+			List<Customer> customers = logicLayer.findCustomers( -1 );
 			// Making json objects
 			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(administrators, new TypeToken<List<Administrator>>() {}.getType());
+			JsonElement element = gson.toJsonTree(customers, new TypeToken<List<Customer>>() {}.getType());
 			System.out.println("gson element: "+element);
 			// Sending object to js
 			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");

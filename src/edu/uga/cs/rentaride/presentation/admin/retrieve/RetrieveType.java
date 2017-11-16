@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.retrieve;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.Vehicle;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -29,8 +29,8 @@ import edu.uga.cs.rentaride.RARException;
 /**
  * Servlet implementation class AdminLocation
  */
-@WebServlet("/RetrieveVehicle")
-public class RetrieveVehicle extends HttpServlet {
+@WebServlet("/RetrieveType")
+public class RetrieveType extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -43,7 +43,7 @@ public class RetrieveVehicle extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetrieveVehicle() {
+    public RetrieveType() {
         super();
     }
 
@@ -109,10 +109,10 @@ public class RetrieveVehicle extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 
 		try {
-			List<Vehicle> vehicles = logicLayer.findVehicles( -1 );
+			List<VehicleType> vehicleTypes = logicLayer.findVehicleTypes( -1 );
 			// Making json objects
 			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(vehicles, new TypeToken<List<Vehicle>>() {}.getType());
+			JsonElement element = gson.toJsonTree(vehicleTypes, new TypeToken<List<VehicleType>>() {}.getType());
 			System.out.println("gson element: "+element);
 			// Sending object to js
 			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");

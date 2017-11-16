@@ -1,6 +1,6 @@
 $(document).ready(function() {
 		$.ajax({
-			url: "http://localhost:8080/Team9_Rent_A_Ride/RetriveLocation",
+			url: "http://localhost:8080/Team9_Rent_A_Ride/RetrieveType",
 			type: "GET",
 			dataType: "JSON",
 			success: function(data) {
@@ -8,11 +8,8 @@ $(document).ready(function() {
 				
 				 $.each(data, function(index, element) {
 
-					 var image = element.path;
-					 var ava = element.capacity;
 					 var name = element.name;
-					 var address = element.address+", "+element.city+", "+element.state;
-					 var zip = element.zip;
+					 var id = element.id;
 					 
 					 html += '<div class="ui">';
 					 	html += '<div class="screen">';

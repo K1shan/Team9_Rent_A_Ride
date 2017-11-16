@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.admin.delete;
 
 import java.io.IOException;
 
@@ -20,12 +20,12 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class LocationCreate
+ * Servlet implementation class LocationUpdate
  */
-@WebServlet("/LocationDelete")
-public class LocationDelete extends HttpServlet {
+@WebServlet("/VehicleTypeDelete")
+public class VehicleTypeDelete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+       
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
@@ -34,7 +34,7 @@ public class LocationDelete extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LocationDelete() {
+    public VehicleTypeDelete() {
         super();
     }
 
@@ -43,41 +43,37 @@ public class LocationDelete extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
-				// version (here 2.3.25) do you want to apply the fixes that are not 100%
-				// backward-compatible. See the Configuration JavaDoc for details.
-				cfg = new Configuration(Configuration.VERSION_2_3_25);
+		// version (here 2.3.25) do you want to apply the fixes that are not 100%
+		// backward-compatible. See the Configuration JavaDoc for details.
+		cfg = new Configuration(Configuration.VERSION_2_3_25);
 
-				// Specify the source where the template files come from.
-				cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+		// Specify the source where the template files come from.
+		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
 
-				// Sets how errors will appear.
-				// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
-				// This handler outputs the stack trace information to the client, formatting it so 
-				// that it will be usually well readable in the browser, and then re-throws the exception.
-				//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-				cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+		// Sets how errors will appear.
+		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
+		// This handler outputs the stack trace information to the client, formatting it so 
+		// that it will be usually well readable in the browser, and then re-throws the exception.
+		//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 
-				// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
-				// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
-				//		cfg.setLogTemplateExceptions(false);
-				templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
+		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
+		//		cfg.setLogTemplateExceptions(false);
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		String statusDeleteLocationG = "";
-		String statusDeleteLocationB = "";
+		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		
-        String id = request.getParameter("id");
-        int locationId = Integer.parseInt(id);
+		int id = Integer.parseInt(request.getParameter("name"));
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -94,30 +90,27 @@ public class LocationDelete extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusDeleteLocationB = "Failed to create a session";
-				templateProcessor.addToRoot("statusDeleteLocationB", statusDeleteLocationB);
-				System.out.println("LocationDelete: "+e.toString());
+				status = "Failed to create a session";
+				templateProcessor.addToRoot("status", status);
+				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		
 		try {
-			
-			logicLayer.deleteLocation(locationId);
-			statusDeleteLocationG = "Yay!";
-			templateProcessor.addToRoot("statusDeleteLocationG", statusDeleteLocationG);
+			logicLayer.deleteVehicleType(id);
+			status = "Your god!";
+			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
+			return;
 		} catch (RARException e){
-			
-			statusDeleteLocationB = "very funny";
-			templateProcessor.addToRoot("statusDeleteLocationB", statusDeleteLocationB);
-//			System.out.println("LocationDelete: "+e.toString());
-    			templateProcessor.processTemplate(response);
+			status = "You can&#8217t do that!";
+			templateProcessor.addToRoot("status", status);
+    		templateProcessor.processTemplate(response);
+    		return;
 		}
 	}
 	
