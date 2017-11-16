@@ -9,6 +9,9 @@
 <script type = "text/javascript" src="Javascript/Null/AdminView/addAdmin.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/deleteLocation.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/addType.js"></script>
 </head>
 
 <#include "AdminNavbar.ftl">
