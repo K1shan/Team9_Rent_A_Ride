@@ -1,7 +1,4 @@
 
-*.class
-
-*.class
 
 *.class
 
@@ -10,16 +7,15 @@ build/classes/edu/uga/cs/rentaride/persistence/impl/PersistenceLayerImpl.class
 build/classes/edu/uga/cs/rentaride/persistence/impl/PersistenceLayerImpl.class
 
 build/classes/edu/uga/cs/rentaride/persistence/impl/RentalManager.class
-<<<<<<< Updated upstream
-*.class
+
 *.class
 build/classes/edu/uga/cs/rentaride/entity/impl/CommentImpl.class
-=======
 
->>>>>>> Stashed changes
-*.class
 
 *.class
 
-*.class
-*.class
+build/classes/edu/uga/cs/rentareide/.DS_Store
+build/classes/edu/uga/cs/.DS_Store
+build/classes/edu/uga/cs/rentareide/presentation/.DS_Store
+build/classes/edu/uga/cs/rentaride/presentation/.DS_Store
+
