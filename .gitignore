@@ -19,5 +19,11 @@ build/classes/edu/uga/cs/.DS_Store
 build/classes/edu/uga/cs/rentareide/presentation/.DS_Store
 build/classes/edu/uga/cs/rentaride/presentation/.DS_Store
 
+<<<<<<< Updated upstream
 *.class
+=======
+
+*.class
+
+>>>>>>> Stashed changes
 *.class

@@ -90,9 +90,7 @@ public class AccountCtrl {
    	 	return ssid;
 	} // checkAdmin
 	
-	public void resetUserPassword(String email, String password) throws RARException{
-		String fname;
-		String lname;
+	public void resetUserPassword(String email, String password, String fname, String lname) throws RARException{
 		String address;
 		Date createDate;
 		Date membershipExpiration;
@@ -104,6 +102,8 @@ public class AccountCtrl {
 		Customer modelCustomer = objectLayer.createCustomer();
 		long customerId;
    	 	modelCustomer.setEmail(email);
+   	 	modelCustomer.setFirstName(fname);
+   	 	modelCustomer.setLastName(lname);
    	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
    	 	if(customers.size() > 0){
 	 		customer = customers.get( 0 );
@@ -126,6 +126,8 @@ public class AccountCtrl {
  			Administrator modelAdministrator = objectLayer.createAdministrator();
  			long adminId;
  			modelAdministrator.setEmail(email);
+ 			modelAdministrator.setFirstName(fname);
+ 			modelAdministrator.setLastName(lname);
  			List<Administrator> administrators = objectLayer.findAdministrator(modelAdministrator);
  			if(administrators.size() > 0){
  				administrator = administrators.get( 0 );

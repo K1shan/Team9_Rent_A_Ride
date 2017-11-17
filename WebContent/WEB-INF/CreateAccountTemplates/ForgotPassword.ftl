@@ -42,6 +42,15 @@
 
    				<form class="form" action="UpdatePassword" method='get'>
 
+					<p class="float-label">
+        				<input type="text" id="fname" name="fname" placeholder="First Name"/>
+      				</p>
+      				
+      				<p class="float-label">
+        				<input type="text" id="lname" name="lname" placeholder="Last Name"/>
+      				</p>
+
+				
    					<!-- User input for email -->
       				<p class="float-label">
         				<input type="text" id="username" name="email" placeholder="Email"/>

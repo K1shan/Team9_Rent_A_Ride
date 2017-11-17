@@ -276,9 +276,9 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public void resetUserPassword(String email, String password) throws RARException {
+	public void resetUserPassword(String email, String password, String fname, String lname) throws RARException {
 		AccountCtrl accountControl = new AccountCtrl(objectLayer);
-		accountControl.resetUserPassword(email, password);
+		accountControl.resetUserPassword(email, password, fname, lname);
 		
 	}
 }

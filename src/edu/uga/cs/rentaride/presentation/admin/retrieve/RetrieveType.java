@@ -106,7 +106,7 @@ public class RetrieveType extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		templateProcessor.addToRoot("user", user.getFirstName());
+//		templateProcessor.addToRoot("user", user.getFirstName());
 
 		try {
 			List<VehicleType> vehicleTypes = logicLayer.findVehicleTypes( -1 );

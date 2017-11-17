@@ -77,9 +77,13 @@ public class UpdatePassword extends HttpServlet {
         String         ssid;
         String         username;
         String		   password;
+        String         fname;
+        String		   lname;
         
         username = request.getParameter("email");
         password = request.getParameter("password");
+        fname = request.getParameter("fname");
+        lname = request.getParameter("lname");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -106,7 +110,8 @@ public class UpdatePassword extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		
 		try {
-			logicLayer.resetUserPassword(username, password);
+			
+			logicLayer.resetUserPassword(username, fname, lname, password);
 			statusUpdatePasswordG = "Woohoo!";
 			templateProcessor.setTemplate("SigninCreateForm.ftl");
 			templateProcessor.addToRoot("statusUpdatePasswordG", statusUpdatePasswordG);

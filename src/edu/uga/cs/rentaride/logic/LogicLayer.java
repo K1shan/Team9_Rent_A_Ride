@@ -387,5 +387,16 @@ public interface LogicLayer {
 	 */
 	public String checkAdminCredentials ( Session session, String email, String password ) throws RARException;
 
-	public void resetUserPassword (String email, String password) throws RARException;
+	
+	/**
+	 * 
+	 * @param session
+	 * @param email
+	 * @param password
+	 * @param fname
+	 * @param lname
+	 * @return
+	 * @throws RARException
+	 */
+	public void resetUserPassword (String email, String password, String fname, String lname) throws RARException;
 }

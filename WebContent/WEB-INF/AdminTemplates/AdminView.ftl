@@ -13,15 +13,38 @@
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addType.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveType/RetrieveType.js"></script>
-
+<script type = "text/javascript" src="Javascript/tab.js"></script>
 </head>
 
 <#include "AdminNavbar.ftl">
 
 <body>	
 
-<div class="modal">
 
+  <div class="tabbs">
+    <ul>
+      <li><a href="#section1">Section 1</a></li>
+      <li><a href="#section2">Section 2</a></li>
+      <li><a href="#section3">Section 3</a></li>
+      <li><a href="#section4">Section 4</a></li>
+      <li><a href="#section5">Section 5</a></li>
+    </ul>
+    <section id="section1">
+      Hello
+    </section>
+    <section id="section2">
+      HI
+    </section>
+    <section id="section3">
+
+    </section>
+    <section id="section5">
+  
+
+    </section>
+  </div>
+
+<div class="modal">
 	
  		<div class="tab">
 			<label class="head">ADD ADMIN</label>
@@ -250,7 +273,7 @@
 		    					<input type="text" id="type" name="type" placeholder="Vehicle Type ID"/>
 		  				</p>
 		  				<p>
-		    				<input class = "type" type="submit" onclick="return typeCreateNullCheck()" value="UPDATE VEHICLE TYPE" />
+		    				<input class = "type" type="submit" onclick="return typeUpdateNullCheck()" value="UPDATE VEHICLE TYPE" />
 		  				</p>
 		  				
 		  				<#if statusUpdateTypeG??>
@@ -287,7 +310,7 @@
 		    					<input type="text" id="type" name="type" placeholder="Vehicle Type ID"/>
 		  				</p>
 		  				<p>
-		    				<input class = "type" type="submit" onclick="return typeCreateNullCheck()" value="DELETE VEHICLE TYPE" />
+		    				<input class = "type" type="submit" onclick="return typeDeleteNullCheck()" value="DELETE VEHICLE TYPE" />
 		  				</p>
 		  				
 		  				<#if statusDeleteTypeB??>

@@ -112,9 +112,7 @@ public class HourlyPriceCreate extends HttpServlet {
 		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
-		try {
-			
-		}
+
 	}
 
 	/**
