@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -71,10 +72,9 @@ public class HourlyPriceCreate extends HttpServlet {
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
 		
-		String typeId = request.getParameter("vehicleTypeId");
-		String maxHours = request.getParameter("maxHours");
-		String price = request.getParameter("vehiclePrice");
-		
+		int maxHours = Integer.parseInt(request.getParameter("maxHours"));
+		int price = Integer.parseInt(request.getParameter("vehiclePrice"));
+		int typeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
@@ -112,6 +112,19 @@ public class HourlyPriceCreate extends HttpServlet {
 		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
+		try {
+			logicLayer.createHourlyPrice(typeId, maxHours, price);
+			statusAddTypeG = "Woohoo!";
+			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			templateProcessor.processTemplate(response);
+		}catch (RARException e){
+			
+			statusAddTypeB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+			System.out.println("VehicleTypeCreate: "+e.toString());
+    			templateProcessor.processTemplate(response);
+    			return;
+		}
 
 	}
 
