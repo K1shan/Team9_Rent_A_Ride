@@ -56,5 +56,27 @@ public class HourlyPriceCtrl {
 		hourlyPrice = objectLayer.createHourlyPrice(maxHrs, price, vehicleType);
 		objectLayer.storeHourlyPrice(hourlyPrice);
 	}
+
+	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) {
+		// TODO Auto-generated method stub
+		long typeId = 0;
+		
+		HourlyPrice modelPrice = objectLayer.createHourlyPrice();
+		modelPrice.setId(hourlyPriceId);
+		List<HourlyPrice> hourlyPrices = objectLayer.findHourlyPrice(modelPrice);
+		HourlyPrice hourlyPrice = null;
+		if(hourlyPrices.size() > 0){
+			hourlyPrice = hourlyPrices.get(0);
+			typeId = hourlyPrice.getId();
+		}
+		if(hourlyPrice == null) {
+			throw new RARException( "A location with this name does not exist" );
+		}
+
+		hourlyPrice = null;
+		hourlyPrice = objectLayer.createHourlyPrice(vehicleTypeId, maxHrs, price);
+		hourlyPrice.setId(typeId);
+		objectLayer.storeHourlyPrice(hourlyPrice);
+	}
 	
 }
