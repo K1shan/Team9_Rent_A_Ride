@@ -205,32 +205,32 @@ public class LogicLayerImpl
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void updateReservation(int reservationId, Date pickupTime, int rentalLength, int typeId,
-			int rentalLocationId, int customerId) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
 			int year, int mileadge, String tag, Date lastServiced, VehicleStatus vehicleStatus,
 			VehicleCondition vehicleCondition) throws RARException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void updateReservation(int reservationId, Date pickupTime, int rentalLength, int typeId,
+			int rentalLocationId, int customerId) throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.updateReservation(reservationId, pickupTime, rentalLength, typeId, rentalLocationId, customerId);
+	}
+
+	@Override
+	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
+		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
+		ctrlRental.updateRental(rentalId, pickupTime, reservationId, vehicleId);
+	}
+
+	@Override
+	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
+		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
+		ctrlComment.updateComment(commentId, rentalId, text, commentDate);
 	}
 
 	@Override

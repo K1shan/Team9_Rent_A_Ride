@@ -66,4 +66,40 @@ public class CommentCtrl {
 	
 		objectLayer.deleteComment(comment);
 	}
+	
+	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
+		
+		// check if rental already exists
+		//
+		Rental modelRental = objectLayer.createRental();
+		modelRental.setId(rentalId);
+		List<Rental> rentals = objectLayer.findRental(modelRental);
+		Rental rental = null;
+		if(rentals.size() > 0) 
+			rental = rentals.get(0);
+		
+		// check if rental is found
+		//
+		if(rental == null) 
+			throw new RARException("A rental with this id does not exist exist");
+				
+		// check if comment already exists
+		//
+		modelComment = objectLayer.createComment();
+		modelComment.setId(commentId);
+		comments = objectLayer.findComment(modelComment);
+		if(comments.size() > 0){
+			comment = comments.get(0);
+		}
+		
+		// check if comment found
+		//
+		if(comment == null)
+			throw new RARException( "A comment with this id does not exist." );
+		
+		comment = null;
+		comment = objectLayer.createComment(text, commentDate, rental);
+		comment.setId(commentId);
+		objectLayer.storeComment(comment);
+	}
 }
