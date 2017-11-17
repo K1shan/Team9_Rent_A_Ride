@@ -42,7 +42,7 @@ public class VehicleCtrl {
 			vehicleType = vehicleTypes.get(0);
 		}
 		if(vehicleType == null) {
-			throw new RARException("A vehicle type with this name does not exist exists");
+			throw new RARException("A vehicle type with this name does not exist exist");
 		}
 		
 		// check if location exists
@@ -56,8 +56,8 @@ public class VehicleCtrl {
 		
 		// check if location found
 		//
-		if(rentalLocation != null)
-			throw new RARException( "A location with this name already exists" );
+		if(rentalLocation == null)
+			throw new RARException( "A location with this name does not exist" );
 		
 		
 		// check if vehicle already exists

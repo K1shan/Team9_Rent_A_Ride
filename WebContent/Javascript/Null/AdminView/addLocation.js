@@ -1,5 +1,5 @@
 // This will check if the user and password field are null in sign in form
-function locationAddNullCheck(){
+function locationCreateAddNullCheck(){
 	
 	var name = document.getElementById("nameAdd").value;
 	var add = document.getElementById("addressAdd").value;
@@ -20,10 +20,10 @@ function locationAddNullCheck(){
 	}else if(state === ""){
 		alert("State field is blank");
 		return false;
-	}else if(zip === ""){
+	}else if(zip === "" && zip > 0 && isNaN(zip)){
 		alert("Zip field is blank");
 		return false;
-	}else if(ava === ""){
+	}else if(ava === "" && ava > 0 && isNaN(ava)){
 		alert("Avalibility field is blank");
 		return false;
 	}else if( document.getElementById("pic").files.length == 0 ){

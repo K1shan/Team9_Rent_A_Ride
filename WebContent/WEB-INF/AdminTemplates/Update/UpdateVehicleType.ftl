@@ -11,7 +11,7 @@
 					<input type="text" id="type" name="type" placeholder="Vehicle Type"/>
 			</p>
 			<p>
-				<input class = "type" type="submit" onclick="return typeUpdateNullCheck()" value="UPDATE VEHICLE TYPE" />
+				<input class = "type" type="submit" onclick="return vehicleUpdateTypeNullCheck()" value="UPDATE VEHICLE TYPE" />
 			</p>
 			  				
 			<#if statusUpdateTypeG??>

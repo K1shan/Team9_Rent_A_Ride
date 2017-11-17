@@ -14,7 +14,8 @@ $(document).ready(function() {
 					 $('#select1').append($('<option>').text(id + ' - ' +  name).attr('value', id));
 					 $('#select2').append($('<option>').text(id + ' - ' +  name).attr('value', id));
 					 $('#select3').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-					 
+					 $('#selectVehicleType').append($('<option>').text(name).attr('value', id));
+					 $('#selectVehicleTypeUpdate').append($('<option>').text(name).attr('value', id));
 					 	 
 				 });
 

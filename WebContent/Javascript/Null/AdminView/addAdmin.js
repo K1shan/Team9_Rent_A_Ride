@@ -1,5 +1,5 @@
 // This will check if the user and password field are null in sign in form
-function adminNullCheck(){
+function adminCreateNullCheck(){
 	
 	var username = document.getElementById("email").value;
 	if(username === ""){

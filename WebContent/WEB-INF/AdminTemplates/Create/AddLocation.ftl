@@ -31,7 +31,7 @@
 				<input type="file" id="picAdd" name="picAdd"/>
 			</p>			
 			<p>
-				<input class = "location" type="submit" onclick="return locationAddNullCheck()" value="ADD LOCATION" />
+				<input class = "location" type="submit" onclick="return locationCreateAddNullCheck()" value="ADD LOCATION" />
 			</p>
 		
 			<#if statusAddLocationG??>
