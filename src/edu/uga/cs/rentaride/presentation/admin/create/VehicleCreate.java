@@ -85,7 +85,7 @@ public class VehicleCreate extends HttpServlet {
 		String make = request.getParameter("make");
 		String model = request.getParameter("model");
 		int year = Integer.parseInt(request.getParameter("year"));
-		int mileadge = Integer.parseInt(request.getParameter("mileadge"));
+		int mileage = Integer.parseInt(request.getParameter("mileage"));
 		String tag = request.getParameter("tag");
 		String serviced = request.getParameter("lastServiced");
 		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
@@ -122,7 +122,7 @@ public class VehicleCreate extends HttpServlet {
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		try {
-			logicLayer.createVehicle(typeId, locationId, make, model, year, mileadge, tag, lastServiced, vehicleStatus, vehicleCondition);
+			logicLayer.createVehicle(typeId, locationId, make, model, year, mileage, tag, lastServiced, vehicleStatus, vehicleCondition);
 			status = "Successfully created Vehicle.";
 			templateProcessor.addToRoot("status", status);
     		templateProcessor.processTemplate(response);
