@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin.create;
+package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -16,8 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleCondition;
-import edu.uga.cs.rentaride.entity.VehicleStatus;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -26,21 +24,21 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class LocationCreate
+ * Servlet implementation class ReservationUpdate
  */
-@WebServlet("/VehicleCreate")
-public class VehicleCreate extends HttpServlet {
+@WebServlet("/ReservationUpdate")
+public class ReservationUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleCreate() {
+    public ReservationUpdate() {
         super();
     }
 
@@ -73,25 +71,31 @@ public class VehicleCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusAddVehicleG = "";
-		String statusAddVehicleB = "";
+		
+		String statusAddTypeG = "";
+		String statusAddTypeB = "";
+		
+		Date pickupTime = null;
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		int rentalLength = Integer.parseInt(request.getParameter("pickupTime"));
+		int vehicleTypeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+		int customerId = Integer.parseInt(request.getParameter("customerId"));
+		int reservationId = Integer.parseInt(request.getParameter("reservationId"));
+		String pickupTimeString = request.getParameter("pickupTime");
+		
+		try {
+			pickupTime = df.parse(pickupTimeString);
+		} catch (ParseException e1) {
+			System.out.println("can't parse date.");
+		}
+		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid; 
+        String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		int typeId = Integer.parseInt(request.getParameter("selectVehicleType"));
-		int locationId = Integer.parseInt(request.getParameter("selectLocation"));
-		String make = request.getParameter("make");
-		String model = request.getParameter("model");
-		int year = Integer.parseInt(request.getParameter("year"));
-		int mileage = Integer.parseInt(request.getParameter("mileage"));
-		String tag = request.getParameter("tag");
-		String serviced = "";
-		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
-		VehicleCondition vehicleCondition = VehicleCondition.GOOD;
-		Date lastServiced = new Date();
+
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -106,36 +110,41 @@ public class VehicleCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusAddVehicleB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddVehicleB", statusAddVehicleB);
+				
+				statusAddTypeB = "Failed to create a session";
+				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
+		
 		logicLayer = session.getLogicLayer();
-		User user = session.getUser();
+		User user = null;
+		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		
 		try {
-			logicLayer.createVehicle(typeId, locationId, make, model, year, mileage, tag, lastServiced, vehicleStatus, vehicleCondition);
-			statusAddVehicleG = "Thats Dope";
-			templateProcessor.addToRoot("statusAddVehicleG", statusAddVehicleG);
-    		templateProcessor.processTemplate(response);
+			logicLayer.updateReservation(reservationId, pickupTime, rentalLength, vehicleTypeId, locationId, customerId);
+			statusAddTypeG = "Woohoo!";
+			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			templateProcessor.processTemplate(response);
+		}catch(RARException e) {
+			statusAddTypeB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+			System.out.println("ReservationCreate: "+e.toString());
+			templateProcessor.processTemplate(response);
 			return;
-		} catch (RARException e){
-			System.out.println("VehicleCreate: "+e.toString());
-			statusAddVehicleB = "file has bad magic.";
-			templateProcessor.addToRoot("statusAddVehicleB", statusAddVehicleB);
-    		templateProcessor.processTemplate(response);
-    		return;
 		}
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

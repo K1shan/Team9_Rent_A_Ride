@@ -7,7 +7,7 @@
 				<input type="text" id="email" name="email" placeholder="Email"/>
 			</p>
 			<p>
-				<input class = "admin" type="submit" onclick="return adminNullCheck()" value="ADD ADMIN" />
+				<input class = "admin" type="submit" onclick="return adminCreateNullCheck()" value="ADD ADMIN" />
 			</p>
   				
 			<#if statusAddAdminG??>

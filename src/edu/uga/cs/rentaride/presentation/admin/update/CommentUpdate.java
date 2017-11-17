@@ -1,4 +1,4 @@
-package edu.uga.cs.rentaride.presentation.admin.create;
+package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -16,8 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleCondition;
-import edu.uga.cs.rentaride.entity.VehicleStatus;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -26,43 +24,43 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class LocationCreate
+ * Servlet implementation class CommentUpdate
  */
-@WebServlet("/VehicleCreate")
-public class VehicleCreate extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@WebServlet("/CommentUpdate")
+public class CommentUpdate extends HttpServlet {
 	
+	private static final long serialVersionUID = 1L;
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleCreate() {
+    public CommentUpdate() {
         super();
     }
 
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
-	public void init() throws ServletException {
+	public void init(ServletConfig config) throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
 		// version (here 2.3.25) do you want to apply the fixes that are not 100%
 		// backward-compatible. See the Configuration JavaDoc for details.
 		cfg = new Configuration(Configuration.VERSION_2_3_25);
-
+	
 		// Specify the source where the template files come from.
 		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
-
+	
 		// Sets how errors will appear.
 		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
 		// This handler outputs the stack trace information to the client, formatting it so 
 		// that it will be usually well readable in the browser, and then re-throws the exception.
 		//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
-
+	
 		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
 		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
 		//		cfg.setLogTemplateExceptions(false);
@@ -73,25 +71,27 @@ public class VehicleCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusAddVehicleG = "";
-		String statusAddVehicleB = "";
+		String statusAddTypeG = "";
+		String statusAddTypeB = "";
+		
+		Date commentDate = null;
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		int rentalId = Integer.parseInt(request.getParameter("rentalId"));
+		int commentId = Integer.parseInt(request.getParameter("commentId"));
+		String text = request.getParameter("text");
+		String commentDateString = request.getParameter("commentDate");
+		
+		try {
+			commentDate = df.parse(commentDateString);
+		} catch (ParseException e1) {
+			System.out.println("can't parse date.");
+		}		
+		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid; 
+        String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		int typeId = Integer.parseInt(request.getParameter("selectVehicleType"));
-		int locationId = Integer.parseInt(request.getParameter("selectLocation"));
-		String make = request.getParameter("make");
-		String model = request.getParameter("model");
-		int year = Integer.parseInt(request.getParameter("year"));
-		int mileage = Integer.parseInt(request.getParameter("mileage"));
-		String tag = request.getParameter("tag");
-		String serviced = "";
-		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
-		VehicleCondition vehicleCondition = VehicleCondition.GOOD;
-		Date lastServiced = new Date();
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -106,36 +106,43 @@ public class VehicleCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusAddVehicleB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddVehicleB", statusAddVehicleB);
+				
+				statusAddTypeB = "Failed to create a session";
+				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
+		
 		logicLayer = session.getLogicLayer();
-		User user = session.getUser();
+		User user = null;
+		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		
 		try {
-			logicLayer.createVehicle(typeId, locationId, make, model, year, mileage, tag, lastServiced, vehicleStatus, vehicleCondition);
-			statusAddVehicleG = "Thats Dope";
-			templateProcessor.addToRoot("statusAddVehicleG", statusAddVehicleG);
-    		templateProcessor.processTemplate(response);
-			return;
+			logicLayer.updateComment(commentId, rentalId, text, commentDate);
+			statusAddTypeG = "Woohoo!";
+			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			System.out.println("VehicleCreate: "+e.toString());
-			statusAddVehicleB = "file has bad magic.";
-			templateProcessor.addToRoot("statusAddVehicleB", statusAddVehicleB);
-    		templateProcessor.processTemplate(response);
-    		return;
+			
+			statusAddTypeB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+			System.out.println("CommentCreate: "+e.toString());
+			templateProcessor.processTemplate(response);
+			return;
 		}
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
 }

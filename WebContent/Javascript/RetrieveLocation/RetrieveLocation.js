@@ -7,7 +7,8 @@ $(document).ready(function() {
 				var html = '';
 				
 				 $.each(data, function(index, element) {
-
+					 
+					 var id = element.id;
 					 var image = element.path;
 					 var ava = element.capacity;
 					 var name = element.name;
@@ -33,7 +34,9 @@ $(document).ready(function() {
  						html += '</div>';
 					html += '</div>';
 					html += '</div>';
-						 
+					
+					$('#selectLocation').append($('<option>').text(name).attr('value', id));
+					$('#selectLocationUpdate').append($('<option>').text(name).attr('value', id)); 
 				 });
 				 
 				 $('#main').html(html);
