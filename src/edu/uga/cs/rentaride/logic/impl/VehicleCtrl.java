@@ -75,5 +75,24 @@ public class VehicleCtrl {
 		
 		vehicle = objectLayer.createVehicle(make, model, year, tag, mileadge, lastServiced, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
 		objectLayer.storeVehicle(vehicle);
-	}	
+	}
+	
+	public void deleteVehicle(int id) throws RARException {
+		
+		// check if vehicle already exists
+		//
+		modelVehicle = objectLayer.createVehicle();
+		modelVehicle.setId(id);
+		vehicles = objectLayer.findVehicle(modelVehicle);
+		if(vehicles.size() > 0){
+			vehicle = vehicles.get(0);
+		}
+		
+		// check if vehicle found
+		//
+		if(vehicle == null)
+			throw new RARException( "A vehicle with this id does not exist." );
+	
+		objectLayer.deleteVehicle(vehicle);
+	}
 }

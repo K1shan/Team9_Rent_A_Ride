@@ -57,4 +57,23 @@ public class HourlyPriceCtrl {
 		objectLayer.storeHourlyPrice(hourlyPrice);
 	}
 	
+	public void deleteHourlyPrice(int id) throws RARException {
+		
+		// check if hourly price already exists
+		//
+		HourlyPrice modelHourlyPrice = objectLayer.createHourlyPrice();
+		modelHourlyPrice.setId(id);
+		List<HourlyPrice> hourlyPrices = objectLayer.findHourlyPrice(modelHourlyPrice);
+		HourlyPrice hourlyPrice = null;
+		if(hourlyPrices.size() > 0){
+			hourlyPrice = hourlyPrices.get(0);
+		}
+		
+		// check if hourly price found
+		//
+		if(hourlyPrice == null)
+			throw new RARException( "A hourly price with this id does not exist." );
+	
+		objectLayer.deleteHourlyPrice(hourlyPrice);
+	}
 }
