@@ -71,10 +71,11 @@ public class HourlyPriceCreate extends HttpServlet {
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
 		
-		String typeId = request.getParameter("vehicleTypeId");
-		String maxHours = request.getParameter("maxHours");
-		String price = request.getParameter("vehiclePrice");
-		
+		int maxHours = Integer.parseInt(request.getParameter("maxHours"));
+		int price1 = Integer.parseInt(request.getParameter("vehiclePrice1"));
+		int price2 = Integer.parseInt(request.getParameter("vehiclePrice2"));
+		int price3 = Integer.parseInt(request.getParameter("vehiclePrice3"));
+		int typeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
@@ -112,6 +113,21 @@ public class HourlyPriceCreate extends HttpServlet {
 		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
+		try {
+			logicLayer.createHourlyPrice(typeId, 24, price1);
+			logicLayer.createHourlyPrice(typeId, 48, price2);
+			logicLayer.createHourlyPrice(typeId, 72, price3);
+			statusAddTypeG = "Woohoo!";
+			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			templateProcessor.processTemplate(response);
+		}catch (RARException e){
+			
+			statusAddTypeB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+			System.out.println("VehicleTypeCreate: "+e.toString());
+    			templateProcessor.processTemplate(response);
+    			return;
+		}
 
 	}
 
