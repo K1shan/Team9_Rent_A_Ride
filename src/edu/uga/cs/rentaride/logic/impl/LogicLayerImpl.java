@@ -207,32 +207,32 @@ public class LogicLayerImpl
 		HourlyPriceCtrl ctrlHourlyPrice = new HourlyPriceCtrl ( objectLayer );
 		ctrlHourlyPrice.updateHourlyPrice(hourlyPriceId, vehicleTypeId, maxHrs, price);
 	}
-
-	@Override
-	public void updateReservation(int reservationId, Date pickupTime, int rentalLength, int typeId,
-			int rentalLocationId, int customerId) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
 			int year, int mileadge, String tag, Date lastServiced, VehicleStatus vehicleStatus,
 			VehicleCondition vehicleCondition) throws RARException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void updateReservation(int reservationId, Date pickupTime, int rentalLength, int typeId,
+			int rentalLocationId, int customerId) throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.updateReservation(reservationId, pickupTime, rentalLength, typeId, rentalLocationId, customerId);
+	}
+
+	@Override
+	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
+		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
+		ctrlRental.updateRental(rentalId, pickupTime, reservationId, vehicleId);
+	}
+
+	@Override
+	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
+		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
+		ctrlComment.updateComment(commentId, rentalId, text, commentDate);
 	}
 
 	@Override
@@ -243,38 +243,38 @@ public class LogicLayerImpl
 
 	@Override
 	public void deleteVehicle(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
+		ctrlVehicle.deleteVehicle(id);
 	}
 
 	@Override
 	public void deleteVehicleType(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
+		ctrlType.deleteVehicleType(id);
 	}
 
 	@Override
 	public void deleteHourlyPrice(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		HourlyPriceCtrl ctrlPrice = new HourlyPriceCtrl ( objectLayer );
+		ctrlPrice.deleteHourlyPrice(id);
 	}
 
 	@Override
 	public void deleteReservation(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.deleteReservation(id);
 	}
 
 	@Override
 	public void deleteRental(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
+		ctrlRental.deleteRental(id);
 	}
 
 	@Override
 	public void deleteComment(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
+		ctrlComment.deleteComment(id);
 	}
 
 	@Override

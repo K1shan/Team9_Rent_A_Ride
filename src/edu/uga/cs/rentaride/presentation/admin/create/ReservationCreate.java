@@ -1,6 +1,10 @@
 package edu.uga.cs.rentaride.presentation.admin.create;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,10 +24,10 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class HourlyPriceCreate
+ * Servlet implementation class ReservationCreate
  */
-@WebServlet("/HourlyPriceCreate")
-public class HourlyPriceCreate extends HttpServlet {
+@WebServlet("/ReservationCreate")
+public class ReservationCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	Configuration cfg = null;
@@ -34,7 +38,7 @@ public class HourlyPriceCreate extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HourlyPriceCreate() {
+    public ReservationCreate() {
         super();
     }
 
@@ -71,18 +75,26 @@ public class HourlyPriceCreate extends HttpServlet {
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
 		
-		int maxHours = Integer.parseInt(request.getParameter("maxHours"));
-		int price1 = Integer.parseInt(request.getParameter("vehiclePrice1"));
-		int price2 = Integer.parseInt(request.getParameter("vehiclePrice2"));
-		int price3 = Integer.parseInt(request.getParameter("vehiclePrice3"));
-		int typeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
+		Date pickupTime = null;
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		int rentalLength = Integer.parseInt(request.getParameter("pickupTime"));
+		int vehicleTypeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+		int customerId = Integer.parseInt(request.getParameter("customerId"));
+		String pickupTimeString = request.getParameter("pickupTime");
+		
+		try {
+			pickupTime = df.parse(pickupTimeString);
+		} catch (ParseException e1) {
+			System.out.println("can't parse date.");
+		}
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		
+
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -114,21 +126,18 @@ public class HourlyPriceCreate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
 		try {
-			logicLayer.createHourlyPrice(typeId, 24, price1);
-			logicLayer.createHourlyPrice(typeId, 48, price2);
-			logicLayer.createHourlyPrice(typeId, 72, price3);
+			logicLayer.createReservation(pickupTime, rentalLength, vehicleTypeId, locationId, customerId);
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
-		}catch (RARException e){
-			
+		}catch(RARException e) {
 			statusAddTypeB = "NONEXISTENT.";
 			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
 			System.out.println("VehicleTypeCreate: "+e.toString());
-    			templateProcessor.processTemplate(response);
-    			return;
+			templateProcessor.processTemplate(response);
+			return;
 		}
-
+		
 	}
 
 	/**
