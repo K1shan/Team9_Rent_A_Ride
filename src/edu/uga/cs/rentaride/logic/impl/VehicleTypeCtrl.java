@@ -45,10 +45,31 @@ public class VehicleTypeCtrl {
 		objectLayer.storeVehicleType(modelVehicleType);		
 	}
 	
-	public void deleteVehicleType(int id) throws RARException {
+	public void updateVehicleType (int id, String name) throws RARException{
+		long vehicleTypeId = 0;
+		
+		modelVehicleType = objectLayer.createVehicleType();
+		modelVehicleType.setId(id);
+		vehicleTypes = objectLayer.findVehicleType(modelVehicleType);
+		if(vehicleTypes.size() > 0){
+			vehicleType = vehicleTypes.get(0);
+			vehicleTypeId = vehicleType.getId();
+		}
+		if(vehicleType == null) {
+			throw new RARException( "A location with this name does not exist" );
+		}
+
+		vehicleType = null;
+		vehicleType = objectLayer.createVehicleType(name);
+		vehicleType.setId(vehicleTypeId);
+		objectLayer.storeVehicleType(vehicleType);
+	}
+	
+public void deleteVehicleType(int id) throws RARException {
 		
 		// check if vehicle type already exists
 		//
+
 		modelVehicleType = objectLayer.createVehicleType();
 		modelVehicleType.setId(id);
 		vehicleTypes = objectLayer.findVehicleType(modelVehicleType);
@@ -64,3 +85,4 @@ public class VehicleTypeCtrl {
 		objectLayer.deleteVehicleType(vehicleType);
 	}
 }
+

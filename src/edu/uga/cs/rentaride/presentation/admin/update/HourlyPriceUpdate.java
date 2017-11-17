@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -22,8 +23,8 @@ import freemarker.template.TemplateExceptionHandler;
 /**
  * Servlet implementation class LocationUpdate
  */
-@WebServlet("/VehicleTypeUpdate")
-public class VehicleTypeUpdate extends HttpServlet {
+@WebServlet("/HourlyPriceUpdate")
+public class HourlyPriceUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -34,7 +35,7 @@ public class VehicleTypeUpdate extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleTypeUpdate() {
+    public HourlyPriceUpdate() {
         super();
     }
 
@@ -73,13 +74,17 @@ public class VehicleTypeUpdate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-        int id;
-        String name;
+        int maxHours;
+    	int price;
+    	int vehicleTypeId;
+    	int typeId;
         
 		templateProcessor.setTemplate("AdminView.ftl");
 		
-		id = Integer.parseInt(request.getParameter("select1"));
-		name = request.getParameter("type");
+		maxHours = Integer.parseInt(request.getParameter("maxHours"));
+		price = Integer.parseInt(request.getParameter("hourlyPrice"));
+		vehicleTypeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
+		typeId = Integer.parseInt(request.getParameter("typeId"));
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -107,7 +112,7 @@ public class VehicleTypeUpdate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
 		try {
-			logicLayer.updateVehicleType(id, name);
+			logicLayer.updateHourlyPrice(typeId, vehicleTypeId, maxHours, price);
 			statusUpdateTypeG = "Amazing!";
 			templateProcessor.addToRoot("statusUpdateTypeG", statusUpdateTypeG);
 			templateProcessor.processTemplate(response);
