@@ -94,9 +94,6 @@ public class CommentCreate extends HttpServlet {
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
 		
-		// TODO
-		String typeName = request.getParameter("type");
-		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
