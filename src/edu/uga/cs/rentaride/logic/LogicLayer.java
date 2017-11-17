@@ -399,4 +399,6 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public void resetUserPassword (String email, String password, String fname, String lname) throws RARException;
+
+	public void updateAdmin(String uName, String fName, String lName, String email, String password, String driverNo, String cardNo, Date expDate, String address, String city, String state, String zip) throws RARException;
 }

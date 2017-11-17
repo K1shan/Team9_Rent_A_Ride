@@ -236,6 +236,20 @@ public class LogicLayerImpl
 	}
 
 	@Override
+	public void updateAdmin(String uName, String fName, String lName, String email, String password, String driverNo, String cardNo, Date expDate, String address, String city, String state, String zip) throws RARException {
+		// TODO Auto-generated method stub
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		ctrlAccount.updateAccount(uName, fName, lName, email, password, driverNo, cardNo, expDate, address, city, state, zip);
+	}
+	
+	@Override
+	public void resetUserPassword(String email, String password, String fname, String lname) throws RARException {
+		AccountCtrl accountControl = new AccountCtrl(objectLayer);
+		accountControl.resetUserPassword(email, password, fname, lname);
+		
+	}
+	
+	@Override
 	public void deleteLocation(int id) throws RARException {
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
 		ctrlLocation.deleteLocation(id);
@@ -275,12 +289,5 @@ public class LogicLayerImpl
 	public void deleteComment(int id) throws RARException {
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.deleteComment(id);
-	}
-
-	@Override
-	public void resetUserPassword(String email, String password, String fname, String lname) throws RARException {
-		AccountCtrl accountControl = new AccountCtrl(objectLayer);
-		accountControl.resetUserPassword(email, password, fname, lname);
-		
 	}
 }
