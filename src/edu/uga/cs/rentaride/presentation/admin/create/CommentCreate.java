@@ -24,10 +24,11 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class ReservationCreate
+ * Servlet implementation class CommentCreate
  */
-@WebServlet("/ReservationCreate")
-public class ReservationCreate extends HttpServlet {
+@WebServlet("/CommentCreate")
+public class CommentCreate extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	
 	Configuration cfg = null;
@@ -38,7 +39,7 @@ public class ReservationCreate extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReservationCreate() {
+    public CommentCreate() {
         super();
     }
 
@@ -75,26 +76,26 @@ public class ReservationCreate extends HttpServlet {
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
 		
-		Date pickupTime = null;
+		Date commentDate = null;
 		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		int rentalLength = Integer.parseInt(request.getParameter("pickupTime"));
-		int vehicleTypeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
-		int locationId = Integer.parseInt(request.getParameter("locationId"));
-		int customerId = Integer.parseInt(request.getParameter("customerId"));
-		String pickupTimeString = request.getParameter("pickupTime");
+		int rentalId = Integer.parseInt(request.getParameter("rentalId"));
+		String text = request.getParameter("text");
+		String commentDateString = request.getParameter("commentDate");
 		
 		try {
-			pickupTime = df.parse(pickupTimeString);
+			commentDate = df.parse(commentDateString);
 		} catch (ParseException e1) {
 			System.out.println("can't parse date.");
-		}
+		}		
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-
+		
+		// TODO
+		String typeName = request.getParameter("type");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -126,18 +127,17 @@ public class ReservationCreate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
 		try {
-			logicLayer.createReservation(pickupTime, rentalLength, vehicleTypeId, locationId, customerId);
-			statusAddTypeG = "Woohoo!";
+			logicLayer.createComment(rentalId, text, commentDate);statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
-		}catch(RARException e) {
+		} catch (RARException e){
+			
 			statusAddTypeB = "NONEXISTENT.";
 			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("ReservationCreate: "+e.toString());
+			System.out.println("CommentCreate: "+e.toString());
 			templateProcessor.processTemplate(response);
 			return;
 		}
-		
 	}
 
 	/**

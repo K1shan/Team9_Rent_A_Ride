@@ -131,7 +131,7 @@ public class RentalCreate extends HttpServlet {
 			
 			statusAddTypeB = "NONEXISTENT.";
 			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("VehicleTypeCreate: "+e.toString());
+			System.out.println("RentalCreate: "+e.toString());
 			templateProcessor.processTemplate(response);
 			return;
 		}

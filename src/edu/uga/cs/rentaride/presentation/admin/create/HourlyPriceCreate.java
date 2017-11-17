@@ -124,7 +124,7 @@ public class HourlyPriceCreate extends HttpServlet {
 			
 			statusAddTypeB = "NONEXISTENT.";
 			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("VehicleTypeCreate: "+e.toString());
+			System.out.println("HourlyPriceCreate: "+e.toString());
     			templateProcessor.processTemplate(response);
     			return;
 		}
