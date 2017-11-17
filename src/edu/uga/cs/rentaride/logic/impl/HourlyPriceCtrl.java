@@ -57,7 +57,7 @@ public class HourlyPriceCtrl {
 		objectLayer.storeHourlyPrice(hourlyPrice);
 	}
 
-	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) {
+	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) throws RARException {
 		// TODO Auto-generated method stub
 		long typeId = 0;
 		
@@ -73,9 +73,23 @@ public class HourlyPriceCtrl {
 			throw new RARException( "A location with this name does not exist" );
 		}
 
+		long vTypeId = 0;
+		
+		VehicleType modelVehicleType = objectLayer.createVehicleType();
+		modelVehicleType.setId(vehicleTypeId);
+		List<VehicleType> vehicleTypes = objectLayer.findVehicleType(modelVehicleType);
+		VehicleType vehicleType = null;
+		if(vehicleTypes.size() > 0){
+			vehicleType = vehicleTypes.get(0);
+			vTypeId = vehicleType.getId();
+		}
+		if(hourlyPrice == null) {
+			throw new RARException( "A location with this name does not exist" );
+		}
+		
 		hourlyPrice = null;
-		hourlyPrice = objectLayer.createHourlyPrice(vehicleTypeId, maxHrs, price);
-		hourlyPrice.setId(typeId);
+		hourlyPrice = objectLayer.createHourlyPrice(maxHrs, price, vehicleType);
+		hourlyPrice.setId(hourlyPriceId);
 		objectLayer.storeHourlyPrice(hourlyPrice);
 	}
 	
