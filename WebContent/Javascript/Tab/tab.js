@@ -144,4 +144,6 @@ var Tabs = function($) {
   };
 }(jQuery);
 
+$(document).ready(function() {
 Tabs.init();
+});

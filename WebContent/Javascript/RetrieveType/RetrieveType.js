@@ -13,6 +13,7 @@ $(document).ready(function() {
 					 
 					 $('#select1').append($('<option>').text(id + ' - ' +  name).attr('value', id));
 					 $('#select2').append($('<option>').text(id + ' - ' +  name).attr('value', id));
+					 $('#select3').append($('<option>').text(id + ' - ' +  name).attr('value', id));
 					 
 					 	 
 				 });
