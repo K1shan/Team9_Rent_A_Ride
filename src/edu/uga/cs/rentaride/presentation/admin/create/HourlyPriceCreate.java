@@ -20,10 +20,10 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class VehicleTypeCreate
+ * Servlet implementation class HourlyPriceCreate
  */
-@WebServlet("/VehicleTypeCreate")
-public class VehicleTypeCreate extends HttpServlet {
+@WebServlet("/HourlyPriceCreate")
+public class HourlyPriceCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	Configuration cfg = null;
@@ -34,7 +34,7 @@ public class VehicleTypeCreate extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleTypeCreate() {
+    public HourlyPriceCreate() {
         super();
     }
 
@@ -67,16 +67,21 @@ public class VehicleTypeCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
+		
+		String typeId = request.getParameter("vehicleTypeId");
+		String maxHours = request.getParameter("maxHours");
+		String price = request.getParameter("vehiclePrice");
+		
+		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
 		
-		// TODO
-		String typeName = request.getParameter("type");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -109,19 +114,7 @@ public class VehicleTypeCreate extends HttpServlet {
 		
 		try {
 			
-			logicLayer.createType(typeName);
-			statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
-			templateProcessor.processTemplate(response);
-		} catch (RARException e){
-			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("VehicleTypeCreate: "+e.toString());
-    			templateProcessor.processTemplate(response);
-    			return;
 		}
-
 	}
 
 	/**
