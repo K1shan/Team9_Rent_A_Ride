@@ -73,7 +73,7 @@ public class VehicleTypeDelete extends HttpServlet {
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		int id = Integer.parseInt(request.getParameter("name"));
+		int id = Integer.parseInt(request.getParameter("type"));
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();

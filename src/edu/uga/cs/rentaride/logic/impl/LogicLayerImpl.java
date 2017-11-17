@@ -10,6 +10,7 @@ import edu.uga.cs.rentaride.entity.Administrator;
 import edu.uga.cs.rentaride.entity.Comment;
 import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.HourlyPrice;
+import edu.uga.cs.rentaride.entity.RentARideParams;
 import edu.uga.cs.rentaride.entity.Rental;
 import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.Reservation;
@@ -107,6 +108,12 @@ public class LogicLayerImpl
 		return ctrlAccount.findAdministrators(id);
 	}
     
+	@Override
+	public RentARideParams findParams() throws RARException {
+		SystemCtrl ctrlSystem = new SystemCtrl ( objectLayer );
+		return ctrlSystem.findParams();
+	}
+	
 	@Override
 	public long createAccount(String fName, String lName, String email, String password, String driverNo, String cardNo, String expDate, String address, String city, String state, String zip)
 			throws RARException {
@@ -231,6 +238,12 @@ public class LogicLayerImpl
 	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.updateComment(commentId, rentalId, text, commentDate);
+	}
+	
+	@Override
+	public void updateParams(int memberFee, int lateFee) throws RARException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

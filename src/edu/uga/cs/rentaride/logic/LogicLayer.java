@@ -103,6 +103,14 @@ public interface LogicLayer {
 	 */
 	public List<Administrator> findAdministrators( int id ) throws RARException;
 	
+	/**
+	 * 
+	 * @return
+	 * @throws RARException
+	 */
+	public RentARideParams findParams() throws RARException;
+	
+	
 	/******************************************
 	 *  CREATION
 	 */
@@ -298,6 +306,14 @@ public interface LogicLayer {
 	 */
 	public long setAdmin ( String username ) throws RARException;
 	
+	/**
+	 * 
+	 * @param memberFee
+	 * @param lateFee
+	 * @throws RARException
+	 */
+	public void updateParams( int memberFee, int lateFee ) throws RARException;
+	
 	
 	/******************************************
 	 * DELETE
@@ -387,7 +403,6 @@ public interface LogicLayer {
 	 */
 	public String checkAdminCredentials ( Session session, String email, String password ) throws RARException;
 
-	
 	/**
 	 * 
 	 * @param session
