@@ -118,8 +118,8 @@ public class VehicleTypeCreate extends HttpServlet {
 			statusAddTypeB = "NONEXISTENT.";
 			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
 			System.out.println("VehicleTypeCreate: "+e.toString());
-    			templateProcessor.processTemplate(response);
-    			return;
+			templateProcessor.processTemplate(response);
+			return;
 		}
 
 	}
