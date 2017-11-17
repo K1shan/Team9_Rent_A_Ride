@@ -14,6 +14,7 @@ public class ReservationCtrl {
 	private Reservation modelReservation = null;
 	private Reservation reservation = null;
 	private List<Reservation> reservations = null;
+
 	
 	public ReservationCtrl( ObjectLayer objectLayer ){
         this.objectLayer = objectLayer;
@@ -21,11 +22,14 @@ public class ReservationCtrl {
 	
 	public List<Reservation> findReservation( int id ) throws RARException{
 		modelReservation = objectLayer.createReservation();
-		if(id < 0)
-			return objectLayer.findReservation(null);
+		if(id < 0){
+			reservations = objectLayer.findReservation(null);
+			return reservations;
+		}
 		
 		modelReservation.setId(id);
-		return objectLayer.findReservation(modelReservation);
+		reservations = objectLayer.findReservation(modelReservation);
+		return reservations;
 	}
 	
 	public void createReservation(Date pickupTime, int rentalLength, int vehicleTypeId, int locationId, int customerId) throws RARException {
@@ -73,5 +77,24 @@ public class ReservationCtrl {
 		
 		reservation = objectLayer.createReservation(pickupTime, rentalLength, vehicleType, rentalLocation, customer);
 		objectLayer.storeReservation(reservation);
+	}
+	
+	public void deleteReservation(int id) throws RARException {
+		
+		// check if reservation already exists
+		//
+		modelReservation = objectLayer.createReservation();
+		modelReservation.setId(id);
+		reservations = objectLayer.findReservation(modelReservation);
+		if(reservations.size() > 0){
+			reservation = reservations.get(0);
+		}
+		
+		// check if reservation found
+		//
+		if(reservation == null)
+			throw new RARException( "A reservation with this id does not exist." );
+	
+		objectLayer.deleteReservation(reservation);
 	}
 }

@@ -28,7 +28,9 @@ public class VehicleTypeCtrl {
 	}
 	
 	public void createType(String name) throws RARException{
+		
 		// check if type already exists
+		//
 		modelVehicleType = objectLayer.createVehicleType();
 		modelVehicleType.setName(name);
 		vehicleTypes = objectLayer.findVehicleType(modelVehicleType);
@@ -41,5 +43,24 @@ public class VehicleTypeCtrl {
 		
 		vehicleType = objectLayer.createVehicleType(name);
 		objectLayer.storeVehicleType(modelVehicleType);		
+	}
+	
+	public void deleteVehicleType(int id) throws RARException {
+		
+		// check if vehicle type already exists
+		//
+		modelVehicleType = objectLayer.createVehicleType();
+		modelVehicleType.setId(id);
+		vehicleTypes = objectLayer.findVehicleType(modelVehicleType);
+		if(vehicleTypes.size() > 0){
+			vehicleType = vehicleTypes.get(0);
+		}
+		
+		// check if vehicle type found
+		//
+		if(vehicleType == null)
+			throw new RARException( "A vehicle type with this id does not exist." );
+	
+		objectLayer.deleteVehicleType(vehicleType);
 	}
 }

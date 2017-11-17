@@ -241,38 +241,38 @@ public class LogicLayerImpl
 
 	@Override
 	public void deleteVehicle(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
+		ctrlVehicle.deleteVehicle(id);
 	}
 
 	@Override
 	public void deleteVehicleType(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
+		ctrlType.deleteVehicleType(id);
 	}
 
 	@Override
 	public void deleteHourlyPrice(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		HourlyPriceCtrl ctrlPrice = new HourlyPriceCtrl ( objectLayer );
+		ctrlPrice.deleteHourlyPrice(id);
 	}
 
 	@Override
 	public void deleteReservation(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.deleteReservation(id);
 	}
 
 	@Override
 	public void deleteRental(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
+		ctrlRental.deleteRental(id);
 	}
 
 	@Override
 	public void deleteComment(int id) throws RARException {
-		// TODO Auto-generated method stub
-		
+		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
+		ctrlComment.deleteComment(id);
 	}
 
 	@Override

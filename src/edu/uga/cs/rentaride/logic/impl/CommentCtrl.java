@@ -14,7 +14,7 @@ public class CommentCtrl {
 	private Comment modelComment = null;
 	private Comment comment = null;
 	private List<Comment> comments = null;
-	
+
 	public CommentCtrl( ObjectLayer objectLayer ){
         this.objectLayer = objectLayer;
     }
@@ -46,5 +46,24 @@ public class CommentCtrl {
 		
 		comment = objectLayer.createComment(text, commentDate, rental);
 		objectLayer.storeComment(comment);
+	}
+	
+	public void deleteComment(int id) throws RARException {
+		
+		// check if comment already exists
+		//
+		modelComment = objectLayer.createComment();
+		modelComment.setId(id);
+		comments = objectLayer.findComment(modelComment);
+		if(comments.size() > 0){
+			comment = comments.get(0);
+		}
+		
+		// check if comment found
+		//
+		if(comment == null)
+			throw new RARException( "A comment with this id does not exist." );
+	
+		objectLayer.deleteComment(comment);
 	}
 }
