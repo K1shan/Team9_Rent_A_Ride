@@ -47,9 +47,17 @@ public class VehicleManager {
     	
     	String updateVehicleQuery = 
 				"UPDATE VEHICLE SET "
-				+ "type_id = ?, location_id = ?, make = ?, model = ?, year = ?, "
-				+ "mileage = ?, tag = ?, service_date = ?, status = ?, cond = ?"
-				+ "WHERE type_id = ?"; 
+				+ "type_id=?, "
+				+ "location_id=?, "
+				+ "make=?, "
+				+ "model=?, "
+				+ "year=?, "
+				+ "mileage=?, "
+				+ "tag=?, "
+				+ "service_date=?, "
+				+ "status=?, "
+				+ "cond=? "
+				+ "WHERE vehicle_id=?"; 
     	
     	PreparedStatement pstmt;
     	long vehicleId;
@@ -136,6 +144,9 @@ public class VehicleManager {
     		else{
     			throw new RARException( "VehicleManager.save: can't save a vehicle: condition undefined" );
     		}
+    		
+    		if( vehicle.isPersistent() )
+    			pstmt.setLong(11, vehicle.getId());
 			
 			System.out.println("query: "+pstmt.asSql());
 	        inscnt = pstmt.executeUpdate();
@@ -170,9 +181,9 @@ public class VehicleManager {
 	
 	public List<Vehicle> restore( Vehicle modelVehicle ) throws RARException{
 		String selectVehicleSql = "SELECT "
-				+ "VEHICLE.vehicle_id, VEHICLE.type_id, VEHICLE.location_id, VEHICLE.make, VEHICLE.model, VEHICLE.year, VEHICLE.mileage, VEHICLE.tag, VEHICLE.service_date, VEHICLE.status, VEHICLE.cond, "
-				+ "VEHICLE_TYPE.name, "
-				+ "LOCATION.name "
+				+ "VEHICLE.*, "
+				+ "VEHICLE_TYPE.*, "
+				+ "LOCATION.* "
 				+ "FROM VEHICLE "
 				+ "INNER JOIN VEHICLE_TYPE on VEHICLE_TYPE.type_id=VEHICLE.type_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=VEHICLE.location_id";
@@ -187,44 +198,44 @@ public class VehicleManager {
 		
 		if(modelVehicle != null) {
 			if (modelVehicle.getId() >= 0) { // id is unique, so it is sufficient to get a vehicle
-				query.append("where vehicle_id = " + modelVehicle.getId());
+				query.append(" WHERE vehicle_id=" + modelVehicle.getId());
 			}else {
 				if(modelVehicle.getVehicleType() != null) { // not sure if this is okay or I should get the type name itself
-					condition.append( " type_id = '" + modelVehicle.getVehicleType().getId() + "'");
+					condition.append( " type_id='" + modelVehicle.getVehicleType().getId() + "'");
 				}
 				
 				if (modelVehicle.getRentalLocation() != null) {
-					condition.append( " location_id = '" + modelVehicle.getRentalLocation().getId() + "'");
+					condition.append( " location_id='" + modelVehicle.getRentalLocation().getId() + "'");
 				}
 				
 				if(modelVehicle.getMake()!= null) {
-					condition.append( " make = '" + modelVehicle.getMake() + "'");
+					condition.append( " make='" + modelVehicle.getMake() + "'");
 				}
 				
 				if(modelVehicle.getModel()!= null) {
 					if( condition.length() > 0 ){
                         condition.append( " and" );
                     }
-					condition.append( " model = '" + modelVehicle.getModel() + "'");
+					condition.append( " model='" + modelVehicle.getModel() + "'");
 				}
 				
 				if(modelVehicle.getYear() != 0) { // 0 and not null because year is int
-					condition.append( " year = '" + modelVehicle.getYear() + "'");
+					condition.append( " year='" + modelVehicle.getYear() + "'");
 				}
 				
 				if(modelVehicle.getMileage() != 0) { // 0 and not null because mileage is int
-					condition.append( " mileage = '" + modelVehicle.getMileage() + "'");
+					condition.append( " mileage='" + modelVehicle.getMileage() + "'");
 				}
 				
 				if(modelVehicle.getRegistrationTag() != null) {
-					condition.append( " tag = '" + modelVehicle.getRegistrationTag() + "'");
+					condition.append( " tag='" + modelVehicle.getRegistrationTag() + "'");
 				}
 				
 				if(modelVehicle.getLastServiced()!= null) {
 					if( condition.length() > 0 ){
                         condition.append( " and" );
                     }
-					condition.append( " service_date = '" + modelVehicle.getLastServiced() + "'");
+					condition.append( " service_date='" + modelVehicle.getLastServiced() + "'");
 				}
 				
 				// VehicleStatus not yet implemented, may have to change methods used below
@@ -237,7 +248,7 @@ public class VehicleManager {
 					}else{
 						status = 2;
 					}
-					condition.append( " status = '" + status + "'");
+					condition.append( " status='" + status + "'");
 				}
 				
 				// VehicleCondition not yet implemented, may have to change methods used below
@@ -246,7 +257,7 @@ public class VehicleManager {
 					if(modelVehicle.getCondition().equals(VehicleCondition.NEEDSMAINTENANCE)){
 						cond = 1;
 					}
-					condition.append( " cond = '" + cond + "'");
+					condition.append( " cond='" + cond + "'");
 				}
 				
 				if( condition.length() > 0 ) {

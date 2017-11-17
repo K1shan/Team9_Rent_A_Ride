@@ -164,7 +164,7 @@ public interface LogicLayer {
 	 * @return
 	 * @throws RARException
 	 */
-	public void createVehicle( int typeId, int locationId, String make, String model, int year, int mileadge, 
+	public void createVehicle( int typeId, int locationId, String make, String model, int year, int mileage, 
 			String tag, Date lastServiced, VehicleStatus vehicleStatus, VehicleCondition vehicleCondition ) throws RARException;
 	
 	/**

@@ -3,32 +3,32 @@
 		<label class="head">ADD VEHICLE </label>
 		<form class="form" id="admin" action="VehicleCreate" method='post' name="admin">
 			
-			<select id="selectVehicleType" name="selectVehicleType" class="minimal">
+			<select id="selectVehicleTypeAdd" name="selectVehicleTypeAdd" class="minimal">
 					<option value="">Select</option>
+			</select>
+			
+			<select id="selectLocationAdd" name="selectLocationAdd" class="minimal">
+				<option value="">Select</option>
 			</select>
 								
 			<p class="float-label">
-				<input type="text" id="make" name="make" placeholder="Make"/>
+				<input type="text" id="makeAdd" name="makeAdd" placeholder="Make"/>
 			</p>
 			  		
 			<p class="float-label">
-				<input type="text" id="model" name="model" placeholder="Model"/>
+				<input type="text" id="modelAdd" name="modelAdd" placeholder="Model"/>
 			</p>	
 				
 			<p class="float-label">
-				<input type="text" id="year" name="year" placeholder="Year"/>
+				<input type="text" id="yearAdd" name="yearAdd" placeholder="Year"/>
 			</p>	
 			
 			<p class="float-label">
-				<input type="text" id="mileage" name="mileage" placeholder="Mileage"/>
-			</p>		
-			
-			<select id="selectLocation" name="selectLocation" class="minimal">
-				<option value="">Select</option>
-			</select>
+				<input type="text" id="mileageAdd" name="mileageAdd" placeholder="Mileage"/>
+			</p>
 			
 			<p class="float-label">
-				<input type="text" id="tag" name="tag" placeholder="Tag"/>
+				<input type="text" id="tagAdd" name="tagAdd" placeholder="Tag"/>
 			</p>
 		
 			
