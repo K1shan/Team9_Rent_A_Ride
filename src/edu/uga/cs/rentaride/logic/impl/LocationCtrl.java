@@ -66,18 +66,7 @@ public class LocationCtrl {
 	public void createLocation (String name, String address, String city, String state, String zip, String path,
 			int capacity) throws RARException {
 		
-		// check if location already exists
-		//
-		modelRentalLocation = objectLayer.createRentalLocation();
-		modelRentalLocation.setName(name);
-		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
-		if(rentalLocations.size() > 0)
-			rentalLocation = rentalLocations.get(0);
 		
-		// check if location found
-		//
-		if(rentalLocation != null)
-			throw new RARException( "A location with this name already exists" );
 		
 		rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, capacity);
 		objectLayer.storeRentalLocation(rentalLocation);

@@ -118,8 +118,6 @@ public class AdminCreate extends HttpServlet {
 			templateProcessor.setTemplate("AdminView.ftl");
 			templateProcessor.processTemplate(response);
 		}
-		
-;
 	}
 
 	/**
