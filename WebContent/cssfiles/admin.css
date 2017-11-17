@@ -11,18 +11,19 @@ body {
   padding: 30px;
   position: fixed;
   left: 5%; 
-  margin: 75px 0px 0px 0px;
+  margin: 25px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
 
 .modalTwo {
+
   background-color: #fff;
   width: 400px;
   padding: 30px;
   position: fixed;
   left: 35%;
-  margin: 75px 0px 0px 0px;
+  margin: 25px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -33,7 +34,7 @@ body {
   padding: 30px;
   position: fixed;
   left: 65%;
- margin: 75px 0px 0px 0px;
+ margin: 25px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -388,11 +389,12 @@ select.minimal:focus {
 }
 
 .tabbs > ul {
+	text-transform: uppercase;
   position: relative;
   margin: 75px 0px 0px 0px;
   padding: 0;
   list-style: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #fff;
   font-size: 0;
 }
 .tabbs > ul .indicator {
@@ -402,7 +404,7 @@ select.minimal:focus {
   left: 0;
   height: 3px;
   width: 20%;
-  background: #1e88e5;
+  background: #fffff;
   -webkit-transform: translateZ(0) translateX(0);
           transform: translateZ(0) translateX(0);
   -webkit-transition: all 0.3s ease;
@@ -422,7 +424,7 @@ select.minimal:focus {
   text-decoration: none;
   text-align: center;
   font-weight: bold;
-  color: black;
+  color: #fff;
   -webkit-transition: all 0.3s ease 0.4s;
   transition: all 0.3s ease 0.4s;
 }
@@ -434,7 +436,7 @@ select.minimal:focus {
   right: 0;
   bottom: 0;
   top: 0;
-  background: #1e88e5;
+  background: #fff;
   -webkit-transform: translateZ(0) translateY(100%);
           transform: translateZ(0) translateY(100%);
   -webkit-transition: all 0.3s ease 0.3s;
@@ -442,7 +444,7 @@ select.minimal:focus {
   z-index: -1;
 }
 .tabbs > ul li a[aria-selected] {
-  color: white;
+  color: #374954;
 }
 .tabbs > ul li a[aria-selected]:before {
   -webkit-transform: translateZ(0) translateY(0);
