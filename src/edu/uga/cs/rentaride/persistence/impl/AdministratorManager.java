@@ -58,6 +58,11 @@ public class AdministratorManager {
 				+ "user_id=? "
 				+ "WHERE admin_id=?";
 		
+		String selectUserIdQuery = 
+				"SELECT user_id "
+				+ "FROM USER "
+				+ "WHERE USER.email=?";
+		
 		PreparedStatement	pstmt;
 		int 				inscnt;
 		long 				administratorId;
@@ -103,24 +108,28 @@ public class AdministratorManager {
             	pstmt.setDate(7, sqlDate);
             }else
                 throw new RARException( "AdministratorManager.save: can't save a user: CreatedDate undefined" );
-            if( administrator.isPersistent() )
+            if( administrator.isPersistent() ){
                 pstmt.setString( 8, administrator.getEmail() );
+                
+            }
 
 			System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();
             
             // retrieve last incremented id
             //
-            if( inscnt > 0 ) {
-                String sql = "select last_insert_id()";
-                if( pstmt.execute( sql ) ) {
-                    ResultSet r = pstmt.getResultSet();
-                    while( r.next() ) {
-                        userId = r.getLong( 1 );
-                    }
-                }
-            }else {
-                throw new RARException( "AdministratorManager.save: failed to get userId" ); 
+            if( !administrator.isPersistent() ) {
+	            if( inscnt > 0 ) {
+	                String sql = "select last_insert_id()";
+	                if( pstmt.execute( sql ) ) {
+	                    ResultSet r = pstmt.getResultSet();
+	                    while( r.next() ) {
+	                        userId = r.getLong( 1 );
+	                    }
+	                }
+	            }else {
+	                throw new RARException( "AdministratorManager.save: failed to get userId" ); 
+	            }
             }
             
 		} catch(SQLException e){
@@ -128,6 +137,24 @@ public class AdministratorManager {
             throw new RARException( "AdministratorManager.save: failed to save a user: " + e );
 		}
 
+		/*
+		 * Get userId
+		 */
+		if( administrator.isPersistent() ){
+			try {
+				pstmt = (PreparedStatement) con.prepareStatement( selectUserIdQuery );
+				pstmt.setString(1, administrator.getEmail());
+				System.out.println("query: "+pstmt.asSql());
+				ResultSet rs = pstmt.executeQuery();
+				while( rs.next() )
+	                userId = rs.getLong( 1 );
+				
+			} catch (SQLException e){
+				e.printStackTrace();
+			}
+		}
+
+		
 		/*
 		 * ADMIN
 		 */
@@ -140,14 +167,16 @@ public class AdministratorManager {
 				pstmt = (PreparedStatement) con.prepareStatement( updateAdministratorQuery );
 			}
 			
-			if( userId != 0 )
+			if( userId > 0 )
                 pstmt.setLong( 1, userId );
             else{
                 throw new RARException( "AdminsitratorManager.save: can't save a administrator: userId undefined" );
             }
 			
-            if( administrator.isPersistent() )
+            if( administrator.isPersistent() ){
                 pstmt.setLong( 2, administrator.getId() );
+                return;
+            }
 
             System.out.println("query: "+pstmt.asSql());
             inscnt = pstmt.executeUpdate();

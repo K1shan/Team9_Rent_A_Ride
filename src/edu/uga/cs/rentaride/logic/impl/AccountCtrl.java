@@ -108,8 +108,6 @@ public class AccountCtrl {
    	 	if(customers.size() > 0){
 	 		customer = customers.get( 0 );
 	 		customerId = customer.getId();
-	 		fname = customer.getFirstName();
-	 		lname = customer.getLastName();
 	 		address = customer.getAddress();
 	 		createDate = customer.getCreatedDate();
 	 		membershipExpiration = customer.getMemberUntil();
@@ -132,16 +130,15 @@ public class AccountCtrl {
  			if(administrators.size() > 0){
  				administrator = administrators.get( 0 );
  				adminId = administrator.getId();
- 				fname = administrator.getFirstName();
- 				lname = administrator.getLastName();
  				address = administrator.getAddress();
  				createDate = administrator.getCreatedDate();
  				administrator = objectLayer.createAdministrator(fname, lname, email, password, email, address, createDate);
  				administrator.setId(adminId);
  				objectLayer.storeAdministrator(administrator);
  				return;
- 			}
+ 			}else
+ 				throw new RARException( "AccountCtrl.login: Invalid Username" );
  		}
-   	 	throw new RARException( "AccountCtrl.login: Invalid Username" );
+   	 	
 	}
 }
