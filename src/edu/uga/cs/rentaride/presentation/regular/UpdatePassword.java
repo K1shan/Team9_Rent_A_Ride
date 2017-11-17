@@ -111,13 +111,14 @@ public class UpdatePassword extends HttpServlet {
 		
 		try {
 			
-			logicLayer.resetUserPassword(username, fname, lname, password);
+			logicLayer.resetUserPassword(username, password, fname, lname);
 			statusUpdatePasswordG = "Woohoo!";
 			templateProcessor.setTemplate("SigninCreateForm.ftl");
 			templateProcessor.addToRoot("statusUpdatePasswordG", statusUpdatePasswordG);
 			templateProcessor.processTemplate(response);
 		}
 		catch(RARException e){
+			e.printStackTrace();
 			statusUpdatePasswordB = "BAD.";
 			templateProcessor.setTemplate("ForgotPassword.ftl");
 			templateProcessor.addToRoot("statusUpdatePasswordB", statusUpdatePasswordB);

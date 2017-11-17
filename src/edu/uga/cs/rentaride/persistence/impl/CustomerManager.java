@@ -26,6 +26,7 @@ public class CustomerManager{
 		this.objectLayer = objectLayer;
 	}//constructor
 	
+	@SuppressWarnings("resource")
 	public void store(Customer customer) throws RARException{
 		
     	//Queries
@@ -63,6 +64,11 @@ public class CustomerManager{
 				+ "cc_exp=?, "
 				+ "status=? "
 				+ "WHERE customer_id=?";
+		
+		String selectUserIdQuery = 
+				"SELECT user_id "
+				+ "FROM USER "
+				+ "WHERE USER.email=?";
 		
 		PreparedStatement 	pstmt;
 		int 				inscnt;
@@ -120,15 +126,17 @@ public class CustomerManager{
             
             // retrieve last incremented id
             //
-            if( inscnt > 0 ) {
-                String sql = "select last_insert_id()";
-                if( pstmt.execute( sql ) ) {
-                    ResultSet r = pstmt.getResultSet();
-                    while( r.next() ) {
-                        userId = r.getLong( 1 );
-                    }
-                    pstmt.close();
-                }
+            if( !customer.isPersistent() ) {
+	            if( inscnt > 0 ) {
+	                String sql = "select last_insert_id()";
+	                if( pstmt.execute( sql ) ) {
+	                    ResultSet r = pstmt.getResultSet();
+	                    while( r.next() ) {
+	                        userId = r.getLong( 1 );
+	                    }
+	                    pstmt.close();
+	                }
+	            }
             }
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -137,8 +145,24 @@ public class CustomerManager{
 		try {
 			pstmt.close();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+		
+		/*
+		 * Get userId
+		 */
+		if( customer.isPersistent() ){
+			try {
+				pstmt = (PreparedStatement) con.prepareStatement( selectUserIdQuery );
+				pstmt.setString(1, customer.getEmail());
+				System.out.println("query: "+pstmt.asSql());
+				ResultSet rs = pstmt.executeQuery();
+				while( rs.next() )
+	                userId = rs.getLong( 1 );
+				
+			} catch (SQLException e){
+				e.printStackTrace();
+			}
 		}
 
 
@@ -154,7 +178,7 @@ public class CustomerManager{
 				pstmt = (PreparedStatement) con.prepareStatement( updateCustomerQuery );
 			}
 			
-			if( userId != 0 )
+			if( userId > 0 )
                 pstmt.setLong( 1, userId );
             else{
                 throw new RARException( "CustomerManager.save: can't save a customer: userId undefined" );
