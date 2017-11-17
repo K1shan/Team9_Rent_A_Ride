@@ -164,27 +164,27 @@ public class LogicLayerImpl
 	@Override
 	public void createVehicle(int typeId, int locationId, String make, String model, int year, int mileadge, String tag,
 			Date lastServiced, VehicleStatus vehicleStatus, VehicleCondition vehicleCondition) throws RARException {
-		// TODO Auto-generated method stub
-		
+		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
+		ctrlVehicle.createVehicle(typeId, locationId, make, model, year, mileadge, tag, lastServiced, vehicleStatus, vehicleCondition);
 	}
 	
 	@Override
 	public void createReservation(Date pickupTime, int rentalLength, int vehicleTypeId, int locationId, int customerId)
 			throws RARException {
-		// TODO Auto-generated method stub
-		
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.createReservation(pickupTime, rentalLength, vehicleTypeId, locationId, customerId);
 	}
 
 	@Override
 	public void createRental(Date pickupTime, int reservationId, int vehicleId) throws RARException {
-		// TODO Auto-generated method stub
-		
+		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
+		ctrlRental.createRental(pickupTime, reservationId, vehicleId);
 	}
 
 	@Override
 	public void createComment(int rentalId, String text, Date commentDate) throws RARException {
-		// TODO Auto-generated method stub
-		
+		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
+		ctrlComment.createComment(rentalId, text, commentDate);
 	}
 
 	@Override
