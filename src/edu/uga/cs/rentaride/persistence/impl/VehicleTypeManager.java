@@ -61,8 +61,13 @@ public class VehicleTypeManager{
 			if( vehicleType.getName() != null )
                 pstmt.setString( 1, vehicleType.getName());
             else{
-                throw new RARException( "CustomerManager.save: can't save a user: FirstName undefined" );
+                throw new RARException( "VehicleTypeManager.save: can't save a type: Type Name undefined" );
             }
+			
+			if ( vehicleType.isPersistent() )
+				pstmt.setLong(2, vehicleType.getId());
+			else
+				throw new RARException( "VehicleTypeManager.save: can't update a type: Type id undefined" );
 			
 			System.out.println( "query: " + pstmt.asSql() );
             inscnt = pstmt.executeUpdate();
