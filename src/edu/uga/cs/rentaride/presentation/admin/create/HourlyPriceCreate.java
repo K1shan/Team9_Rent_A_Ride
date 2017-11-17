@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -73,7 +72,9 @@ public class HourlyPriceCreate extends HttpServlet {
 		String statusAddTypeB = "";
 		
 		int maxHours = Integer.parseInt(request.getParameter("maxHours"));
-		int price = Integer.parseInt(request.getParameter("vehiclePrice"));
+		int price1 = Integer.parseInt(request.getParameter("vehiclePrice1"));
+		int price2 = Integer.parseInt(request.getParameter("vehiclePrice2"));
+		int price3 = Integer.parseInt(request.getParameter("vehiclePrice3"));
 		int typeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
 		
 		//Setting the session to null
@@ -113,7 +114,9 @@ public class HourlyPriceCreate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		
 		try {
-			logicLayer.createHourlyPrice(typeId, maxHours, price);
+			logicLayer.createHourlyPrice(typeId, 24, price1);
+			logicLayer.createHourlyPrice(typeId, 48, price2);
+			logicLayer.createHourlyPrice(typeId, 72, price3);
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
