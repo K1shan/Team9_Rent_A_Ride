@@ -1,10 +1,6 @@
 package edu.uga.cs.rentaride.presentation.admin.delete;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,9 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleCondition;
-import edu.uga.cs.rentaride.entity.VehicleStatus;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -73,13 +67,14 @@ public class VehicleDelete extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusDeleteVehicleG = "";
+		String statusDeleteVehicleB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid; 
 		templateProcessor.setTemplate("AdminView.ftl");
-		int vehicleId = Integer.parseInt(request.getParameter("id"));
+		int vehicleId = Integer.parseInt(request.getParameter("selectVehicleDelete"));
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -96,9 +91,9 @@ public class VehicleDelete extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
-				System.out.println("LocationCreate: "+e.toString());
+				statusDeleteVehicleB = "Failed to create a session";
+				templateProcessor.addToRoot("statusDeleteVehicleB", statusDeleteVehicleB);
+				System.out.println("VehicleDelete: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -106,17 +101,16 @@ public class VehicleDelete extends HttpServlet {
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		try {
+			
 			logicLayer.deleteVehicle(vehicleId);
-			status = "Successfully deleted Vehicle.";
-			templateProcessor.addToRoot("status", status);
-    		templateProcessor.processTemplate(response);
-			return;
+			statusDeleteVehicleG = "Yay!";
+			templateProcessor.addToRoot("statusDeleteVehicleG", statusDeleteVehicleG);
+			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			System.out.println("VehicleDelete: "+e.toString());
-			status = "Failed to delete Vehicle.";
-			templateProcessor.addToRoot("status", status);
+			
+			statusDeleteVehicleB = "very funny";
+			templateProcessor.addToRoot("statusDeleteVehicleB", statusDeleteVehicleB);
     		templateProcessor.processTemplate(response);
-    		return;
 		}
 	}
 	

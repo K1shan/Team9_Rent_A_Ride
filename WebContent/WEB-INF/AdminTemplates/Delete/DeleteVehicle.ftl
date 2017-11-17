@@ -1,10 +1,11 @@
 <div class="modalThree">
 	<div class="tab">
 		<label class="head">DELETE VEHICLE </label>
-		<form class="form" id="admin" action="LocationDelete" method='post' name="admin">
-			<p class="float-label">
-	    			<input type="text" id="id" name="id" placeholder="VEHICLE ID"/>
-	  		</p>
+		<form class="form" id="admin" action="VehicleDelete" method='post' name="admin">
+		
+			<select id="selectVehicleDelete" name="selectVehicleDelete" class="minimal">
+					<option value="">Select Vehicle</option>
+			</select>
 	  		<p>
 	    			<input class = "type" type="submit" onclick="return vehicleDeleteNullCheck()" value="DELETE VEHICLE" />
 	  		</p>

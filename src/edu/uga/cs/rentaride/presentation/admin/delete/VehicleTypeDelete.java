@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -67,13 +67,14 @@ public class VehicleTypeDelete extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusDeleteVehicleTypeG = "";
+		String statusDeleteVehicleTypeB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		int id = Integer.parseInt(request.getParameter("type"));
+		int typeId = Integer.parseInt(request.getParameter("select2"));
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -90,8 +91,8 @@ public class VehicleTypeDelete extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				statusDeleteVehicleTypeB = "Failed to create a session";
+				templateProcessor.addToRoot("statusDeleteVehicleTypeB", statusDeleteVehicleTypeB);
 				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -100,15 +101,18 @@ public class VehicleTypeDelete extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		
 		try {
-			logicLayer.deleteVehicleType(id);
-			status = "Your god!";
-			templateProcessor.addToRoot("status", status);
+			
+			logicLayer.deleteVehicleType(typeId);
+			statusDeleteVehicleTypeG = "Your god!";
+			templateProcessor.addToRoot("statusDeleteVehicleTypeG", statusDeleteVehicleTypeG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			status = "You can&#8217t do that!";
-			templateProcessor.addToRoot("status", status);
-    			templateProcessor.processTemplate(response);
+			
+			statusDeleteVehicleTypeB = "You can&#8217t do that!";
+			templateProcessor.addToRoot("statusDeleteVehicleTypeB", statusDeleteVehicleTypeB);
+    		templateProcessor.processTemplate(response);
 		}
 	}
 	

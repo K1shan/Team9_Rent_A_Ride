@@ -269,6 +269,7 @@ public class VehicleManager {
 		
 		try {
 			stmt = con.createStatement();
+			System.out.println("query: "+query.toString());
 			if(stmt.execute(query.toString())) {
 				ResultSet rs = stmt.getResultSet();
 				
@@ -371,6 +372,7 @@ public class VehicleManager {
         	
             stmt = (PreparedStatement) con.prepareStatement(deleteVehicle);         
             stmt.setLong( 1, vehicle.getId() );
+            System.out.println("query: "+stmt.toString());
             inscnt = stmt.executeUpdate();          
             if( inscnt == 1 ) {
                 return;
