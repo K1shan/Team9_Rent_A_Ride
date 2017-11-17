@@ -197,7 +197,8 @@ public class LogicLayerImpl
 	@Override
 	public void updateVehicleType(int typeId, String name) throws RARException {
 		// TODO Auto-generated method stub
-		
+		VehicleTypeCtrl ctrlVehicleType = new VehicleTypeCtrl ( objectLayer );
+		ctrlVehicleType.updateVehicleType(typeId, name);
 	}
 
 	@Override

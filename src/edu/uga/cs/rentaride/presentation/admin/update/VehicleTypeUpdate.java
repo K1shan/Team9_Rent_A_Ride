@@ -73,10 +73,13 @@ public class VehicleTypeUpdate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
+        int id;
+        String name;
+        
 		templateProcessor.setTemplate("AdminView.ftl");
-		int id = Integer.parseInt(request.getParameter("select1"));
-		String name = request.getParameter("type");
 		
+		id = Integer.parseInt(request.getParameter("select1"));
+		name = request.getParameter("type");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -84,7 +87,6 @@ public class VehicleTypeUpdate extends HttpServlet {
         
 		//Here it will get the existing id
 		if( ssid != null ) {
-
             session = SessionManager.getSessionById( ssid );
         }
 		
@@ -103,6 +105,7 @@ public class VehicleTypeUpdate extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		
 		try {
 			logicLayer.updateVehicleType(id, name);
 			statusUpdateTypeG = "Amazing!";
@@ -111,7 +114,7 @@ public class VehicleTypeUpdate extends HttpServlet {
 		} catch (RARException e){
 			statusUpdateTypeB = "Huh ?";
 			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
-    			templateProcessor.processTemplate(response);
+    		templateProcessor.processTemplate(response);
 		}
 	}
 	
