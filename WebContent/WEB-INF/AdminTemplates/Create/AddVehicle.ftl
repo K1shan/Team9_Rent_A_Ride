@@ -6,10 +6,6 @@
 			<select id="selectVehicleTypeAdd" name="selectVehicleTypeAdd" class="minimal">
 					<option value="">Select</option>
 			</select>
-			
-			<select id="selectLocationAdd" name="selectLocationAdd" class="minimal">
-				<option value="">Select</option>
-			</select>
 								
 			<p class="float-label">
 				<input type="text" id="makeAdd" name="makeAdd" placeholder="Make"/>
@@ -27,11 +23,14 @@
 				<input type="text" id="mileageAdd" name="mileageAdd" placeholder="Mileage"/>
 			</p>
 			
+			<select id="selectLocationAdd" name="selectLocationAdd" class="minimal">
+				<option value="">Select</option>
+			</select>
+			
 			<p class="float-label">
 				<input type="text" id="tagAdd" name="tagAdd" placeholder="Tag"/>
 			</p>
 		
-			
 		
 			<p>
 				<input class = "type" type="submit" onclick="return vehicleCreateNullCheck()" value="ADD VEHICLE" />

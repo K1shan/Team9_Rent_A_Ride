@@ -68,7 +68,7 @@
       				
       				<!-- This is a button and will submit the form -->
       				<p>
-        				<input type="submit" name="signin" onclick="return forgotNullCheck()" value="Sign In" />
+        					<input type="submit" name="signin" onclick="return forgotNullCheck()" value="Sign In" />
       				</p>	
       				
 		      			<#if statusUpdatePasswordG??>

@@ -3,7 +3,7 @@ function adminCreateNullCheck(){
 	
 	var username = document.getElementById("email").value;
 	if(username === ""){
-		alert("Email field is blank");
+		alert("Invalid Email");
 		return false;
 	}else{
 		return true;

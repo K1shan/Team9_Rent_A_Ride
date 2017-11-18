@@ -6,19 +6,29 @@
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script type = "text/javascript" src="Javascript/Navbar/navbar.js"></script>
+
 <script type = "text/javascript" src="Javascript/Null/AdminView/addAdmin.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addLocation.js"></script>
-<script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
-<script type = "text/javascript" src="Javascript/Null/AdminView/deleteLocation.js"></script>
-<script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addType.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addVehicle.js"></script>
-<script type = "text/javascript" src="Javascript/Null/AdminView/deleteVehicle.js"></script>
+
+
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateProfile.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateType.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateVehicle.js"></script>
+
+
+<script type = "text/javascript" src="Javascript/Null/AdminView/deleteLocation.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/deleteVehicleType.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/deleteVehicle.js"></script>
+
+
 <script type = "text/javascript" src="Javascript/RetrieveType/RetrieveType.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrievelocationVehicle.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocation.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicle.js"></script>
+
 <script type = "text/javascript" src="Javascript/Tab/tab.js"></script>
 </head>
 
@@ -36,6 +46,7 @@
       <li><a href="#section5">View</a></li>
     </ul>
     <section id="section1">
+   	  <#include "Profile/ViewProfile.ftl">
       <#include "Profile/EditProfile.ftl">
     </section>
     

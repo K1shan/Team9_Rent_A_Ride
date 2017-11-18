@@ -6,28 +6,36 @@ function locationUpdateNullCheck(){
 	var city = document.getElementById("cityUpdate").value;
 	var state = document.getElementById("stateUpdate").value;
 	var zip = document.getElementById("zipUpdate").value;
+	var zip_l = zip.length;
 	var ava = document.getElementById("avaUpdate").value;
 	
 	if(name === ""){
-		alert("Name field is blank");
+		
+		alert("Invalid Name");
 		return false;
 	}else if(add === ""){
-		alert("Address field is blank");
+		
+		alert("Invalid Address");
 		return false;
 	}else if(city === ""){
-		alert("City field is blank");
+		
+		alert("Invalid City");
 		return false;
 	}else if(state === ""){
-		alert("State field is blank");
+		
+		alert("Invalid State");
 		return false;
-	}else if(zip === "" && zip > 0 && isNaN(zip)){
-		alert("Zip field is blank");
+	}else if(zip === "" || zip < 0 || isNaN(zip) || zip_l != 5){
+		
+		alert("Invalid Zip");
 		return false;
-	}else if(ava === "" && ava > 0 && isNaN(ava)){
-		alert("Avalibility field is blank");
+	}else if(ava === "" || ava < 0 || isNaN(ava)){
+		
+		alert("Invalid Avalibility");
 		return false;
 	}else if( document.getElementById("pic").files.length == 0 ){
-		alert("File field is blank");	
+		
+		alert("Invalid File");	
 		return false;
 	}else{
 		return true;

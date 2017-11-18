@@ -1,10 +1,10 @@
 // This will check if the user and password field are null in sign in form
 function vehicleDeleteNullCheck(){
 	
-	var id = document.getElementById("id").value;
+	var id = document.getElementById("selectVehicleDelete").value;
 	
-	if(id === "" && id > 0 && isNaN(id)){
-		alert("Vehicle ID field is blank");
+	if(id === ""){
+		alert("Invalid Vehicle");
 		return false;
 	}else{
 		return true;

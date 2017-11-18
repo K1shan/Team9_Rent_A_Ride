@@ -116,6 +116,11 @@ body {
   border-bottom: 3px solid #000;
 }
 
+.in{
+	  text-align: center;
+	  text-transform: uppercase;
+}
+
 .float-label input:focus {
   border-bottom: 3px solid #C0C0C0;
 }

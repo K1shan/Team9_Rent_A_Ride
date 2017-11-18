@@ -1,9 +1,9 @@
-// This will check if the user and password field are null in sign in form
-function forgotNullCheck(){
-
-	var fname = document.getElementById("fname").value;
-	var lname = document.getElementById("lname").value;
-	var email = document.getElementById("username").value;
+function adminUpdateNullCheck(){
+	
+	var fname = document.getElementById("fName").value;
+	var lname = document.getElementById("lName").value;
+	var email = document.getElementById("email").value;
+	var address = document.getElementById("address").value;
 	var password = document.getElementById("password").value;
 	var cPassword = document.getElementById("confirm-password").value;
 	
@@ -15,6 +15,9 @@ function forgotNullCheck(){
 		return false;
 	}else if(email === ""){
 		alert("Invalid Email");
+		return false;
+	}else if(address === ""){
+		alert("Invalid Address");
 		return false;
 	}else if(password === ""){
 		alert("Invalid Password");
