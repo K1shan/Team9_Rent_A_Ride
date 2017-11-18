@@ -333,6 +333,15 @@ public interface LogicLayer {
 	public void updateAdmin(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
 			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException;
 	
+	/**
+	 * 
+	 * @param id
+	 * @param customerStatus
+	 * @throws RARException
+	 */
+	public void updateCustomerStatus(int id, String customerStatus) throws RARException;
+	
+	
 	/******************************************
 	 * DELETE
 	 */

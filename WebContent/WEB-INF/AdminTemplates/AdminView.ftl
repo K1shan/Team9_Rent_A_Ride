@@ -28,6 +28,8 @@
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrievelocationVehicle.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocation.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicle.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomer.js"></script>
+
 
 <script type = "text/javascript" src="Javascript/Tab/tab.js"></script>
 </head>
@@ -61,6 +63,7 @@
       <#include "Update/UpdateLocation.ftl">
       <#include "Update/UpdateVehicleType.ftl">
       <#include "Update/UpdateVehicle.ftl">
+      <#include "Update/UpdateCustomer.ftl">
     </section>
     
     <section id="section4">

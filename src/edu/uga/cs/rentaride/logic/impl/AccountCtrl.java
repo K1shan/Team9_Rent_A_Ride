@@ -211,4 +211,50 @@ public class AccountCtrl {
 			return;
 		}	
 	}
+	
+	public void updateCustomerStatus ( int customerId, String customerStatus) throws RARException{
+		
+		// get customer from id
+		//
+		Customer customer = null;
+		Customer modelCustomer = objectLayer.createCustomer();
+		modelCustomer.setId(customerId);
+		List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+		if(customers.size() > 0){
+			customer = customers.get( 0 );
+			customer.setId(customerId);
+		}
+		
+		// change userStatus terminated -> active
+		//
+		if(customerStatus.equals("ACTIVE")){
+			// if already active
+			//
+			if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
+				throw new RARException( "AccountCtrl.updateCustomerStatus: This customer is already active." );
+			}
+			// terminated -> active
+			//
+			else if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
+				customer.setUserStatus(UserStatus.ACTIVE);
+				objectLayer.storeCustomer(customer);
+			}
+		}
+		
+		// change userStatus active -> terminated
+		//
+		else if(customerStatus.equals("TERMINATED")){
+			// if already terminated
+			//
+			if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
+				throw new RARException( "AccountCtrl.updateCustomerStatus: This customer is already terminated." );
+			}
+			// active -> terminated
+			//
+			else if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
+				customer.setUserStatus(UserStatus.TERMINATED);
+				objectLayer.storeCustomer(customer);
+			}
+		}	
+	}
 }

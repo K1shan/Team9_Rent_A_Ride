@@ -320,7 +320,9 @@ public class ReservationManager {
 	            String 	customer_licNum;
 	            String 	customer_ccNum;
 	            Date 	customer_ccExp;
-	            int		customer_status = 0;// VEHICLE_TYPE
+	            int		customer_status = 0;
+	            // VEHICLE_TYPE
+	            //
 	            int		vehicleType_type_id;
 	            String	vehicleType_name;
 	            // LOCATION
