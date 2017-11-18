@@ -1,7 +1,6 @@
-package edu.uga.cs.rentaride.presentation.admin.retrieve;
+package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,38 +10,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentalLocation;
 
 /**
- * Servlet implementation class AdminLocation
+ * Servlet implementation class ReservationUpdate
  */
-@WebServlet("/RetrieveLocation")
-public class RetrieveLocation extends HttpServlet {
+@WebServlet("/CustomerStatusUpdate")
+public class CustomerStatusUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	Configuration cfg = null;
 	
-	//This the folder the it will return too
+	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetrieveLocation() {
+    public CustomerStatusUpdate() {
         super();
     }
 
@@ -75,11 +67,21 @@ public class RetrieveLocation extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		
+		String statusUpdateCustomerStatusG = "";
+		String statusUpdateCustomerStatusB = "";
+		
+		int customerId = Integer.parseInt(request.getParameter("selectCustomerUpdate"));
+		String customerStatus = request.getParameter("selectCustomerStatusUpdate");
+		
+		System.out.println(customerId + customerStatus);
+		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
+        String         ssid;
+		templateProcessor.setTemplate("AdminView.ftl");
+
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -94,29 +96,35 @@ public class RetrieveLocation extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-				
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				
+				statusUpdateCustomerStatusB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateCustomerStatusB", statusUpdateCustomerStatusB);
+				System.out.println("CustomerStatusUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
-        
+		
 		logicLayer = session.getLogicLayer();
-
+		User user = session.getUser();
+		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		
 		try {
-			List<RentalLocation> rentalLocations = logicLayer.findLocations( -1 );
-			// Making json objects
-			Gson gson = new Gson();
-			JsonElement element = gson.toJsonTree(rentalLocations, new TypeToken<List<RentalLocation>>() {}.getType());
-			System.out.println("gson element: "+element);
-			// Sending object to js
-			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
-			response.getWriter().print(jsonArray);
-		} catch (RARException e) {
 			
-			e.printStackTrace();
+			logicLayer.updateCustomerStatus(customerId, customerStatus);
+			statusUpdateCustomerStatusG = "Woohoo!";
+			templateProcessor.addToRoot("statusUpdateCustomerStatusG", statusUpdateCustomerStatusG);
+			templateProcessor.processTemplate(response);
+		}catch(RARException e) {
+			
+			statusUpdateCustomerStatusB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusUpdateCustomerStatusB", statusUpdateCustomerStatusB);
+			System.out.println("CustomerStatusUpdate: "+e.toString());
+			templateProcessor.processTemplate(response);
+			return;
 		}
 	}
 

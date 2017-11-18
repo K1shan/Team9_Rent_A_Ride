@@ -251,6 +251,12 @@ public class LogicLayerImpl
 	}
 	
 	@Override
+	public void updateCustomerStatus(int id, String customerStatus) throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		ctrlAccount.updateCustomerStatus(id, customerStatus);
+	}
+	
+	@Override
 	public void resetUserPassword(String email, String password, String fname, String lname) throws RARException {
 		AccountCtrl accountControl = new AccountCtrl(objectLayer);
 		accountControl.resetUserPassword(email, password, fname, lname);
