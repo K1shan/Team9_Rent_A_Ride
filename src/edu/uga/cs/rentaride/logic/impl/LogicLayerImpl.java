@@ -121,8 +121,7 @@ public class LogicLayerImpl
 		return ctrlCreateAccount.createAccount(fName, lName, email, password, driverNo, cardNo, expDate, address, city, state, zip);
 	}
 	
-	public void logout( String ssid ) throws RARException
-    {
+	public void logout( String ssid ) throws RARException{
         SessionManager.logout( ssid );
     }
 	
