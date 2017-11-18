@@ -97,10 +97,10 @@ public class CustomerIndex extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
-		templateProcessor.setTemplate("CustomerIndex.ftl");
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		templateProcessor.setTemplate("CustomerIndex.ftl");
 		templateProcessor.processTemplate(response);
 	}
 

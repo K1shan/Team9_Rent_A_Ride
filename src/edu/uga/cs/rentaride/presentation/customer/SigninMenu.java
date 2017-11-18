@@ -1,7 +1,6 @@
 package edu.uga.cs.rentaride.presentation.customer;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,17 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.Customer;
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapperBuilder;
-import freemarker.template.SimpleHash;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
@@ -138,6 +132,7 @@ public class SigninMenu extends HttpServlet {
    	 			user = session.getUser();
 				templateProcessor.setTemplate("CustomerTemplates/CustomerIndex.ftl");
 				templateProcessor.addToRoot("user", user.getFirstName());
+				templateProcessor.addToRoot("userSession", user);				
 				templateProcessor.addToRoot("status", status);
 				templateProcessor.processTemplate(response);
 				return;
@@ -170,5 +165,4 @@ public class SigninMenu extends HttpServlet {
 		
 		doGet(request, response);
 	}
-
 }

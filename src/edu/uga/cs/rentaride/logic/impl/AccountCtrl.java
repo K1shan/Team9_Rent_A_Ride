@@ -49,6 +49,7 @@ public class AccountCtrl {
    	 	if(customers.size() > 0){
    	 		Customer customer = customers.get( 0 );
    	 		User user = new UserImpl();
+   	 		user.setId(customer.getId());
    	 		user.setFirstName(customer.getFirstName());
    	 		user.setLastName(customer.getLastName());
    	 		user.setUserName(customer.getUserName());
@@ -74,6 +75,7 @@ public class AccountCtrl {
 		if(administrators.size() > 0){
 			Administrator admin = administrators.get(0);
 			User user = new UserImpl();
+			user.setId(admin.getId());
    	 		user.setFirstName(admin.getFirstName());
    	 		user.setLastName(admin.getLastName());
    	 		user.setUserName(admin.getUserName());

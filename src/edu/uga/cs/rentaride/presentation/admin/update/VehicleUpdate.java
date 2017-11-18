@@ -2,7 +2,6 @@ package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleCondition;
-import edu.uga.cs.rentaride.entity.VehicleStatus;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -110,20 +107,25 @@ public class VehicleUpdate extends HttpServlet {
 			} catch ( Exception e ){
 				status = "Failed to create a session";
 				templateProcessor.addToRoot("status", status);
-				System.out.println("LocationCreate: "+e.toString());
+				System.out.println("VehicleUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
+		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		
 		try {
+			
 			logicLayer.updateVehicle(vehicleId, typeId, locationId, make, model, year, mileadge, tag, lastServiced, vehicleStatus, vehicleCondition);
 			status = "Successfully updated Vehicle.";
 			templateProcessor.addToRoot("status", status);
     		templateProcessor.processTemplate(response);
     		return;
 		} catch (RARException e){
+			
 			System.out.println("VehicleUpdate: "+e.toString());
 			status = "Failed to update Vehicle.";
 			templateProcessor.addToRoot("status", status);
