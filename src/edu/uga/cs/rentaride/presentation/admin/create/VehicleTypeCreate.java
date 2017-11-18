@@ -103,9 +103,9 @@ public class VehicleTypeCreate extends HttpServlet {
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		
 		try {
 			
@@ -121,7 +121,6 @@ public class VehicleTypeCreate extends HttpServlet {
 			templateProcessor.processTemplate(response);
 			return;
 		}
-
 	}
 
 	/**
@@ -130,5 +129,4 @@ public class VehicleTypeCreate extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleType;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -110,13 +109,16 @@ public class HourlyPriceUpdate extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			
 			logicLayer.updateHourlyPrice(typeId, vehicleTypeId, maxHours, price);
 			statusUpdateTypeG = "Amazing!";
 			templateProcessor.addToRoot("statusUpdateTypeG", statusUpdateTypeG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
+			
 			statusUpdateTypeB = "Huh ?";
 			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
     		templateProcessor.processTemplate(response);

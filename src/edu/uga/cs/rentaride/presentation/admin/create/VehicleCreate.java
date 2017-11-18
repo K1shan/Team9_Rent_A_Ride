@@ -2,7 +2,6 @@ package edu.uga.cs.rentaride.presentation.admin.create;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -88,7 +87,6 @@ public class VehicleCreate extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("yearAdd"));
 		int mileage = Integer.parseInt(request.getParameter("mileageAdd"));
 		String tag = request.getParameter("tagAdd");
-		String serviced = "";
 		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
 		VehicleCondition vehicleCondition = VehicleCondition.GOOD;
 		Date lastServiced = new Date();
@@ -114,16 +112,20 @@ public class VehicleCreate extends HttpServlet {
 				templateProcessor.processTemplate(response);
 			}
 		}
+		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+
 		try {
+			
 			logicLayer.createVehicle(typeId, locationId, make, model, year, mileage, tag, lastServiced, vehicleStatus, vehicleCondition);
 			statusAddVehicleG = "Thats Dope";
 			templateProcessor.addToRoot("statusAddVehicleG", statusAddVehicleG);
     		templateProcessor.processTemplate(response);
-			return;
 		} catch (RARException e){
+			
 			System.out.println("VehicleCreate: "+e.toString());
 			statusAddVehicleB = "file has bad magic.";
 			templateProcessor.addToRoot("statusAddVehicleB", statusAddVehicleB);

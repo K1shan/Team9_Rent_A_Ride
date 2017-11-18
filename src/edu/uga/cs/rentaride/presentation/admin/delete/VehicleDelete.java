@@ -97,9 +97,12 @@ public class VehicleDelete extends HttpServlet {
 				templateProcessor.processTemplate(response);
 			}
 		}
+
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+
 		try {
 			
 			logicLayer.deleteVehicle(vehicleId);
