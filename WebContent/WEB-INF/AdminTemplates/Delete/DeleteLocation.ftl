@@ -2,9 +2,10 @@
 	<div class="tab">
 		<label class="head">DELETE LOCATION </label>
 		<form class="form" id="admin" action="LocationDelete" method='post' name="admin">
-			<p class="float-label">
-	    			<input type="text" id="id" name="id" placeholder="LOCATION ID"/>
-	  		</p>
+		
+			<select id="selectLocationDelete" name="selectLocationDelete" class="minimal">
+					<option value="">Select Location</option>
+			</select>
 	  		<p>
 	    			<input class = "type" type="submit" onclick="return locationDeleteNullCheck()" value="DELETE LOCATION" />
 	  		</p>

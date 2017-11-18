@@ -5,12 +5,9 @@
 					
 					
 						<select id="select2" name="select2" class="minimal">
-								<option value="">View Only</option>
+								<option value="">Vehicle Type</option>
 						</select>
-					
-		  				<p class="float-label">
-		    					<input type="text" id="type" name="type" placeholder="Vehicle Type ID"/>
-		  				</p>
+						
 		  				<p>
 		    				<input class = "type" type="submit" onclick="return typeDeleteNullCheck()" value="DELETE VEHICLE TYPE" />
 		  				</p>

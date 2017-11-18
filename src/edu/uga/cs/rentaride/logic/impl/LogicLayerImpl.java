@@ -10,6 +10,7 @@ import edu.uga.cs.rentaride.entity.Administrator;
 import edu.uga.cs.rentaride.entity.Comment;
 import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.HourlyPrice;
+import edu.uga.cs.rentaride.entity.RentARideParams;
 import edu.uga.cs.rentaride.entity.Rental;
 import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.Reservation;
@@ -108,6 +109,12 @@ public class LogicLayerImpl
 	}
     
 	@Override
+	public RentARideParams findParams() throws RARException {
+		SystemCtrl ctrlSystem = new SystemCtrl ( objectLayer );
+		return ctrlSystem.findParams();
+	}
+	
+	@Override
 	public long createAccount(String fName, String lName, String email, String password, String driverNo, String cardNo, String expDate, String address, String city, String state, String zip)
 			throws RARException {
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
@@ -196,24 +203,22 @@ public class LogicLayerImpl
 	
 	@Override
 	public void updateVehicleType(int typeId, String name) throws RARException {
-		// TODO Auto-generated method stub
 		VehicleTypeCtrl ctrlVehicleType = new VehicleTypeCtrl ( objectLayer );
 		ctrlVehicleType.updateVehicleType(typeId, name);
 	}
 
 	@Override
 	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) throws RARException {
-		// TODO Auto-generated method stub
 		HourlyPriceCtrl ctrlHourlyPrice = new HourlyPriceCtrl ( objectLayer );
 		ctrlHourlyPrice.updateHourlyPrice(hourlyPriceId, vehicleTypeId, maxHrs, price);
 	}
 	
 	@Override
 	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
-			int year, int mileadge, String tag, Date lastServiced, VehicleStatus vehicleStatus,
+			int year, int mileage, String tag, Date lastServiced, VehicleStatus vehicleStatus,
 			VehicleCondition vehicleCondition) throws RARException {
-		// TODO Auto-generated method stub
-		
+		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
+		ctrlVehicle.updateVehicle(vehicleId, vehicleTypeId, rentalLocationId, make, model, year, mileage, tag, lastServiced, vehicleStatus, vehicleCondition);
 	}
 
 	@Override
@@ -233,6 +238,12 @@ public class LogicLayerImpl
 	public void updateComment(int commentId, int rentalId, String text, Date commentDate) throws RARException {
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.updateComment(commentId, rentalId, text, commentDate);
+	}
+	
+	@Override
+	public void updateParams(int memberFee, int lateFee) throws RARException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

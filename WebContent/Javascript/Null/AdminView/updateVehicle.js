@@ -1,13 +1,13 @@
 // This will check if the user and password field are null in sign in form
 function vehicleUpdateNullCheck(){
 	
-	var vehicleType = document.getElementById("selectVehicleType").value;
-	var make = document.getElementById("make").value;
-	var model = document.getElementById("model").value;
-	var year = document.getElementById("year").value;
-	var mileage = document.getElementById("mileage").value;
-	var selectLocation = document.getElementById("selectLocation").value;
-	var tag = document.getElementById("tag").value;
+	var vehicleType = document.getElementById("selectVehicleTypeUpdate").value;
+	var make = document.getElementById("makeUpdate").value;
+	var model = document.getElementById("modelUpdate").value;
+	var year = document.getElementById("yearUpdate").value;
+	var mileage = document.getElementById("mileageUpdate").value;
+	var selectLocation = document.getElementById("selectLocationUpdate").value;
+	var tag = document.getElementById("tagUpdate").value;
 	
 	if(vehicleType === ""){
 		alert("Type field is blank");
