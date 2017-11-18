@@ -36,7 +36,7 @@
       <li><a href="#section5">View</a></li>
     </ul>
     <section id="section1">
-      Hello Admin
+      <#include "Profile/EditProfile.ftl">
     </section>
     
     <section id="section2">

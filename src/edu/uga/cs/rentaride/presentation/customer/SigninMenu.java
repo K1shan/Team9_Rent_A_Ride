@@ -125,6 +125,7 @@ public class SigninMenu extends HttpServlet {
 			user = session.getUser();
 			templateProcessor.setTemplate("AdminTemplates/AdminIndex.ftl");
 			templateProcessor.addToRoot("user", user.getFirstName());
+			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("status", status);
 			templateProcessor.processTemplate(response);
 			return;

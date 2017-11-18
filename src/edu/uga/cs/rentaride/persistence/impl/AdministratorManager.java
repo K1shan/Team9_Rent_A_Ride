@@ -224,9 +224,9 @@ public class AdministratorManager {
 		// NULL CHECKER
 		if( modelAdministrator != null ){
 			if( modelAdministrator.getId() >= 0 ){
-				query.append( " where ADMIN.admin_id = " + modelAdministrator.getId() );
+				query.append( " WHERE ADMIN.admin_id=" + modelAdministrator.getId() );
 			}else if( modelAdministrator.getUserName() != null) {
-				query.append( " where USER.uname = " + modelAdministrator.getUserName());
+				query.append( " WHERE USER.uname='" + modelAdministrator.getUserName() +"'");
 			}else {
 				
 				if(modelAdministrator.getPassword() != null){

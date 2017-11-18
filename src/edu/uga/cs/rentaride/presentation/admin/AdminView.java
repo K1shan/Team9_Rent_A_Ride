@@ -98,6 +98,7 @@ public class AdminView extends HttpServlet {
 		user = session.getUser();
 		templateProcessor.setTemplate("AdminView.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		templateProcessor.processTemplate(response);
 	}
 
