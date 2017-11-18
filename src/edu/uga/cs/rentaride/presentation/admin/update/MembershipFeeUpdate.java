@@ -20,21 +20,21 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class LocationUpdate
+ * Servlet implementation class ReservationUpdate
  */
-@WebServlet("/AdminUpdate")
-public class AdminUpdate extends HttpServlet {
+@WebServlet("/MembershipFeeUpdate")
+public class MembershipFeeUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminUpdate() {
+    public MembershipFeeUpdate() {
         super();
     }
 
@@ -67,72 +67,64 @@ public class AdminUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateAdminG = "";
-		String statusUpdateAdminB = "";
+		
+		String statusUpdateMembershipFeeG = "";
+		String statusUpdateMembershipFeeB = "";
+		
+		int membershipFee = Integer.parseInt(request.getParameter("membershipFee"));
+		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-        templateProcessor.setTemplate("AdminView.ftl");
-        String fName = request.getParameter("first-name");
-		String lName = request.getParameter("last-name");
-		String email = request.getParameter("email");
-		String address = request.getParameter("address");
-		String pwd = request.getParameter("password");
-		String confirm = request.getParameter("confirm");
-		
+		templateProcessor.setTemplate("AdminView.ftl");
 
-    	
+		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
         
 		//Here it will get the existing id
 		if( ssid != null ) {
+
             session = SessionManager.getSessionById( ssid );
         }
 		
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateAdminB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
 				
-				System.out.println("AdminUpdate: "+e.toString());
+				statusUpdateMembershipFeeB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateMembershipFeeB", statusUpdateMembershipFeeB);
+				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
-				return;
 			}
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = session.getUser();
-		int id = (int) user.getId();
-		System.out.println("id"+id);
-		System.out.println("user"+user);
+		User user = null;
+		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.addToRoot("userSession", user);
 		
-		if(!pwd.equals(confirm)){
-			statusUpdateAdminB = "Passwords don't match.";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+		try {
+			
+			logicLayer.updateParams(membershipFee, -1);
+			statusUpdateMembershipFeeG = "Woohoo!";
+			templateProcessor.addToRoot("statusUpdateMembershipFeeG", statusUpdateMembershipFeeG);
+			templateProcessor.processTemplate(response);
+		}catch(RARException e) {
+			
+			statusUpdateMembershipFeeB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusUpdateMembershipFeeB", statusUpdateMembershipFeeB);
+			System.out.println("MembershipFeeUpdate: "+e.toString());
 			templateProcessor.processTemplate(response);
 			return;
 		}
-		
-		try {
-			logicLayer.updateAdmin(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
-			statusUpdateAdminG = "Amazing!";
-			templateProcessor.addToRoot("statusUpdateAdminG", statusUpdateAdminG);
-			templateProcessor.processTemplate(response);
-		} catch (RARException e){
-			statusUpdateAdminB = "Huh ?";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
-    		templateProcessor.processTemplate(response);
-		}
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

@@ -121,8 +121,7 @@ public class LogicLayerImpl
 		return ctrlCreateAccount.createAccount(fName, lName, email, password, driverNo, cardNo, expDate, address, city, state, zip);
 	}
 	
-	public void logout( String ssid ) throws RARException
-    {
+	public void logout( String ssid ) throws RARException{
         SessionManager.logout( ssid );
     }
 	
@@ -146,8 +145,6 @@ public class LogicLayerImpl
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
 		return ctrlCreateAccount.setAdmin(username);
 	}
-
-	
 	
 	@Override
 	public void createLocation(String name, String address, String city, String state, String zip, String path,
@@ -242,15 +239,15 @@ public class LogicLayerImpl
 	
 	@Override
 	public void updateParams(int memberFee, int lateFee) throws RARException {
-		// TODO Auto-generated method stub
-		
+		SystemCtrl ctrlSystem = new SystemCtrl ( objectLayer );
+		ctrlSystem.updateParams(memberFee, lateFee);
 	}
 
 	@Override
-	public void updateAdmin(String uName, String fName, String lName, String email, String password, String driverNo, String cardNo, Date expDate, String address, String city, String state, String zip) throws RARException {
-		// TODO Auto-generated method stub
+	public void updateAdmin(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
 		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
-		ctrlAccount.updateAccount(uName, fName, lName, email, password, driverNo, cardNo, expDate, address, city, state, zip);
+		ctrlAccount.updateAccount(session, id, firstName, lastName, userName, password, email, address, membershipExpiration, licenseState, licenseNumber, cardNumber, cardExpiration);
 	}
 	
 	@Override
