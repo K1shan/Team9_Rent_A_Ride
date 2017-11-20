@@ -79,4 +79,8 @@ public interface Reservation
      * @param rental the new Rental based on this reservation
      */
     public void setRental( Rental rental );
+    
+    public boolean getCancelled();
+    
+    public void setCancelled ( boolean cancelled ) throws RARException;
 }

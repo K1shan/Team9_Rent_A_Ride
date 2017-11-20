@@ -184,7 +184,7 @@ public class PersistenceLayerImpl
 
 	@Override
 	public void storeCustomerReservation(Customer customer, Reservation reservation) throws RARException {
-		reservationManager.store(customer, reservation);
+		reservationManager.storeCustomerReservation(customer, reservation);
 	}
 
 	@Override

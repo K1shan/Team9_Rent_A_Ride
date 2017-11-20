@@ -216,11 +216,28 @@ public class CustomerImpl
 
 	@Override
 	public List<Reservation> getReservations() throws RARException{
+		
+		// if customer has made a reservation
+		//
 		if(reservations == null){
 			if(isPersistent() ){
 				reservations = getPersistenceLayer().restoreCustomerReservation( this );
 			}else{
                 throw new RARException( "This Customer object is not persistent" );
+			}
+		}
+		
+		// if customer is terminated
+		//
+		if(userStatus.equals(UserStatus.TERMINATED)){
+			int i = 0;
+			if(reservations != null){
+				for(Reservation reservation : reservations){
+					reservation.setCancelled(true);
+					getPersistenceLayer().storeCustomerReservation(this, reservation);
+					reservations.set(i, reservation);
+					i++;
+				}
 			}
 		}
         return reservations;

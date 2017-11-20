@@ -253,6 +253,8 @@ public class AccountCtrl {
 			//
 			else if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
 				customer.setUserStatus(UserStatus.TERMINATED);
+				customer.getReservations();
+				System.out.println("customer"+customer);
 				objectLayer.storeCustomer(customer);
 			}
 		}	

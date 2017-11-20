@@ -398,6 +398,7 @@ public class CustomerManager{
 	            Customer customer = null;
 	            
 	            while( rs.next() ) {
+	            	
 	            	// USER
 					user_user_id	= rs.getInt(1);
 	           	 	user_fname 		= rs.getString(2);
@@ -424,6 +425,7 @@ public class CustomerManager{
 	                else if(customer_status == 2)
 	                	userStatus 		= UserStatus.TERMINATED;
 	                
+	                customer = null;
 	                customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);
 	                customer.setId(customer_customer_id);
 	                customer.setUserStatus(userStatus);
