@@ -16,8 +16,8 @@ public class HourlyPriceImpl
 	
 	public HourlyPriceImpl(){
 		super( -1 );
-		this.maxHours = 0;
-		this.price = 0;
+		this.maxHours = -1;
+		this.price = -1;
 		this.vehicleType = null;
 	}
 	

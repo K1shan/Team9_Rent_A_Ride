@@ -116,9 +116,10 @@ public class RentARideTester
         	 int lengthReservation1 = 24;
         	 int lengthReservation2 = 48;
         	 int lengthReservation3 = 72;
-        	 int lengthReservation4 = 96;
         	 
-        	 int maxHours = 96;
+        	 int hourRange1 = 24;
+        	 int hourRange2 = 48;
+        	 int hourRange3 = 72;
 
         	 // DELETE everything
         	 objectLayer.deleteEverything();
@@ -157,14 +158,14 @@ public class RentARideTester
              persistence.storeVehicleType( convertibleVehicleType );
         	 
              // 4 HOURLY PRICES
-             truckHourlyPrice1 = objectLayer.createHourlyPrice(maxHours, 50, truckVehicleType);
+             truckHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 50, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice1 );
-             truckHourlyPrice2 = objectLayer.createHourlyPrice(maxHours, 75, truckVehicleType);
+             truckHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 75, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice2 );
              
-             convertibleHourlyPrice1 = objectLayer.createHourlyPrice(maxHours, 100, convertibleVehicleType);
+             convertibleHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 100, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice1 );
-             convertibleHourlyPrice2 = objectLayer.createHourlyPrice(maxHours, 150, convertibleVehicleType);
+             convertibleHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 150, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice2 );
         	 
         	 // 4 VEHICLES
@@ -190,7 +191,7 @@ public class RentARideTester
              reservationKishan1 = objectLayer.createReservation(dateReservation3, lengthReservation3, truckVehicleType, rentalLocationAtlanta, customerKishan);
              persistence.storeReservation(reservationKishan1);
              
-             reservationAlex1 = objectLayer.createReservation(dateReservation4, lengthReservation4, convertibleVehicleType, rentalLocationAthens, customerAlex);
+             reservationAlex1 = objectLayer.createReservation(dateReservation4, lengthReservation3, convertibleVehicleType, rentalLocationAthens, customerAlex);
              persistence.storeReservation(reservationAlex1);
         	 
         	 // 2 RENTALS

@@ -385,6 +385,8 @@ public class AdministratorManager {
 				"ALTER TABLE CUSTOMER AUTO_INCREMENT=1";
 		String alterVehicleTypeQuery = 
 				"ALTER TABLE VEHICLE_TYPE AUTO_INCREMENT=1";
+		String alterHourlyPriceQuery = 
+				"ALTER TABLE HOURLY_PRICE AUTO_INCREMENT=1";
 		String alterLocationQuery = 
 				"ALTER TABLE LOCATION AUTO_INCREMENT=1";
 		String alterVehicleQuery = 
@@ -404,6 +406,7 @@ public class AdministratorManager {
 			System.out.println("query: " + alterAdminQuery.toString());
 			System.out.println("query: " + alterCustomerQuery.toString());
 			System.out.println("query: " + alterVehicleTypeQuery.toString());
+			System.out.println("query: " + alterHourlyPriceQuery.toString());
 			System.out.println("query: " + alterLocationQuery.toString());
 			System.out.println("query: " + alterVehicleQuery.toString());
 			System.out.println("query: " + alterReservationQuery.toString());
@@ -416,6 +419,7 @@ public class AdministratorManager {
 			stmt.executeUpdate(alterAdminQuery);
 			stmt.executeUpdate(alterCustomerQuery);
 			stmt.executeUpdate(alterVehicleTypeQuery);
+			stmt.executeUpdate(alterHourlyPriceQuery);
 			stmt.executeUpdate(alterLocationQuery);
 			stmt.executeUpdate(alterVehicleQuery);
 			stmt.executeUpdate(alterReservationQuery);
