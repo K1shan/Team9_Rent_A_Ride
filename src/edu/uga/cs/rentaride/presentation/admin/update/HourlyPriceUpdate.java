@@ -80,10 +80,10 @@ public class HourlyPriceUpdate extends HttpServlet {
         
 		templateProcessor.setTemplate("AdminView.ftl");
 		
-		maxHours = Integer.parseInt(request.getParameter("maxHours"));
-		price = Integer.parseInt(request.getParameter("hourlyPrice"));
-		vehicleTypeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
-		typeId = Integer.parseInt(request.getParameter("typeId"));
+		maxHours = Integer.parseInt(request.getParameter("hourlyPriceUpdate"));
+		price = Integer.parseInt(request.getParameter("vehiclePriceUpdate"));
+		vehicleTypeId = Integer.parseInt(request.getParameter("selectHourlyPriceUpdate"));
+		typeId = Integer.parseInt(request.getParameter("hourlypriceUpdate"));
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();

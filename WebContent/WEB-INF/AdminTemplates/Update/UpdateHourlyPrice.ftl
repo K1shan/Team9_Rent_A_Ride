@@ -4,6 +4,7 @@
 		<form class="form" id="admin" action="HourlyPriceCreate" method='post' name="admin">
 			
 			<p class="float-label">
+			
 				<select id="hourlypriceUpdate" name="hourlypriceUpdate" class="minimal">
 						<option value="">Select</option>
 						<option value="temp">TEMP</option>
@@ -11,7 +12,7 @@
 			</p>
 			
 			<p class="float-label">
-				<select id="hourlyPriceUpdate" name="hourlyPrice" class="minimal">
+				<select id="hourlyPriceUpdate" name="hourlyPriceUpdate" class="minimal">
 						<option value="">Select</option>
 						<option value="24">Twinty-Four (24)</option>
 						<option value="42">Fourty-Two (42)</option>
@@ -20,7 +21,7 @@
 			</p>
 			
 			<p class="float-label">
-				<input type="text" id="vehiclePriceUpdate" name="vehiclePrice" placeholder="PRICE"/>
+				<input type="text" id="vehiclePriceUpdate" name="vehiclePriceUpdate" placeholder="PRICE"/>
 			</p>
 			
 			<p class="float-label">
