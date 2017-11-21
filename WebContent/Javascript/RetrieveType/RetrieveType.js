@@ -24,7 +24,7 @@ $(document).ready(function() {
 					 
 					 $('#selectHourlyPriceVehicleTypeAdd').append($('<option>').text(name).attr('value', id));
 					 $('#selectHourlyPriceAdd').append($('<option>').text(name).attr('value', id));
-					 $('#selectHourlyPriceUpdate').append($('<option>').text(name).attr('value', id));	 
+					 $('#selectHourlyPriceVehicleTypeUpdate').append($('<option>').text(name).attr('value', id));	 
 				 });
 
 			},

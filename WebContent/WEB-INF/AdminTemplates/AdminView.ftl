@@ -30,7 +30,7 @@
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrievelocationVehicle.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocation.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicle.js"></script>
-<script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveHourlyPrice.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveHourlyPrice/RetrieveHourlyPrice.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomer.js"></script>
 
 

@@ -1,21 +1,21 @@
 // This will check if the user and password field are null in sign in form
 function hourlypriceCreateNullCheck(){
 
-	var hourlyPrice = document.getElementById("hourlyPrice").value;
-	var priceOne = document.getElementById("vehiclePrice").value;
-	var type = document.getElementById("selectHourlyPriceAdd").value;
+	var typeId = document.getElementById("selectHourlyPriceVehicleTypeAdd").value;
+	var hours = document.getElementById("selectHourlyPriceHourAdd").value;
+	var price = document.getElementById("hourlyPricePriceAdd").value;
 	
-	if(hourlyPrice === ""){
+	if(typeId === ""){
 		
-		alert("Invalid Hour");
+		alert("Invalid Vehicle Type");
 		return false;
-	}else if(priceOne === "" || priceOne < 0 || isNaN(priceOne)){
+	}else if(price === "" || price < 0 || isNaN(price)){
 		
 		alert("Invalid Price");
 		return false;
-	}else if(type === ""){
+	}else if(hours === ""){
 		
-		alert("Invalid Vehicle Type ");
+		alert("Invalid Hours");
 		return false;
 	}else {
 		return true;

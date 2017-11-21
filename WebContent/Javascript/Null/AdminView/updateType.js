@@ -1,10 +1,10 @@
 // This will check if the user and password field are null in sign in form
 function vehicleUpdateTypeNullCheck(){
 
-	var selectVehicleTypeUpdate = document.getElementById("selectVehicleTypeUpdate").value;
+	var id = document.getElementById("selectVehicleTypeUpdate").value;
 	var typeName = document.getElementById("vehicleTypeUpdate").value;
 	
-	if(select1 === ""){
+	if(id === ""){
 		alert("Invalid Select Type");
 		return false;
 	}else if(typeName === ""){

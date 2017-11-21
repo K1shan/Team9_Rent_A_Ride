@@ -1,6 +1,7 @@
-package edu.uga.cs.rentaride.presentation.admin.update;
+package edu.uga.cs.rentaride.presentation.admin.retrieve;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,23 +11,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.HourlyPrice;
 
 /**
- * Servlet implementation class LocationUpdate
+ * Servlet implementation class AdminLocation
  */
-@WebServlet("/HourlyPriceUpdate")
-public class HourlyPriceUpdate extends HttpServlet {
+@WebServlet("/RetrieveHourlyPrice")
+public class RetrieveHourlyPrice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
+	
+	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
@@ -34,7 +42,7 @@ public class HourlyPriceUpdate extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HourlyPriceUpdate() {
+    public RetrieveHourlyPrice() {
         super();
     }
 
@@ -67,23 +75,11 @@ public class HourlyPriceUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateHourlyPriceG = "";
-		String statusUpdateHourlyPriceB = "";
+		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;
-    	int hourlyPriceId;
-    	int vehicleTypeId;
-        int maxHours;
-    	int price;
-        
-		templateProcessor.setTemplate("AdminView.ftl");
-		
-		hourlyPriceId = Integer.parseInt(request.getParameter("selectHourlyPriceUpdate"));
-		vehicleTypeId = Integer.parseInt(request.getParameter("selectHourlyPriceVehicleTypeUpdate"));
-		maxHours = Integer.parseInt(request.getParameter("selectHourlyPriceHourUpdate"));
-		price = Integer.parseInt(request.getParameter("hourlyPricePriceUpdate"));
+        String         ssid;		
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -91,40 +87,38 @@ public class HourlyPriceUpdate extends HttpServlet {
         
 		//Here it will get the existing id
 		if( ssid != null ) {
+
             session = SessionManager.getSessionById( ssid );
         }
 		
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
+				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateHourlyPriceB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateHourlyPriceB", statusUpdateHourlyPriceB);
-				System.out.println("LocationUpdate: "+e.toString());
+				status = e.toString();
+				templateProcessor.addToRoot("status", status);
 				templateProcessor.processTemplate(response);
 			}
 		}
-		
+        
 		logicLayer = session.getLogicLayer();
-		User user = session.getUser();
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.addToRoot("userSession", user);
-		
+
 		try {
-			
-			logicLayer.updateHourlyPrice(hourlyPriceId, vehicleTypeId, maxHours, price);
-			statusUpdateHourlyPriceG = "Amazing!";
-			templateProcessor.addToRoot("statusUpdateHourlyPriceG", statusUpdateHourlyPriceG);
-			templateProcessor.processTemplate(response);
-		} catch (RARException e){
-			
-			statusUpdateHourlyPriceB = "Huh ?";
-			templateProcessor.addToRoot("statusUpdateHourlyPriceB", statusUpdateHourlyPriceB);
-    		templateProcessor.processTemplate(response);
+			List<HourlyPrice> hourlyPrices = logicLayer.findHourlyPrices( -1 );
+			// Making json objects
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(hourlyPrices, new TypeToken<List<HourlyPrice>>() {}.getType());
+			System.out.println("gson element: "+element);
+			// Sending object to js
+			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		} catch (RARException e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
