@@ -135,7 +135,6 @@ public interface LogicLayer {
 			String address, String city, String state, String zip ) throws RARException;
 
 	/**
-	 * 
 	 * @param name
 	 * @param address
 	 * @param city
@@ -222,7 +221,7 @@ public interface LogicLayer {
 	 */
 	
 	/**
-	 * 
+	 * @param locationId
 	 * @param name
 	 * @param address
 	 * @param city
@@ -232,7 +231,7 @@ public interface LogicLayer {
 	 * @param capacity
 	 * @throws RARException
 	 */
-	public void updateLocation ( String name, String address, String city,
+	public void updateLocation ( int locationId, String name, String address, String city,
 			String state, String zip, String path, int capacity ) throws RARException;
 	
 	/**

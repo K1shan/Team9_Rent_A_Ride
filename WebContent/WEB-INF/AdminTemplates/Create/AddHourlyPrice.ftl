@@ -4,14 +4,14 @@
 		<form class="form" id="admin" action="HourlyPriceCreate" method='post' name="admin">
 			
 			<select id="selectHourlyPriceVehicleTypeAdd" name="selectHourlyPriceVehicleTypeAdd" class="minimal">
-					<option value="">Select</option>
+					<option value="">Select Vehicle Type</option>
 			</select>
 			
 			<select id="hourlyPrice" name="hourlyPrice" class="minimal">
-					<option value="">Select</option>
+					<option value="">Select Hours</option>
 					<option value="24">Twinty-Four (24)</option>
-					<option value="42">Fourty-Two (42)</option>
-					<option value="78">Seventy-Eight (78)</option>
+					<option value="48">Fourty-Eight (48)</option>
+					<option value="72">Seventy-Two (72)</option>
 			</select>
 			
 			<p class="float-label">

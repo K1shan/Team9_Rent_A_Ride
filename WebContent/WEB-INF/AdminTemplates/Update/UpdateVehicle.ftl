@@ -16,7 +16,7 @@
 				<input type="text" id="modelUpdate" name="modelUpdate" placeholder="Model"/>
 			</p>	
 				
-			 <select id="selectVehicleTypeUpdate" name="selectVehicleTypeUpdate" class="minimal">
+			 <select id="selectVehicleVehicleTypeUpdate" name="selectVehicleVehicleTypeUpdate" class="minimal">
 				<option value="">Select Vehicle Type</option>
 			</select>
 				
@@ -28,7 +28,7 @@
 				<input type="text" id="mileageUpdate" name="mileageUpdate" placeholder="Mileage"/>
 			</p>
 			
-			<select id="selectLocationUpdate" name="selectLocationUpdate" class="minimal">
+			<select id="selectVehicleLocationUpdate" name="selectVehicleLocationUpdate" class="minimal">
 				<option value="">Select Location</option>
 			</select>
 						

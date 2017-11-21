@@ -192,10 +192,10 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public void updateLocation(String name, String address, String city, String state, String zip, String path,
+	public void updateLocation(int locationId, String name, String address, String city, String state, String zip, String path,
 			int capacity) throws RARException {
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
-		ctrlLocation.updateLocation(name, address, city, state, zip, path, capacity);
+		ctrlLocation.updateLocation(locationId, name, address, city, state, zip, path, capacity);
 	}
 	
 	@Override

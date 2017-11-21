@@ -2,13 +2,13 @@
 function vehicleUpdateNullCheck(){
 	
 	var VehicleUpdate = document.getElementById("selectVehicleUpdate").value;
-	var vehicleType = document.getElementById("selectVehicleTypeUpdate").value;
+	var vehicleType = document.getElementById("selectVehicleVehicleTypeUpdate").value;
 	var make = document.getElementById("makeUpdate").value;
 	var model = document.getElementById("modelUpdate").value;
 	var year = document.getElementById("yearUpdate").value;
 	var year_l = year.length;
 	var mileage = document.getElementById("mileageUpdate").value;
-	var selectLocation = document.getElementById("selectLocationUpdate").value;
+	var selectLocation = document.getElementById("selectVehicleLocationUpdate").value;
 	var tag = document.getElementById("tagUpdate").value;
 	
 	if(VehicleUpdate === ""){

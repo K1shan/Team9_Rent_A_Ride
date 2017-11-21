@@ -78,8 +78,8 @@ public class VehicleTypeUpdate extends HttpServlet {
         
 		templateProcessor.setTemplate("AdminView.ftl");
 		
-		id = Integer.parseInt(request.getParameter("select1"));
-		name = request.getParameter("type");
+		id = Integer.parseInt(request.getParameter("selectVehicleTypeUpdate"));
+		name = request.getParameter("vehicleTypeUpdate").toLowerCase();
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();

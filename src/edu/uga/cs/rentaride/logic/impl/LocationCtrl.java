@@ -72,18 +72,16 @@ public class LocationCtrl {
 		objectLayer.storeRentalLocation(rentalLocation);
 	}
 	
-	public void updateLocation (String name, String address, String city,
+	public void updateLocation (int locationId, String name, String address, String city,
 			String state, String zip, String path, int capacity) throws RARException{
-		long locationId = 0;
 		
 		// check if location already exists
 		//
 		modelRentalLocation = objectLayer.createRentalLocation();
-		modelRentalLocation.setName(name);
+		modelRentalLocation.setId(locationId);
 		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
 		if(rentalLocations.size() > 0){
 			rentalLocation = rentalLocations.get(0);
-			locationId = rentalLocation.getId();
 		}
 			
 		// check if location found
@@ -91,6 +89,11 @@ public class LocationCtrl {
 		if(rentalLocation == null)
 			throw new RARException( "A location with this name does not exist" );
 
+		// check if capacity change will destroy cars
+		//
+		if(rentalLocation.getVehicles().size() > capacity)
+			throw new RARException( "The newly specified capacity is too small. Remove some vehicles." );
+		
 		rentalLocation = null;
 		rentalLocation = objectLayer.createRentalLocation(name, address, city, state, zip, path, capacity);
 		rentalLocation.setId(locationId);

@@ -15,8 +15,8 @@
 				<select id="hourlyPriceUpdate" name="hourlyPriceUpdate" class="minimal">
 						<option value="">Select</option>
 						<option value="24">Twinty-Four (24)</option>
-						<option value="42">Fourty-Two (42)</option>
-						<option value="78">Seventy-Eight (78)</option>
+						<option value="48">Fourty-Eight (48)</option>
+						<option value="72">Seventy-Two (72)</option>
 				</select>
 			</p>
 			

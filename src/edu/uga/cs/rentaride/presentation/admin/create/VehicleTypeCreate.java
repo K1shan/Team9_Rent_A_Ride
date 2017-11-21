@@ -76,7 +76,7 @@ public class VehicleTypeCreate extends HttpServlet {
 		templateProcessor.setTemplate("AdminView.ftl");
 		
 		// TODO
-		String typeName = request.getParameter("type");
+		String typeName = request.getParameter("type").toLowerCase();
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();

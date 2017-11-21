@@ -3,12 +3,12 @@
 		<label class="head">UPDATE VEHICLE TYPE </label>
 		<form class="form" id="admin" action="VehicleTypeUpdate" method='post' name="admin">
 						
-			<select id="select1" name="select1" class="minimal">
-					<option value="">Select</option>
+			<select id="selectVehicleTypeUpdate" name="selectVehicleTypeUpdate" class="minimal">
+					<option value="">Select Vehicle Type</option>
 			</select>
 						
 			<p class="float-label">
-					<input type="text" id="type" name="type" placeholder="Vehicle Type"/>
+					<input type="text" id="vehicleTypeUpdate" name="vehicleTypeUpdate" placeholder="New Vehicle Type Name"/>
 			</p>
 			<p>
 				<input class = "type" type="submit" onclick="return vehicleUpdateTypeNullCheck()" value="UPDATE VEHICLE TYPE" />
