@@ -20,8 +20,6 @@ import edu.uga.cs.rentaride.entity.VehicleStatus;
 import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.object.ObjectLayer;
 
-
-
 public class ReservationManager {
 	
 	private ObjectLayer objectLayer = null;
@@ -31,7 +29,6 @@ public class ReservationManager {
 		this.con = con;
 		this.objectLayer = objectLayer;
 	}//constructor
-	
 	
 	/*
 	 * 
@@ -52,9 +49,9 @@ public class ReservationManager {
 				+ "VALUES "
 				+ "(?, ?, ?, ?, ?, ?)";
 		
-		PreparedStatement pstmt;
-		int inscnt;
-		long reservationId;
+		PreparedStatement 	pstmt;
+		int 				inscnt;
+		long 				reservationId;
 		
 		try {
 			
@@ -156,15 +153,15 @@ public class ReservationManager {
 		if( modelReservation != null ){
 			
 			if(modelReservation.getId() >= 0){
-				query.append( " where RESERVATION.reservation_id =" + modelReservation.getId() );
+				query.append( " WHERE RESERVATION.reservation_id =" + modelReservation.getId() );
 			}else if(modelReservation.getCustomer().getId() >= 0){
-				query.append( " where CUSTOMER.customer_id = '" + modelReservation.getCustomer().getId() + "'");
+				query.append( " WHERE CUSTOMER.customer_id = '" + modelReservation.getCustomer().getId() + "'");
 			}else if(modelReservation.getCustomer().getUserName() != null) {
-				query.append( " where USER.uname = '" + modelReservation.getCustomer().getUserName() + "'");
+				query.append( " WHERE USER.uname = '" + modelReservation.getCustomer().getUserName() + "'");
 			}else if(modelReservation.getRentalLocation().getId() >= 0) {
-				query.append( " where LOCATION.location_id = '" + modelReservation.getRentalLocation().getId() + "'");
+				query.append( " WHERE LOCATION.location_id = '" + modelReservation.getRentalLocation().getId() + "'");
 			}else if(modelReservation.getVehicleType().getId() >= 0) {
-				query.append( " where VEHICLE_TYPE.type_id = '" + modelReservation.getVehicleType().getId() + "'");
+				query.append( " WHERE VEHICLE_TYPE.type_id = '" + modelReservation.getVehicleType().getId() + "'");
 			} else {
 				
 				if(modelReservation.getPickupTime() != null){
@@ -288,7 +285,8 @@ public class ReservationManager {
 				
 		try {
 			stmt = con.createStatement();
-			
+			System.out.println("query: " + query.toString());
+
 			if( stmt.execute(query.toString()) ){
 				ResultSet rs = stmt.getResultSet();
 				
@@ -422,7 +420,7 @@ public class ReservationManager {
 	
 	public void delete( Reservation reservation ) throws RARException{
 		
-		String deleteReserv = "DELETE FROM RESERVATION WHERE reservation_id = ?";              
+		String deleteReserv = "DELETE FROM RESERVATION WHERE reservation_id=?";              
 		PreparedStatement stmt = null;
 		int inscnt = 0;
 		             
@@ -432,6 +430,8 @@ public class ReservationManager {
         try {
             stmt = (PreparedStatement) con.prepareStatement(deleteReserv);         
             stmt.setLong( 1, reservation.getId() );
+			System.out.println("query: " + stmt.asSql());
+
             inscnt = stmt.executeUpdate();          
             if( inscnt == 1 ) {
                 return;
@@ -450,21 +450,104 @@ public class ReservationManager {
 	 * Customer @ Reservation
 	 * 
 	 */
-	public void store(Customer customer, Reservation reservation) throws RARException {
-		// TODO Auto-generated method stub
+	public void storeCustomerReservation(Customer customer, Reservation reservation) throws RARException {
 		
+		// queries
+		// 
+		String insertCustomerReservationQuery =
+				"INSERT INTO RESERVATION "
+				+ "(location_id, type_id, customer_id, pickup_date, length, cancelled ) "
+				+ "VALUES "
+				+ "( ?, ?, ?, ?, ?, ? )";
+		
+		String updateCustomerReservationQuery = 
+				"UPDATE RESERVATION SET "
+				+ "location_id=?, "
+				+ "type_id=?, "
+				+ "customer_id=?, "
+				+ "pickup_date=?, "
+				+ "length=?, "
+				+ "cancelled=? "
+				+ "WHERE reservation_id=?";
+		
+		PreparedStatement 	pstmt;
+		int 				inscnt;
+		long 				customerId;
+		long 				reservationId;
+		
+		try {
+			
+			// check persist
+			if( !customer.isPersistent() ){
+				pstmt = (PreparedStatement) con.prepareStatement( insertCustomerReservationQuery );
+			}else{
+				pstmt = (PreparedStatement) con.prepareStatement( updateCustomerReservationQuery );
+			}
+			
+			// update pstmt
+			//
+			if( reservation.getRentalLocation().getId() != 0 ){
+				pstmt.setLong( 1, reservation.getRentalLocation().getId() );
+			}else{
+				throw new RARException( "Reservation.storeCustomerReservation: can't save a customer reservation: location undefined" );
+			}
+			
+			if( reservation.getVehicleType().getId() != 0 ){
+				pstmt.setLong( 2, reservation.getVehicleType().getId() );
+			}else{
+				throw new RARException( "Reservation.storeCustomerReservation: can't save a customer reservation: type undefined" );
+			}
+			
+			if( reservation.getCustomer().getId() != 0 ){
+				pstmt.setLong( 3, reservation.getCustomer().getId() );
+			}else{
+				throw new RARException( "Reservation.storeCustomerReservation: can't save a customer reservation: customer undefined" );
+			}
+			
+			if( reservation.getPickupTime() != null ){
+				java.util.Date myDate = reservation.getPickupTime();
+	        	java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
+				pstmt.setDate( 4, sqlDate );
+			}else{
+				throw new RARException( "Reservation.storeCustomerReservation: can't save a customer reservation: pickup undefined" );
+			}
+			
+			if( reservation.getLength() != 0 ){
+				pstmt.setLong( 5, reservation.getLength() );
+			}else{
+				throw new RARException( "Reservation.storeCustomerReservation: can't save a customer reservation: length undefined" );
+			}
+			
+			if( reservation.getCancelled() == false || reservation.getCancelled() == true ){
+				if(reservation.getCancelled() == false) pstmt.setLong(6, 0);
+				if(reservation.getCancelled() == true) pstmt.setLong(6, 1);
+			}else{
+				throw new RARException( "Reservation.storeCustomerReservation: can't save a customer reservation: cancelled undefined" );
+			}
+			
+			if( customer.isPersistent())
+				pstmt.setLong( 7, reservation.getId() );
+			
+			System.out.println("query: " + pstmt.asSql());
+            inscnt = pstmt.executeUpdate();
+			
+			
+		} catch(SQLException e){
+				e.printStackTrace();
+				throw new RARException( "ReservationManager.storeCustomerReservation: failed to store a customer reservation: " + e );
+		}
 	}
 
     public List<Reservation> restore(Customer customer) throws RARException {
     	String selectCustomerReservationQuery =
-				"SELECT RESERVATION.*, "
+				"SELECT "
+				+ "RESERVATION.*, "
 				+ "VEHICLE_TYPE.*, "
 				+ "LOCATION.* "
 				+ "FROM RESERVATION "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
-				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=VEHICLE_TYPE.type_id "
-				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
-				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id ";
+				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
+				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id";
 		
 		StringBuffer query = new StringBuffer(100);
 		StringBuffer condition = new StringBuffer(100);
@@ -473,55 +556,78 @@ public class ReservationManager {
 		condition.setLength(0);
 		query.append(selectCustomerReservationQuery);
 		
+		if( customer != null){
+			
+			if( customer.getId() >= 0 ){
+				query.append( " WHERE CUSTOMER.customer_id="+customer.getId() );
+			}
+			
+		}
 		try {
 			stmt = con.createStatement();
-			
+			System.out.println("query: " + query.toString());
 			if( stmt.execute(query.toString()) ){
 				ResultSet rs = stmt.getResultSet();
 				
 				// RESERVATION
+				//
 				int 	reservation_reservation_id;
+				int 	reservation_location_id;
+				int		reservation_type_id;
+				int 	reservation_customer_id;
 				Date 	reservation_pickupTime;
 				int 	reservation_rentalLength;
+				int		reservation_cancelled;
 				// VEHICLE_TYPE
+				//
                 int   	type_type_id;
                 String 	type_name;
-                
-				// LOCATION
+                // LOCATION
+	            //
 				int 	location_location_id;
 				String 	location_name;
-				String 	location_address;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
 				int 	location_capacity;
 				
-				Reservation 	reservation = null;
-				RentalLocation 	rentalLocation = null;
-				VehicleType 	vehicleType = null;
+	            VehicleType vehicleType = null;
+				RentalLocation rentalLocation = null;
+				Reservation reservation = null;
 				
 				while( rs.next() ){
 					
 					// RESERVATION
+                	//
 					reservation_reservation_id 	= rs.getInt(1);
-					rs.getInt(2);
-					rs.getInt(3);
-					rs.getInt(4);
+					reservation_location_id		= rs.getInt(2);
+					reservation_type_id 		= rs.getInt(3);
+					reservation_customer_id		= rs.getInt(4);
 					reservation_pickupTime 		= rs.getDate(5);
 					reservation_rentalLength 	= rs.getInt(6);
-					rs.getInt(7);
+					reservation_cancelled		= rs.getInt(7);
 					
 					// VEHICLE_TYPE
 	                type_type_id 				= rs.getInt(8);
 	                type_name 					= rs.getString(9);
 					
-					// LOCATION
-					location_location_id 		= rs.getInt(10);
-					location_name 				= rs.getString(11);
-					location_address 			= rs.getString(12);
-					location_capacity 			= rs.getInt(13);
+	                // LOCATION
+					//
+					location_location_id= rs.getInt(10);
+					location_name 		= rs.getString(11);
+					location_addr	 	= rs.getString(12);
+					location_addr_city	= rs.getString(13);
+					location_addr_state	= rs.getString(14);
+					location_addr_zip	= rs.getString(15);
+					location_image_path	= rs.getString(16);
+					location_capacity 	= rs.getInt(17);
 					
 					vehicleType = objectLayer.createVehicleType(type_name);
 					vehicleType.setId(type_type_id);
 					
-					rentalLocation = objectLayer.createRentalLocation(location_name, location_address, location_address, location_address, location_address, location_address, location_capacity);
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
 					rentalLocation.setId(location_location_id);
 					
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
@@ -709,7 +815,6 @@ public class ReservationManager {
         List<Reservation> reservations = new ArrayList<Reservation>();
         condition.setLength( 0 );
         query.append( selectTypeReservationQuery );
-        System.out.println("query: "+ query.toString());
     	
         if( vehicleType != null ){
         	if( vehicleType.getId() >= 0 ){
@@ -720,6 +825,7 @@ public class ReservationManager {
         }
         try {
             stmt = (Statement) con.createStatement();
+            System.out.println("query: "+ query.toString());
             if( stmt.execute( query.toString() ) ) { // statement returned a result
                 ResultSet rs = stmt.getResultSet();
                 // RESERVATION

@@ -48,6 +48,9 @@ public class AccountCtrl {
    	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
    	 	if(customers.size() > 0){
    	 		Customer customer = customers.get( 0 );
+   	 		if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
+   	 			throw new RARException( "AccountCtrl.login: You have been banned." );
+   	 		}
    	 		User user = new UserImpl();
    	 		user.setId(customer.getId());
    	 		user.setFirstName(customer.getFirstName());
@@ -253,6 +256,8 @@ public class AccountCtrl {
 			//
 			else if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
 				customer.setUserStatus(UserStatus.TERMINATED);
+				customer.getReservations();
+				System.out.println("customer"+customer);
 				objectLayer.storeCustomer(customer);
 			}
 		}	
