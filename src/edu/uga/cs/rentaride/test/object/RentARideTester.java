@@ -121,10 +121,7 @@ public class RentARideTester
         	 int maxHours = 96;
 
         	 // DELETE everything
-        	 objectLayer.deleteAdministrator( null );
-        	 objectLayer.deleteCustomer( null );
-        	 objectLayer.deleteVehicleType( null );
-        	 objectLayer.deleteRentalLocation( null );
+        	 objectLayer.deleteEverything();
         	 
         	 // 4 ADMINS
         	 adminWayne = objectLayer.createAdministrator("Wayne", "Kung", "wayneAdmin@uga.edu", "w", "wayneAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);

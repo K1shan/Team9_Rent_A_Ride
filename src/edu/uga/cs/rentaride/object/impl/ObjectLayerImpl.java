@@ -451,4 +451,9 @@ public class ObjectLayerImpl
 	public RentARideParams findRentARideParams() throws RARException{
 		return this.persistence.restoreRentARideConfig();
 	}
+	
+	@Override
+	public void deleteEverything() throws RARException{
+		persistence.deleteEverything();
+	}
 }
