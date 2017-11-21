@@ -59,6 +59,10 @@ public class VehicleCtrl {
 		if(rentalLocation == null)
 			throw new RARException( "A location with this name does not exist" );
 		
+		// check if location is full
+		//
+		if(rentalLocation.getVehicles().size()+1 > rentalLocation.getCapacity())
+			throw new RARException( "This location is full of vehicles" );
 		
 		// check if vehicle already exists
 		//
@@ -72,6 +76,8 @@ public class VehicleCtrl {
 		//
 		if(vehicle != null)
 			throw new RARException( "A vehicle with this tag number already exists" );
+		
+		
 		
 		vehicle = objectLayer.createVehicle(make, model, year, tag, mileadge, lastServiced, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
 		objectLayer.storeVehicle(vehicle);
