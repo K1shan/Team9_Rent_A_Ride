@@ -71,11 +71,9 @@ public class HourlyPriceCreate extends HttpServlet {
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
 		
-		int maxHours = Integer.parseInt(request.getParameter("maxHours"));
-		int price1 = Integer.parseInt(request.getParameter("vehiclePrice1"));
-		int price2 = Integer.parseInt(request.getParameter("vehiclePrice2"));
-		int price3 = Integer.parseInt(request.getParameter("vehiclePrice3"));
-		int typeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
+		int typeId = Integer.parseInt(request.getParameter("selectHourlyPriceVehicleTypeAdd"));
+		int maxHours = Integer.parseInt(request.getParameter("hourlyPrice"));
+		int price = Integer.parseInt(request.getParameter("vehiclePrice"));
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
@@ -114,9 +112,7 @@ public class HourlyPriceCreate extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
-			logicLayer.createHourlyPrice(typeId, 24, price1);
-			logicLayer.createHourlyPrice(typeId, 48, price2);
-			logicLayer.createHourlyPrice(typeId, 72, price3);
+			logicLayer.createHourlyPrice(typeId, maxHours, price);
 			statusAddTypeG = "Your Amazing!";
 			templateProcessor.addToRoot("statusAddHourlyPriceG", statusAddTypeG);
 			templateProcessor.processTemplate(response);

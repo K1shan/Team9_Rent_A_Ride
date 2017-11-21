@@ -1,13 +1,13 @@
 // This will check if the user and password field are null in sign in form
 function vehicleCreateNullCheck(){
 	
-	var vehicleType = document.getElementById("selectVehicleTypeAdd").value;
+	var vehicleType = document.getElementById("selectVehicleVehicleTypeAdd").value;
 	var make = document.getElementById("makeAdd").value;
 	var model = document.getElementById("modelAdd").value;
 	var year = document.getElementById("yearAdd").value;
 	var year_l = year.length;
 	var mileage = document.getElementById("mileageAdd").value;
-	var selectLocation = document.getElementById("selectLocationAdd").value;
+	var selectLocation = document.getElementById("selectVehicleLocationAdd").value;
 	var tag = document.getElementById("tagAdd").value;
 	
 	if(vehicleType === ""){

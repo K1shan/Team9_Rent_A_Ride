@@ -3,7 +3,7 @@
 		<label class="head">ADD VEHICLE </label>
 		<form class="form" id="admin" action="VehicleCreate" method='post' name="admin">
 			
-			<select id="selectVehicleTypeAdd" name="selectVehicleTypeAdd" class="minimal">
+			<select id="selectVehicleVehicleTypeAdd" name="selectVehicleVehicleTypeAdd" class="minimal">
 					<option value="">Select</option>
 			</select>
 								
@@ -23,7 +23,7 @@
 				<input type="text" id="mileageAdd" name="mileageAdd" placeholder="Mileage"/>
 			</p>
 			
-			<select id="selectLocationAdd" name="selectLocationAdd" class="minimal">
+			<select id="selectVehicleLocationAdd" name="selectVehicleLocationAdd" class="minimal">
 				<option value="">Select</option>
 			</select>
 			
