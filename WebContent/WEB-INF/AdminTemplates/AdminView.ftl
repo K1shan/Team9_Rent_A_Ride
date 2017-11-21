@@ -11,23 +11,26 @@
 <script type = "text/javascript" src="Javascript/Null/AdminView/addLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addType.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/addVehicle.js"></script>
-
+<script type = "text/javascript" src="Javascript/Null/AdminView/addHourlyPrice.js"></script>
 
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateProfile.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateType.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateVehicle.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateCustomer.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateHourlyPrice.js"></script>
 
 
 <script type = "text/javascript" src="Javascript/Null/AdminView/deleteLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/deleteVehicleType.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/deleteVehicle.js"></script>
-
+<script type = "text/javascript" src="Javascript/Null/AdminView/deleteHourlyPrice.js"></script>
 
 <script type = "text/javascript" src="Javascript/RetrieveType/RetrieveType.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrievelocationVehicle.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocation.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicle.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveHourlyPrice.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomer.js"></script>
 
 
@@ -57,12 +60,14 @@
       <#include "Create/AddLocation.ftl">
       <#include "Create/AddVehicleType.ftl">
       <#include "Create/AddVehicle.ftl">
+      <#include "Create/AddHourlyPrice.ftl">
     </section>
     
     <section id="section3">
       <#include "Update/UpdateLocation.ftl">
       <#include "Update/UpdateVehicleType.ftl">
       <#include "Update/UpdateVehicle.ftl">
+	  <#include "Update/UpdateHourlyPrice.ftl">
       <#include "Update/UpdateCustomer.ftl">
     </section>
     
@@ -70,6 +75,7 @@
 		<#include "Delete/DeleteLocation.ftl">
 		<#include "Delete/DeleteVehicleType.ftl">
 		<#include "Delete/DeleteVehicle.ftl">
+		<#include "Delete/DeleteHourlyPrice.ftl">
     </section>
     
     <section id="section5">

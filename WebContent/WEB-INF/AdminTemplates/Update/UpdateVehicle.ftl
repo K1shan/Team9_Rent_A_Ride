@@ -3,6 +3,7 @@
 		<label class="head">UPDATE VEHICLE </label>
 		<form class="form" id="admin" action="VehicleUpdate" method='post' name="admin">
 			
+			
 			<select id="selectVehicleUpdate" name="selectVehicleUpdate" class="minimal">
 					<option value="">Select Vehicle</option>
 			</select>

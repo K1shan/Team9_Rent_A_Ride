@@ -102,7 +102,7 @@ public class HourlyPriceCreate extends HttpServlet {
 			} catch ( Exception e ){
 				
 				statusAddTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+				templateProcessor.addToRoot("statusAddHourlyPriceB", statusAddTypeB);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -117,13 +117,13 @@ public class HourlyPriceCreate extends HttpServlet {
 			logicLayer.createHourlyPrice(typeId, 24, price1);
 			logicLayer.createHourlyPrice(typeId, 48, price2);
 			logicLayer.createHourlyPrice(typeId, 72, price3);
-			statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			statusAddTypeG = "Your Amazing!";
+			templateProcessor.addToRoot("statusAddHourlyPriceG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
 		}catch (RARException e){
 			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+			statusAddTypeB = "Out of order";
+			templateProcessor.addToRoot("statusAddHourlyPriceB", statusAddTypeB);
 			System.out.println("HourlyPriceCreate: "+e.toString());
     			templateProcessor.processTemplate(response);
     			return;

@@ -3,18 +3,22 @@
 		<label class="head">UPDATE CUSTOMER </label>
 		<form class="form" id="admin" action="CustomerStatusUpdate" method='post' name="admin">
 			
-			<select id="selectCustomerUpdate" name="selectCustomerUpdate" class="minimal">
-					<option value="">Select Customer</option>
-			</select>
+			<p class="float-label">
+				<select id="selectCustomerUpdate" name="selectCustomerUpdate" class="minimal">
+						<option value="">Select Customer</option>
+				</select>
+			</p>
 			
-			<select id="selectCustomerStatusUpdate" name="selectCustomerStatusUpdate" class="minimal">
-				<option value="">Customer Status</option>
-				<option value="ACTIVE">ACTIVE</option>
-				<option value="TERMINATED">TERMINATED</option>
-			</select>
-		
+			<p class="float-label">
+				<select id="selectCustomerStatusUpdate" name="selectCustomerStatusUpdate" class="minimal">
+					<option value="">Customer Status</option>
+					<option value="ACTIVE">ACTIVE</option>
+					<option value="TERMINATED">TERMINATED</option>
+				</select>
+			</p>
+			
 			<p>
-				<input class = "type" type="submit" value="UPDATE CUSTOMER" />
+				<input class = "type" type="submit" onclick="return custoemerUpdateNullCheck()" value="UPDATE CUSTOMER" />
 			</p>
 			  				
 			<#if statusUpdateCustomerG??>
