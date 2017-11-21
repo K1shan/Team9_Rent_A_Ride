@@ -48,6 +48,9 @@ public class AccountCtrl {
    	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
    	 	if(customers.size() > 0){
    	 		Customer customer = customers.get( 0 );
+   	 		if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
+   	 			throw new RARException( "AccountCtrl.login: You have been banned." );
+   	 		}
    	 		User user = new UserImpl();
    	 		user.setId(customer.getId());
    	 		user.setFirstName(customer.getFirstName());

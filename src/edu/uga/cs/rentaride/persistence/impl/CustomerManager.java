@@ -354,7 +354,7 @@ public class CustomerManager{
 					if( condition.length() > 0 ){
                         condition.append( " and" );
                     }
-                    condition.append( " CUSTOMER.status="+modelCustomer.getUserStatus() );
+                    condition.append( " CUSTOMER.status='"+modelCustomer.getUserStatus()+"'");
 				}
 				
 				if( condition.length() > 0 ) {
