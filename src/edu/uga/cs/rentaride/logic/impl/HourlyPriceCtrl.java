@@ -26,6 +26,7 @@ public class HourlyPriceCtrl {
 	
 	public void createHourlyPrice (int vehicleTypeId, int maxHrs, int price) throws RARException {
 		
+		long hourlyPriceId = -1;
 		// check if type already exists
 		//
 		VehicleType modelVehicleType = objectLayer.createVehicleType();
@@ -38,27 +39,31 @@ public class HourlyPriceCtrl {
 				throw new RARException( "This vehicle type does not exist" );
 		}
 		
-		// check if hourly price already exists
+		// check if hourly price max hours exists
 		//
 		HourlyPrice modelPrice = objectLayer.createHourlyPrice();
 		modelPrice.setMaxHours(maxHrs);
-		modelPrice.setPrice(price);
 		modelPrice.setVehicleType(vehicleType);
 		List<HourlyPrice> hourlyPrices = objectLayer.findHourlyPrice(modelPrice);
 		HourlyPrice hourlyPrice = null;
 		if(hourlyPrices.size() > 0){
 			hourlyPrice = hourlyPrices.get(0);
-			if(hourlyPrice != null)
-				throw new RARException( "An hourly price with these parameters already exist" );
+			hourlyPriceId = hourlyPrice.getId();
+			if(hourlyPrice != null){
+				hourlyPrice = null;
+			}
 		}
 		// store hourly price
 		//
 		hourlyPrice = objectLayer.createHourlyPrice(maxHrs, price, vehicleType);
+		if(hourlyPrice != null){
+			//throw new RARException( "An hourly price with these parameters already exist" );
+			hourlyPrice.setId(hourlyPriceId);
+		}
 		objectLayer.storeHourlyPrice(hourlyPrice);
 	}
 
 	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) throws RARException {
-		// TODO Auto-generated method stub
 		long typeId = 0;
 		
 		HourlyPrice modelPrice = objectLayer.createHourlyPrice();
@@ -83,9 +88,7 @@ public class HourlyPriceCtrl {
 			vehicleType = vehicleTypes.get(0);
 			vTypeId = vehicleType.getId();
 		}
-		if(hourlyPrice == null) {
-			throw new RARException( "A location with this name does not exist" );
-		}
+		
 		
 		hourlyPrice = null;
 		hourlyPrice = objectLayer.createHourlyPrice(maxHrs, price, vehicleType);
