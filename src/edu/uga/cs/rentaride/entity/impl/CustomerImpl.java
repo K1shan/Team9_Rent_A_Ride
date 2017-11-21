@@ -306,5 +306,41 @@ public class CustomerImpl
 		return false;
 	}
 
+	@Override
+	public String getLicenseNum() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setLicenseNum(String licenseNum) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getCcNum() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCcNum(String ccNum) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Date getCcExp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCcExp(Date ccExp) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

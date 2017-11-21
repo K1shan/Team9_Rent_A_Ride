@@ -251,6 +251,13 @@ public class LogicLayerImpl
 	}
 	
 	@Override
+	public void updateCustomer(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		ctrlAccount.updateAccount(session, id, firstName, lastName, userName, password, email, address, membershipExpiration, licenseState, licenseNumber, cardNumber, cardExpiration);
+	}
+	
+	@Override
 	public void updateCustomerStatus(int id, String customerStatus) throws RARException {
 		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
 		ctrlAccount.updateCustomerStatus(id, customerStatus);
@@ -303,5 +310,17 @@ public class LogicLayerImpl
 	public void deleteComment(int id) throws RARException {
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.deleteComment(id);
+	}
+
+	@Override
+	public void renewMembership(Session session) throws RARException {
+		CustomerCtrl ctrlCustomer = new CustomerCtrl ( objectLayer );
+		ctrlCustomer.renewMembership(session);
+	}
+
+	@Override
+	public void cancelMembership(Session session) throws RARException {
+		CustomerCtrl ctrlCustomer = new CustomerCtrl ( objectLayer );
+		ctrlCustomer.cancelMembership(session);
 	}
 }

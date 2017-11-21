@@ -78,15 +78,15 @@ public class AdministratorManager {
 			}
 			
 			if( administrator.getFirstName() != null )
-                pstmt.setString( 1, administrator.getFirstName() );
+                pstmt.setString( 1, administrator.getFirstName().toLowerCase() );
             else{
                 throw new RARException( "AdministratorManager.save: can't save a user: FirstName undefined" );
             }if( administrator.getLastName() != null )
-                pstmt.setString( 2, administrator.getLastName() );
+                pstmt.setString( 2, administrator.getLastName().toLowerCase() );
             else
                 throw new RARException( "AdministratorManager.save: can't save a user: LastName undefined" );
             if( administrator.getUserName() != null )
-                pstmt.setString( 3, administrator.getUserName() );
+                pstmt.setString( 3, administrator.getUserName().toLowerCase() );
             else
                 throw new RARException( "AdministratorManager.save: can't save a user: UserName undefined" );
             if( administrator.getPassword() != null )

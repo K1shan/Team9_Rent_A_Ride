@@ -61,6 +61,11 @@ public class AccountCtrl {
    	 		user.setAddress(customer.getAddress());
    	 		user.setCreateDate(customer.getCreatedDate());
    	 		user.setUserStatus(customer.getUserStatus());
+   	 		user.setMemberUntil(customer.getMemberUntil());
+   	 		user.setLicenseState(customer.getLicenseState());
+   	 		user.setLicenseNum(customer.getLicenseNumber());
+   	 		user.setCcNum(customer.getCreditCardNumber());
+   	 		user.setCcExp(customer.getCreditCardExpiration());
    	 		session.setUser( user );
    	 		ssid = SessionManager.storeSession(session);
    	 	}else
@@ -188,27 +193,27 @@ public class AccountCtrl {
 		if(customers.size() > 0){
 			customer = customers.get( 0 );
 			customer.setId(id);
-			if(!firstName.equals(null))
+			if(firstName != null && !firstName.isEmpty())
 				customer.setFirstName(firstName);
-			if(!lastName.equals(null))
+			if(lastName != null && !lastName.isEmpty())
 				customer.setLastName(lastName);
-			if(!userName.equals(null))
+			if(userName != null && !userName.isEmpty())
 				customer.setUserName(userName);
-			if(!password.equals(null))
+			if(password != null && !password.isEmpty())
 				customer.setPassword(password);
-			if(!email.equals(null))
+			if(email != null && !email.isEmpty())
 				customer.setEmail(email);
-			if(!address.equals(null))
+			if(address != null && !address.isEmpty())
 				customer.setAddress(address);
-			if(!membershipExpiration.equals(null))
+			if(membershipExpiration != null)
 				customer.setMemberUntil(membershipExpiration);
-			if(!licenseState.equals(null))
+			if(licenseState != null && !licenseState.isEmpty())
 				customer.setLicenseState(licenseState);
-			if(!licenseNumber.equals(null))
+			if(licenseNumber != null && !licenseNumber.isEmpty())
 				customer.setLicenseNumber(licenseNumber);
-			if(!cardNumber.equals(null))
+			if(cardNumber != null && !cardNumber.isEmpty())
 				customer.setCreditCardNumber(cardNumber);
-			if(!cardExpiration.equals(null))
+			if(cardExpiration != null)
 				customer.setCreditCardExpiration(cardExpiration);
 			objectLayer.storeCustomer(customer);
 			return;

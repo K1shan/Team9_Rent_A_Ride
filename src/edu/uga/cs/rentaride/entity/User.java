@@ -96,4 +96,45 @@ public interface User
 	public void setIsAdmin(boolean isAdmin);
 	
 	public boolean getIsAdmin();
+	
+	public Date getMemberUntil();
+	
+	public void setMemberUntil(Date memberUntil) throws RARException;
+	
+	public String getLicenseState();
+    
+    /** Set the new license state for this customer.
+     * @param state the new state of this customer's license
+     */
+    public void setLicenseState( String licenseState );
+    
+    /** Return the license number of this customer.
+     * @return the license number of this customer
+     */
+    public String getLicenseNum();
+    
+    /** Set the new license number of this customer.
+     * @param licenseNumber the new license number of this customer
+     */
+    public void setLicenseNum( String licenseNum );
+    
+    /** Return the credit card number of this customer.
+     * @return the credit card number of this customer
+     */
+    public String getCcNum();
+    
+    /** Set the new credit card number of this customer.
+     * @param cardNumber the new credit card number of this customer
+     */
+    public void setCcNum( String ccNum );
+    
+    /** Return the expiration date of this customer's credit card.
+     * @return the expiration date of this customer's credit card
+     */
+    public Date getCcExp();
+    
+    /** Set the new expiration date of this customer's credit card.
+     * @param cardExpiration the new expiration date of this customer's credit card
+     */
+    public void setCcExp( Date ccExp);
 }

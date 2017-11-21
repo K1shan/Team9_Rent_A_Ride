@@ -89,11 +89,11 @@ public class CustomerManager{
 			}
 			
 			if( customer.getFirstName() != null )
-                pstmt.setString( 1, customer.getFirstName() );
+                pstmt.setString( 1, customer.getFirstName().toLowerCase() );
             else{
                 throw new RARException( "CustomerManager.save: can't save a user: FirstName undefined" );
             }if( customer.getLastName() != null )
-                pstmt.setString( 2, customer.getLastName() );
+                pstmt.setString( 2, customer.getLastName().toLowerCase() );
             else
                 throw new RARException( "CustomerManager.save: can't save a user: LastName undefined" );
             if( customer.getUserName() != null )

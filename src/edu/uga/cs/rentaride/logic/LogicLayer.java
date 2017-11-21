@@ -331,6 +331,24 @@ public interface LogicLayer {
 	 */
 	public void updateAdmin(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
 			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException;
+	/**
+	 * 
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param userName
+	 * @param password
+	 * @param email
+	 * @param address
+	 * @param membershipExpiration
+	 * @param licenseState
+	 * @param licenseNumber
+	 * @param cardNumber
+	 * @param cardExpiration
+	 * @throws RARException
+	 */
+	public void updateCustomer(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException;
 	
 	/**
 	 * 
@@ -440,4 +458,18 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public void resetUserPassword (String email, String password, String fname, String lname) throws RARException;
+	
+	/**
+	 * 
+	 * @param session
+	 * @throws RARException
+	 */
+	public void renewMembership ( Session session ) throws RARException;
+	
+	/**
+	 * 
+	 * @param session
+	 * @throws RARException
+	 */
+	public void cancelMembership ( Session session ) throws RARException;
 }
