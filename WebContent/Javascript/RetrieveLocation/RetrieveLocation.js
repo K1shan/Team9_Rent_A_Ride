@@ -36,7 +36,7 @@ $(document).ready(function() {
 					html += '</div>';
 					
 					$('#selectLocation').append($('<option>').text(name).attr('value', id));
-					$('#selectLocationAdd').append($('<option>').text(name).attr('value', id)); 
+					$('#selectVehicleLocationAdd').append($('<option>').text(name).attr('value', id)); 
 					$('#selectLocationUpdate').append($('<option>').text(name).attr('value', id));
 					$('#selectLocationDelete').append($('<option>').text(name).attr('value', id)); 
 
