@@ -21,14 +21,14 @@
 				<input class = "type" type="submit" onclick="return custoemerUpdateNullCheck()" value="UPDATE CUSTOMER" />
 			</p>
 			  				
-			<#if statusUpdateCustomerG??>
+			<#if statusUpdateCustomerStatusG??>
 				<p class="good">
-					<label> ${statusUpdateCustomerG} </label>
+					<label> ${statusUpdateCustomerStatusG} </label>
 				</p>
 			</#if>
-			<#if statusUpdateCustomerB??>
+			<#if statusUpdateCustomerStatusB??>
 				<p class="error">
-					 <label> ${statusUpdateCustomerB} </label>
+					 <label> ${statusUpdateCustomerStatusB} </label>
 				</p>
 				
 			</#if>

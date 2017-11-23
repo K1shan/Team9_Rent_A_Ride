@@ -43,7 +43,7 @@ public class VehicleTypeManager{
     	
     	String updateVehicleTypeQuery = 
 				"UPDATE VEHICLE_TYPE SET "
-				+ "name=?"
+				+ "name=? "
 				+ "WHERE type_id=?"; 
     	
     	PreparedStatement pstmt;

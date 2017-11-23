@@ -19,10 +19,15 @@ public class UserImpl extends Persistent implements User {
 		private String firstName;
 		private String lastName;
 		private String userName;
-		private String email;
 		private String password;
-		private Date createdDate;
+		private String email;
 		private String address;
+		private Date createdDate;
+		private Date memberUntil;
+		private String licenseState;
+		private String licenseNum;
+		private String ccNum;
+		private Date ccExp;
 		private UserStatus userStatus;
 	
 	public UserImpl() {
@@ -35,6 +40,11 @@ public class UserImpl extends Persistent implements User {
 		this.password = null;
 		this.createdDate = null;
 		this.address = null;
+		this.memberUntil = null;
+		this.licenseState = null;
+		this.licenseNum = null;
+		this.ccNum = null;
+		this.ccExp = null;
 		this.userStatus = null;
 		this.isAdmin = false;
 	}
@@ -49,6 +59,11 @@ public class UserImpl extends Persistent implements User {
 		this.createdDate = createdDate;
 		this.address = address;
 		this.userStatus = userStatus;
+		this.memberUntil = null;
+		this.licenseState = null;
+		this.licenseNum = null;
+		this.ccNum = null;
+		this.ccExp = null;
 		this.isAdmin = false;
 	}
 	
@@ -156,12 +171,61 @@ public class UserImpl extends Persistent implements User {
 
 		this.userStatus = userStatus;
 	}
+	
+	@Override
+	public Date getMemberUntil(){
+		return memberUntil;
+	}
+	
+	@Override
+	public void setMemberUntil(Date memberUntil) throws RARException{
+		this.memberUntil = memberUntil;
+	}
+
+	@Override
+	public String getLicenseState() {
+		return licenseState;
+	}
+
+	@Override
+	public void setLicenseState(String licenseState) {
+		this.licenseState = licenseState;
+	}
+	
+	@Override
+	public String getLicenseNum() {
+		return licenseNum;
+	}
+
+	@Override
+	public void setLicenseNum(String licenseNum) {
+		this.licenseNum = licenseNum;
+	}
+
+	@Override
+	public String getCcNum() {
+		return ccNum;
+	}
+
+	@Override
+	public void setCcNum(String ccNum) {
+		this.ccNum = ccNum;
+	}
+
+	@Override
+	public Date getCcExp() {
+		return ccExp;
+	}
+
+	@Override
+	public void setCcExp(Date ccExp) {
+		this.ccExp = ccExp;
+	}
 
 	@Override
 	public String toString() {
 		return "UserImpl [isAdmin=" + isAdmin + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
 				+ userName + ", email=" + email + ", password=" + password + ", createdDate=" + createdDate
 				+ ", address=" + address + ", userStatus=" + userStatus + "]";
-	}
-	
+	}	
 }

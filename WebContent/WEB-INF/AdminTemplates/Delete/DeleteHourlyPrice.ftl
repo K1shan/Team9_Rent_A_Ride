@@ -4,25 +4,25 @@
 		<form class="form" id="admin" action="HourlyPriceDelete" method='post' name="admin">
 		
 			<select id="selectHourlyPriceDelete" name="selectHourlyPriceDelete" class="minimal">
-					<option value="">Select Location</option>
+					<option value="">Select Hourly Price</option>
 			</select>
 			
 	  		<p>
-	    			<input class = "type" type="submit" onclick="return hourlypriceDeleteNullCheck()" value="DELETE LOCATION" />
+	    			<input class = "type" type="submit" onclick="return hourlypriceDeleteNullCheck()" value="DELETE HOURLY PRICE" />
 	  		</p>
 	  		
-	  		<#if statusDeleteLocationG??>
+	  		<#if statusDeleteHourlyPriceG??>
 						
 				<p class="good">
-   					<label> ${statusDeleteLocationG} </label>
+   					<label> ${statusDeleteHourlyPriceG} </label>
   				</p>
 							
 			</#if>
 	  				
-			<#if statusDeleteLocationB??>
+			<#if statusDeleteHourlyPriceB??>
 				
 				<p class="error">
-					 <label> ${statusDeleteLocationB} </label>
+					 <label> ${statusDeleteHourlyPriceB} </label>
 				</p>
 					
 			</#if>

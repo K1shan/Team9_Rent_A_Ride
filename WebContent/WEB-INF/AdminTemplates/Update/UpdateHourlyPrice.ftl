@@ -1,34 +1,34 @@
 <div class="modalFive">
 	<div class="tab">
 		<label class="head"> UPDATE HOURLY PRICE </label>
-		<form class="form" id="admin" action="HourlyPriceCreate" method='post' name="admin">
+		<form class="form" id="admin" action="HourlyPriceUpdate" method='post' name="admin">
 			
 			<p class="float-label">
 			
-				<select id="hourlypriceUpdate" name="hourlypriceUpdate" class="minimal">
-						<option value="">Select</option>
-						<option value="temp">TEMP</option>
-				</select>
-			</p>
-			
-			<p class="float-label">
-				<select id="hourlyPriceUpdate" name="hourlyPriceUpdate" class="minimal">
-						<option value="">Select</option>
-						<option value="24">Twinty-Four (24)</option>
-						<option value="42">Fourty-Two (42)</option>
-						<option value="78">Seventy-Eight (78)</option>
-				</select>
-			</p>
-			
-			<p class="float-label">
-				<input type="text" id="vehiclePriceUpdate" name="vehiclePriceUpdate" placeholder="PRICE"/>
-			</p>
-			
-			<p class="float-label">
 				<select id="selectHourlyPriceUpdate" name="selectHourlyPriceUpdate" class="minimal">
-						<option value="">Select</option>
+						<option value="">Select Hourly Price</option>
 				</select>
 			</p>
+			
+			<p class="float-label">
+				<select id="selectHourlyPriceVehicleTypeUpdate" name="selectHourlyPriceVehicleTypeUpdate" class="minimal">
+						<option value="">Select New Vehicle Type</option>
+				</select>
+			</p>
+			
+			<p class="float-label">
+				<select id="selectHourlyPriceHourUpdate" name="selectHourlyPriceHourUpdate" class="minimal">
+						<option value="">Select New Hours</option>
+						<option value="24">Twinty-Four (24)</option>
+						<option value="48">Fourty-Eight (48)</option>
+						<option value="72">Seventy-Two (72)</option>
+				</select>
+			</p>
+			
+			<p class="float-label">
+				<input type="text" id="hourlyPricePriceUpdate" name="hourlyPricePriceUpdate" placeholder="New PRICE"/>
+			</p>
+			
 			
 			<p>
 				<input class = "type" type="submit" onclick="return hourlypriceUpdateNullCheck()" value="UPDATE HOURLY PRICE" />

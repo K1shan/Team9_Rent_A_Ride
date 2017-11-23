@@ -47,6 +47,7 @@ public class CreateAccountCtrl {
             
 	    	//Passing into the object layer for create customer 
 	    	customer = objectLayer.createCustomer(fName, lName, email, password, email, address, createDate, dateMemberTill, state, driverNo, cardNo, ccExp);
+	    	customer.setUserStatus(UserStatus.ACTIVE);
 	    	objectLayer.storeCustomer(customer);
 	    	return customer.getId();
     }

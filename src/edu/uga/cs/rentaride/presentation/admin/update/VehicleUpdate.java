@@ -70,7 +70,8 @@ public class VehicleUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusUpdateVehicleG = "";
+		String statusUpdateVehicleB = ""; 
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -78,8 +79,8 @@ public class VehicleUpdate extends HttpServlet {
 		templateProcessor.setTemplate("AdminView.ftl");
 		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
 		int vehicleId = Integer.parseInt(request.getParameter("selectVehicleUpdate"));
-		int typeId = Integer.parseInt(request.getParameter("selectVehicleTypeUpdate"));
-		int locationId = Integer.parseInt(request.getParameter("selectLocationUpdate"));
+		int typeId = Integer.parseInt(request.getParameter("selectVehicleVehicleTypeUpdate"));
+		int locationId = Integer.parseInt(request.getParameter("selectVehicleLocationUpdate"));
 		String make = request.getParameter("makeUpdate");
 		String model = request.getParameter("modelUpdate");
 		int year = Integer.parseInt(request.getParameter("yearUpdate"));
@@ -105,8 +106,8 @@ public class VehicleUpdate extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				statusUpdateVehicleB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateVehicleB", statusUpdateVehicleB);
 				System.out.println("VehicleUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -120,15 +121,15 @@ public class VehicleUpdate extends HttpServlet {
 		try {
 			
 			logicLayer.updateVehicle(vehicleId, typeId, locationId, make, model, year, mileadge, tag, lastServiced, vehicleStatus, vehicleCondition);
-			status = "Successfully updated Vehicle.";
-			templateProcessor.addToRoot("status", status);
+			statusUpdateVehicleG = "Successfully updated Vehicle.";
+			templateProcessor.addToRoot("statusUpdateVehicleG", statusUpdateVehicleG);
     		templateProcessor.processTemplate(response);
     		return;
 		} catch (RARException e){
 			
 			System.out.println("VehicleUpdate: "+e.toString());
-			status = "Failed to update Vehicle.";
-			templateProcessor.addToRoot("status", status);
+			statusUpdateVehicleB = "Failed to update Vehicle.";
+			templateProcessor.addToRoot("statusUpdateVehicleB", statusUpdateVehicleB);
     		templateProcessor.processTemplate(response);
     		return;
 		}

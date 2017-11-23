@@ -1,20 +1,17 @@
-package edu.uga.cs.rentaride.presentation.admin.update;
+package edu.uga.cs.rentaride.presentation.customer.update;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -25,21 +22,19 @@ import freemarker.template.TemplateExceptionHandler;
 /**
  * Servlet implementation class LocationUpdate
  */
-@WebServlet("/LocationUpdate")
-@MultipartConfig(maxFileSize = 16177215)
-public class LocationUpdate extends HttpServlet {
+@WebServlet("/CustomerUpdate")
+public class CustomerUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
-	private String templateDir = "/WEB-INF/AdminTemplates";
+	private String templateDir = "/WEB-INF/CustomerTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private static final String SAVE_DIR = "city";
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LocationUpdate() {
+    public CustomerUpdate() {
         super();
     }
 
@@ -72,92 +67,68 @@ public class LocationUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		
-		String statusUpdateLocationG = "";
-		String statusUpdateLocationB = "";
+		String statusUpdateCustomerG = "";
+		String statusUpdateCustomerB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-		String savePath = getServletContext().getRealPath("/city"); 
-		templateProcessor.setTemplate("AdminView.ftl");
-		System.out.println(savePath);
+        templateProcessor.setTemplate("CustomerView.ftl");
+        String fName = request.getParameter("first-name");
+		String lName = request.getParameter("last-name");
+		String email = request.getParameter("email");
+		String address = request.getParameter("address");
+		String pwd = request.getParameter("password");
+		String confirm = request.getParameter("confirm");
 		
-		File fileSaveDir = new File(savePath);
-        if(!fileSaveDir.exists()){
-        		System.out.println(fileSaveDir);
-            fileSaveDir.mkdir();
-        }
-        int    locationId = Integer.parseInt(request.getParameter("selectLocationUpdate"));
-        String name = request.getParameter("nameUpdate").toLowerCase();
-		String address = request.getParameter("addressUpdate");
-		String city = request.getParameter("cityUpdate");
-		String state = request.getParameter("stateUpdate");
-		String zip = request.getParameter("zipUpdate");
-		int capacity = Integer.parseInt(request.getParameter("avaUpdate"));
-		Part pic = request.getPart("picUpdate");
-        String oneName = extractFileName(pic);
-		
-        //Send this to query for path
-		String path = SAVE_DIR + File.separator + oneName;
-		
+
+    	
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
         
 		//Here it will get the existing id
 		if( ssid != null ) {
-
             session = SessionManager.getSessionById( ssid );
         }
 		
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
+				statusUpdateCustomerB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateCustomerB", statusUpdateCustomerB);
 				
-				statusUpdateLocationB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateLocationB", statusUpdateLocationB);
-				System.out.println("LocationUpdate: "+e.toString());
+				System.out.println("AdminUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
+				return;
 			}
 		}
 		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
+		int id = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
 		
-		try {
-			
-			logicLayer.updateLocation(locationId, name, address, city, state, zip, path, capacity);
-			statusUpdateLocationG = "Your god!";
-			templateProcessor.addToRoot("statusUpdateLocationG", statusUpdateLocationG);
-			templateProcessor.processTemplate(response);
-			pic.write(savePath + File.separator + oneName);
-		} catch (RARException e){
-			
-			statusUpdateLocationB = "You can&#8217t do that!";
-			System.out.print(statusUpdateLocationB);
-			templateProcessor.addToRoot("statusUpdateLocationB", statusUpdateLocationB);
+		if(!pwd.equals(confirm)){
+			statusUpdateCustomerB = "Passwords don't match.";
+			templateProcessor.addToRoot("statusUpdateCustomerB", statusUpdateCustomerB);
 			templateProcessor.processTemplate(response);
 			return;
 		}
-	}
-
-	private String extractFileName(Part part) {
 		
-	    String contentDisp = part.getHeader("content-disposition");
-	    String[] items = contentDisp.split(";");
-	    for (String s : items) {
-	        if (s.trim().startsWith("filename")) {
-	            return s.substring(s.indexOf("=") + 2, s.length()-1);
-	        }
-	    }
-	    return "";
+		try {
+			logicLayer.updateCustomer(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
+			statusUpdateCustomerG = "Amazing!";
+			templateProcessor.addToRoot("statusUpdateCustomerG", statusUpdateCustomerG);
+			templateProcessor.processTemplate(response);
+		} catch (RARException e){
+			statusUpdateCustomerB = "Huh ?";
+			templateProcessor.addToRoot("statusUpdateCustomerB", statusUpdateCustomerB);
+    		templateProcessor.processTemplate(response);
+		}
 	}
 	
 	/**

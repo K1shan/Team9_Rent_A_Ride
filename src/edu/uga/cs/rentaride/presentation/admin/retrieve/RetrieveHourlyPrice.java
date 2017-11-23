@@ -1,45 +1,48 @@
-package edu.uga.cs.rentaride.presentation.admin.update;
+package edu.uga.cs.rentaride.presentation.admin.retrieve;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
-import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.HourlyPrice;
 
 /**
- * Servlet implementation class LocationUpdate
+ * Servlet implementation class AdminLocation
  */
-@WebServlet("/LocationUpdate")
-@MultipartConfig(maxFileSize = 16177215)
-public class LocationUpdate extends HttpServlet {
+@WebServlet("/RetrieveHourlyPrice")
+public class RetrieveHourlyPrice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
+	
+	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private static final String SAVE_DIR = "city";
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LocationUpdate() {
+    public RetrieveHourlyPrice() {
         super();
     }
 
@@ -72,35 +75,11 @@ public class LocationUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		
-		String statusUpdateLocationG = "";
-		String statusUpdateLocationB = "";
+		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;
-		String savePath = getServletContext().getRealPath("/city"); 
-		templateProcessor.setTemplate("AdminView.ftl");
-		System.out.println(savePath);
-		
-		File fileSaveDir = new File(savePath);
-        if(!fileSaveDir.exists()){
-        		System.out.println(fileSaveDir);
-            fileSaveDir.mkdir();
-        }
-        int    locationId = Integer.parseInt(request.getParameter("selectLocationUpdate"));
-        String name = request.getParameter("nameUpdate").toLowerCase();
-		String address = request.getParameter("addressUpdate");
-		String city = request.getParameter("cityUpdate");
-		String state = request.getParameter("stateUpdate");
-		String zip = request.getParameter("zipUpdate");
-		int capacity = Integer.parseInt(request.getParameter("avaUpdate"));
-		Part pic = request.getPart("picUpdate");
-        String oneName = extractFileName(pic);
-		
-        //Send this to query for path
-		String path = SAVE_DIR + File.separator + oneName;
+        String         ssid;		
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -118,48 +97,28 @@ public class LocationUpdate extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				
-				statusUpdateLocationB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateLocationB", statusUpdateLocationB);
-				System.out.println("LocationUpdate: "+e.toString());
+				status = e.toString();
+				templateProcessor.addToRoot("status", status);
 				templateProcessor.processTemplate(response);
 			}
 		}
-		
+        
 		logicLayer = session.getLogicLayer();
-		User user = session.getUser();
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.addToRoot("userSession", user);
-		
+
 		try {
-			
-			logicLayer.updateLocation(locationId, name, address, city, state, zip, path, capacity);
-			statusUpdateLocationG = "Your god!";
-			templateProcessor.addToRoot("statusUpdateLocationG", statusUpdateLocationG);
-			templateProcessor.processTemplate(response);
-			pic.write(savePath + File.separator + oneName);
-		} catch (RARException e){
-			
-			statusUpdateLocationB = "You can&#8217t do that!";
-			System.out.print(statusUpdateLocationB);
-			templateProcessor.addToRoot("statusUpdateLocationB", statusUpdateLocationB);
-			templateProcessor.processTemplate(response);
-			return;
+			List<HourlyPrice> hourlyPrices = logicLayer.findHourlyPrices( -1 );
+			// Making json objects
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(hourlyPrices, new TypeToken<List<HourlyPrice>>() {}.getType());
+			System.out.println("gson element: "+element);
+			// Sending object to js
+			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		} catch (RARException e) {
+			e.printStackTrace();
 		}
 	}
 
-	private String extractFileName(Part part) {
-		
-	    String contentDisp = part.getHeader("content-disposition");
-	    String[] items = contentDisp.split(";");
-	    for (String s : items) {
-	        if (s.trim().startsWith("filename")) {
-	            return s.substring(s.indexOf("=") + 2, s.length()-1);
-	        }
-	    }
-	    return "";
-	}
-	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

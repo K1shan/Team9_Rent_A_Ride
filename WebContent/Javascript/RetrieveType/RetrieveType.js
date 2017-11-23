@@ -10,16 +10,21 @@ $(document).ready(function() {
 				 $.each(data, function(index, element) {
 					 var name = element.name;
 					 var id = element.id;
+
+					 $('#selectVehicleTypeAdd').append($('<option>').text(name).attr('value', id));
+					 $('#selectVehiceTypeUpdate').append($('<option>').text(name).attr('value', id));
+					 $('#selectVehicleTypeDelete').append($('<option>').text(name).attr('value', id));
 					 
-					 $('#select1').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-					 $('#select2').append($('<option>').text(name).attr('value', id));
-					 $('#select3').append($('<option>').text(id + ' - ' +  name).attr('value', id));
 					 $('#selectVehicleType').append($('<option>').text(name).attr('value', id));
+					 
 					 $('#selectVehicleVehicleTypeAdd').append($('<option>').text(name).attr('value', id));
-					 $('#selectHourlyPriceVehicleTypeAdd').append($('<option>').text(name).attr('value', id));
+					 $('#selectVehicleVehicleTypeUpdate').append($('<option>').text(name).attr('value', id));
+					 
 					 $('#selectVehicleTypeUpdate').append($('<option>').text(name).attr('value', id));
+					 
+					 $('#selectHourlyPriceVehicleTypeAdd').append($('<option>').text(name).attr('value', id));
 					 $('#selectHourlyPriceAdd').append($('<option>').text(name).attr('value', id));
-					 $('#selectHourlyPriceUpdate').append($('<option>').text(name).attr('value', id));	 
+					 $('#selectHourlyPriceVehicleTypeUpdate').append($('<option>').text(name).attr('value', id));	 
 				 });
 
 			},

@@ -192,10 +192,10 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public void updateLocation(String name, String address, String city, String state, String zip, String path,
+	public void updateLocation(int locationId, String name, String address, String city, String state, String zip, String path,
 			int capacity) throws RARException {
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
-		ctrlLocation.updateLocation(name, address, city, state, zip, path, capacity);
+		ctrlLocation.updateLocation(locationId, name, address, city, state, zip, path, capacity);
 	}
 	
 	@Override
@@ -245,6 +245,13 @@ public class LogicLayerImpl
 
 	@Override
 	public void updateAdmin(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		ctrlAccount.updateAccount(session, id, firstName, lastName, userName, password, email, address, membershipExpiration, licenseState, licenseNumber, cardNumber, cardExpiration);
+	}
+	
+	@Override
+	public void updateCustomer(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
 			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
 		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
 		ctrlAccount.updateAccount(session, id, firstName, lastName, userName, password, email, address, membershipExpiration, licenseState, licenseNumber, cardNumber, cardExpiration);
@@ -303,5 +310,17 @@ public class LogicLayerImpl
 	public void deleteComment(int id) throws RARException {
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.deleteComment(id);
+	}
+
+	@Override
+	public void renewMembership(Session session) throws RARException {
+		CustomerCtrl ctrlCustomer = new CustomerCtrl ( objectLayer );
+		ctrlCustomer.renewMembership(session);
+	}
+
+	@Override
+	public void cancelMembership(Session session) throws RARException {
+		CustomerCtrl ctrlCustomer = new CustomerCtrl ( objectLayer );
+		ctrlCustomer.cancelMembership(session);
 	}
 }

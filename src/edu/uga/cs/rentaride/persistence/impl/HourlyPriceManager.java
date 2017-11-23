@@ -113,6 +113,7 @@ public class HourlyPriceManager {
 				+ "FROM HOURLY_PRICE "
 				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=HOURLY_PRICE.type_id";
 		
+		String	order = " ORDER BY HOURLY_PRICE.hourly_id ASC";
         Statement    stmt = null;
         StringBuffer query = new StringBuffer( 100 );
         StringBuffer condition = new StringBuffer( 100 );
@@ -140,30 +141,43 @@ public class HourlyPriceManager {
 		}
         
         try {
-            stmt = (Statement) con.createStatement();
+        	query.append(order);
+            stmt = con.createStatement();
 			System.out.println("query: " + query.toString());
             if( stmt.execute( query.toString() ) ) { // statement returned a result
                 ResultSet rs = stmt.getResultSet();
-                int  	hourly_id;
-                int		type_id;
-                int		max_hrs;
-                int		price;
-                String 	name;
+                // HOURLY_PRICE
+                //
+                int  	hourly_hourly_id;
+                int		hourly_type_id;
+                int		hourly_max_hrs;
+                int		hourly_price;
+                // VEHICLE_TYPE
+                //
+                int		vehicle_type_id;
+                String 	vehicle_type_name;
+                // OBJECTS
+                //
                 VehicleType vehicleType = null;
-                
+                HourlyPrice hourlyPrice = null;
                 while( rs.next() ) {
-                    hourly_id = rs.getInt( 1 );
-                    type_id = rs.getInt(2);
-                    max_hrs = rs.getInt(3);
-                    price = rs.getInt(4);
-                    name = rs.getString(5);
+                	// HOURLY_PRICE
+                	//
+                	hourly_hourly_id= rs.getInt(1);
+                	hourly_type_id 	= rs.getInt(2);
+                	hourly_max_hrs  = rs.getInt(3);
+                	hourly_price    = rs.getInt(4);
+                	// VEHICLE_TYPE
+                	//
+                	vehicle_type_id		= rs.getInt(5);
+                	vehicle_type_name 	= rs.getString(6);
+                	// OBJECTS
+                	//
+                    vehicleType = objectLayer.createVehicleType(vehicle_type_name);
+                    vehicleType.setId(vehicle_type_id);
 
-                    vehicleType = objectLayer.createVehicleType();
-                    vehicleType.setId(type_id);
-                    vehicleType.setName(name);
-
-                    HourlyPrice hourlyPrice = objectLayer.createHourlyPrice(max_hrs, price, vehicleType);
-                    hourlyPrice.setId( hourly_id );
+                    hourlyPrice = objectLayer.createHourlyPrice(hourly_max_hrs, hourly_price, vehicleType);
+                    hourlyPrice.setId( hourly_hourly_id );
                     hourlyPrices.add( hourlyPrice );
                 }
                 return hourlyPrices;
@@ -179,7 +193,8 @@ public class HourlyPriceManager {
     
     public void delete( HourlyPrice hourlyPrice ) throws RARException{
     	
-		String deleteHourly = "DELETE FROM HOURLY_PRICE WHERE hourly_id = ?";              
+		String deleteHourly = 
+				"DELETE FROM HOURLY_PRICE WHERE hourly_id=?";              
 		PreparedStatement stmt = null;
 		int inscnt = 0;
 		             
