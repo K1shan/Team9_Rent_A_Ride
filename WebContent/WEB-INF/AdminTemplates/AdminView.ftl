@@ -14,6 +14,7 @@
 <script type = "text/javascript" src="Javascript/Null/AdminView/addHourlyPrice.js"></script>
 
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateProfile.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateInfo.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateType.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateVehicle.js"></script>
@@ -53,6 +54,7 @@
     <section id="section1">
    	  <#include "Profile/ViewProfile.ftl">
       <#include "Profile/EditProfile.ftl">
+      <#include "Profile/EditInfo.ftl">
     </section>
     
     <section id="section2">
@@ -83,10 +85,6 @@
     </section>
     
   </div>
-
-
-
-
 
 </body>
 </html>

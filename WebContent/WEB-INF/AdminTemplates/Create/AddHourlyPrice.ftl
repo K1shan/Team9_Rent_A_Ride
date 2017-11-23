@@ -2,7 +2,7 @@
 	<div class="tab">
 		<label class="head"> ADD HOURLY PRICE </label>
 		<form class="form" id="admin" action="HourlyPriceCreate" method='post' name="admin">
-			
+
 			<select id="selectHourlyPriceVehicleTypeAdd" name="selectHourlyPriceVehicleTypeAdd" class="minimal">
 					<option value="">Select Vehicle Type</option>
 			</select>
