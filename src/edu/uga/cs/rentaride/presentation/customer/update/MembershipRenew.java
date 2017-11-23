@@ -112,6 +112,9 @@ public class MembershipRenew extends HttpServlet {
 		try {
 			logicLayer.renewMembership(session);
 			statusUpdateCustomerG = "Amazing!";
+			user = session.getUser();
+			templateProcessor.addToRoot("user", user.getFirstName());
+			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("statusUpdateCustomerG", statusUpdateCustomerG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){

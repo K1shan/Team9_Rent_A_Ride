@@ -188,11 +188,10 @@ public class AccountCtrl {
 		}
 		Customer customer = null;
 		Customer modelCustomer = objectLayer.createCustomer();
-		modelCustomer.setId(id);
+		modelCustomer.setId(session.getUser().getId());
 		List<Customer> customers = objectLayer.findCustomer(modelCustomer);
 		if(customers.size() > 0){
 			customer = customers.get( 0 );
-			customer.setId(id);
 			if(firstName != null && !firstName.isEmpty())
 				customer.setFirstName(firstName);
 			if(lastName != null && !lastName.isEmpty())
@@ -216,6 +215,22 @@ public class AccountCtrl {
 			if(cardExpiration != null)
 				customer.setCreditCardExpiration(cardExpiration);
 			objectLayer.storeCustomer(customer);
+			User user = new UserImpl();
+   	 		user.setId(customer.getId());
+   	 		user.setFirstName(customer.getFirstName());
+   	 		user.setLastName(customer.getLastName());
+   	 		user.setUserName(customer.getUserName());
+   	 		user.setEmail(customer.getEmail());
+   	 		user.setPassword(customer.getPassword());
+   	 		user.setAddress(customer.getAddress());
+   	 		user.setCreateDate(customer.getCreatedDate());
+   	 		user.setUserStatus(customer.getUserStatus());
+   	 		user.setMemberUntil(customer.getMemberUntil());
+   	 		user.setLicenseState(customer.getLicenseState());
+   	 		user.setLicenseNum(customer.getLicenseNumber());
+   	 		user.setCcNum(customer.getCreditCardNumber());
+   	 		user.setCcExp(customer.getCreditCardExpiration());
+   	 		session.setUser( user );
 			return;
 		}	
 	}
