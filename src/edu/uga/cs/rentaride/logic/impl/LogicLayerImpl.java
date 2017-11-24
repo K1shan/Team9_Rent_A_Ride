@@ -89,6 +89,12 @@ public class LogicLayerImpl
 		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
 		return ctrlReservation.findReservation(id);
 	}
+	
+	@Override
+	public List<Reservation> findCustomerReservations(int id) throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		return ctrlReservation.findCustomerReservation(id);
+	}
 
 	@Override
 	public List<Rental> findRentals( int id ) throws RARException {

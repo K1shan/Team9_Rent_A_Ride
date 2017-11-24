@@ -79,6 +79,15 @@ public interface LogicLayer {
 	
 	/**
 	 * 
+	 * @param id
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Reservation> findCustomerReservations( int id ) throws RARException;
+
+	
+	/**
+	 * 
 	 * @param rental
 	 * @return
 	 * @throws RARException

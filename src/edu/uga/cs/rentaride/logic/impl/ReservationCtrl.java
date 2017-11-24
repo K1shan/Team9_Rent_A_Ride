@@ -32,6 +32,21 @@ public class ReservationCtrl {
 		return reservations;
 	}
 	
+	public List<Reservation> findCustomerReservation( int id ) throws RARException{
+		
+		Customer customer = null;
+		Customer modelCustomer = objectLayer.createCustomer();
+		modelCustomer.setId(id);
+		List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+		if(customers.size() > 0)
+			customer = customers.get(0);
+		
+		if(customer == null) 
+			throw new RARException("customer does not exist");
+		
+		return customer.getReservations();
+	}
+	
 	public void createReservation(Date pickupTime, int rentalLength, int vehicleTypeId, int locationId, int customerId) throws RARException {
 		
 		// check if type already exists
