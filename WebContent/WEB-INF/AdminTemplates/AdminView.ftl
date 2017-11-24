@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Rent-A-Ride | Admin View</title>
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
-<link href='cssfiles/location.css' rel='stylesheet' type='text/css'>
+<link href='cssfiles/locationView.css' rel='stylesheet' type='text/css'>
 
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script type = "text/javascript" src="Javascript/Navbar/navbar.js"></script>
@@ -40,6 +40,8 @@
 
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocationView.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomerView.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveReservation/RetrieveReservationView.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicleView.js"></script>
 
 <script type = "text/javascript" src="Javascript/Tab/tab.js"></script>
 </head>
@@ -90,7 +92,7 @@
     
     <section id="section5">
     		<#include "View/ViewCar.ftl">
-    			<div id='RetrieveCarView'></div>
+    			<div id='RetrieveVehicleView'></div>
       	<#include "View/ViewLocation.ftl">
       		<div id='RetrieveLocationView'></div>
       	<#include "View/ViewReservations.ftl">

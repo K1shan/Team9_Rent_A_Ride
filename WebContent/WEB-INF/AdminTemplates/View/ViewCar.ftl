@@ -1,5 +1,5 @@
 <form id="more">			
   	<p>
-    		<input id = "viewCars" type="submit" value="View Cars"/>	
+    		<input id = "viewVehicle" type="submit" value="View Cars"/>	
   	</p>
 </form>
