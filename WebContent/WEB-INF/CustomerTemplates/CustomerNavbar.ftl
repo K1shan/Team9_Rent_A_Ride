@@ -14,6 +14,7 @@
                 <li><a href="CustomerIndex">HOME</a></li>
                 <li><a href="CustomerCar">CARS</a></li>
                 <li><a href="CustomerLocation">LOCATIONS</a></li>
+                <li><a href="RetrieveCustomerReservation">MY RESERVATIONS</a></li>
                 <li><a href="CustomerContact">CONTACT</a></li>
                 <li><a href="CustomerView">${user}</a></li>
                 <li><a href="LogoutMenu">Logout</a></li>

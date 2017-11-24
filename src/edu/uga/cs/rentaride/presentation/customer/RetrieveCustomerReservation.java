@@ -3,7 +3,6 @@ package edu.uga.cs.rentaride.presentation.customer;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -22,30 +21,27 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class CustomerLocation
+ * Servlet implementation class RetrieveCustomerReservation
  */
-@WebServlet("/CustomerReservation")
-public class CustomerReservation extends HttpServlet {
+@WebServlet("/RetrieveCustomerReservation")
+public class RetrieveCustomerReservation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates/Create";
+	private String templateDir = "/WEB-INF/CustomerTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerReservation() {
+    public RetrieveCustomerReservation() {
         super();
     }
-
-	/**
-	 * @see Servlet#init(ServletConfig)
-	 */
-	public void init() throws ServletException {
+    
+    public void init() throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
 		// version (here 2.3.25) do you want to apply the fixes that are not 100%
 		// backward-compatible. See the Configuration JavaDoc for details.
@@ -75,12 +71,9 @@ public class CustomerReservation extends HttpServlet {
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
-        
-		int locationId = Integer.parseInt(request.getParameter("locationId"));
-
+        String         ssid;	
 		
-		//Getting the http session and store it into the ssid
+      //Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
         
@@ -106,17 +99,16 @@ public class CustomerReservation extends HttpServlet {
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
+		int customerId = (int) user.getId();
 		
 		try {
-			List<VehicleType> vehicleTypes = logicLayer.findLocationAvailableVehicleTypes( locationId );
-			templateProcessor.addToRoot("locationId", locationId);
-			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypes);
-			templateProcessor.setTemplate("CreateReservation.ftl");
+			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId); 
+			templateProcessor.addToRoot("reservations", reservations);
+			templateProcessor.setTemplate("CustomerReservation.ftl");
 			templateProcessor.processTemplate(response);
-
 		} catch(RARException e){
 			e.printStackTrace();
-			templateProcessor.setTemplate("CreateReservation.ftl");
+			templateProcessor.setTemplate("CustomerIndex.ftl");
 			templateProcessor.processTemplate(response);
 		}
 	}
