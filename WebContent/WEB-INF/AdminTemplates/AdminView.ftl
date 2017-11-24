@@ -20,7 +20,8 @@
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateVehicle.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateCustomer.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/updateHourlyPrice.js"></script>
-
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateMembership.js"></script>
+<script type = "text/javascript" src="Javascript/Null/AdminView/updateLatefee.js"></script>
 
 <script type = "text/javascript" src="Javascript/Null/AdminView/deleteLocation.js"></script>
 <script type = "text/javascript" src="Javascript/Null/AdminView/deleteVehicleType.js"></script>
@@ -71,6 +72,8 @@
       <#include "Update/UpdateVehicle.ftl">
 	  <#include "Update/UpdateHourlyPrice.ftl">
       <#include "Update/UpdateCustomer.ftl">
+      <#include "Update/UpdateMembership.ftl">
+      <#include "Update/UpdateLatefee.ftl">
     </section>
     
     <section id="section4">

@@ -71,7 +71,7 @@ public class MembershipFeeUpdate extends HttpServlet {
 		String statusUpdateMembershipFeeG = "";
 		String statusUpdateMembershipFeeB = "";
 		
-		int membershipFee = Integer.parseInt(request.getParameter("membershipFee"));
+		int membershipFee = Integer.parseInt(request.getParameter("membershipUpdate"));
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
@@ -112,12 +112,12 @@ public class MembershipFeeUpdate extends HttpServlet {
 		try {
 			
 			logicLayer.updateParams(membershipFee, -1);
-			statusUpdateMembershipFeeG = "Woohoo!";
+			statusUpdateMembershipFeeG = "Roar";
 			templateProcessor.addToRoot("statusUpdateMembershipFeeG", statusUpdateMembershipFeeG);
 			templateProcessor.processTemplate(response);
 		}catch(RARException e) {
 			
-			statusUpdateMembershipFeeB = "NONEXISTENT.";
+			statusUpdateMembershipFeeB = "major alarm";
 			templateProcessor.addToRoot("statusUpdateMembershipFeeB", statusUpdateMembershipFeeB);
 			System.out.println("MembershipFeeUpdate: "+e.toString());
 			templateProcessor.processTemplate(response);

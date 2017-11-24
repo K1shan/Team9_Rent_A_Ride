@@ -71,7 +71,7 @@ public class LateFeeUpdate extends HttpServlet {
 		String statusUpdateLateFeeG = "";
 		String statusUpdateLateFeeB = "";
 		
-		int lateFee = Integer.parseInt(request.getParameter("lateFee"));
+		int lateFee = Integer.parseInt(request.getParameter("latefeeUpdate"));
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
@@ -112,12 +112,12 @@ public class LateFeeUpdate extends HttpServlet {
 		try {
 			
 			logicLayer.updateParams(-1, lateFee);
-			statusUpdateLateFeeG = "Woohoo!";
+			statusUpdateLateFeeG = "Your on a Roll!";
 			templateProcessor.addToRoot("statusUpdateLateFeeG", statusUpdateLateFeeG);
 			templateProcessor.processTemplate(response);
 		}catch(RARException e) {
 			
-			statusUpdateLateFeeB = "NONEXISTENT.";
+			statusUpdateLateFeeB = "minor alarm";
 			templateProcessor.addToRoot("statusUpdateLateFeeB", statusUpdateLateFeeB);
 			System.out.println("LateFeeUpdate: "+e.toString());
 			templateProcessor.processTemplate(response);
