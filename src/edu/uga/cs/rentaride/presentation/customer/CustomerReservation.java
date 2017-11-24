@@ -1,6 +1,8 @@
 package edu.uga.cs.rentaride.presentation.customer;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -18,24 +22,25 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminView
+ * Servlet implementation class CustomerLocation
  */
-@WebServlet("/CustomerView")
-public class CustomerView extends HttpServlet {
+@WebServlet("/CustomerReservation")
+public class CustomerReservation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates";
+	private String templateDir = "/WEB-INF/CustomerTemplates/Create";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerView() {
+    public CustomerReservation() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -72,6 +77,9 @@ public class CustomerView extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;		
+        
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -99,8 +107,19 @@ public class CustomerView extends HttpServlet {
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		templateProcessor.setTemplate("CustomerView.ftl");
-		templateProcessor.processTemplate(response);
+		
+		try {
+			List<VehicleType> vehicleTypes = logicLayer.findLocationAvailableVehicleTypes( locationId );
+			templateProcessor.addToRoot("locationId", locationId);
+			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypes);
+			templateProcessor.setTemplate("CreateReservation.ftl");
+			templateProcessor.processTemplate(response);
+
+		} catch(RARException e){
+			e.printStackTrace();
+			templateProcessor.setTemplate("CreateReservation.ftl");
+			templateProcessor.processTemplate(response);
+		}
 	}
 
 	/**

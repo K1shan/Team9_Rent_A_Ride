@@ -141,7 +141,10 @@ public class CreateAccount extends HttpServlet {
 		String status = "";
 		String drive = request.getParameter("drive");
 		String card = request.getParameter("card");
-		String exp = request.getParameter("exp");
+		String expMonth = request.getParameter("exp-month-register");
+		String expYear = request.getParameter("exp-year-register");
+		String expDate = expMonth+"/"+expYear;
+		System.out.println("expDate: "+expDate);
 		String add = request.getParameter("add");
 		String city = request.getParameter("city");
 		String state = request.getParameter("state");
@@ -169,7 +172,7 @@ public class CreateAccount extends HttpServlet {
 			} catch ( Exception e ){
 				status = e.toString();
 				templateProcessor.setTemplate("SigninCreateForm.ftl");
-				templateProcessor.addToRoot("status", status);
+				//templateProcessor.addToRoot("status", status);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -186,14 +189,10 @@ public class CreateAccount extends HttpServlet {
 		long num;
 		try {
 			
-			num = logicLayer.createAccount(fname, lname, email, password, drive, card, exp, add, city, state, zip);
-		} catch (RARException e) {
-			
-			e.printStackTrace();
-		} finally {
-			
-			templateProcessor.addToRoot("status", status);
+			num = logicLayer.createAccount(fname, lname, email, password, drive, card, expDate, add, city, state, zip);
 			templateProcessor.processTemplate(response);
+		} catch (RARException e) {
+			e.printStackTrace();
 		}
     }
 	
@@ -220,9 +219,7 @@ public class CreateAccount extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		doGet(request, response);
 	}
-
 }

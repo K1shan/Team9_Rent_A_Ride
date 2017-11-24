@@ -47,7 +47,7 @@ public class LocationCtrl {
 	
 	public List<Reservation> findLocationReservations( int locationId ) throws RARException{
 		
-		// check if locatio already exists
+		// check if location already exists
 		//
 		modelRentalLocation = objectLayer.createRentalLocation();
 		modelRentalLocation.setId(locationId);
@@ -61,6 +61,24 @@ public class LocationCtrl {
 			throw new RARException( "Location does not exist" );
 		
 		return rentalLocation.getReservations();
+	}
+	
+	public List<VehicleType> findLocationAvailableVehicleTypes( int locationId ) throws RARException{
+
+		// check if location already exists
+		//
+		modelRentalLocation = objectLayer.createRentalLocation();
+		modelRentalLocation.setId(locationId);
+		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
+		if(rentalLocations.size() > 0)
+			rentalLocation = rentalLocations.get(0);
+		
+		// check if location found
+		//
+		if(rentalLocation == null)
+			throw new RARException( "Location does not exist" );
+		
+		return rentalLocation.getAvailVehicleTypes();
 	}
 	
 	public void createLocation (String name, String address, String city, String state, String zip, String path,

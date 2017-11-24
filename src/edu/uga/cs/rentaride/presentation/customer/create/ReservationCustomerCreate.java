@@ -1,6 +1,9 @@
-package edu.uga.cs.rentaride.presentation.customer;
+package edu.uga.cs.rentaride.presentation.customer.create;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -18,12 +23,12 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminView
+ * Servlet implementation class CustomerLocation
  */
-@WebServlet("/CustomerView")
-public class CustomerView extends HttpServlet {
+@WebServlet("/ReservationCustomerCreate")
+public class ReservationCustomerCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
@@ -34,7 +39,7 @@ public class CustomerView extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerView() {
+    public ReservationCustomerCreate() {
         super();
     }
 
@@ -72,6 +77,14 @@ public class CustomerView extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;		
+        
+		int vehicleTypeId = Integer.parseInt(request.getParameter("selectReservationVehicleTypeAdd"));
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+		int length = Integer.parseInt(request.getParameter("selectReservationLengthAdd"));
+		String pickupTime = request.getParameter("pickup");
+		Date pickupDate = new Date();
+		
+
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -97,10 +110,20 @@ public class CustomerView extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
+		int customerId = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		templateProcessor.setTemplate("CustomerView.ftl");
-		templateProcessor.processTemplate(response);
+		
+		try {
+			logicLayer.createReservation(pickupDate, length, vehicleTypeId, locationId, customerId);
+			templateProcessor.setTemplate("CustomerIndex.ftl");
+			templateProcessor.processTemplate(response);
+
+		} catch(RARException e){
+			e.printStackTrace();
+			templateProcessor.setTemplate("/Create/CreateReservation.ftl");
+			templateProcessor.processTemplate(response);
+		}
 	}
 
 	/**

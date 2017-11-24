@@ -377,4 +377,14 @@ public class PersistenceLayerImpl
 	public void deleteEverything() throws RARException {
 		administratorManager.deleteEverything();
 	}
+
+	@Override
+	public List<VehicleType> restoreRentalLocationAvailVehicleType(RentalLocation rentalLocation) throws RARException {
+		return rentalLocationManager.restoreAvailTypes(rentalLocation);
+	}
+
+	@Override
+	public List<VehicleType> restoreRentalLocationTotalVehicleType(RentalLocation rentalLocation) throws RARException {
+		return rentalLocationManager.restoreTotalTypes(rentalLocation);
+	}
 }

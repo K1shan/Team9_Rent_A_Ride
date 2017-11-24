@@ -9,6 +9,7 @@ import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.RentalLocation;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.object.ObjectLayer;
 
 public class RentalLocationManager {
@@ -217,4 +218,105 @@ public class RentalLocationManager {
 			throw new RARException("RentalLocationManager.delete: failed to delete a location" + e);
 		}
     }
+    
+	public List<VehicleType> restoreAvailTypes( RentalLocation rentalLocation ) throws RARException{
+		
+		// query
+		//
+		String availTypesQuery = 
+				"SELECT "
+				+ "VEHICLE_TYPE.* "
+				+ "FROM VEHICLE_TYPE "
+				+ "INNER JOIN VEHICLE ON VEHICLE.type_id=VEHICLE_TYPE.type_id "
+				+ "INNER JOIN LOCATION ON LOCATION.location_id=VEHICLE.location_id "
+				+ "WHERE VEHICLE.status=0 ";
+				
+        List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(availTypesQuery);
+		
+		if ( rentalLocation != null )
+			query.append( "AND LOCATION.location_id=" + rentalLocation.getId() );
+		
+		try {
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			if( stmt.execute(query.toString()) ){
+                ResultSet rs = stmt.getResultSet();
+				// VEHICLE_TYPE
+                //
+                int   	type_type_id;
+                String 	type_name;
+                VehicleType vehicleType = null;
+                while( rs.next() ){
+                	// VEHICLE_TYPE
+                	//
+	                type_type_id= rs.getInt(1);
+	                type_name 	= rs.getString(2);
+	                vehicleType = objectLayer.createVehicleType(type_name);
+	                vehicleType.setId( type_type_id );
+					vehicleTypes.add( vehicleType );
+               }
+               return vehicleTypes;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new RARException("RentalLocationManager.restore: failed to restore a location" + e);
+		}
+		return vehicleTypes;
+	}
+
+	public List<VehicleType> restoreTotalTypes( RentalLocation rentalLocation ) throws RARException{
+		
+		// query
+		//
+		String totalTypesQuery = 
+				"SELECT "
+				+ "VEHICLE_TYPE.* "
+				+ "FROM VEHICLE_TYPE "
+				+ "INNER JOIN VEHICLE ON VEHICLE.type_id=VEHICLE_TYPE.type_id "
+				+ "INNER JOIN LOCATION ON LOCATION.location_id=VEHICLE.location_id ";
+		
+        List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(totalTypesQuery);
+		
+		if ( rentalLocation != null )
+			query.append( "WHERE LOCATION.location_id=" + rentalLocation.getId() );
+		
+		try {
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			if( stmt.execute(query.toString()) ){
+                ResultSet rs = stmt.getResultSet();
+				// VEHICLE_TYPE
+                //
+                int   	type_type_id;
+                String 	type_name;
+                VehicleType vehicleType = null;
+                while( rs.next() ){
+                	// VEHICLE_TYPE
+                	//
+	                type_type_id= rs.getInt(1);
+	                type_name 	= rs.getString(2);
+	                vehicleType = objectLayer.createVehicleType(type_name);
+	                vehicleType.setId( type_type_id );
+					vehicleTypes.add( vehicleType );
+               }
+               return vehicleTypes;
+			}
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new RARException("RentalLocationManager.restore: failed to restore a location" + e);
+		}
+		return vehicleTypes;
+	}
 }

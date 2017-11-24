@@ -224,8 +224,21 @@ public class UserImpl extends Persistent implements User {
 
 	@Override
 	public String toString() {
-		return "UserImpl [isAdmin=" + isAdmin + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
-				+ userName + ", email=" + email + ", password=" + password + ", createdDate=" + createdDate
-				+ ", address=" + address + ", userStatus=" + userStatus + "]";
+		return "UserImpl ["
+				+ "firstName=" + firstName 
+				+ ", lastName=" + lastName 
+				+ ", userName=" + userName 
+				+ ", email=" + email 
+				+ ", password=" + password 
+				+ ", address=" + address 
+				+ ", createdDate=" + createdDate
+				+ ", memberUntil=" + memberUntil
+				+ ", licenseState=" + licenseState
+				+ ", licenseNum=" + licenseNum
+				+ ", ccNum=" + ccNum
+				+ ", ccExp=" + ccExp
+				+ ", userStatus=" + userStatus 
+				+ ", isAdmin=" + isAdmin 
+				+ "]";
 	}	
 }

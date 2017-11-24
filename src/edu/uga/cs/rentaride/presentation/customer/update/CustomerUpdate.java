@@ -122,6 +122,9 @@ public class CustomerUpdate extends HttpServlet {
 		try {
 			logicLayer.updateCustomer(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
 			statusUpdateCustomerG = "Amazing!";
+			user = session.getUser();
+			templateProcessor.addToRoot("user", user.getFirstName());
+			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("statusUpdateCustomerG", statusUpdateCustomerG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){

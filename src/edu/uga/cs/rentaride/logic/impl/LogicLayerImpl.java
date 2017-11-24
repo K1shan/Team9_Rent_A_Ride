@@ -61,6 +61,12 @@ public class LogicLayerImpl
 	}
 	
 	@Override
+	public List<VehicleType> findLocationAvailableVehicleTypes(int locationId) throws RARException {
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		return ctrlLocation.findLocationAvailableVehicleTypes(locationId);
+	}
+	
+	@Override
 	public List<Vehicle> findVehicles( int id ) throws RARException {
 		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
 		return ctrlVehicle.findVehicles(id);
