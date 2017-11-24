@@ -377,6 +377,8 @@ public class AdministratorManager {
 				"DELETE VEHICLE_TYPE FROM VEHICLE_TYPE";
 		String deleteLocationQuery = 
 				"DELETE LOCATION FROM LOCATION";
+		String deleteParamsQuery =
+				"DELETE RENT_A_RIDE_PARAMS FROM RENT_A_RIDE_PARAMS";
 		String alterUserQuery = 
 				"ALTER TABLE `USER` AUTO_INCREMENT=1";
 		String alterAdminQuery = 

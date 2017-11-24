@@ -59,7 +59,7 @@ public class RentARideTester
          Comment		commentWayne1;
          Comment		commentRafael1;
          
-         
+         RentARideParams params;
          
          // get a database connection
          try {
@@ -211,6 +211,13 @@ public class RentARideTester
              commentRafael1 = objectLayer.createComment("horrible experience", commentDate2, rentalRafael1);
              rentalRafael1.setComment(commentRafael1);
              persistence.storeComment(commentRafael1);
+             
+             // PARAMS
+             params = objectLayer.createRentARideParams();
+             params.setMembershipPrice(60);
+             params.setLateFee(30);
+             persistence.storeRentARideConfig(params);
+             
          }
          
          catch (RARException re) {
