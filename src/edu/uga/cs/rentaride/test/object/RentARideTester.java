@@ -169,7 +169,7 @@ public class RentARideTester
              persistence.storeHourlyPrice( convertibleHourlyPrice2 );
         	 
         	 // 4 VEHICLES
-             truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, dateMemberTill, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
+             truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, dateMemberTill, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INRENTAL);
              persistence.storeVehicle( truck1 );
              
              truck2 = objectLayer.createVehicle("Toyota", "Tacoma", 2017, "222222222", 1000, dateMemberTill, truckVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
@@ -178,7 +178,7 @@ public class RentARideTester
              convertible1 = objectLayer.createVehicle("Honda", "Del Sol", 1997, "333333333", 120000, dateMemberTill, convertibleVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
              persistence.storeVehicle( convertible1 );
         	 
-             convertible2 = objectLayer.createVehicle("Ford", "Mustang", 2017, "444444444", 2000, dateMemberTill, convertibleVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
+             convertible2 = objectLayer.createVehicle("Ford", "Mustang", 2017, "444444444", 2000, dateMemberTill, convertibleVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INRENTAL);
              persistence.storeVehicle( convertible2 );
         	 
         	 // 4 RESERVATIONS

@@ -21,13 +21,14 @@ $(document).ready(function() {
 					 			html +='<div class="product-img"><img id = "image" src="' + image + '"></div>';
 				 			html += '</div>';
 				 			html += '<div class="product-des">';
-				 				html += '<form id = "formOne" action="customerCar" method="post">';
-				 					html += '<div class="product-price" id="price">' +  ava + '<div class="sub"> AVAIILABILITY</div></div>';
-				 					html += '<div class="product-name">' + name + '</div>';
+				 				html += '<form id = "formOne" action="CustomerReservation" method="post">';
+				 					html += '<div class="product-price" id="price">' +  ava + '<div class="sub"> AVAILABILITY</div></div>';
+				 					html += '<div class="product-name">'+name+'</div>';
 				 					html += '<div class="product-description">' + address + '</div>';
 				 					html += '<div class="product-description">' + zip + '</div>';
 				 					html += '<div class="product-cta">';
-				 						html += '<input type="submit" class = "cta" value="RENT" />';
+				 					html += '<input type="hidden" name="locationId" value=' +id+ '	>';
+			 						html += '<input type="submit" class = "cta" value="MAKE RESERVATION" />';
 			 						html += '</div>';
 		 						html += '</form>';
 	 						html += '</div>';
@@ -51,7 +52,3 @@ $(document).ready(function() {
 			}
 		});
 });
-
-
-
-

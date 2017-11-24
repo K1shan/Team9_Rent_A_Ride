@@ -38,7 +38,13 @@ public interface LogicLayer {
 	 */
 	public List<Reservation> findLocationReservations( int locationId ) throws RARException;
 	
-	
+	/**
+	 * 
+	 * @param locationId
+	 * @return
+	 * @throws RARException
+	 */
+	public List<VehicleType> findLocationAvailableVehicleTypes( int locationId ) throws RARException;
 	/**
 	 * 
 	 * @param vehicle
