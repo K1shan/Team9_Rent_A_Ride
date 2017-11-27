@@ -335,4 +335,10 @@ public class LogicLayerImpl
 		CustomerCtrl ctrlCustomer = new CustomerCtrl ( objectLayer );
 		ctrlCustomer.cancelMembership(session);
 	}
+	
+	@Override
+	public void cancelReservation( int id ) throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.cancelReservation(id);
+	}
 }

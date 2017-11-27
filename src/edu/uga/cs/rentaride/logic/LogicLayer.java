@@ -487,4 +487,11 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public void cancelMembership ( Session session ) throws RARException;
+	
+	/**
+	 * 
+	 * @param id
+	 * @throws RARException
+	 */
+	public void cancelReservation( int id ) throws RARException;
 }
