@@ -169,14 +169,14 @@ public class RentARideTester
              truckHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 75, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice2 );
              truckHourlyPrice3 = objectLayer.createHourlyPrice(hourRange3, 100, truckVehicleType);
-             persistence.storeHourlyPrice( truckHourlyPrice3 );
+             //persistence.storeHourlyPrice( truckHourlyPrice3 );
              
              convertibleHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 100, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice1 );
              convertibleHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 150, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice2 );
              convertibleHourlyPrice3 = objectLayer.createHourlyPrice(hourRange3, 150, convertibleVehicleType);
-             persistence.storeHourlyPrice( convertibleHourlyPrice3 );
+             //persistence.storeHourlyPrice( convertibleHourlyPrice3 );
         	 
         	 // 4 VEHICLES
              truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, serviceDate, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);

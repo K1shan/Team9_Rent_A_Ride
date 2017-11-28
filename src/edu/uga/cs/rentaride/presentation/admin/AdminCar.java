@@ -20,8 +20,8 @@ import freemarker.template.TemplateExceptionHandler;
 /**
  * Servlet implementation class AdminIndex
  */
-@WebServlet("/AdminIndex")
-public class AdminIndex extends HttpServlet {
+@WebServlet("/AdminCar")
+public class AdminCar extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -34,7 +34,7 @@ public class AdminIndex extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminIndex() {
+    public AdminCar() {
         super();
     }
 
@@ -43,24 +43,24 @@ public class AdminIndex extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
-				// version (here 2.3.25) do you want to apply the fixes that are not 100%
-				// backward-compatible. See the Configuration JavaDoc for details.
-				cfg = new Configuration(Configuration.VERSION_2_3_25);
+		// version (here 2.3.25) do you want to apply the fixes that are not 100%
+		// backward-compatible. See the Configuration JavaDoc for details.
+		cfg = new Configuration(Configuration.VERSION_2_3_25);
 
-				// Specify the source where the template files come from.
-				cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
+		// Specify the source where the template files come from.
+		cfg.setServletContextForTemplateLoading(getServletContext(), templateDir);
 
-				// Sets how errors will appear.
-				// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
-				// This handler outputs the stack trace information to the client, formatting it so 
-				// that it will be usually well readable in the browser, and then re-throws the exception.
-				//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-				cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
+		// Sets how errors will appear.
+		// During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
+		// This handler outputs the stack trace information to the client, formatting it so 
+		// that it will be usually well readable in the browser, and then re-throws the exception.
+		//		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 
-				// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
-				// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
-				//		cfg.setLogTemplateExceptions(false);
-				templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
+		// Don't log exceptions inside FreeMarker that it will thrown at you anyway:
+		// Specifies if TemplateException-s thrown by template processing are logged by FreeMarker or not. 
+		//		cfg.setLogTemplateExceptions(false);
+		templateProcessor = new TemplateProcessor(cfg, getServletContext(), templateDir);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class AdminIndex extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		templateProcessor.setTemplate("AdminIndex.ftl");
+		templateProcessor.setTemplate("AdminCar.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
 		templateProcessor.processTemplate(response);
