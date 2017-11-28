@@ -16,18 +16,22 @@ $(document).ready(function() {
 					 var zip = element.zip;
 					 
 					 html += '<div class="ui">';
+					 html += '<div class="statusbar">';
+					 html += '<span id="hour">Product ID ' + id + '</span>';
+					 html += '</div>';
 					 	html += '<div class="screen">';
 					 		html += '<div class="shop">';
 					 			html +='<div class="product-img"><img id = "image" src="' + image + '"></div>';
 				 			html += '</div>';
 				 			html += '<div class="product-des">';
-				 				html += '<form id = "formOne" action="customerCar" method="post">';
-				 					html += '<div class="product-price" id="price">' +  ava + '<div class="sub"> AVAIILABILITY</div></div>';
-				 					html += '<div class="product-name">' + name + '</div>';
+				 				html += '<form id = "formOne" action="CustomerReservation" method="post">';
+				 					html += '<div class="product-price" id="price">' +  ava + '<div class="sub"> AVAILABILITY</div></div>';
+				 					html += '<div class="product-name">'+name+'</div>';
 				 					html += '<div class="product-description">' + address + '</div>';
 				 					html += '<div class="product-description">' + zip + '</div>';
 				 					html += '<div class="product-cta">';
-				 						html += '<input type="submit" class = "cta" value="RENT" />';
+				 					html += '<input type="hidden" name="locationId" value=' +id+ '	>';
+			 						html += '<input type="submit" class = "cta" value="MAKE RESERVATION" />';
 			 						html += '</div>';
 		 						html += '</form>';
 	 						html += '</div>';
@@ -36,8 +40,10 @@ $(document).ready(function() {
 					html += '</div>';
 					
 					$('#selectLocation').append($('<option>').text(name).attr('value', id));
-					$('#selectVehicleLocationAdd').append($('<option>').text(name).attr('value', id)); 
 					$('#selectLocationUpdate').append($('<option>').text(name).attr('value', id));
+
+					$('#selectVehicleLocationAdd').append($('<option>').text(name).attr('value', id)); 
+					$('#selectVehicleLocationUpdate').append($('<option>').text(name).attr('value', id));
 					$('#selectLocationDelete').append($('<option>').text(name).attr('value', id)); 
 
 				 });
@@ -49,7 +55,3 @@ $(document).ready(function() {
 			}
 		});
 });
-
-
-
-

@@ -435,7 +435,7 @@ public class ObjectLayerImpl
 	
 	@Override
 	public void storeRentARideParams(RentARideParams rentARideParams) throws RARException {
-		persistence.restoreRentARideConfig();
+		persistence.storeRentARideConfig(rentARideParams);
 	}
 	
 	//Object Layer for Set Rent A Rider Params 

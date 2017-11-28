@@ -38,7 +38,13 @@ public interface LogicLayer {
 	 */
 	public List<Reservation> findLocationReservations( int locationId ) throws RARException;
 	
-	
+	/**
+	 * 
+	 * @param locationId
+	 * @return
+	 * @throws RARException
+	 */
+	public List<VehicleType> findLocationAvailableVehicleTypes( int locationId ) throws RARException;
 	/**
 	 * 
 	 * @param vehicle
@@ -70,6 +76,15 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public List<Reservation> findReservations( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Reservation> findCustomerReservations( int id ) throws RARException;
+
 	
 	/**
 	 * 
@@ -135,7 +150,6 @@ public interface LogicLayer {
 			String address, String city, String state, String zip ) throws RARException;
 
 	/**
-	 * 
 	 * @param name
 	 * @param address
 	 * @param city
@@ -222,7 +236,7 @@ public interface LogicLayer {
 	 */
 	
 	/**
-	 * 
+	 * @param locationId
 	 * @param name
 	 * @param address
 	 * @param city
@@ -232,7 +246,7 @@ public interface LogicLayer {
 	 * @param capacity
 	 * @throws RARException
 	 */
-	public void updateLocation ( String name, String address, String city,
+	public void updateLocation ( int locationId, String name, String address, String city,
 			String state, String zip, String path, int capacity ) throws RARException;
 	
 	/**
@@ -331,6 +345,24 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public void updateAdmin(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException;
+	/**
+	 * 
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param userName
+	 * @param password
+	 * @param email
+	 * @param address
+	 * @param membershipExpiration
+	 * @param licenseState
+	 * @param licenseNumber
+	 * @param cardNumber
+	 * @param cardExpiration
+	 * @throws RARException
+	 */
+	public void updateCustomer(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
 			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException;
 	
 	/**
@@ -441,4 +473,25 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public void resetUserPassword (String email, String password, String fname, String lname) throws RARException;
+	
+	/**
+	 * 
+	 * @param session
+	 * @throws RARException
+	 */
+	public void renewMembership ( Session session ) throws RARException;
+	
+	/**
+	 * 
+	 * @param session
+	 * @throws RARException
+	 */
+	public void cancelMembership ( Session session ) throws RARException;
+	
+	/**
+	 * 
+	 * @param id
+	 * @throws RARException
+	 */
+	public void cancelReservation( int id ) throws RARException;
 }

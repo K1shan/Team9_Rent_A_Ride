@@ -109,8 +109,6 @@ public class AdminUpdate extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		int id = (int) user.getId();
-		System.out.println("id"+id);
-		System.out.println("user"+user);
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
 		
@@ -124,6 +122,9 @@ public class AdminUpdate extends HttpServlet {
 		try {
 			logicLayer.updateAdmin(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
 			statusUpdateAdminG = "Amazing!";
+			user = session.getUser();
+			templateProcessor.addToRoot("user", user.getFirstName());
+			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("statusUpdateAdminG", statusUpdateAdminG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){

@@ -72,8 +72,8 @@ public class HourlyPriceCreate extends HttpServlet {
 		String statusAddTypeB = "";
 		
 		int typeId = Integer.parseInt(request.getParameter("selectHourlyPriceVehicleTypeAdd"));
-		int maxHours = Integer.parseInt(request.getParameter("hourlyPrice"));
-		int price = Integer.parseInt(request.getParameter("vehiclePrice"));
+		int maxHours = Integer.parseInt(request.getParameter("selectHourlyPriceHourAdd"));
+		int price = Integer.parseInt(request.getParameter("hourlyPricePriceAdd"));
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;

@@ -130,6 +130,11 @@ public class VehicleCtrl {
 		if(rentalLocation == null)
 			throw new RARException( "A location with this id does not exist" );
 		
+		// check if location is full
+		//
+		if(rentalLocation.getVehicles().size()+1 > rentalLocation.getCapacity())
+			throw new RARException( "This location will become over capacity" );
+		
 		vehicle = null;
 		vehicle = objectLayer.createVehicle(make, model, year, tag, mileage, lastServiced, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
 		vehicle.setId(vehicleId);

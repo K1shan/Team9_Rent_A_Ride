@@ -88,7 +88,7 @@ public class LocationCreate extends HttpServlet {
         		System.out.println(fileSaveDir);
             fileSaveDir.mkdir();
         }
-        String name = request.getParameter("nameAdd");
+        String name = request.getParameter("nameAdd").toLowerCase();
 		String address = request.getParameter("addressAdd");
 		String city = request.getParameter("cityAdd");
 		String state = request.getParameter("stateAdd");

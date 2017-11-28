@@ -4,7 +4,7 @@
 		<form class="form" id="admin" action="VehicleCreate" method='post' name="admin">
 			
 			<select id="selectVehicleVehicleTypeAdd" name="selectVehicleVehicleTypeAdd" class="minimal">
-					<option value="">Select</option>
+					<option value="">Select Vehicle Type</option>
 			</select>
 								
 			<p class="float-label">
@@ -24,7 +24,7 @@
 			</p>
 			
 			<select id="selectVehicleLocationAdd" name="selectVehicleLocationAdd" class="minimal">
-				<option value="">Select</option>
+				<option value="">Select Vehicle Location</option>
 			</select>
 			
 			<p class="float-label">

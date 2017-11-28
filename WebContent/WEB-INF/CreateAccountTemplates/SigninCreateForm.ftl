@@ -109,12 +109,12 @@
      			
      			<!-- User input for password -->
       			<p class="float-label">
-        				<input type="password" id="password" name="password" placeholder="Password"/>
+        				<input type="password" id="password-register" name="password" placeholder="Password"/>
       			</p>
       			
       			<!-- User input for confirm password -->
       			<p class="float-label">
-        				<input type="password" id="confirm-password" name="confirm" placeholder="Confirm password"/>
+        				<input type="password" id="confirm-password-register" name="confirm" placeholder="Confirm password"/>
       			</p>
       			
       			<!-- User input for terms -->

@@ -61,6 +61,12 @@ public class LogicLayerImpl
 	}
 	
 	@Override
+	public List<VehicleType> findLocationAvailableVehicleTypes(int locationId) throws RARException {
+		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
+		return ctrlLocation.findLocationAvailableVehicleTypes(locationId);
+	}
+	
+	@Override
 	public List<Vehicle> findVehicles( int id ) throws RARException {
 		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
 		return ctrlVehicle.findVehicles(id);
@@ -82,6 +88,12 @@ public class LogicLayerImpl
 	public List<Reservation> findReservations( int id ) throws RARException {
 		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
 		return ctrlReservation.findReservation(id);
+	}
+	
+	@Override
+	public List<Reservation> findCustomerReservations(int id) throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		return ctrlReservation.findCustomerReservation(id);
 	}
 
 	@Override
@@ -192,10 +204,10 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public void updateLocation(String name, String address, String city, String state, String zip, String path,
+	public void updateLocation(int locationId, String name, String address, String city, String state, String zip, String path,
 			int capacity) throws RARException {
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
-		ctrlLocation.updateLocation(name, address, city, state, zip, path, capacity);
+		ctrlLocation.updateLocation(locationId, name, address, city, state, zip, path, capacity);
 	}
 	
 	@Override
@@ -245,6 +257,13 @@ public class LogicLayerImpl
 
 	@Override
 	public void updateAdmin(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		ctrlAccount.updateAccount(session, id, firstName, lastName, userName, password, email, address, membershipExpiration, licenseState, licenseNumber, cardNumber, cardExpiration);
+	}
+	
+	@Override
+	public void updateCustomer(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
 			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
 		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
 		ctrlAccount.updateAccount(session, id, firstName, lastName, userName, password, email, address, membershipExpiration, licenseState, licenseNumber, cardNumber, cardExpiration);
@@ -303,5 +322,23 @@ public class LogicLayerImpl
 	public void deleteComment(int id) throws RARException {
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.deleteComment(id);
+	}
+
+	@Override
+	public void renewMembership(Session session) throws RARException {
+		CustomerCtrl ctrlCustomer = new CustomerCtrl ( objectLayer );
+		ctrlCustomer.renewMembership(session);
+	}
+
+	@Override
+	public void cancelMembership(Session session) throws RARException {
+		CustomerCtrl ctrlCustomer = new CustomerCtrl ( objectLayer );
+		ctrlCustomer.cancelMembership(session);
+	}
+	
+	@Override
+	public void cancelReservation( int id ) throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.cancelReservation(id);
 	}
 }

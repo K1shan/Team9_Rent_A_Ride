@@ -2,24 +2,28 @@
 	<div class="tab">
 		<label class="head"> ADD HOURLY PRICE </label>
 		<form class="form" id="admin" action="HourlyPriceCreate" method='post' name="admin">
-			
-			<select id="selectHourlyPriceVehicleTypeAdd" name="selectHourlyPriceVehicleTypeAdd" class="minimal">
-					<option value="">Select</option>
-			</select>
-			
-			<select id="hourlyPrice" name="hourlyPrice" class="minimal">
-					<option value="">Select</option>
-					<option value="24">Twinty-Four (24)</option>
-					<option value="42">Fourty-Two (42)</option>
-					<option value="78">Seventy-Eight (78)</option>
-			</select>
+
+			<p class="float-label">
+				<select id="selectHourlyPriceVehicleTypeAdd" name="selectHourlyPriceVehicleTypeAdd" class="minimal">
+						<option value="">Select Vehicle Type</option>
+				</select>
+			</p>
 			
 			<p class="float-label">
-				<input type="text" id="vehiclePrice" name="vehiclePrice" placeholder="PRICE"/>
+				<select id="selectHourlyPriceHourAdd" name="selectHourlyPriceHourAdd" class="minimal">
+						<option value="">Select Hours</option>
+						<option value="24">Twinty-Four (24)</option>
+						<option value="48">Fourty-Eight (48)</option>
+						<option value="72">Sevehnty-Two (72)</option>
+				</select>
+			</p>
+			<p class="float-label">
+				<input type="text" id="hourlyPricePriceAdd" name="hourlyPricePriceAdd" placeholder="PRICE"/>
 			</p>
 			
 			<p>
 				<input class = "type" type="submit" onclick="return hourlypriceCreateNullCheck()" value="ADD HOURLY PRICE" />
+
 			</p>
 			  				
 			<#if statusAddHourlyPriceG??>

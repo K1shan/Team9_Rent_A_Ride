@@ -18,12 +18,11 @@ private ObjectLayer objectLayer = null;
     }
     
     public void updateParams(int memberFee, int lateFee) throws RARException {
-    	RentARideParams params = objectLayer.createRentARideParams();
+    	RentARideParams params = objectLayer.findRentARideParams();
     	if(memberFee != -1)
     		params.setMembershipPrice(memberFee);
     	else
     		params.setLateFee(lateFee);
-    	
     	objectLayer.storeRentARideParams(params);
     }
 }

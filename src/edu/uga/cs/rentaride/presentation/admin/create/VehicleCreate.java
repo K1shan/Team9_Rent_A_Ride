@@ -80,8 +80,8 @@ public class VehicleCreate extends HttpServlet {
         String         ssid; 
 		templateProcessor.setTemplate("AdminView.ftl");
 		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		int typeId = Integer.parseInt(request.getParameter("selectVehicleTypeAdd"));
-		int locationId = Integer.parseInt(request.getParameter("selectLocationAdd"));
+		int typeId = Integer.parseInt(request.getParameter("selectVehicleVehicleTypeAdd"));
+		int locationId = Integer.parseInt(request.getParameter("selectVehicleLocationAdd"));
 		String make = request.getParameter("makeAdd");
 		String model = request.getParameter("modelAdd");
 		int year = Integer.parseInt(request.getParameter("yearAdd"));

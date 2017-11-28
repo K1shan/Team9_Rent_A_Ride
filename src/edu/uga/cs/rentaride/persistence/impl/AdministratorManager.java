@@ -78,15 +78,15 @@ public class AdministratorManager {
 			}
 			
 			if( administrator.getFirstName() != null )
-                pstmt.setString( 1, administrator.getFirstName() );
+                pstmt.setString( 1, administrator.getFirstName().toLowerCase() );
             else{
                 throw new RARException( "AdministratorManager.save: can't save a user: FirstName undefined" );
             }if( administrator.getLastName() != null )
-                pstmt.setString( 2, administrator.getLastName() );
+                pstmt.setString( 2, administrator.getLastName().toLowerCase() );
             else
                 throw new RARException( "AdministratorManager.save: can't save a user: LastName undefined" );
             if( administrator.getUserName() != null )
-                pstmt.setString( 3, administrator.getUserName() );
+                pstmt.setString( 3, administrator.getUserName().toLowerCase() );
             else
                 throw new RARException( "AdministratorManager.save: can't save a user: UserName undefined" );
             if( administrator.getPassword() != null )
@@ -377,6 +377,8 @@ public class AdministratorManager {
 				"DELETE VEHICLE_TYPE FROM VEHICLE_TYPE";
 		String deleteLocationQuery = 
 				"DELETE LOCATION FROM LOCATION";
+		String deleteParamsQuery =
+				"DELETE RENT_A_RIDE_PARAMS FROM RENT_A_RIDE_PARAMS";
 		String alterUserQuery = 
 				"ALTER TABLE `USER` AUTO_INCREMENT=1";
 		String alterAdminQuery = 
@@ -385,6 +387,8 @@ public class AdministratorManager {
 				"ALTER TABLE CUSTOMER AUTO_INCREMENT=1";
 		String alterVehicleTypeQuery = 
 				"ALTER TABLE VEHICLE_TYPE AUTO_INCREMENT=1";
+		String alterHourlyPriceQuery = 
+				"ALTER TABLE HOURLY_PRICE AUTO_INCREMENT=1";
 		String alterLocationQuery = 
 				"ALTER TABLE LOCATION AUTO_INCREMENT=1";
 		String alterVehicleQuery = 
@@ -404,6 +408,7 @@ public class AdministratorManager {
 			System.out.println("query: " + alterAdminQuery.toString());
 			System.out.println("query: " + alterCustomerQuery.toString());
 			System.out.println("query: " + alterVehicleTypeQuery.toString());
+			System.out.println("query: " + alterHourlyPriceQuery.toString());
 			System.out.println("query: " + alterLocationQuery.toString());
 			System.out.println("query: " + alterVehicleQuery.toString());
 			System.out.println("query: " + alterReservationQuery.toString());
@@ -416,6 +421,7 @@ public class AdministratorManager {
 			stmt.executeUpdate(alterAdminQuery);
 			stmt.executeUpdate(alterCustomerQuery);
 			stmt.executeUpdate(alterVehicleTypeQuery);
+			stmt.executeUpdate(alterHourlyPriceQuery);
 			stmt.executeUpdate(alterLocationQuery);
 			stmt.executeUpdate(alterVehicleQuery);
 			stmt.executeUpdate(alterReservationQuery);

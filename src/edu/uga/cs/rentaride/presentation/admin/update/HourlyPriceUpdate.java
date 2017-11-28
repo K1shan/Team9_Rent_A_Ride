@@ -67,23 +67,23 @@ public class HourlyPriceUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateTypeG = "";
-		String statusUpdateTypeB = "";
+		String statusUpdateHourlyPriceG = "";
+		String statusUpdateHourlyPriceB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
+    	int hourlyPriceId;
+    	int vehicleTypeId;
         int maxHours;
     	int price;
-    	int vehicleTypeId;
-    	int typeId;
         
 		templateProcessor.setTemplate("AdminView.ftl");
 		
-		maxHours = Integer.parseInt(request.getParameter("hourlyPriceUpdate"));
-		price = Integer.parseInt(request.getParameter("vehiclePriceUpdate"));
-		vehicleTypeId = Integer.parseInt(request.getParameter("selectHourlyPriceUpdate"));
-		typeId = Integer.parseInt(request.getParameter("hourlypriceUpdate"));
+		hourlyPriceId = Integer.parseInt(request.getParameter("selectHourlyPriceUpdate"));
+		vehicleTypeId = Integer.parseInt(request.getParameter("selectHourlyPriceVehicleTypeUpdate"));
+		maxHours = Integer.parseInt(request.getParameter("selectHourlyPriceHourUpdate"));
+		price = Integer.parseInt(request.getParameter("hourlyPricePriceUpdate"));
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -99,8 +99,8 @@ public class HourlyPriceUpdate extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
+				statusUpdateHourlyPriceB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateHourlyPriceB", statusUpdateHourlyPriceB);
 				System.out.println("LocationUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -113,14 +113,14 @@ public class HourlyPriceUpdate extends HttpServlet {
 		
 		try {
 			
-			logicLayer.updateHourlyPrice(typeId, vehicleTypeId, maxHours, price);
-			statusUpdateTypeG = "Amazing!";
-			templateProcessor.addToRoot("statusUpdateTypeG", statusUpdateTypeG);
+			logicLayer.updateHourlyPrice(hourlyPriceId, vehicleTypeId, maxHours, price);
+			statusUpdateHourlyPriceG = "Amazing!";
+			templateProcessor.addToRoot("statusUpdateHourlyPriceG", statusUpdateHourlyPriceG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
 			
-			statusUpdateTypeB = "Huh ?";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
+			statusUpdateHourlyPriceB = "Huh ?";
+			templateProcessor.addToRoot("statusUpdateHourlyPriceB", statusUpdateHourlyPriceB);
     		templateProcessor.processTemplate(response);
 		}
 	}

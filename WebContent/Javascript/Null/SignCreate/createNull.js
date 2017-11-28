@@ -4,8 +4,8 @@ function registerNullCheck(){
 	var fname = document.getElementById("fName").value;
 	var lname = document.getElementById("lName").value;
 	var email = document.getElementById("email").value;
-	var password = document.getElementById("password").value;
-	var cPassword = document.getElementById("confirm-password").value;
+	var password = document.getElementById("password-register").value;
+	var cPassword = document.getElementById("confirm-password-register").value;
 	
 	if(fname === ""){
 		alert("Invalid First Name");
@@ -19,7 +19,7 @@ function registerNullCheck(){
 	}else if(password === ""){
 		alert("Invalid Password");
 		return false;
-	}else if(cPassword === "" || cPassword != password){
+	}else if(cPassword != password){
 		alert("Invalid Confirm Password");
 		return false;
 	}else{

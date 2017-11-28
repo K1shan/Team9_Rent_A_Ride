@@ -2,7 +2,8 @@
 	<div class="tab">
 		<label class="head">ADD VEHICLE TYPE </label>
 		<form class="form" id="admin" action="VehicleTypeCreate" method='post' name="admin">
-			<select id="select3" name="select3" class="minimal">
+		
+			<select id="selectVehicleTypeAdd" name="selectVehicleTypeAdd" class="minimal">
 					<option value="">View Only</option>
 			</select>
 								

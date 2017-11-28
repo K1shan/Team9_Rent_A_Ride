@@ -89,7 +89,8 @@ public class LocationUpdate extends HttpServlet {
         		System.out.println(fileSaveDir);
             fileSaveDir.mkdir();
         }
-        String name = request.getParameter("nameUpdate");
+        int    locationId = Integer.parseInt(request.getParameter("selectLocationUpdate"));
+        String name = request.getParameter("nameUpdate").toLowerCase();
 		String address = request.getParameter("addressUpdate");
 		String city = request.getParameter("cityUpdate");
 		String state = request.getParameter("stateUpdate");
@@ -132,7 +133,7 @@ public class LocationUpdate extends HttpServlet {
 		
 		try {
 			
-			logicLayer.updateLocation(name, address, city, state, zip, path, capacity);
+			logicLayer.updateLocation(locationId, name, address, city, state, zip, path, capacity);
 			statusUpdateLocationG = "Your god!";
 			templateProcessor.addToRoot("statusUpdateLocationG", statusUpdateLocationG);
 			templateProcessor.processTemplate(response);

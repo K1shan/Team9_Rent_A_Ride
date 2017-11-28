@@ -31,7 +31,7 @@ public class CreateAccountCtrl {
 	    	address = address + ", " + city + ", " + state + ", "+ zip;
 			
 	    	Date ccExp = new Date();
-	    	int year = Integer.parseInt(expDate.substring(expDate.indexOf("/")+1))+2000; // gets year after "/"
+	    	int year = Integer.parseInt(expDate.substring(expDate.indexOf("/")+1)); // gets year after "/"
 	    	int month = Integer.parseInt(expDate.substring(0, expDate.indexOf("/"))); // gets month before "/"
 	    	YearMonth yearMonth = YearMonth.of(year, month);
 	    	LocalDate ccExpLocalDate = yearMonth.atEndOfMonth(); // gets the last day of the month
@@ -47,6 +47,7 @@ public class CreateAccountCtrl {
             
 	    	//Passing into the object layer for create customer 
 	    	customer = objectLayer.createCustomer(fName, lName, email, password, email, address, createDate, dateMemberTill, state, driverNo, cardNo, ccExp);
+	    	customer.setUserStatus(UserStatus.ACTIVE);
 	    	objectLayer.storeCustomer(customer);
 	    	return customer.getId();
     }

@@ -1,6 +1,7 @@
 // This will check if the user and password field are null in sign in form
 function locationUpdateNullCheck(){
 	
+	var selectLocationUpdate = document.getElementById("selectLocationUpdate").value;
 	var name = document.getElementById("nameUpdate").value;
 	var add = document.getElementById("addressUpdate").value;
 	var city = document.getElementById("cityUpdate").value;
@@ -9,6 +10,10 @@ function locationUpdateNullCheck(){
 	var zip_l = zip.length;
 	var ava = document.getElementById("avaUpdate").value;
 	
+	if(selectLocationUpdate === "")
+		
+		alert("You must select a location")
+		return false;
 	if(name === ""){
 		
 		alert("Invalid Name");
