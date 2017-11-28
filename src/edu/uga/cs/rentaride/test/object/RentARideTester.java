@@ -3,6 +3,7 @@ package edu.uga.cs.rentaride.test.object;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import edu.uga.cs.rentaride.RARException;
@@ -58,7 +59,7 @@ public class RentARideTester
          Comment		commentWayne1;
          Comment		commentRafael1;
          
-         
+         RentARideParams params;
          
          // get a database connection
          try {
@@ -81,9 +82,13 @@ public class RentARideTester
          objectLayer.setPersistence( persistence ); 
          
          try {
-        	 long membershipLength = 24*60*60*1000;
         	 Date createDate = new Date();
-        	 Date dateMemberTill = new Date(createDate.getTime() + membershipLength);
+        	 Date dateMemberTill = new Date();
+        	 Calendar cal = Calendar.getInstance();
+        	 createDate = cal.getTime();
+             cal.add(Calendar.MONTH, 6);
+             dateMemberTill = cal.getTime();
+        	 
         	 Date ccExp = new Date();
         	 Date dateReservation1 = new Date();
         	 Date dateReservation2 = new Date();
@@ -92,10 +97,10 @@ public class RentARideTester
         	 DateFormat df1 = new SimpleDateFormat( "yyyy-MM-dd" );
         	 DateFormat ccFormat = new SimpleDateFormat( "MM-yy" );
         	 ccExp = ccFormat.parse( "11-19" );
-        	 dateReservation1 = df1.parse( "2017-10-20" );
-        	 dateReservation2 = df1.parse( "2017-10-22" );
-        	 dateReservation3 = df1.parse( "2017-10-24" );
-        	 dateReservation4 = df1.parse( "2017-10-30" );
+        	 dateReservation1 = df1.parse( "2017-12-20" );
+        	 dateReservation2 = df1.parse( "2017-12-22" );
+        	 dateReservation3 = df1.parse( "2017-12-24" );
+        	 dateReservation4 = df1.parse( "2017-12-30" );
         	 
         	 Date rentalPickup1 = new Date();
         	 Date rentalPickup2 = new Date();
@@ -111,15 +116,13 @@ public class RentARideTester
         	 int lengthReservation1 = 24;
         	 int lengthReservation2 = 48;
         	 int lengthReservation3 = 72;
-        	 int lengthReservation4 = 96;
         	 
-        	 int maxHours = 96;
+        	 int hourRange1 = 24;
+        	 int hourRange2 = 48;
+        	 int hourRange3 = 72;
 
         	 // DELETE everything
-        	 objectLayer.deleteAdministrator( null );
-        	 objectLayer.deleteCustomer( null );
-        	 objectLayer.deleteVehicleType( null );
-        	 objectLayer.deleteRentalLocation( null );
+        	 objectLayer.deleteEverything();
         	 
         	 // 4 ADMINS
         	 adminWayne = objectLayer.createAdministrator("Wayne", "Kung", "wayneAdmin@uga.edu", "w", "wayneAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
@@ -155,18 +158,18 @@ public class RentARideTester
              persistence.storeVehicleType( convertibleVehicleType );
         	 
              // 4 HOURLY PRICES
-             truckHourlyPrice1 = objectLayer.createHourlyPrice(maxHours, 50, truckVehicleType);
+             truckHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 50, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice1 );
-             truckHourlyPrice2 = objectLayer.createHourlyPrice(maxHours, 75, truckVehicleType);
+             truckHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 75, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice2 );
              
-             convertibleHourlyPrice1 = objectLayer.createHourlyPrice(maxHours, 100, convertibleVehicleType);
+             convertibleHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 100, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice1 );
-             convertibleHourlyPrice2 = objectLayer.createHourlyPrice(maxHours, 150, convertibleVehicleType);
+             convertibleHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 150, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice2 );
         	 
         	 // 4 VEHICLES
-             truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, dateMemberTill, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
+             truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, dateMemberTill, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INRENTAL);
              persistence.storeVehicle( truck1 );
              
              truck2 = objectLayer.createVehicle("Toyota", "Tacoma", 2017, "222222222", 1000, dateMemberTill, truckVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
@@ -175,7 +178,7 @@ public class RentARideTester
              convertible1 = objectLayer.createVehicle("Honda", "Del Sol", 1997, "333333333", 120000, dateMemberTill, convertibleVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
              persistence.storeVehicle( convertible1 );
         	 
-             convertible2 = objectLayer.createVehicle("Ford", "Mustang", 2017, "444444444", 2000, dateMemberTill, convertibleVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
+             convertible2 = objectLayer.createVehicle("Ford", "Mustang", 2017, "444444444", 2000, dateMemberTill, convertibleVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INRENTAL);
              persistence.storeVehicle( convertible2 );
         	 
         	 // 4 RESERVATIONS
@@ -188,7 +191,7 @@ public class RentARideTester
              reservationKishan1 = objectLayer.createReservation(dateReservation3, lengthReservation3, truckVehicleType, rentalLocationAtlanta, customerKishan);
              persistence.storeReservation(reservationKishan1);
              
-             reservationAlex1 = objectLayer.createReservation(dateReservation4, lengthReservation4, convertibleVehicleType, rentalLocationAthens, customerAlex);
+             reservationAlex1 = objectLayer.createReservation(dateReservation4, lengthReservation3, convertibleVehicleType, rentalLocationAthens, customerAlex);
              persistence.storeReservation(reservationAlex1);
         	 
         	 // 2 RENTALS
@@ -208,6 +211,13 @@ public class RentARideTester
              commentRafael1 = objectLayer.createComment("horrible experience", commentDate2, rentalRafael1);
              rentalRafael1.setComment(commentRafael1);
              persistence.storeComment(commentRafael1);
+             
+             // PARAMS
+             params = objectLayer.createRentARideParams();
+             params.setMembershipPrice(60);
+             params.setLateFee(30);
+             persistence.storeRentARideConfig(params);
+             
          }
          
          catch (RARException re) {

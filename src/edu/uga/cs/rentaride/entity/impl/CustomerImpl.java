@@ -8,7 +8,6 @@ import edu.uga.cs.rentaride.entity.UserStatus;
 import edu.uga.cs.rentaride.persistence.impl.Persistent;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import edu.uga.cs.rentaride.RARException;
@@ -19,46 +18,43 @@ public class CustomerImpl
 	extends Persistent
 	implements Customer
 {
-	private Date createDate;
-	private Date memberUntil;
-	private Date cardExpiration;
 	private String firstName;
 	private String lastName;
 	private String userName;
-	private String email;
 	private String password;
+	private String email;
 	private String address;
+	private Date createDate;
+	private Date memberUntil;
 	private String state;
 	private String licenseNumber;
 	private String cardNumber;
+	private Date cardExpiration;
 	private UserStatus userStatus;
 	private List<Reservation> reservations;
-	private List<Comment> comments;
 	private List<Rental> rentals;
+	private List<Comment> comments;
+
 	
 	public CustomerImpl(){
-	
 		
 		super( -1 );
-		this.createDate = null;
-		this.memberUntil = null;
-		this.cardExpiration = null;
 		this.firstName = null;
 		this.lastName = null;
 		this.userName = null;
-		this.email =  null;
 		this.password =  null;
+		this.email =  null;
 		this.address =  null;
+		this.createDate = null;
+		this.memberUntil = null;
 		this.state =  null;
 		this.licenseNumber = null;
 		this.cardNumber = null;
+		this.cardExpiration = null;
 		this.userStatus = null;
 		this.reservations = null;
-		this.comments = null;
 		this.rentals = null;
-		this.reservations = null;
 		this.comments = null;
-		this.rentals = null;
 	}
 	
 	public CustomerImpl(String firstName, String lastName, String userName, String password, String email,
@@ -66,22 +62,22 @@ public class CustomerImpl
 			String cardNumber, Date cardExpiration){
 		
 		super( -1 );
-		this.createDate = createDate;
-		this.memberUntil = membershipExpiration;
-		this.cardExpiration = cardExpiration;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userName = userName;
-		this.email =  email;
 		this.password =  password;
+		this.email =  email;
 		this.address =  address;
+		this.createDate = createDate;
+		this.memberUntil = membershipExpiration;
 		this.state =  licenseState;
 		this.licenseNumber = licenseNumber;
 		this.cardNumber = cardNumber;
+		this.cardExpiration = cardExpiration;
 		this.userStatus = UserStatus.ACTIVE;
 		this.reservations = null;
-		this.comments = null;
 		this.rentals = null;
+		this.comments = null;
 	}
   
 	@Override
@@ -216,11 +212,28 @@ public class CustomerImpl
 
 	@Override
 	public List<Reservation> getReservations() throws RARException{
+		
+		// if customer has made a reservation
+		//
 		if(reservations == null){
 			if(isPersistent() ){
 				reservations = getPersistenceLayer().restoreCustomerReservation( this );
 			}else{
                 throw new RARException( "This Customer object is not persistent" );
+			}
+		}
+		
+		// if customer is terminated
+		//
+		if(userStatus.equals(UserStatus.TERMINATED)){
+			int i = 0;
+			if(reservations != null){
+				for(Reservation reservation : reservations){
+					reservation.setCancelled(true);
+					getPersistenceLayer().storeCustomerReservation(this, reservation);
+					reservations.set(i, reservation);
+					i++;
+				}
 			}
 		}
         return reservations;
@@ -264,11 +277,21 @@ public class CustomerImpl
 
 	@Override
 	public String toString() {
-		return "CustomerImpl [createDate=" + createDate + ", memberUntil=" + memberUntil + ", cardExpiration="
-				+ cardExpiration + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
-				+ ", email=" + email + ", password=" + password + ", address=" + address + ", state=" + state
-				+ ", licenseNumber=" + licenseNumber + ", cardNumber=" + cardNumber + ", userStatus=" + userStatus+
-				"]";
+		return "CustomerImpl ["
+				+ "firstName=" + firstName 
+				+ ", lastName=" + lastName 
+				+ ", userName=" + userName
+				+ ", password=" + password 
+				+ ", email=" + email 
+				+ ", address=" + address 
+				+ ", createDate=" + createDate 
+				+ ", memberUntil=" + memberUntil 
+				+ ", state=" + state
+				+ ", licenseNumber=" + licenseNumber 
+				+ ", cardNumber=" + cardNumber 
+				+ ", cardExpiration=" + cardExpiration
+				+ ", userStatus=" + userStatus
+				+ "]";
 	}
 
 	@Override
@@ -281,6 +304,42 @@ public class CustomerImpl
 	public boolean getIsAdmin() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public String getLicenseNum() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setLicenseNum(String licenseNum) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getCcNum() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCcNum(String ccNum) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Date getCcExp() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCcExp(Date ccExp) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

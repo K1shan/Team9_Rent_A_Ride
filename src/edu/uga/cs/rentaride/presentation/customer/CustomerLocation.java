@@ -97,10 +97,10 @@ public class CustomerLocation extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
-		templateProcessor.setTemplate("CustomerLocation.ftl");
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		templateProcessor.setTemplate("CustomerLocation.ftl");
 		templateProcessor.processTemplate(response);
 	}
 

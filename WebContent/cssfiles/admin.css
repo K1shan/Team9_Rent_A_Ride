@@ -45,7 +45,7 @@ body {
   padding: 30px;
   position: fixed;
   left: 5%;
-  margin: 750px 0px 0px 0px;
+  margin: 710px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -56,7 +56,7 @@ body {
   padding: 30px;
   position: fixed;
   left: 35%;
-  margin: 750px 0px 0px 0px;
+  margin: 710px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -67,7 +67,7 @@ body {
   padding: 30px;
   position: fixed;
   left: 65%;
-  margin: 750px 0px 0px 0px;
+  margin: 710px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -114,6 +114,11 @@ body {
   padding-bottom: 10px;
   border: none;
   border-bottom: 3px solid #000;
+}
+
+.in{
+	  text-align: center;
+	  text-transform: uppercase;
 }
 
 .float-label input:focus {
@@ -243,7 +248,7 @@ button,input[type="submit"] {
   letter-spacing: 2px;
   color: #fff;
   padding: 15px 30px;
-  margin: 75px 0px 0px 0px;
+  margin: 15px 0px 0px 0px;
   display: block;
   width: 100%;
   background-color: #000;
@@ -453,4 +458,48 @@ select.minimal:focus {
 .tabbs > section[aria-hidden="true"] {
   display: none;
 }
+
+.search-container {
+  width: 490px;
+  display: block;
+  margin: 100px auto;
+}
+
+input#search-bar {
+  margin: 0 auto;
+  width: 108%;
+  height: 45px;
+  padding: 0 20px;
+  font-size: 1rem;
+  border: 1px solid #374954;
+  outline: none;
+}
+
+input#search-bar:focus {
+  border: 1px solid #374954;
+  transition: 0.35s ease;
+  color: #374954;
+}
+input#search-bar:focus::-webkit-input-placeholder {
+  transition: opacity 0.45s ease;
+  opacity: 0;
+}
+input#search-bar:focus::-moz-placeholder {
+  transition: opacity 0.45s ease;
+  opacity: 0;
+}
+input#search-bar:focus:-ms-placeholder {
+  transition: opacity 0.45s ease;
+  opacity: 0;
+}
+
+.search-icon {
+  position: relative;
+  float: right;
+  width: 75px;
+  height: 75px;
+  top: -62px;
+  right: -45px;
+}
+
 

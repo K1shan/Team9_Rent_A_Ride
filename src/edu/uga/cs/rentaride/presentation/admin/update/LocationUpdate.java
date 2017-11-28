@@ -89,12 +89,13 @@ public class LocationUpdate extends HttpServlet {
         		System.out.println(fileSaveDir);
             fileSaveDir.mkdir();
         }
-        String name = request.getParameter("nameUpdate");
+        int    locationId = Integer.parseInt(request.getParameter("selectLocationUpdate"));
+        String name = request.getParameter("nameUpdate").toLowerCase();
 		String address = request.getParameter("addressUpdate");
 		String city = request.getParameter("cityUpdate");
 		String state = request.getParameter("stateUpdate");
 		String zip = request.getParameter("zipUpdate");
-		String ava = request.getParameter("avaUpdate");
+		int capacity = Integer.parseInt(request.getParameter("avaUpdate"));
 		Part pic = request.getPart("picUpdate");
         String oneName = extractFileName(pic);
 		
@@ -126,26 +127,25 @@ public class LocationUpdate extends HttpServlet {
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		int num = Integer.parseInt(ava);
+		templateProcessor.addToRoot("userSession", user);
+		
 		try {
 			
-			logicLayer.updateLocation(name, address, city, state, zip, path, num);
+			logicLayer.updateLocation(locationId, name, address, city, state, zip, path, capacity);
 			statusUpdateLocationG = "Your god!";
+			templateProcessor.addToRoot("statusUpdateLocationG", statusUpdateLocationG);
+			templateProcessor.processTemplate(response);
+			pic.write(savePath + File.separator + oneName);
 		} catch (RARException e){
 			
 			statusUpdateLocationB = "You can&#8217t do that!";
 			System.out.print(statusUpdateLocationB);
 			templateProcessor.addToRoot("statusUpdateLocationB", statusUpdateLocationB);
-    			templateProcessor.processTemplate(response);
-    			return;
+			templateProcessor.processTemplate(response);
+			return;
 		}
-		
-		templateProcessor.addToRoot("statusUpdateLocationG", statusUpdateLocationG);
-		templateProcessor.processTemplate(response);
-		pic.write(savePath + File.separator + oneName);
 	}
 
 	private String extractFileName(Part part) {

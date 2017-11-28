@@ -47,9 +47,17 @@ public class VehicleManager {
     	
     	String updateVehicleQuery = 
 				"UPDATE VEHICLE SET "
-				+ "type_id = ?, location_id = ?, make = ?, model = ?, year = ?, "
-				+ "mileage = ?, tag = ?, service_date = ?, status = ?, cond = ?"
-				+ "WHERE type_id = ?"; 
+				+ "type_id=?, "
+				+ "location_id=?, "
+				+ "make=?, "
+				+ "model=?, "
+				+ "year=?, "
+				+ "mileage=?, "
+				+ "tag=?, "
+				+ "service_date=?, "
+				+ "status=?, "
+				+ "cond=? "
+				+ "WHERE vehicle_id=?"; 
     	
     	PreparedStatement pstmt;
     	long vehicleId;
@@ -126,16 +134,25 @@ public class VehicleManager {
     		pstmt.setDate(8, sqlDate);
 			
     		if( vehicle.getStatus() != null )
-	            pstmt.setLong( 9, 0 );
+    			if(vehicle.getStatus().equals(VehicleStatus.INLOCATION))
+    				pstmt.setLong( 9, 0 );
+    			else if(vehicle.getStatus().equals(VehicleStatus.INRENTAL))
+    				pstmt.setLong( 9, 2 );
 	        else{
 	            throw new RARException( "VehicleManager.save: can't save a vehicle: status undefined" );
 	        }
     		
     		if( vehicle.getCondition() != null )
-    			pstmt.setLong(10, 0);
+    			if(vehicle.getCondition().equals(VehicleCondition.GOOD))
+    				pstmt.setLong( 10, 0 );
+    			else if(vehicle.getCondition().equals(VehicleCondition.NEEDSMAINTENANCE))
+    				pstmt.setLong( 10, 1 );
     		else{
     			throw new RARException( "VehicleManager.save: can't save a vehicle: condition undefined" );
     		}
+    		
+    		if( vehicle.isPersistent() )
+    			pstmt.setLong(11, vehicle.getId());
 			
 			System.out.println("query: "+pstmt.asSql());
 	        inscnt = pstmt.executeUpdate();
@@ -170,9 +187,9 @@ public class VehicleManager {
 	
 	public List<Vehicle> restore( Vehicle modelVehicle ) throws RARException{
 		String selectVehicleSql = "SELECT "
-				+ "VEHICLE.vehicle_id, VEHICLE.type_id, VEHICLE.location_id, VEHICLE.make, VEHICLE.model, VEHICLE.year, VEHICLE.mileage, VEHICLE.tag, VEHICLE.service_date, VEHICLE.status, VEHICLE.cond, "
-				+ "VEHICLE_TYPE.name, "
-				+ "LOCATION.name "
+				+ "VEHICLE.*, "
+				+ "VEHICLE_TYPE.*, "
+				+ "LOCATION.* "
 				+ "FROM VEHICLE "
 				+ "INNER JOIN VEHICLE_TYPE on VEHICLE_TYPE.type_id=VEHICLE.type_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=VEHICLE.location_id";
@@ -186,71 +203,88 @@ public class VehicleManager {
 		System.out.println("query: "+ query.toString());
 		
 		if(modelVehicle != null) {
-			if (modelVehicle.getId() >= 0) { // id is unique, so it is sufficient to get a vehicle
-				query.append("where vehicle_id = " + modelVehicle.getId());
+			if (modelVehicle.getId() > 0) { // id is unique, so it is sufficient to get a vehicle
+				query.append(" WHERE VEHICLE.vehicle_id=" + modelVehicle.getId());
 			}else {
 				if(modelVehicle.getVehicleType() != null) { // not sure if this is okay or I should get the type name itself
-					condition.append( " type_id = '" + modelVehicle.getVehicleType().getId() + "'");
+					condition.append( " VEHICLE.type_id=" + modelVehicle.getVehicleType().getId() );
 				}
 				
 				if (modelVehicle.getRentalLocation() != null) {
-					condition.append( " location_id = '" + modelVehicle.getRentalLocation().getId() + "'");
+					if( condition.length() > 0 ){
+                        condition.append( " AND" );
+                    }
+					condition.append( " VEHICLE.location_id=" + modelVehicle.getRentalLocation().getId() );
 				}
 				
 				if(modelVehicle.getMake()!= null) {
-					condition.append( " make = '" + modelVehicle.getMake() + "'");
+					if( condition.length() > 0 ){
+                        condition.append( " AND" );
+                    }
+					condition.append( " VEHICLE.make='" + modelVehicle.getMake() + "'");
 				}
 				
 				if(modelVehicle.getModel()!= null) {
 					if( condition.length() > 0 ){
-                        condition.append( " and" );
+                        condition.append( " AND" );
                     }
-					condition.append( " model = '" + modelVehicle.getModel() + "'");
+					condition.append( " VEHICLE.model='" + modelVehicle.getModel() + "'");
 				}
 				
-				if(modelVehicle.getYear() != 0) { // 0 and not null because year is int
-					condition.append( " year = '" + modelVehicle.getYear() + "'");
+				if(modelVehicle.getYear() != 0) { // 0 and not null because year is int'
+					if( condition.length() > 0 ){
+                        condition.append( " AND" );
+                    }
+					condition.append( " VEHICLE.year=" + modelVehicle.getYear() );
 				}
 				
 				if(modelVehicle.getMileage() != 0) { // 0 and not null because mileage is int
-					condition.append( " mileage = '" + modelVehicle.getMileage() + "'");
+					if( condition.length() > 0 ){
+                        condition.append( " AND" );
+                    }
+					condition.append( " VEHICLE.mileage=" + modelVehicle.getMileage() );
 				}
 				
 				if(modelVehicle.getRegistrationTag() != null) {
-					condition.append( " tag = '" + modelVehicle.getRegistrationTag() + "'");
+					if( condition.length() > 0 ){
+                        condition.append( " AND" );
+                    }
+					condition.append( " VEHICLE.tag='" + modelVehicle.getRegistrationTag() + "'");
 				}
 				
 				if(modelVehicle.getLastServiced()!= null) {
 					if( condition.length() > 0 ){
-                        condition.append( " and" );
+                        condition.append( " AND" );
                     }
-					condition.append( " service_date = '" + modelVehicle.getLastServiced() + "'");
+					condition.append( " VEHICLE.service_date='" + modelVehicle.getLastServiced() + "'");
 				}
 				
 				// VehicleStatus not yet implemented, may have to change methods used below
 				if(modelVehicle.getStatus() != null) {
-					int status; 
-					if(modelVehicle.getStatus().equals(UserStatus.ACTIVE)){
-						status = 0;
-					}else if(modelVehicle.getStatus().equals(UserStatus.CANCELLED)){
-						status = 1;
-					}else{
-						status = 2;
+					if( condition.length() > 0 ){
+                        condition.append( " AND" );
+                    }
+					if(modelVehicle.getStatus().equals(VehicleStatus.INLOCATION)){
+						condition.append( " VEHICLE.status=0");
+					}else if(modelVehicle.getStatus().equals(VehicleStatus.INRENTAL)){
+						condition.append( " VEHICLE.status=1");
 					}
-					condition.append( " status = '" + status + "'");
 				}
 				
 				// VehicleCondition not yet implemented, may have to change methods used below
 				if(modelVehicle.getCondition() != null) {
-					int cond = 0;
-					if(modelVehicle.getCondition().equals(VehicleCondition.NEEDSMAINTENANCE)){
-						cond = 1;
+					if( condition.length() > 0 ){
+                        condition.append( " AND" );
+                    }
+					if(modelVehicle.getCondition().equals(VehicleCondition.GOOD)){
+						condition.append( " VEHICLE.cond=0" );
+					}else if(modelVehicle.getCondition().equals(VehicleCondition.NEEDSMAINTENANCE)){
+						condition.append( " VEHICLE.cond=1" );
 					}
-					condition.append( " cond = '" + cond + "'");
 				}
 				
 				if( condition.length() > 0 ) {
-                    query.append(  " where " );
+                    query.append(  " WHERE" );
                     query.append( condition );
                 }
 			}
@@ -258,6 +292,7 @@ public class VehicleManager {
 		
 		try {
 			stmt = con.createStatement();
+			System.out.println("query: "+query.toString());
 			if(stmt.execute(query.toString())) {
 				ResultSet rs = stmt.getResultSet();
 				
@@ -349,23 +384,26 @@ public class VehicleManager {
 	
     
     public void delete( Vehicle vehicle ) throws RARException{
-    	String deleteVehicle = "DELETE FROM VEHICLE WHERE vehicle_id = ?";              
-		PreparedStatement stmt = null;
+    	
+    	String deleteVehicleQuery = 
+    			"DELETE VEHICLE FROM VEHICLE";
 		int inscnt = 0;
+		
+		StringBuffer query = new StringBuffer(1000);
+		StringBuffer condition = new StringBuffer(1000);
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(deleteVehicleQuery);
 		             
-        if( !vehicle.isPersistent() ) // is the vehicle object persistent?  If not, nothing to actually delete
-            return;
+        if ( vehicle != null && vehicle.isPersistent() ){
+			query.append( " WHERE VEHICLE.vehicle_id=" + vehicle.getId() );
+		}
         
         try {
         	
-            stmt = (PreparedStatement) con.prepareStatement(deleteVehicle);         
-            stmt.setLong( 1, vehicle.getId() );
-            inscnt = stmt.executeUpdate();          
-            if( inscnt == 1 ) {
-                return;
-            }
-            else
-                throw new RARException( "VehicleManager.delete: failed to delete a vehicle" );
+            stmt = con.createStatement();       
+			System.out.println("query: " + query.toString());
+			stmt.executeUpdate(query.toString());    
         }
         catch( SQLException e ) {
             e.printStackTrace();

@@ -3,6 +3,7 @@ package edu.uga.cs.rentaride.logic.impl;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,19 +31,23 @@ public class CreateAccountCtrl {
 	    	address = address + ", " + city + ", " + state + ", "+ zip;
 			
 	    	Date ccExp = new Date();
-	    	int year = Integer.parseInt(expDate.substring(expDate.indexOf("/")+1))+2000; // gets year after "/"
+	    	int year = Integer.parseInt(expDate.substring(expDate.indexOf("/")+1)); // gets year after "/"
 	    	int month = Integer.parseInt(expDate.substring(0, expDate.indexOf("/"))); // gets month before "/"
 	    	YearMonth yearMonth = YearMonth.of(year, month);
 	    	LocalDate ccExpLocalDate = yearMonth.atEndOfMonth(); // gets the last day of the month
 	    	ccExpLocalDate.format(DateTimeFormatter.ISO_LOCAL_DATE); // formats it to YYYY-MM-DD
 	    	ccExp = java.sql.Date.valueOf(ccExpLocalDate); // converts LocalDate object back to Date
 	    	
-	    	long membershipLength = 24*60*60*1000;
-	    	
 	    	Date createDate = new Date();
-	    	Date membershipExpiration = new Date(createDate.getTime() + membershipLength);
+       	 	Date dateMemberTill = new Date();
+       	 	Calendar cal = Calendar.getInstance();
+       	 	createDate = cal.getTime();
+            cal.add(Calendar.MONTH, 6);
+            dateMemberTill = cal.getTime();
+            
 	    	//Passing into the object layer for create customer 
-	    	customer = objectLayer.createCustomer(fName, lName, email, password, email, address, createDate, membershipExpiration, state, driverNo, cardNo, ccExp);
+	    	customer = objectLayer.createCustomer(fName, lName, email, password, email, address, createDate, dateMemberTill, state, driverNo, cardNo, ccExp);
+	    	customer.setUserStatus(UserStatus.ACTIVE);
 	    	objectLayer.storeCustomer(customer);
 	    	return customer.getId();
     }

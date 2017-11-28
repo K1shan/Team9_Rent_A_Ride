@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.persistence.PersistenceLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -29,7 +28,6 @@ public class AdminCreate extends HttpServlet {
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private PersistenceLayer persistenceLayer = null;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -100,10 +98,10 @@ public class AdminCreate extends HttpServlet {
 		
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		long num;
+		templateProcessor.addToRoot("userSession", user);
+
 		try {
 			
 			logicLayer.setAdmin(uname);

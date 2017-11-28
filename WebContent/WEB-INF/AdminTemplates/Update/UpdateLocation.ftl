@@ -3,7 +3,11 @@
 			<label class="head">UPDATE LOCATION</label>
 			
 			<form enctype="multipart/form-data" class="form" id="location" action="LocationUpdate" method='post' name="location">
-  				
+			
+  				<select id="selectLocationUpdate" name="selectLocationUpdate" class="minimal">
+					<option value="">Select Location</option>
+				</select>
+				
   				<p class="float-label">
     					<input type="text" id="nameUpdate" name="nameUpdate" placeholder="NAME"/>
   				</p>

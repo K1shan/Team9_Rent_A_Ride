@@ -467,4 +467,6 @@ public interface ObjectLayer
     
     public void deleteCustomer(Customer customer) throws RARException;
 
+	public void deleteEverything() throws RARException;
+
 }

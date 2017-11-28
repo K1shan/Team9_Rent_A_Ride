@@ -44,11 +44,43 @@
   				<!-- User input for Card No -->
   				<p class="float-label">
     				<input type="text" id="card" name="card" placeholder="CARD NO"/>
+    				
   				</p>
-  				
+				
   				<!-- User input for Expriation Date -->
   				<p class="float-label">
-    				<input type="text" id="exp" name="exp" placeholder="EXPIRATION DATE"/>
+  					<p>EXPIRATION DATE</p>
+  					<select id="exp-month-register" name="exp-month-register" class="minimal">
+						<option value=""></option>
+					    <option value="01">January</option>
+					    <option value="02">February</option>
+					    <option value="03">March</option>
+					    <option value="04">April</option>
+					    <option value="05">May</option>
+					    <option value="06">June</option>
+					    <option value="07">July</option>
+					    <option value="08">August</option>
+					    <option value="09">September</option>
+					    <option value="10">October</option>
+					    <option value="11">November</option>
+					    <option value="12">December</option>
+					</select>
+					
+					<select id="exp-year-register" name="exp-year-register" class="minimal">
+						<option value=""></option>
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+						<option value="2022">2022</option>
+						<option value="2023">2023</option>
+						<option value="2024">2024</option>
+						<option value="2025">2025</option>
+						<option value="2026">2026</option>
+						<option value="2027">2027</option>
+						<option value="2028">2028</option>
+    				</select>
   				</p>
   				
   				<!-- User input for Address -->

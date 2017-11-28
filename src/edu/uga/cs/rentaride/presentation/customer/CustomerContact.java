@@ -1,7 +1,6 @@
 package edu.uga.cs.rentaride.presentation.customer;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,10 +16,6 @@ import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapperBuilder;
-import freemarker.template.SimpleHash;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
@@ -42,7 +37,6 @@ public class CustomerContact extends HttpServlet {
      */
     public CustomerContact() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -105,10 +99,10 @@ public class CustomerContact extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
-		templateProcessor.setTemplate("CustomerContact.ftl");
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		templateProcessor.setTemplate("CustomerContact.ftl");
 		templateProcessor.processTemplate(response);
 	}
 
@@ -116,8 +110,6 @@ public class CustomerContact extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

@@ -99,22 +99,22 @@
 				
 				<!-- User input for Last name -->
       			<p class="float-label">
-        			<input id="lName" name="last-name" placeholder="Last Name"/>
+    					<input id="lName" name="last-name" placeholder="Last Name"/>
       			</p>
       			
       			<!-- User input for email -->
      	 		<p class="float-label">
-        			<input type="email" id="email" name="email" placeholder="Email"/>
+    					<input type="email" id="email" name="email" placeholder="Email"/>
      			</p>
      			
      			<!-- User input for password -->
       			<p class="float-label">
-        			<input type="password" id="password" name="password" placeholder="Password"/>
+        				<input type="password" id="password-register" name="password" placeholder="Password"/>
       			</p>
       			
       			<!-- User input for confirm password -->
       			<p class="float-label">
-        			<input type="password" id="confirm-password" name="confirm" placeholder="Confirm password"/>
+        				<input type="password" id="confirm-password-register" name="confirm" placeholder="Confirm password"/>
       			</p>
       			
       			<!-- User input for terms -->

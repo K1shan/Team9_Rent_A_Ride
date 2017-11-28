@@ -1,10 +1,6 @@
 package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,11 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.UserStatus;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
-import edu.uga.cs.rentaride.logic.impl.AccountCtrl;
-import edu.uga.cs.rentaride.object.ObjectLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -74,48 +67,22 @@ public class AdminUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateTypeG = "";
-		String statusUpdateTypeB = "";
+		String statusUpdateAdminG = "";
+		String statusUpdateAdminB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-        
-        String fName; 
-    	String lName; 
-    	String uName; 
-    	String pwd; 
-    	String email;
-    	String address;
-    	String driverNo; 
-    	String cardNo; 
-    	String expDate = request.getParameter("expDate");
-    	String city; 
-    	String state; 
-    	String zip;
-    	
-    	Date ccExp = new Date();
-    	int year = Integer.parseInt(expDate.substring(expDate.indexOf("/")+1))+2000; // gets year after "/"
-    	int month = Integer.parseInt(expDate.substring(0, expDate.indexOf("/"))); // gets month before "/"
-    	YearMonth yearMonth = YearMonth.of(year, month);
-    	LocalDate ccExpLocalDate = yearMonth.atEndOfMonth(); // gets the last day of the month
-    	ccExpLocalDate.format(DateTimeFormatter.ISO_LOCAL_DATE); // formats it to YYYY-MM-DD
-    	ccExp = java.sql.Date.valueOf(ccExpLocalDate);
-    	
-		templateProcessor.setTemplate("AdminView.ftl");
+        templateProcessor.setTemplate("AdminView.ftl");
+        String fName = request.getParameter("first-name");
+		String lName = request.getParameter("last-name");
+		String email = request.getParameter("email");
+		String address = request.getParameter("address");
+		String pwd = request.getParameter("password");
+		String confirm = request.getParameter("confirm");
 		
-		fName = request.getParameter("fname");
-		lName = request.getParameter("lname");
-		uName = request.getParameter("uName");
-		pwd = request.getParameter("pwd");
-		email = request.getParameter("email");
-		address = request.getParameter("address");
-		driverNo = request.getParameter("driverNo");
-		cardNo = request.getParameter("cardNo");
-		city = request.getParameter("city");
-		state = request.getParameter("state");
-		zip = request.getParameter("zip");
-		
+
+    	
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
@@ -130,25 +97,39 @@ public class AdminUpdate extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
+				statusUpdateAdminB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+				
 				System.out.println("AdminUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
+				return;
 			}
 		}
 		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
+		int id = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		
+		if(!pwd.equals(confirm)){
+			statusUpdateAdminB = "Passwords don't match.";
+			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+			templateProcessor.processTemplate(response);
+			return;
+		}
 		
 		try {
-			logicLayer.updateAdmin(uName, fName, lName, email, pwd, driverNo, cardNo, ccExp, address, city, state, zip);
-			statusUpdateTypeG = "Amazing!";
-			templateProcessor.addToRoot("statusUpdateTypeG", statusUpdateTypeG);
+			logicLayer.updateAdmin(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
+			statusUpdateAdminG = "Amazing!";
+			user = session.getUser();
+			templateProcessor.addToRoot("user", user.getFirstName());
+			templateProcessor.addToRoot("userSession", user);
+			templateProcessor.addToRoot("statusUpdateAdminG", statusUpdateAdminG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			statusUpdateTypeB = "Huh ?";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
+			statusUpdateAdminB = "Huh ?";
+			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
     		templateProcessor.processTemplate(response);
 		}
 	}

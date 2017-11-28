@@ -2,7 +2,6 @@ package edu.uga.cs.rentaride.presentation.admin.create;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -73,29 +72,24 @@ public class VehicleCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusAddVehicleG = "";
+		String statusAddVehicleB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid; 
 		templateProcessor.setTemplate("AdminView.ftl");
 		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		int typeId = Integer.parseInt(request.getParameter("typeId"));
-		int locationId = Integer.parseInt(request.getParameter("locationId"));
-		String make = request.getParameter("make");
-		String model = request.getParameter("model");
-		int year = Integer.parseInt(request.getParameter("year"));
-		int mileage = Integer.parseInt(request.getParameter("mileage"));
-		String tag = request.getParameter("tag");
-		String serviced = request.getParameter("lastServiced");
+		int typeId = Integer.parseInt(request.getParameter("selectVehicleVehicleTypeAdd"));
+		int locationId = Integer.parseInt(request.getParameter("selectVehicleLocationAdd"));
+		String make = request.getParameter("makeAdd");
+		String model = request.getParameter("modelAdd");
+		int year = Integer.parseInt(request.getParameter("yearAdd"));
+		int mileage = Integer.parseInt(request.getParameter("mileageAdd"));
+		String tag = request.getParameter("tagAdd");
 		VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
 		VehicleCondition vehicleCondition = VehicleCondition.GOOD;
-		Date lastServiced = null;
-		try {
-			lastServiced = df.parse(serviced);
-		} catch (ParseException e1) {
-			System.out.println("can't parse date.");
-		}
+		Date lastServiced = new Date();
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -112,25 +106,29 @@ public class VehicleCreate extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = "Failed to create a session";
-				templateProcessor.addToRoot("status", status);
+				statusAddVehicleB = "Failed to create a session";
+				templateProcessor.addToRoot("statusAddVehicleB", statusAddVehicleB);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
+		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+
 		try {
+			
 			logicLayer.createVehicle(typeId, locationId, make, model, year, mileage, tag, lastServiced, vehicleStatus, vehicleCondition);
-			status = "Successfully created Vehicle.";
-			templateProcessor.addToRoot("status", status);
+			statusAddVehicleG = "Thats Dope";
+			templateProcessor.addToRoot("statusAddVehicleG", statusAddVehicleG);
     		templateProcessor.processTemplate(response);
-			return;
 		} catch (RARException e){
+			
 			System.out.println("VehicleCreate: "+e.toString());
-			status = "Failed to create Vehicle.";
-			templateProcessor.addToRoot("status", status);
+			statusAddVehicleB = "file has bad magic.";
+			templateProcessor.addToRoot("statusAddVehicleB", statusAddVehicleB);
     		templateProcessor.processTemplate(response);
     		return;
 		}

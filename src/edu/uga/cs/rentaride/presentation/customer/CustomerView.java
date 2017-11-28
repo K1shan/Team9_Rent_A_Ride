@@ -36,7 +36,6 @@ public class CustomerView extends HttpServlet {
      */
     public CustomerView() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -97,10 +96,10 @@ public class CustomerView extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
-		templateProcessor.setTemplate("CustomerView.ftl");
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		templateProcessor.setTemplate("CustomerView.ftl");
 		templateProcessor.processTemplate(response);
 	}
 
@@ -108,8 +107,6 @@ public class CustomerView extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

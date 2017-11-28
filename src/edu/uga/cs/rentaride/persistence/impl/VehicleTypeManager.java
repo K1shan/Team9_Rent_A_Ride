@@ -43,7 +43,7 @@ public class VehicleTypeManager{
     	
     	String updateVehicleTypeQuery = 
 				"UPDATE VEHICLE_TYPE SET "
-				+ "name = ?"
+				+ "name=? "
 				+ "WHERE type_id=?"; 
     	
     	PreparedStatement pstmt;
@@ -51,6 +51,7 @@ public class VehicleTypeManager{
 		int inscnt;
 		
 		try{
+			
 			
 			if( !vehicleType.isPersistent() ){
                 pstmt = (PreparedStatement) con.prepareStatement( insertVehicleTypeQuery );
@@ -66,32 +67,27 @@ public class VehicleTypeManager{
 			
 			if ( vehicleType.isPersistent() )
 				pstmt.setLong(2, vehicleType.getId());
-			else
-				throw new RARException( "VehicleTypeManager.save: can't update a type: Type id undefined" );
+			
 			
 			System.out.println( "query: " + pstmt.asSql() );
             inscnt = pstmt.executeUpdate();
 			
             if( !vehicleType.isPersistent() ) {
-            	
                 if( inscnt == 1 ) {
-                	
                     String sql = "select last_insert_id()";
                     if( pstmt.execute( sql ) ) {
-
                         ResultSet r = pstmt.getResultSet();
                         while( r.next() ) {
-
                             vehicleTypeId = r.getLong( 1 );
                             if( vehicleTypeId > 0 )
                             	vehicleType.setId( vehicleTypeId );
                         }
                     }
                 }
-            }{
-				if(inscnt < 1)
-					throw new RARException("VehicleTypeManager.save: failed to save a VehicleType");
-			}
+            }
+            if(inscnt < 1)
+				throw new RARException("VehicleTypeManager.save: failed to save a VehicleType");
+			
             
 		} catch(SQLException e){
 			e.printStackTrace();

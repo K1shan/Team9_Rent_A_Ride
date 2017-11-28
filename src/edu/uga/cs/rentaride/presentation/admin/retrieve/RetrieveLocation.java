@@ -118,19 +118,12 @@ public class RetrieveLocation extends HttpServlet {
 			
 			e.printStackTrace();
 		}
-		
-		
-//		templateProcessor.setTemplate("AdminLocation.ftl");
-//		templateProcessor.addToRoot("user", user.getFirstName());
-//		templateProcessor.processTemplate(response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }

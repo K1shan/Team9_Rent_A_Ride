@@ -102,4 +102,9 @@ public interface RentalLocation
     // Not needed;  vehicles located at this location are added one-by-one by creating
     // Vehicle objects or re-assigning existing ones to this rental location.
     // void setVehicles( List<Reservation> reservations );}
+    
+	public List<VehicleType> getAvailVehicleTypes() throws RARException;
+
+    
+    public List<VehicleType> getTotalVehicleTypes() throws RARException;
 }

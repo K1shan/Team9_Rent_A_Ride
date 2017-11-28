@@ -32,6 +32,21 @@ public class ReservationCtrl {
 		return reservations;
 	}
 	
+	public List<Reservation> findCustomerReservation( int id ) throws RARException{
+		
+		Customer customer = null;
+		Customer modelCustomer = objectLayer.createCustomer();
+		modelCustomer.setId(id);
+		List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+		if(customers.size() > 0)
+			customer = customers.get(0);
+		
+		if(customer == null) 
+			throw new RARException("customer does not exist");
+		
+		return customer.getReservations();
+	}
+	
 	public void createReservation(Date pickupTime, int rentalLength, int vehicleTypeId, int locationId, int customerId) throws RARException {
 		
 		// check if type already exists
@@ -158,6 +173,41 @@ public class ReservationCtrl {
 		reservation = null;
 		reservation = objectLayer.createReservation(pickupTime, rentalLength, vehicleType, rentalLocation, customer);
 		reservation.setId(reservationId);
+		objectLayer.storeReservation(reservation);
+	}
+	
+	public void cancelReservation ( int id ) throws RARException {
+		
+		// check if reservation already exists
+		//
+		modelReservation = objectLayer.createReservation();
+		modelReservation.setId(id);
+		reservations = objectLayer.findReservation(modelReservation);
+		if(reservations.size() > 0){
+			reservation = reservations.get(0);
+		}
+			
+		// check if reservation found
+		//
+		if(reservation == null)
+			throw new RARException( "A reservation with this id does not exist" );
+		
+		// check if reservation is already cancelled
+		//
+		if(reservation.getCancelled())
+			throw new RARException( "This reservation is already cancelled" );
+		
+		// 3600000 ms in an hour
+		//
+		if(reservation.getPickupTime().getTime() - new Date().getTime() < 3600000)
+			throw new RARException( "You cannot cancel a reservation within an hour of the pickup time" );
+		
+		// update reservation to cancelled
+		//
+		reservation = objectLayer.createReservation(reservation.getPickupTime(), reservation.getLength(), 
+				reservation.getVehicleType(), reservation.getRentalLocation(), reservation.getCustomer());
+		reservation.setId(id);
+		reservation.setCancelled(true);
 		objectLayer.storeReservation(reservation);
 	}
 }

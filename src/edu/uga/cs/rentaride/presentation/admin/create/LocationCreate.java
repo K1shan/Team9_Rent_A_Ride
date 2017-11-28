@@ -88,12 +88,12 @@ public class LocationCreate extends HttpServlet {
         		System.out.println(fileSaveDir);
             fileSaveDir.mkdir();
         }
-        String name = request.getParameter("nameAdd");
+        String name = request.getParameter("nameAdd").toLowerCase();
 		String address = request.getParameter("addressAdd");
 		String city = request.getParameter("cityAdd");
 		String state = request.getParameter("stateAdd");
 		String zip = request.getParameter("zipAdd");
-		String ava = request.getParameter("avaAdd");
+		int capacity = Integer.parseInt(request.getParameter("avaAdd"));
 		Part pic = request.getPart("picAdd");
         String oneName = extractFileName(pic);
 		
@@ -123,23 +123,25 @@ public class LocationCreate extends HttpServlet {
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
-		int num = Integer.parseInt(ava);
+		templateProcessor.addToRoot("userSession", user);
+
 		try {
-			logicLayer.createLocation(name, address, city, state, zip, path, num);
+			
+			logicLayer.createLocation(name, address, city, state, zip, path, capacity);
 			statusAddLocationG = "Cool Beans!";
-		} catch (RARException e){
-			statusAddLocationB = "IMPOSSIBLE.";
-			templateProcessor.addToRoot("statusAddLocationB", statusAddLocationB);
-			System.out.println("LocationCreate: "+e.toString());
-    			templateProcessor.processTemplate(response);
-    			return;
-		}
 			templateProcessor.addToRoot("statusAddLocationG", statusAddLocationG);
 			templateProcessor.processTemplate(response);
 			pic.write(savePath + File.separator + oneName);
+		} catch (RARException e){
+			
+			statusAddLocationB = "IMPOSSIBLE.";
+			templateProcessor.addToRoot("statusAddLocationB", statusAddLocationB);
+			System.out.println("LocationCreate: "+e.toString());
+			templateProcessor.processTemplate(response);
+			return;
+		}
 	}
 
 	private String extractFileName(Part part) {

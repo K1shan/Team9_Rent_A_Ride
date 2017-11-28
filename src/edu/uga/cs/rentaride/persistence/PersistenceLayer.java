@@ -611,4 +611,10 @@ public interface PersistenceLayer
      * @throws RARException in case an error occurred during the delete operation 
      */
     public void deleteVehicleRental( Vehicle vehicle, Rental rental ) throws RARException;
+
+	public void deleteEverything() throws RARException;
+
+	public List<VehicleType> restoreRentalLocationAvailVehicleType(RentalLocation rentalLocation) throws RARException;
+
+	public List<VehicleType> restoreRentalLocationTotalVehicleType(RentalLocation rentalLocation) throws RARException;
 }

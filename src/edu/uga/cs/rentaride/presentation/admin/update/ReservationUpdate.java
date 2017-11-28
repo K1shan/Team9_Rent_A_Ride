@@ -122,19 +122,21 @@ public class ReservationUpdate extends HttpServlet {
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			
 			logicLayer.updateReservation(reservationId, pickupTime, rentalLength, vehicleTypeId, locationId, customerId);
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
 		}catch(RARException e) {
+			
 			statusAddTypeB = "NONEXISTENT.";
 			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("ReservationCreate: "+e.toString());
+			System.out.println("ReservationUpdate: "+e.toString());
 			templateProcessor.processTemplate(response);
 			return;
 		}
@@ -146,5 +148,4 @@ public class ReservationUpdate extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
