@@ -124,7 +124,9 @@ public class HourlyPriceManager {
         // NULL CHECK
 		if( modelHourlyPrice != null ){
 			if( modelHourlyPrice.getId() >= 0 )
-				query.append( " WHERE HOURLY_PRICE.type_id=" + modelHourlyPrice.getId() );
+				query.append( " WHERE HOURLY_PRICE.hourly_id=" + modelHourlyPrice.getId() );
+			else if ( modelHourlyPrice.getVehicleType().getId() >= 0 )
+				query.append( " WHERE HOURLY_PRICE.type_id=" + modelHourlyPrice.getVehicleType().getId() );
 			else{
 				if( modelHourlyPrice.getMaxHours() != 0 )
 					condition.append( " WHERE HOURLY_PRICE.max_hrs=" + modelHourlyPrice.getMaxHours() );

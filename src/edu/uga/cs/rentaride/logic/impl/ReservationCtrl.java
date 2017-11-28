@@ -90,8 +90,42 @@ public class ReservationCtrl {
 		if(customer == null)
 			throw new RARException( "A customer with this id does not exist" );
 		
+		// check customer status
+		//
+		if(!(customer.getUserStatus().equals(UserStatus.ACTIVE)))
+			throw new RARException( "You must be an active member to reserve a vehicle." );
+		
 		reservation = objectLayer.createReservation(pickupTime, rentalLength, vehicleType, rentalLocation, customer);
 		objectLayer.storeReservation(reservation);
+	}
+	
+	public List<Vehicle> findReservationVehicles(int id) throws RARException {
+		
+		modelReservation = objectLayer.createReservation();
+		modelReservation.setId(id);
+		reservations = objectLayer.findReservation(modelReservation);
+		if(reservations.size() > 0){
+			reservation = reservations.get(0);
+		}
+		
+		// check if reservation found
+		//
+		if(reservation == null)
+			throw new RARException( "A reservation with this id does not exist." );
+		
+		Vehicle modelVehicle = objectLayer.createVehicle();
+		modelVehicle.setRentalLocation(reservation.getRentalLocation());
+		modelVehicle.setVehicleType(reservation.getVehicleType());
+		modelVehicle.setStatus(VehicleStatus.INLOCATION);
+		modelVehicle.setCondition(VehicleCondition.GOOD);
+		List<Vehicle> vehicles = objectLayer.findVehicle(modelVehicle);
+		
+		// check if vehicles found
+		//
+		if(vehicles == null)
+			throw new RARException( "Vehicles are not available at the moment." );
+		
+		return vehicles;
 	}
 	
 	public void deleteReservation(int id) throws RARException {

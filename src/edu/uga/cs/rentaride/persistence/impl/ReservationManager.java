@@ -39,9 +39,9 @@ public class ReservationManager {
 		
 		String insertReservationQuery =
 				"INSERT INTO RESERVATION "
-				+ "(location_id, type_id, customer_id, pickup_date, length, cancelled ) "
+				+ "( location_id, type_id, customer_id, pickup_date, length, cancelled ) "
 				+ "VALUES "
-				+ "(?, ?, ?, ?, ?, ?)";
+				+ "( ?, ?, ?, ?, ?, ? )";
 		
 		String updateReservationQuery =
 				"UPDATE RESERVATION SET "
@@ -87,8 +87,7 @@ public class ReservationManager {
 			
 			if( reservation.getPickupTime() != null ){
 				java.util.Date myDate = reservation.getPickupTime();
-	        	java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-				pstmt.setDate( 4, sqlDate );
+				pstmt.setTimestamp( 4, new java.sql.Timestamp(myDate.getTime()));
 			}else{
 				throw new RARException( "Reservation.save: can't save a reservation: pickup undefined" );
 			}
@@ -357,7 +356,7 @@ public class ReservationManager {
 					reservation_location_id		= rs.getInt(2);
 					reservation_type_id 		= rs.getInt(3);
 					reservation_customer_id		= rs.getInt(4);
-					reservation_pickupTime 		= rs.getDate(5);
+					reservation_pickupTime 		= rs.getTimestamp(5);
 					reservation_rentalLength 	= rs.getInt(6);
 					reservation_cancelled		= rs.getInt(7);
 					
@@ -616,11 +615,12 @@ public class ReservationManager {
 					reservation_location_id		= rs.getInt(2);
 					reservation_type_id 		= rs.getInt(3);
 					reservation_customer_id		= rs.getInt(4);
-					reservation_pickupTime 		= rs.getDate(5);
+					reservation_pickupTime 		= rs.getTimestamp(5);
 					reservation_rentalLength 	= rs.getInt(6);
 					reservation_cancelled		= rs.getInt(7);
 					
 					// VEHICLE_TYPE
+					//
 	                type_type_id 				= rs.getInt(8);
 	                type_name 					= rs.getString(9);
 					
@@ -643,6 +643,7 @@ public class ReservationManager {
 					
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
 					reservation.setId(reservation_reservation_id);
+					
 					if(reservation_cancelled == 1) reservation.setCancelled(true);
 					else reservation.setCancelled(false);
 					reservations.add(reservation);
@@ -737,11 +738,12 @@ public class ReservationManager {
 				Customer customer = null;
                 while( rs.next() ){
                 	// RESERVATION
+                	//
                 	reservation_reservation_id 	= rs.getInt(1);
 					rs.getInt(2);
 					rs.getInt(3);
 					rs.getInt(4);
-					reservation_pickupTime 		= rs.getDate(5);
+					reservation_pickupTime 		= rs.getTimestamp(5);
 					reservation_rentalLength 	= rs.getInt(6);
 					rs.getInt(7);
 					rs.getInt(8);
@@ -749,6 +751,7 @@ public class ReservationManager {
 					rs.getString(10);
 					rs.getInt(11);
 					// VEHICLE_TYPE
+					//
 					type_type_id				= rs.getInt(12);
 					type_name					= rs.getString(13);
 					rs.getInt(14);
@@ -760,6 +763,7 @@ public class ReservationManager {
 					user_address 				= rs.getString(20);
 					user_createDate 			= rs.getDate(21);
 					// CUSTOMER
+					//
 					customer_customer_id 		= rs.getInt(22);
 					rs.getInt(23);
 					customer_memberUntil 		= rs.getDate(24);
@@ -881,8 +885,8 @@ public class ReservationManager {
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status = 0;
-				int 	vehicle_cond = 0;
+				int 	vehicle_status;
+				int 	vehicle_cond;
 	            // VEHICLE_TYPE
 	            //
 	            int		vehicleType_type_id;
@@ -912,7 +916,7 @@ public class ReservationManager {
 					reservation_location_id		= rs.getInt(2);
 					reservation_type_id 		= rs.getInt(3);
 					reservation_customer_id		= rs.getInt(4);
-					reservation_pickupTime 		= rs.getDate(5);
+					reservation_pickupTime 		= rs.getTimestamp(5);
 					reservation_rentalLength 	= rs.getInt(6);
 					reservation_cancelled		= rs.getInt(7);
 					// LOCATION
@@ -937,10 +941,14 @@ public class ReservationManager {
 					vehicle_tag 		= rs.getString(8);
 					vehicle_service_date= rs.getDate(9);
 					vehicle_status 		= rs.getInt(10);
-					if(vehicle_status == 1)
-						vehicleStatus 	= VehicleStatus.INRENTAL;
+					if(vehicle_status == 0)
+						vehicleStatus 	= VehicleStatus.INLOCATION;
+					else if(vehicle_status == 1)
+						vehicleStatus	= VehicleStatus.INRENTAL;
 					vehicle_cond 		= rs.getInt(11);
-					if(vehicle_cond == 1)
+					if(vehicle_cond == 0)
+						vehicleCondition= VehicleCondition.GOOD;
+					else if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
 					// VEHICLE_TYPE
 					//

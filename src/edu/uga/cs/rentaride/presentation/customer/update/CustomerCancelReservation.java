@@ -81,7 +81,6 @@ public class CustomerCancelReservation extends HttpServlet {
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
         templateProcessor.setTemplate("CustomerReservation.ftl");
 
-    	
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
@@ -111,7 +110,6 @@ public class CustomerCancelReservation extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		List<Reservation> reservations = null;
 
-		
 		try {
 			reservations = logicLayer.findCustomerReservations((int)user.getId());
 			logicLayer.cancelReservation(reservationId);
