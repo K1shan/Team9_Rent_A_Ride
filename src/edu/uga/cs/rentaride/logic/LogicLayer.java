@@ -500,4 +500,11 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public void cancelReservation( int id ) throws RARException;
+	
+	/**
+	 * 
+	 * @param reservationId
+	 * @throws RARException
+	 */
+	public void checkPickupTime ( int reservationId ) throws RARException;
 }

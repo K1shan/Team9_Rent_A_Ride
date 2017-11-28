@@ -53,10 +53,14 @@
 				</form>-->
 				
 				<#if statusUpdateCustomerReservationG??>
-					<p>Success</p>
+					<p class="good">
+						${statusUpdateCustomerReservationG}
+					</p>
 				</#if>
 				<#if statusUpdateCustomerReservationB??>
-					<p>Failed to cancel or pickup.</p>
+					<p class="bad">
+						${statusUpdateCustomerReservationB}
+					</p>
 				</#if>
    			</#list>
    		</#if>

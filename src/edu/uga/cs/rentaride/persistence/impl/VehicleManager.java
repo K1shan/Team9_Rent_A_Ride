@@ -137,7 +137,7 @@ public class VehicleManager {
     			if(vehicle.getStatus().equals(VehicleStatus.INLOCATION))
     				pstmt.setLong( 9, 0 );
     			else if(vehicle.getStatus().equals(VehicleStatus.INRENTAL))
-    				pstmt.setLong( 9, 2 );
+    				pstmt.setLong( 9, 1 );
 	        else{
 	            throw new RARException( "VehicleManager.save: can't save a vehicle: status undefined" );
 	        }

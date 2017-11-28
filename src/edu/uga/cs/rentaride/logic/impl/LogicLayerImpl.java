@@ -347,4 +347,10 @@ public class LogicLayerImpl
 		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
 		ctrlReservation.cancelReservation(id);
 	}
+
+	@Override
+	public void checkPickupTime(int reservationId) throws RARException {
+		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
+		ctrlRental.checkPickupTime(reservationId);
+	}
 }

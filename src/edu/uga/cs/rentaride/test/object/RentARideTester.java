@@ -103,10 +103,10 @@ public class RentARideTester
         	 DateFormat ccFormat = new SimpleDateFormat( "MM-yy" );
         	 ccExp = ccFormat.parse( "11-19" );
         	 
-        	 dateReservation1 = df1.parse( "2017-12-20 12:00:00" );
-        	 dateReservation2 = df1.parse( "2017-12-22 13:15:45" );
-        	 dateReservation3 = df1.parse( "2017-12-24 14:30:30" );
-        	 dateReservation4 = df1.parse( "2017-12-30 15:45:15" );
+        	 dateReservation1 = df1.parse( "2017-11-28 12:00:00" );
+        	 dateReservation2 = df1.parse( "2017-11-28 13:15:45" );
+        	 dateReservation3 = df1.parse( "2017-11-28 14:30:30" );
+        	 dateReservation4 = df1.parse( "2017-11-28 14:45:15" );
         	 
         	 Date rentalPickup1 = new Date();
         	 Date rentalPickup2 = new Date();
@@ -169,14 +169,14 @@ public class RentARideTester
              truckHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 75, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice2 );
              truckHourlyPrice3 = objectLayer.createHourlyPrice(hourRange3, 100, truckVehicleType);
-             //persistence.storeHourlyPrice( truckHourlyPrice3 );
+             persistence.storeHourlyPrice( truckHourlyPrice3 );
              
              convertibleHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 100, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice1 );
              convertibleHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 150, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice2 );
              convertibleHourlyPrice3 = objectLayer.createHourlyPrice(hourRange3, 150, convertibleVehicleType);
-             //persistence.storeHourlyPrice( convertibleHourlyPrice3 );
+             persistence.storeHourlyPrice( convertibleHourlyPrice3 );
         	 
         	 // 4 VEHICLES
              truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, serviceDate, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
@@ -206,12 +206,12 @@ public class RentARideTester
         	 
         	 // 2 RENTALS
              //
-             rentalWayne1 = objectLayer.createRental(rentalPickup1, reservationWayne1, truck1);
+             rentalWayne1 = objectLayer.createRental(dateReservation1, reservationWayne1, truck1);
              truck1.setStatus(VehicleStatus.INRENTAL);
              persistence.storeVehicle(truck1);
              persistence.storeRental(rentalWayne1);
              
-             rentalRafael1 = objectLayer.createRental(rentalPickup2, reservationRafael1, convertible1);
+             rentalRafael1 = objectLayer.createRental(dateReservation2, reservationRafael1, convertible1);
              convertible1.setStatus(VehicleStatus.INRENTAL);
              persistence.storeVehicle(convertible1);
              persistence.storeRental(rentalRafael1);

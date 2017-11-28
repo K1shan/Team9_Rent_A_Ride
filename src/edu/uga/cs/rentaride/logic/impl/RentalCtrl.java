@@ -136,4 +136,27 @@ public class RentalCtrl {
 		rental.setId(rentalId);
 		objectLayer.storeRental(rental);
 	}
+	
+	public void checkPickupTime(int reservationId) throws RARException{
+		
+		// retrieve reservation object
+		//
+		Reservation reservation = null;
+		Reservation modelReservation = objectLayer.createReservation();
+		modelReservation.setId(reservationId);
+		List<Reservation> reservations = objectLayer.findReservation(modelReservation);
+		if(reservations.size() > 0)
+			reservation = reservations.get(0);
+		
+		// check if null
+		//
+		if(reservation == null)
+			throw new RARException( "Reservation is null" );
+		
+		// compare times
+		//
+		if(new Date().getTime() < reservation.getPickupTime().getTime())
+			throw new RARException( "You cannot pickup your vehicle before your pickup time." );
+		
+	}
 }

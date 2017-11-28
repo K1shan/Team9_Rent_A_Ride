@@ -90,6 +90,11 @@ public class ReservationCtrl {
 		if(customer == null)
 			throw new RARException( "A customer with this id does not exist" );
 		
+		// check customer status
+		//
+		if(!(customer.getUserStatus().equals(UserStatus.ACTIVE)))
+			throw new RARException( "You must be an active member to reserve a vehicle." );
+		
 		reservation = objectLayer.createReservation(pickupTime, rentalLength, vehicleType, rentalLocation, customer);
 		objectLayer.storeReservation(reservation);
 	}
