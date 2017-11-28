@@ -91,8 +91,7 @@
     
     <section id="section5">
     		
-    		<#include "View/ViewSearch.ftl">	
-    		
+    		<#include "View/ViewSearch.ftl">	    		
     		<#include "View/ViewCar.ftl">
     			<div id='RetrieveVehicleView'></div>
       	<#include "View/ViewLocation.ftl">
@@ -101,6 +100,8 @@
       		<div id='RetrieveReservationView'></div>
       	<#include "View/ViewCustomers.ftl">
       		<div id='RetrieveCustomerView'></div>
+      	<#include "View/ViewComments.ftl">
+      		<div id='RetrieveCommentsView'></div>
 
     </section>
     
