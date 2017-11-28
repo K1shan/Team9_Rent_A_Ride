@@ -11,13 +11,7 @@ import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.Rental;
-import edu.uga.cs.rentaride.entity.RentalLocation;
-import edu.uga.cs.rentaride.entity.UserStatus;
-import edu.uga.cs.rentaride.entity.Vehicle;
-import edu.uga.cs.rentaride.entity.VehicleCondition;
-import edu.uga.cs.rentaride.entity.VehicleStatus;
-import edu.uga.cs.rentaride.entity.VehicleType;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.object.ObjectLayer;
 
 
@@ -200,7 +194,6 @@ public class VehicleManager {
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		condition.setLength(0);
 		query.append(selectVehicleSql);
-		System.out.println("query: "+ query.toString());
 		
 		if(modelVehicle != null) {
 			if (modelVehicle.getId() > 0) { // id is unique, so it is sufficient to get a vehicle
@@ -306,8 +299,8 @@ public class VehicleManager {
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status = 0;
-				int 	vehicle_cond = 0;
+				int 	vehicle_status;
+				int 	vehicle_cond;
 				
 				// VEHICLE_TYPE
                 int 	type_type_id;
@@ -326,8 +319,8 @@ public class VehicleManager {
 				VehicleType vehicleType = null;
 				RentalLocation rentalLocation = null;
 				Vehicle vehicle = null;
-				VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
-				VehicleCondition vehicleCondition = VehicleCondition.GOOD;
+				VehicleStatus vehicleStatus = null;
+				VehicleCondition vehicleCondition = null;
 				
 				while( rs.next() ){
 					
@@ -342,10 +335,14 @@ public class VehicleManager {
 					vehicle_tag 		= rs.getString(8);
 					vehicle_service_date= rs.getDate(9);
 					vehicle_status 		= rs.getInt(10);
-					if(vehicle_status == 1)
+					if(vehicle_status == 0)
+						vehicleStatus 	= VehicleStatus.INLOCATION;
+					else if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
 					vehicle_cond 		= rs.getInt(11);
-					if(vehicle_cond == 1)
+					if(vehicle_cond == 0)
+						vehicleCondition= VehicleCondition.GOOD;
+					else if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
 					
 					// VEHICLE_TYPE
@@ -387,7 +384,6 @@ public class VehicleManager {
     	
     	String deleteVehicleQuery = 
     			"DELETE VEHICLE FROM VEHICLE";
-		int inscnt = 0;
 		
 		StringBuffer query = new StringBuffer(1000);
 		StringBuffer condition = new StringBuffer(1000);
@@ -468,8 +464,8 @@ public class VehicleManager {
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status = 0;
-				int 	vehicle_cond = 0;
+				int 	vehicle_status;
+				int 	vehicle_cond;
 				
 				// VEHICLE_TYPE
 				int		type_type_id;
@@ -487,8 +483,8 @@ public class VehicleManager {
 				
 				Vehicle vehicle = null;
 				VehicleType vehicleType = null;
-				VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
-				VehicleCondition vehicleCondition = VehicleCondition.GOOD;
+				VehicleStatus vehicleStatus = null;
+				VehicleCondition vehicleCondition = null;
                 while( rs.next() ){
                 	
                 	// VEHICLE
@@ -502,10 +498,14 @@ public class VehicleManager {
 					vehicle_tag 		= rs.getString(8);
 					vehicle_service_date= rs.getDate(9);
 					vehicle_status 		= rs.getInt(10);
-					if(vehicle_status == 1)
+					if(vehicle_status == 0)
+						vehicleStatus 	= VehicleStatus.INLOCATION;
+					else if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
 					vehicle_cond 		= rs.getInt(11);
-					if(vehicle_cond == 1)
+					if(vehicle_cond == 0)
+						vehicleCondition= VehicleCondition.GOOD;
+					else if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
 					
 					// VEHICLE_TYPE
@@ -595,8 +595,8 @@ public class VehicleManager {
 				int 	vehicle_mileage;
 				String 	vehicle_tag;
 				Date 	vehicle_service_date;
-				int 	vehicle_status = 0;
-				int 	vehicle_cond = 0;
+				int 	vehicle_status;
+				int 	vehicle_cond;
 				// LOCATION
 				int 	location_location_id;
 				String 	location_name;
@@ -609,8 +609,8 @@ public class VehicleManager {
 				// OBJECTS
 				Vehicle vehicle = null;
 				RentalLocation rentalLocation = null;
-				VehicleStatus vehicleStatus = VehicleStatus.INLOCATION;
-				VehicleCondition vehicleCondition = VehicleCondition.GOOD;
+				VehicleStatus vehicleStatus = null;
+				VehicleCondition vehicleCondition = null;
                 while( rs.next() ){
                 	
                 	// VEHICLE
@@ -624,10 +624,14 @@ public class VehicleManager {
 					vehicle_tag 		= rs.getString(8);
 					vehicle_service_date= rs.getDate(9);
 					vehicle_status 		= rs.getInt(10);
-					if(vehicle_status == 1)
+					if(vehicle_status == 0)
+						vehicleStatus 	= VehicleStatus.INLOCATION;
+					else if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
 					vehicle_cond 		= rs.getInt(11);
-					if(vehicle_cond == 1)
+					if(vehicle_cond == 0)
+						vehicleCondition= VehicleCondition.GOOD;
+					else if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
 					
 					// LOCATION
