@@ -44,10 +44,14 @@ public class ReservationManager {
 				+ "(?, ?, ?, ?, ?, ?)";
 		
 		String updateReservationQuery =
-				"UPDATE INTO RESERVATION "
-				+ "(location_id, type_id, customer_id, pickup_date, length, cancelled ) "
-				+ "VALUES "
-				+ "(?, ?, ?, ?, ?, ?)";
+				"UPDATE RESERVATION SET "
+				+ "location_id=?, "
+				+ "type_id=?, "
+				+ "customer_id=?, "
+				+ "pickup_date=?, "
+				+ "length=?, "
+				+ "cancelled=? "
+				+ "WHERE reservation_id=?";
 		
 		PreparedStatement 	pstmt;
 		int 				inscnt;
@@ -95,7 +99,13 @@ public class ReservationManager {
 				throw new RARException( "Reservation.save: can't save a reservation: length undefined" );
 			}
 			
-			pstmt.setLong( 6, 0 );
+			if( reservation.getCancelled() == false)
+				pstmt.setLong( 6, 0 );
+			else
+				pstmt.setLong( 6, 1 );
+			
+			if( reservation.isPersistent() )
+                pstmt.setLong( 7, reservation.getId() );
 			
 			System.out.println("query: " + pstmt.asSql());
             inscnt = pstmt.executeUpdate();
@@ -116,13 +126,13 @@ public class ReservationManager {
             	}
             }else{
             	if( inscnt < 1 ){
-            		throw new RARException( "RentalLocationManager.save: failed to save a location" );
+            		throw new RARException( "ReservationManager.save: failed to save a reservation" );
             	}
             }
 			
 		} catch(SQLException e){
 			e.printStackTrace();
-			throw new RARException( "RentalLocationManager.store: failed to store a location: " + e );
+			throw new RARException( "ReservationManager.store: failed to store a reservation: " + e );
 		}			
 	}
 	
@@ -138,8 +148,7 @@ public class ReservationManager {
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
-				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
-				+ "INNER JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id";
+				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id";
 		
 		
 		StringBuffer query = new StringBuffer(100);
@@ -153,7 +162,7 @@ public class ReservationManager {
 		if( modelReservation != null ){
 			
 			if(modelReservation.getId() >= 0){
-				query.append( " WHERE RESERVATION.reservation_id =" + modelReservation.getId() );
+				query.append( " WHERE RESERVATION.reservation_id=" + modelReservation.getId() );
 			}else if(modelReservation.getCustomer().getId() >= 0){
 				query.append( " WHERE CUSTOMER.customer_id = '" + modelReservation.getCustomer().getId() + "'");
 			}else if(modelReservation.getCustomer().getUserName() != null) {
@@ -402,6 +411,8 @@ public class ReservationManager {
 					
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
 					reservation.setId(reservation_reservation_id);
+					if(reservation_cancelled == 1) reservation.setCancelled(true);
+					else reservation.setCancelled(false);
 					reservations.add(reservation);
 				}
 			}
@@ -632,6 +643,8 @@ public class ReservationManager {
 					
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
 					reservation.setId(reservation_reservation_id);
+					if(reservation_cancelled == 1) reservation.setCancelled(true);
+					else reservation.setCancelled(false);
 					reservations.add(reservation);
 				}
 			}

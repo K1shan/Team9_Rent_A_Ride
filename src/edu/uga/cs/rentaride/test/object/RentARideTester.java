@@ -97,10 +97,10 @@ public class RentARideTester
         	 DateFormat df1 = new SimpleDateFormat( "yyyy-MM-dd" );
         	 DateFormat ccFormat = new SimpleDateFormat( "MM-yy" );
         	 ccExp = ccFormat.parse( "11-19" );
-        	 dateReservation1 = df1.parse( "2017-10-20" );
-        	 dateReservation2 = df1.parse( "2017-10-22" );
-        	 dateReservation3 = df1.parse( "2017-10-24" );
-        	 dateReservation4 = df1.parse( "2017-10-30" );
+        	 dateReservation1 = df1.parse( "2017-12-20" );
+        	 dateReservation2 = df1.parse( "2017-12-22" );
+        	 dateReservation3 = df1.parse( "2017-12-24" );
+        	 dateReservation4 = df1.parse( "2017-12-30" );
         	 
         	 Date rentalPickup1 = new Date();
         	 Date rentalPickup2 = new Date();
