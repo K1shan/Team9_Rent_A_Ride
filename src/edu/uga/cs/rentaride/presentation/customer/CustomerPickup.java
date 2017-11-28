@@ -1,10 +1,8 @@
-package edu.uga.cs.rentaride.presentation.admin.create;
+package edu.uga.cs.rentaride.presentation.customer;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -24,21 +22,23 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class RentalCreate
+ * Servlet implementation class CustomerLocation
  */
-@WebServlet("/RentalCreate")
-public class RentalCreate extends HttpServlet {
+@WebServlet("/CustomerPickup")
+public class CustomerPickup extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+       
 	Configuration cfg = null;
-	private String templateDir = "/WEB-INF/AdminTemplates";
+	
+	//This the folder the it will return too
+	private String templateDir = "/WEB-INF/CustomerTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RentalCreate() {
+    public CustomerPickup() {
         super();
     }
 
@@ -71,27 +71,17 @@ public class RentalCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String statusAddTypeG = "";
-		String statusAddTypeB = "";
-		
-		Date pickupTime = null;
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		int reservationId = Integer.parseInt(request.getParameter("reservationId"));
-		int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
-		String pickupTimeString = request.getParameter("pickupTime");
-		
-		try {
-			pickupTime = df.parse(pickupTimeString);
-		} catch (ParseException e1) {
-			System.out.println("can't parse date.");
-		}
-		
+		String statusCreateCustomerRentalG = "";
+		String statusCreateCustomerRentalB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-		templateProcessor.setTemplate("AdminView.ftl");
+        int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
+        int 		   reservationVehicleTypeId = Integer.parseInt(request.getParameter("reservationVehicleTypeId"));
+        String		   reservationPickup = request.getParameter("pickupTime");
+        
+        templateProcessor.setTemplate("CustomerReservation.ftl");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -106,36 +96,48 @@ public class RentalCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-		 		
+				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				
-				statusAddTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-				System.out.println("LocationCreate: "+e.toString());
+				statusCreateCustomerRentalB = e.toString();
+				templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalB);
 				templateProcessor.processTemplate(response);
 			}
 		}
-		
+        
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
+		int customerId = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
+		Date timeStamp = new Date();
+		
+//		if(!(timeStamp.equals(reservationPickup))){
+//		statusCreateCustomerRentalB = "Cannot pickup before the reservation time";
+//		templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalG);
+//		templateProcessor.processTemplate(response);
+//		return;
+//	}
+			
+		user = session.getUser();
+		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		templateProcessor.addToRoot("reservationId", reservationId);
+		templateProcessor.addToRoot("userSession", user);
+        templateProcessor.setTemplate("/Create/CreateRental.ftl");
 		
 		try {
 			
-			logicLayer.createRental(pickupTime, reservationId, vehicleId );
-			statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
-			templateProcessor.processTemplate(response);
-		}catch(RARException e) {
+			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
 			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("RentalCreate: "+e.toString());
+			templateProcessor.addToRoot("vehicles", vehicles);
 			templateProcessor.processTemplate(response);
-			return;
+
+		} catch(RARException e){
+			
+			templateProcessor.processTemplate(response);
 		}
+		
 	}
 
 	/**

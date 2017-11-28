@@ -31,7 +31,7 @@ public class RentalCtrl {
 		return rentals;
 	}
 	
-	public void createRental(Date pickupTime, int reservationId, int vehicleId) throws RARException {
+	public void createRental( Date pickupTime, int reservationId, int vehicleId ) throws RARException {
 		
 		// check if reservation already exists
 		//
@@ -45,12 +45,28 @@ public class RentalCtrl {
 		// check if reservation is found
 		//
 		if(reservation == null) 
-			throw new RARException("A reservation with this id does not exist exist");
+			throw new RARException( "A reservation with this id does not exist exist" );
 		
-		// check if vehicle already exists
+		// retrieve reservation location
+		//
+		RentalLocation rentalLocation = reservation.getRentalLocation();
+		if( rentalLocation == null )
+			throw new RARException( "This reservation does not have a location" );
+		
+		// retrieve vehicle type
+		//
+		VehicleType vehicleType = reservation.getVehicleType();
+		if( vehicleType == null )
+			throw new RARException( "This reservation does not have a vehicle type" );
+		
+		// retrive available vehicle
 		//
 		Vehicle modelVehicle = objectLayer.createVehicle();
 		modelVehicle.setId(vehicleId);
+		modelVehicle.setRentalLocation(rentalLocation);
+		modelVehicle.setVehicleType(vehicleType);
+		modelVehicle.setStatus(VehicleStatus.INLOCATION);
+		modelVehicle.setCondition(VehicleCondition.GOOD);
 		List<Vehicle> vehicles = objectLayer.findVehicle(modelVehicle);
 		Vehicle vehicle = null;
 		if(vehicles.size() > 0)
@@ -59,7 +75,7 @@ public class RentalCtrl {
 		// check if vehicle found
 		//
 		if(vehicle == null)
-			throw new RARException( "A vehicle with this id does not exist" );
+			throw new RARException( "An available vehicle is not available" );
 		
 		rental = objectLayer.createRental(pickupTime, reservation, vehicle);
 		objectLayer.storeRental(rental);

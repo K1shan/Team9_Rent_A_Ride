@@ -37,8 +37,11 @@ public class RentARideTester
          
          HourlyPrice	truckHourlyPrice1;
          HourlyPrice	truckHourlyPrice2;
+         HourlyPrice	truckHourlyPrice3;
+
          HourlyPrice	convertibleHourlyPrice1;
          HourlyPrice	convertibleHourlyPrice2;
+         HourlyPrice	convertibleHourlyPrice3;
          
          RentalLocation	rentalLocationAtlanta;
          RentalLocation	rentalLocationAthens;
@@ -89,24 +92,27 @@ public class RentARideTester
              cal.add(Calendar.MONTH, 6);
              dateMemberTill = cal.getTime();
         	 
+             Date serviceDate = new Date();
+             
         	 Date ccExp = new Date();
         	 Date dateReservation1 = new Date();
         	 Date dateReservation2 = new Date();
         	 Date dateReservation3 = new Date();
         	 Date dateReservation4 = new Date();
-        	 DateFormat df1 = new SimpleDateFormat( "yyyy-MM-dd" );
+        	 DateFormat df1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         	 DateFormat ccFormat = new SimpleDateFormat( "MM-yy" );
         	 ccExp = ccFormat.parse( "11-19" );
-        	 dateReservation1 = df1.parse( "2017-12-20" );
-        	 dateReservation2 = df1.parse( "2017-12-22" );
-        	 dateReservation3 = df1.parse( "2017-12-24" );
-        	 dateReservation4 = df1.parse( "2017-12-30" );
+        	 
+        	 dateReservation1 = df1.parse( "2017-12-20 12:00:00" );
+        	 dateReservation2 = df1.parse( "2017-12-22 13:15:45" );
+        	 dateReservation3 = df1.parse( "2017-12-24 14:30:30" );
+        	 dateReservation4 = df1.parse( "2017-12-30 15:45:15" );
         	 
         	 Date rentalPickup1 = new Date();
         	 Date rentalPickup2 = new Date();
         	 DateFormat df2 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-        	 rentalPickup1 = df2.parse( "2017-10-20 17:00:00 " );
-        	 rentalPickup2 = df2.parse( "2017-10-24 08:00:00 " );
+        	 rentalPickup1 = df2.parse( "2017-12-20 12:00:00" );
+        	 rentalPickup2 = df2.parse( "2017-12-22 13:15:45" );
         	 
         	 Date commentDate1 = new Date();
         	 Date commentDate2 = new Date();
@@ -157,28 +163,32 @@ public class RentARideTester
              convertibleVehicleType = objectLayer.createVehicleType("convertible");
              persistence.storeVehicleType( convertibleVehicleType );
         	 
-             // 4 HOURLY PRICES
+             // 6 HOURLY PRICES
              truckHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 50, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice1 );
              truckHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 75, truckVehicleType);
              persistence.storeHourlyPrice( truckHourlyPrice2 );
+             truckHourlyPrice3 = objectLayer.createHourlyPrice(hourRange3, 100, truckVehicleType);
+             persistence.storeHourlyPrice( truckHourlyPrice3 );
              
              convertibleHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 100, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice1 );
              convertibleHourlyPrice2 = objectLayer.createHourlyPrice(hourRange2, 150, convertibleVehicleType);
              persistence.storeHourlyPrice( convertibleHourlyPrice2 );
+             convertibleHourlyPrice3 = objectLayer.createHourlyPrice(hourRange3, 150, convertibleVehicleType);
+             persistence.storeHourlyPrice( convertibleHourlyPrice3 );
         	 
         	 // 4 VEHICLES
-             truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, dateMemberTill, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INRENTAL);
+             truck1 = objectLayer.createVehicle("Chevrolet", "Avalanche", 2013, "111111111", 20000, serviceDate, truckVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
              persistence.storeVehicle( truck1 );
              
-             truck2 = objectLayer.createVehicle("Toyota", "Tacoma", 2017, "222222222", 1000, dateMemberTill, truckVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
+             truck2 = objectLayer.createVehicle("Toyota", "Tacoma", 2017, "222222222", 1000, serviceDate, truckVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
              persistence.storeVehicle( truck2) ;
         	 
-             convertible1 = objectLayer.createVehicle("Honda", "Del Sol", 1997, "333333333", 120000, dateMemberTill, convertibleVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
+             convertible1 = objectLayer.createVehicle("Honda", "Del Sol", 1997, "333333333", 120000, serviceDate, convertibleVehicleType, rentalLocationAtlanta, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
              persistence.storeVehicle( convertible1 );
         	 
-             convertible2 = objectLayer.createVehicle("Ford", "Mustang", 2017, "444444444", 2000, dateMemberTill, convertibleVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INRENTAL);
+             convertible2 = objectLayer.createVehicle("Ford", "Mustang", 2017, "444444444", 2000, serviceDate, convertibleVehicleType, rentalLocationAthens, VehicleCondition.GOOD, VehicleStatus.INLOCATION);
              persistence.storeVehicle( convertible2 );
         	 
         	 // 4 RESERVATIONS
@@ -195,15 +205,19 @@ public class RentARideTester
              persistence.storeReservation(reservationAlex1);
         	 
         	 // 2 RENTALS
+             //
              rentalWayne1 = objectLayer.createRental(rentalPickup1, reservationWayne1, truck1);
-             rentalWayne1.setCharges(100);
+             truck1.setStatus(VehicleStatus.INRENTAL);
+             persistence.storeVehicle(truck1);
              persistence.storeRental(rentalWayne1);
              
              rentalRafael1 = objectLayer.createRental(rentalPickup2, reservationRafael1, convertible1);
-             rentalRafael1.setCharges(200);
+             convertible1.setStatus(VehicleStatus.INRENTAL);
+             persistence.storeVehicle(convertible1);
              persistence.storeRental(rentalRafael1);
              
              // 2 COMMENTS
+             //
              commentWayne1 = objectLayer.createComment("great experience", commentDate1, rentalWayne1);
              rentalWayne1.setComment(commentWayne1);
              persistence.storeComment(commentWayne1);
@@ -213,6 +227,7 @@ public class RentARideTester
              persistence.storeComment(commentRafael1);
              
              // PARAMS
+             //
              params = objectLayer.createRentARideParams();
              params.setMembershipPrice(60);
              params.setLateFee(30);

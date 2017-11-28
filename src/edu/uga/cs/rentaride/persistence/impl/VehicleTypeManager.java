@@ -199,18 +199,16 @@ public class VehicleTypeManager{
         List<HourlyPrice> hourlyPrices = new ArrayList<HourlyPrice>();
         condition.setLength( 0 );
         query.append( selectTypeHourlyPriceQuery );
-        System.out.println("query: "+ query.toString());
     	
         if( vehicleType != null ){
         	if( vehicleType.getId() >= 0 ){
-        		query.append( " and VEHICLE_TYPE.type_id=" + vehicleType.getId() );
-        	}else if( vehicleType.getName() != null ){
-        		query.append(" and VEHICLE_TYPE.name='"+vehicleType.getName()+"'");
+        		query.append( " WHERE VEHICLE_TYPE.type_id=" + vehicleType.getId() );
         	}
         }
         
         try {
             stmt = (Statement) con.createStatement();
+            System.out.println("query: "+ query.toString());
             if( stmt.execute( query.toString() ) ) { // statement returned a result
                 ResultSet rs = stmt.getResultSet();
                 int  	hourly_hourly_id;
