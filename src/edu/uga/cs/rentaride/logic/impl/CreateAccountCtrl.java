@@ -3,6 +3,7 @@ package edu.uga.cs.rentaride.logic.impl;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,12 +38,15 @@ public class CreateAccountCtrl {
 	    	ccExpLocalDate.format(DateTimeFormatter.ISO_LOCAL_DATE); // formats it to YYYY-MM-DD
 	    	ccExp = java.sql.Date.valueOf(ccExpLocalDate); // converts LocalDate object back to Date
 	    	
-	    	long membershipLength = 24*60*60*1000;
-	    	
 	    	Date createDate = new Date();
-	    	Date membershipExpiration = new Date(createDate.getTime() + membershipLength);
+       	 	Date dateMemberTill = new Date();
+       	 	Calendar cal = Calendar.getInstance();
+       	 	createDate = cal.getTime();
+            cal.add(Calendar.MONTH, 6);
+            dateMemberTill = cal.getTime();
+            
 	    	//Passing into the object layer for create customer 
-	    	customer = objectLayer.createCustomer(fName, lName, email, password, email, address, createDate, membershipExpiration, state, driverNo, cardNo, ccExp);
+	    	customer = objectLayer.createCustomer(fName, lName, email, password, email, address, createDate, dateMemberTill, state, driverNo, cardNo, ccExp);
 	    	objectLayer.storeCustomer(customer);
 	    	return customer.getId();
     }

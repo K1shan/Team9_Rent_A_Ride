@@ -224,9 +224,9 @@ public class AdministratorManager {
 		// NULL CHECKER
 		if( modelAdministrator != null ){
 			if( modelAdministrator.getId() >= 0 ){
-				query.append( " where ADMIN.admin_id = " + modelAdministrator.getId() );
+				query.append( " WHERE ADMIN.admin_id=" + modelAdministrator.getId() );
 			}else if( modelAdministrator.getUserName() != null) {
-				query.append( " where USER.uname = " + modelAdministrator.getUserName());
+				query.append( " WHERE USER.uname='" + modelAdministrator.getUserName() +"'");
 			}else {
 				
 				if(modelAdministrator.getPassword() != null){
@@ -368,5 +368,62 @@ public class AdministratorManager {
 //			e.printStackTrace();
 //			throw new RARException("AdministratorManager.delete: failed to delete an administrator" + e);
 //		}
+	}
+	
+	public void deleteEverything() throws RARException {
+		String deleteUserQuery = 
+				"DELETE `USER` FROM `USER`";
+		String deleteVehicleTypeQuery = 
+				"DELETE VEHICLE_TYPE FROM VEHICLE_TYPE";
+		String deleteLocationQuery = 
+				"DELETE LOCATION FROM LOCATION";
+		String alterUserQuery = 
+				"ALTER TABLE `USER` AUTO_INCREMENT=1";
+		String alterAdminQuery = 
+				"ALTER TABLE ADMIN AUTO_INCREMENT=1";
+		String alterCustomerQuery = 
+				"ALTER TABLE CUSTOMER AUTO_INCREMENT=1";
+		String alterVehicleTypeQuery = 
+				"ALTER TABLE VEHICLE_TYPE AUTO_INCREMENT=1";
+		String alterLocationQuery = 
+				"ALTER TABLE LOCATION AUTO_INCREMENT=1";
+		String alterVehicleQuery = 
+				"ALTER TABLE VEHICLE AUTO_INCREMENT=1";
+		String alterReservationQuery = 
+				"ALTER TABLE RESERVATION AUTO_INCREMENT=1";
+		String alterRentalQuery = 
+				"ALTER TABLE RENTAL AUTO_INCREMENT=1";
+		String alterCommentQuery = 
+				"ALTER TABLE COMMENT AUTO_INCREMENT=1";
+		try {
+			Statement stmt = con.createStatement();
+			System.out.println("query: " + deleteUserQuery.toString());
+			System.out.println("query: " + deleteVehicleTypeQuery.toString());
+			System.out.println("query: " + deleteLocationQuery.toString());
+			System.out.println("query: " + alterUserQuery.toString());
+			System.out.println("query: " + alterAdminQuery.toString());
+			System.out.println("query: " + alterCustomerQuery.toString());
+			System.out.println("query: " + alterVehicleTypeQuery.toString());
+			System.out.println("query: " + alterLocationQuery.toString());
+			System.out.println("query: " + alterVehicleQuery.toString());
+			System.out.println("query: " + alterReservationQuery.toString());
+			System.out.println("query: " + alterRentalQuery.toString());
+			System.out.println("query: " + alterCommentQuery.toString());
+			stmt.executeUpdate(deleteUserQuery);
+			stmt.executeUpdate(deleteVehicleTypeQuery);
+			stmt.executeUpdate(deleteLocationQuery);
+			stmt.executeUpdate(alterUserQuery);
+			stmt.executeUpdate(alterAdminQuery);
+			stmt.executeUpdate(alterCustomerQuery);
+			stmt.executeUpdate(alterVehicleTypeQuery);
+			stmt.executeUpdate(alterLocationQuery);
+			stmt.executeUpdate(alterVehicleQuery);
+			stmt.executeUpdate(alterReservationQuery);
+			stmt.executeUpdate(alterRentalQuery);
+			stmt.executeUpdate(alterCommentQuery);
+		} catch(SQLException e) {
+			e.printStackTrace();
+			throw new RARException("AdministratorManager.deleteEverything: failed to delete everything: " + e);
+		}
 	}
 }

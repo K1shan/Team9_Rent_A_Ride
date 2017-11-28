@@ -97,10 +97,10 @@ public class CustomerView extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
-		templateProcessor.setTemplate("CustomerView.ftl");
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
+		templateProcessor.setTemplate("CustomerView.ftl");
 		templateProcessor.processTemplate(response);
 	}
 

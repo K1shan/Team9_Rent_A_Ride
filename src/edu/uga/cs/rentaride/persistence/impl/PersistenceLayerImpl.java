@@ -184,7 +184,7 @@ public class PersistenceLayerImpl
 
 	@Override
 	public void storeCustomerReservation(Customer customer, Reservation reservation) throws RARException {
-		reservationManager.store(customer, reservation);
+		reservationManager.storeCustomerReservation(customer, reservation);
 	}
 
 	@Override
@@ -372,6 +372,9 @@ public class PersistenceLayerImpl
 	@Override
 	public void deleteCustomer(Customer customer) throws RARException {
 		customerManager.delete(customer);
-		
+	}
+	
+	public void deleteEverything() throws RARException {
+		administratorManager.deleteEverything();
 	}
 }

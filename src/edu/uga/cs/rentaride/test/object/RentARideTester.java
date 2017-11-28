@@ -3,6 +3,7 @@ package edu.uga.cs.rentaride.test.object;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import edu.uga.cs.rentaride.RARException;
@@ -81,9 +82,13 @@ public class RentARideTester
          objectLayer.setPersistence( persistence ); 
          
          try {
-        	 long membershipLength = 24*60*60*1000;
         	 Date createDate = new Date();
-        	 Date dateMemberTill = new Date(createDate.getTime() + membershipLength);
+        	 Date dateMemberTill = new Date();
+        	 Calendar cal = Calendar.getInstance();
+        	 createDate = cal.getTime();
+             cal.add(Calendar.MONTH, 6);
+             dateMemberTill = cal.getTime();
+        	 
         	 Date ccExp = new Date();
         	 Date dateReservation1 = new Date();
         	 Date dateReservation2 = new Date();
@@ -116,10 +121,7 @@ public class RentARideTester
         	 int maxHours = 96;
 
         	 // DELETE everything
-        	 objectLayer.deleteAdministrator( null );
-        	 objectLayer.deleteCustomer( null );
-        	 objectLayer.deleteVehicleType( null );
-        	 objectLayer.deleteRentalLocation( null );
+        	 objectLayer.deleteEverything();
         	 
         	 // 4 ADMINS
         	 adminWayne = objectLayer.createAdministrator("Wayne", "Kung", "wayneAdmin@uga.edu", "w", "wayneAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);

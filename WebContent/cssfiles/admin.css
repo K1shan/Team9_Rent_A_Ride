@@ -45,7 +45,7 @@ body {
   padding: 30px;
   position: fixed;
   left: 5%;
-  margin: 750px 0px 0px 0px;
+  margin: 710px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -56,7 +56,7 @@ body {
   padding: 30px;
   position: fixed;
   left: 35%;
-  margin: 750px 0px 0px 0px;
+  margin: 710px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -67,7 +67,7 @@ body {
   padding: 30px;
   position: fixed;
   left: 65%;
-  margin: 750px 0px 0px 0px;
+  margin: 710px 0px 0px 0px;
   min-height: 650px;
   position: absolute;
 }
@@ -114,6 +114,11 @@ body {
   padding-bottom: 10px;
   border: none;
   border-bottom: 3px solid #000;
+}
+
+.in{
+	  text-align: center;
+	  text-transform: uppercase;
 }
 
 .float-label input:focus {

@@ -48,7 +48,11 @@ public class AccountCtrl {
    	 	List<Customer> customers = objectLayer.findCustomer(modelCustomer);
    	 	if(customers.size() > 0){
    	 		Customer customer = customers.get( 0 );
+   	 		if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
+   	 			throw new RARException( "AccountCtrl.login: You have been banned." );
+   	 		}
    	 		User user = new UserImpl();
+   	 		user.setId(customer.getId());
    	 		user.setFirstName(customer.getFirstName());
    	 		user.setLastName(customer.getLastName());
    	 		user.setUserName(customer.getUserName());
@@ -74,6 +78,7 @@ public class AccountCtrl {
 		if(administrators.size() > 0){
 			Administrator admin = administrators.get(0);
 			User user = new UserImpl();
+			user.setId(admin.getId());
    	 		user.setFirstName(admin.getFirstName());
    	 		user.setLastName(admin.getLastName());
    	 		user.setUserName(admin.getUserName());
@@ -140,5 +145,121 @@ public class AccountCtrl {
  				throw new RARException( "AccountCtrl.login: Invalid Username" );
  		}
    	 	
+	}
+
+	public void updateAccount(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
+		Administrator administrator = null;
+		Administrator modelAdministrator = objectLayer.createAdministrator();
+		modelAdministrator.setEmail(email);
+		List<Administrator> administrators = objectLayer.findAdministrator(modelAdministrator);
+		if(administrators.size() > 0){
+			administrator = administrators.get( 0 );
+			if(!firstName.equals(null) && !firstName.equals(""))
+				administrator.setFirstName(firstName);
+			if(!lastName.equals(null) && !lastName.equals(""))
+				administrator.setLastName(lastName);
+			if(!userName.equals(null) && !userName.equals(""))
+				administrator.setUserName(userName);
+			if(!password.equals(null) && !password.equals(""))
+				administrator.setPassword(password);
+			if(!email.equals(null) && !email.equals(""))
+				administrator.setEmail(email);
+			if(!address.equals(null) && !address.equals(""))
+				administrator.setAddress(address);
+			objectLayer.storeAdministrator(administrator);
+			User user = new UserImpl();
+   	 		user.setFirstName(administrator.getFirstName());
+   	 		user.setLastName(administrator.getLastName());
+   	 		user.setUserName(administrator.getUserName());
+   	 		user.setEmail(administrator.getEmail());
+   	 		user.setPassword(administrator.getPassword());
+   	 		user.setAddress(administrator.getAddress());
+   	 		user.setCreateDate(administrator.getCreatedDate());
+   	 		user.setUserStatus(administrator.getUserStatus());
+   	 		user.setIsAdmin(true);
+   	 		session.setUser( user );
+			return;
+		}
+		Customer customer = null;
+		Customer modelCustomer = objectLayer.createCustomer();
+		modelCustomer.setId(id);
+		List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+		if(customers.size() > 0){
+			customer = customers.get( 0 );
+			customer.setId(id);
+			if(!firstName.equals(null))
+				customer.setFirstName(firstName);
+			if(!lastName.equals(null))
+				customer.setLastName(lastName);
+			if(!userName.equals(null))
+				customer.setUserName(userName);
+			if(!password.equals(null))
+				customer.setPassword(password);
+			if(!email.equals(null))
+				customer.setEmail(email);
+			if(!address.equals(null))
+				customer.setAddress(address);
+			if(!membershipExpiration.equals(null))
+				customer.setMemberUntil(membershipExpiration);
+			if(!licenseState.equals(null))
+				customer.setLicenseState(licenseState);
+			if(!licenseNumber.equals(null))
+				customer.setLicenseNumber(licenseNumber);
+			if(!cardNumber.equals(null))
+				customer.setCreditCardNumber(cardNumber);
+			if(!cardExpiration.equals(null))
+				customer.setCreditCardExpiration(cardExpiration);
+			objectLayer.storeCustomer(customer);
+			return;
+		}	
+	}
+	
+	public void updateCustomerStatus ( int customerId, String customerStatus) throws RARException{
+		
+		// get customer from id
+		//
+		Customer customer = null;
+		Customer modelCustomer = objectLayer.createCustomer();
+		modelCustomer.setId(customerId);
+		List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+		if(customers.size() > 0){
+			customer = customers.get( 0 );
+			customer.setId(customerId);
+		}
+		
+		// change userStatus terminated -> active
+		//
+		if(customerStatus.equals("ACTIVE")){
+			// if already active
+			//
+			if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
+				throw new RARException( "AccountCtrl.updateCustomerStatus: This customer is already active." );
+			}
+			// terminated -> active
+			//
+			else if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
+				customer.setUserStatus(UserStatus.ACTIVE);
+				objectLayer.storeCustomer(customer);
+			}
+		}
+		
+		// change userStatus active -> terminated
+		//
+		else if(customerStatus.equals("TERMINATED")){
+			// if already terminated
+			//
+			if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
+				throw new RARException( "AccountCtrl.updateCustomerStatus: This customer is already terminated." );
+			}
+			// active -> terminated
+			//
+			else if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
+				customer.setUserStatus(UserStatus.TERMINATED);
+				customer.getReservations();
+				System.out.println("customer"+customer);
+				objectLayer.storeCustomer(customer);
+			}
+		}	
 	}
 }

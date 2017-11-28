@@ -17,6 +17,7 @@ public class ReservationImpl
 {
 	private Date pickupTime;
 	private int rentalLength;
+	private boolean cancelled;
 	private VehicleType vehicleType;
 	private RentalLocation rentalLocation;
 	private Customer customer;
@@ -30,6 +31,7 @@ public class ReservationImpl
 		this.rentalLocation = null;
 		this.customer = null;
 		this.rental = null;
+		this.cancelled = false;
 	}
 	
 	public ReservationImpl(Date pickupTime, int rentalLength, VehicleType vehicleType, RentalLocation rentalLocation,
@@ -41,6 +43,7 @@ public class ReservationImpl
 		this.rentalLocation = rentalLocation;
 		this.customer = customer;
 		this.rental = null;
+		this.cancelled = false;
 	}
 
 	public Date getPickupTime() {
@@ -93,6 +96,14 @@ public class ReservationImpl
 	@Override
 	public void setRental(Rental rental) {
 		this.rental = rental;
+	}
+	
+	public boolean getCancelled() {
+		return this.cancelled;
+	}
+	
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 	@Override

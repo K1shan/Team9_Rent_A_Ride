@@ -118,11 +118,12 @@ public class RentalCreate extends HttpServlet {
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			
 			logicLayer.createRental(pickupTime, reservationId, vehicleId);
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
@@ -143,5 +144,4 @@ public class RentalCreate extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

@@ -71,11 +71,9 @@ public class HourlyPriceCreate extends HttpServlet {
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
 		
-		int maxHours = Integer.parseInt(request.getParameter("maxHours"));
-		int price1 = Integer.parseInt(request.getParameter("vehiclePrice1"));
-		int price2 = Integer.parseInt(request.getParameter("vehiclePrice2"));
-		int price3 = Integer.parseInt(request.getParameter("vehiclePrice3"));
-		int typeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
+		int typeId = Integer.parseInt(request.getParameter("selectHourlyPriceVehicleTypeAdd"));
+		int maxHours = Integer.parseInt(request.getParameter("hourlyPrice"));
+		int price = Integer.parseInt(request.getParameter("vehiclePrice"));
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
@@ -102,28 +100,26 @@ public class HourlyPriceCreate extends HttpServlet {
 			} catch ( Exception e ){
 				
 				statusAddTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+				templateProcessor.addToRoot("statusAddHourlyPriceB", statusAddTypeB);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
 		
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		
 		try {
-			logicLayer.createHourlyPrice(typeId, 24, price1);
-			logicLayer.createHourlyPrice(typeId, 48, price2);
-			logicLayer.createHourlyPrice(typeId, 72, price3);
-			statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			logicLayer.createHourlyPrice(typeId, maxHours, price);
+			statusAddTypeG = "Your Amazing!";
+			templateProcessor.addToRoot("statusAddHourlyPriceG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
 		}catch (RARException e){
 			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+			statusAddTypeB = "Out of order";
+			templateProcessor.addToRoot("statusAddHourlyPriceB", statusAddTypeB);
 			System.out.println("HourlyPriceCreate: "+e.toString());
     			templateProcessor.processTemplate(response);
     			return;
@@ -137,5 +133,4 @@ public class HourlyPriceCreate extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

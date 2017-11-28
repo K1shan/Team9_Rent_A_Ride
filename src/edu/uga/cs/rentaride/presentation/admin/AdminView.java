@@ -33,7 +33,6 @@ public class AdminView extends HttpServlet {
      */
     public AdminView() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -94,10 +93,10 @@ public class AdminView extends HttpServlet {
 		}
         
 		logicLayer = session.getLogicLayer();
-		User user = null;
-		user = session.getUser();
+		User user = session.getUser();
 		templateProcessor.setTemplate("AdminView.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		templateProcessor.processTemplate(response);
 	}
 
@@ -107,5 +106,4 @@ public class AdminView extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

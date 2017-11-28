@@ -105,13 +105,16 @@ public class VehicleTypeUpdate extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			
 			logicLayer.updateVehicleType(id, name);
 			statusUpdateTypeG = "Amazing!";
 			templateProcessor.addToRoot("statusUpdateTypeG", statusUpdateTypeG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
+			
 			statusUpdateTypeB = "Huh ?";
 			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateTypeB);
     		templateProcessor.processTemplate(response);

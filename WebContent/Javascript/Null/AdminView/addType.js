@@ -3,7 +3,7 @@ function typeCreateNullCheck(){
 	
 	var username = document.getElementById("type").value;
 	if(username === ""){
-		alert("Type field is blank");
+		alert("Invalid Type");
 		return false;
 	}else{
 		return true;

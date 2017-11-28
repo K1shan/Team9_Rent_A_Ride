@@ -12,6 +12,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.Customer;
+import edu.uga.cs.rentaride.entity.UserStatus;
 import edu.uga.cs.rentaride.object.ObjectLayer;
 
 
@@ -210,10 +211,14 @@ public class CustomerManager{
             } else
                 throw new RARException( "CustomerManager.save: can't save a customer: CreditCardExpiration undefined" );
          
-            if(customer.getUserStatus() != null ) 
-                pstmt.setLong( 7, 0);
-            else
-                throw new RARException( "CustomerManager.save: can't save a customer: UserStatus undefined" );
+        	if(customer.getUserStatus().equals(UserStatus.ACTIVE))
+        		pstmt.setLong( 7, 0 );
+        	else if(customer.getUserStatus().equals(UserStatus.CANCELLED))
+        		pstmt.setLong( 7, 1 );
+        	else if(customer.getUserStatus().equals(UserStatus.TERMINATED))
+        		pstmt.setLong( 7, 2 );
+        	else
+        		throw new RARException( "CustomerManager.save: can't save a customer: UserStatus undefined" );
         
             if( customer.isPersistent() )
                 pstmt.setLong( 8, customer.getId() );
@@ -253,8 +258,8 @@ public class CustomerManager{
     	// Queries
 		String selectCustomerQuery = 
 				"SELECT "
-				+ "USER.user_id, USER.fname, USER.lname, USER.uname, USER.pword, USER.email, USER.address, USER.create_date, "
-				+ "CUSTOMER.customer_id, CUSTOMER.member_until, CUSTOMER.lic_state, CUSTOMER.lic_num, CUSTOMER.cc_num, CUSTOMER.cc_exp, CUSTOMER.status "
+				+ "USER.*, "
+				+ "CUSTOMER.* "
 				+ "FROM USER INNER JOIN CUSTOMER ON USER.user_id=CUSTOMER.user_id";
 		
 		StringBuffer query = new StringBuffer(1000);
@@ -345,6 +350,13 @@ public class CustomerManager{
                     condition.append( " CUSTOMER.cc_exp = '" + modelCustomer.getCreditCardExpiration() + "'" );
                 }
 				
+				if(modelCustomer.getUserStatus() != null){
+					if( condition.length() > 0 ){
+                        condition.append( " and" );
+                    }
+                    condition.append( " CUSTOMER.status='"+modelCustomer.getUserStatus()+"'");
+				}
+				
 				if( condition.length() > 0 ) {
                     query.append(  " where " );
                     query.append( condition );
@@ -359,45 +371,64 @@ public class CustomerManager{
 			System.out.println("query: " + query.toString());
 			if( stmt.execute( query.toString() )){
 				
-				ResultSet r = stmt.getResultSet();
+				ResultSet rs = stmt.getResultSet();
 				
-				String fname;
-	            String lname;
-	            String uname;
-	            String pword;
-	            String email;
-	            String address;
-	            Date createDate;
+				// USER
+				//
+				int		user_user_id;
+				String 	user_fname;
+	            String 	user_lname;
+	            String 	user_uname;
+	            String 	user_pword;
+	            String 	user_email;
+	            String 	user_address;
+	            Date 	user_createDate;
+				// CUSTOMER
+	            //
+	            int		customer_customer_id;
+	            int 	customer_user_id;
+	            Date 	customer_memberUntil;
+	            String 	customer_licState;
+	            String 	customer_licNum;
+	            String 	customer_ccNum;
+	            Date 	customer_ccExp;
+	            int		customer_status = 0;
 	            
-	            long customerId;
-	            Date memberUntil;
-	            String licState;
-	            String licNum;
-	            String ccNum;
-	            Date ccExp;
-	            while( r.next() ) {
-	           	 	fname = r.getString(2);
-	                lname = r.getString(3);
-	                uname = r.getString(4);
-	                pword = r.getString(5);
-	                email = r.getString(6);
-	                address = r.getString(7);
-	                createDate = r.getDate(8);
+	            UserStatus userStatus = UserStatus.ACTIVE;
+	            Customer customer = null;
+	            
+	            while( rs.next() ) {
+	            	
+	            	// USER
+					user_user_id	= rs.getInt(1);
+	           	 	user_fname 		= rs.getString(2);
+	           	 	user_lname 		= rs.getString(3);
+	           	 	user_uname 		= rs.getString(4);
+	           	 	user_pword 		= rs.getString(5);
+	           	 	user_email 		= rs.getString(6);
+	           	 	user_address 	= rs.getString(7);
+	           	 	user_createDate = rs.getDate(8);
+	           	 	
+	           	 	// CUSTOMER
+	                customer_customer_id= rs.getInt(9);
+	                customer_user_id 	= rs.getInt(10);
+	                customer_memberUntil= rs.getDate(11);
+	                customer_licState 	= rs.getString(12);
+	                customer_licNum 	= rs.getString(13);
+	                customer_ccNum 		= rs.getString(14);
+	                customer_ccExp 		= rs.getDate(15);
+	                customer_status 	= rs.getInt(16);
+	                if(customer_status == 0)
+	                	userStatus		= UserStatus.ACTIVE;
+	                if(customer_status == 1)
+	                	userStatus 		= UserStatus.CANCELLED;
+	                else if(customer_status == 2)
+	                	userStatus 		= UserStatus.TERMINATED;
 	                
-	                customerId = r.getLong(9);
-	                // SKIP USER_ID FK
-	                memberUntil = r.getDate(10);
-	                licState = r.getString(11);
-	                licNum = r.getString(12);
-	                ccNum = r.getString(13);
-	                ccExp = r.getDate(14);
-	                r.getLong(15);
-	                
-	                
-	                Customer customer = 
-	                		objectLayer.createCustomer(fname, lname, uname, pword, email,
-	            			address, createDate, memberUntil, licState, licNum, ccNum, ccExp);
-	                customer.setId(customerId);
+	                customer = null;
+	                customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);
+	                customer.setId(customer_customer_id);
+	                customer.setUserStatus(userStatus);
 	                customers.add(customer);
 	            }
 			}

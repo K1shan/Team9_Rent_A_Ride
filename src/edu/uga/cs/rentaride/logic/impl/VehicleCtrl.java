@@ -42,7 +42,7 @@ public class VehicleCtrl {
 			vehicleType = vehicleTypes.get(0);
 		}
 		if(vehicleType == null) {
-			throw new RARException("A vehicle type with this name does not exist exists");
+			throw new RARException("A vehicle type with this name does not exist");
 		}
 		
 		// check if location exists
@@ -56,9 +56,13 @@ public class VehicleCtrl {
 		
 		// check if location found
 		//
-		if(rentalLocation != null)
-			throw new RARException( "A location with this name already exists" );
+		if(rentalLocation == null)
+			throw new RARException( "A location with this name does not exist" );
 		
+		// check if location is full
+		//
+		if(rentalLocation.getVehicles().size()+1 > rentalLocation.getCapacity())
+			throw new RARException( "This location is full of vehicles" );
 		
 		// check if vehicle already exists
 		//
@@ -73,7 +77,62 @@ public class VehicleCtrl {
 		if(vehicle != null)
 			throw new RARException( "A vehicle with this tag number already exists" );
 		
+		
+		
 		vehicle = objectLayer.createVehicle(make, model, year, tag, mileadge, lastServiced, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
+		objectLayer.storeVehicle(vehicle);
+	}
+	
+	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
+			int year, int mileage, String tag, Date lastServiced, VehicleStatus vehicleStatus,
+			VehicleCondition vehicleCondition) throws RARException {
+		
+		// check if vehicle already exists
+		//
+		modelVehicle = objectLayer.createVehicle();
+		modelVehicle.setId(vehicleId);
+		vehicles = objectLayer.findVehicle(modelVehicle);
+		if(vehicles.size() > 0){
+			vehicle = vehicles.get(0);
+		}
+		
+		// check if vehicle found
+		//
+		if(vehicle == null)
+			throw new RARException( "A vehicle with this id does not exist." );
+		
+		// check if type already exists
+		//
+		VehicleType modelVehicleType = objectLayer.createVehicleType();
+		modelVehicleType.setId(vehicleTypeId);
+		List<VehicleType> vehicleTypes = objectLayer.findVehicleType(modelVehicleType);
+		VehicleType vehicleType = null;
+		if(vehicleTypes.size() > 0) 
+			vehicleType = vehicleTypes.get(0);
+		
+		// check if vehicleType found
+		//
+		if(vehicleType == null) 
+			throw new RARException("A vehicle type with this id does not exist");
+		
+				
+		// check if location exists
+		//
+		RentalLocation modelRentalLocation = objectLayer.createRentalLocation();
+		modelRentalLocation.setId(rentalLocationId);
+		List<RentalLocation> rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
+		RentalLocation rentalLocation = null;
+		if(rentalLocations.size() > 0)
+			rentalLocation = rentalLocations.get(0);
+		
+		// check if location found
+		//
+		if(rentalLocation == null)
+			throw new RARException( "A location with this id does not exist" );
+		
+		vehicle = null;
+		vehicle = objectLayer.createVehicle(make, model, year, tag, mileage, lastServiced, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
+		vehicle.setId(vehicleId);
 		objectLayer.storeVehicle(vehicle);
 	}
 	

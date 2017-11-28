@@ -216,11 +216,28 @@ public class CustomerImpl
 
 	@Override
 	public List<Reservation> getReservations() throws RARException{
+		
+		// if customer has made a reservation
+		//
 		if(reservations == null){
 			if(isPersistent() ){
 				reservations = getPersistenceLayer().restoreCustomerReservation( this );
 			}else{
                 throw new RARException( "This Customer object is not persistent" );
+			}
+		}
+		
+		// if customer is terminated
+		//
+		if(userStatus.equals(UserStatus.TERMINATED)){
+			int i = 0;
+			if(reservations != null){
+				for(Reservation reservation : reservations){
+					reservation.setCancelled(true);
+					getPersistenceLayer().storeCustomerReservation(this, reservation);
+					reservations.set(i, reservation);
+					i++;
+				}
 			}
 		}
         return reservations;
@@ -264,11 +281,21 @@ public class CustomerImpl
 
 	@Override
 	public String toString() {
-		return "CustomerImpl [createDate=" + createDate + ", memberUntil=" + memberUntil + ", cardExpiration="
-				+ cardExpiration + ", firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName
-				+ ", email=" + email + ", password=" + password + ", address=" + address + ", state=" + state
-				+ ", licenseNumber=" + licenseNumber + ", cardNumber=" + cardNumber + ", userStatus=" + userStatus+
-				"]";
+		return "CustomerImpl ["
+				+ "firstName=" + firstName 
+				+ ", lastName=" + lastName 
+				+ ", userName=" + userName
+				+ ", password=" + password 
+				+ ", email=" + email 
+				+ ", address=" + address 
+				+ ", createDate=" + createDate 
+				+ ", memberUntil=" + memberUntil 
+				+ ", state=" + state
+				+ ", licenseNumber=" + licenseNumber 
+				+ ", cardNumber=" + cardNumber 
+				+ ", cardExpiration=" + cardExpiration
+				+ ", userStatus=" + userStatus
+				+ "]";
 	}
 
 	@Override

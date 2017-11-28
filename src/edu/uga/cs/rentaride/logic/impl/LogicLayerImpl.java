@@ -10,6 +10,7 @@ import edu.uga.cs.rentaride.entity.Administrator;
 import edu.uga.cs.rentaride.entity.Comment;
 import edu.uga.cs.rentaride.entity.Customer;
 import edu.uga.cs.rentaride.entity.HourlyPrice;
+import edu.uga.cs.rentaride.entity.RentARideParams;
 import edu.uga.cs.rentaride.entity.Rental;
 import edu.uga.cs.rentaride.entity.RentalLocation;
 import edu.uga.cs.rentaride.entity.Reservation;
@@ -108,14 +109,19 @@ public class LogicLayerImpl
 	}
     
 	@Override
+	public RentARideParams findParams() throws RARException {
+		SystemCtrl ctrlSystem = new SystemCtrl ( objectLayer );
+		return ctrlSystem.findParams();
+	}
+	
+	@Override
 	public long createAccount(String fName, String lName, String email, String password, String driverNo, String cardNo, String expDate, String address, String city, String state, String zip)
 			throws RARException {
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
 		return ctrlCreateAccount.createAccount(fName, lName, email, password, driverNo, cardNo, expDate, address, city, state, zip);
 	}
 	
-	public void logout( String ssid ) throws RARException
-    {
+	public void logout( String ssid ) throws RARException{
         SessionManager.logout( ssid );
     }
 	
@@ -139,8 +145,6 @@ public class LogicLayerImpl
 		CreateAccountCtrl ctrlCreateAccount = new CreateAccountCtrl ( objectLayer );
 		return ctrlCreateAccount.setAdmin(username);
 	}
-
-	
 	
 	@Override
 	public void createLocation(String name, String address, String city, String state, String zip, String path,
@@ -196,24 +200,22 @@ public class LogicLayerImpl
 	
 	@Override
 	public void updateVehicleType(int typeId, String name) throws RARException {
-		// TODO Auto-generated method stub
 		VehicleTypeCtrl ctrlVehicleType = new VehicleTypeCtrl ( objectLayer );
 		ctrlVehicleType.updateVehicleType(typeId, name);
 	}
 
 	@Override
 	public void updateHourlyPrice(int hourlyPriceId, int vehicleTypeId, int maxHrs, int price) throws RARException {
-		// TODO Auto-generated method stub
 		HourlyPriceCtrl ctrlHourlyPrice = new HourlyPriceCtrl ( objectLayer );
 		ctrlHourlyPrice.updateHourlyPrice(hourlyPriceId, vehicleTypeId, maxHrs, price);
 	}
 	
 	@Override
 	public void updateVehicle(int vehicleId, int vehicleTypeId, int rentalLocationId, String make, String model,
-			int year, int mileadge, String tag, Date lastServiced, VehicleStatus vehicleStatus,
+			int year, int mileage, String tag, Date lastServiced, VehicleStatus vehicleStatus,
 			VehicleCondition vehicleCondition) throws RARException {
-		// TODO Auto-generated method stub
-		
+		VehicleCtrl ctrlVehicle = new VehicleCtrl ( objectLayer );
+		ctrlVehicle.updateVehicle(vehicleId, vehicleTypeId, rentalLocationId, make, model, year, mileage, tag, lastServiced, vehicleStatus, vehicleCondition);
 	}
 
 	@Override
@@ -234,7 +236,33 @@ public class LogicLayerImpl
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.updateComment(commentId, rentalId, text, commentDate);
 	}
+	
+	@Override
+	public void updateParams(int memberFee, int lateFee) throws RARException {
+		SystemCtrl ctrlSystem = new SystemCtrl ( objectLayer );
+		ctrlSystem.updateParams(memberFee, lateFee);
+	}
 
+	@Override
+	public void updateAdmin(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
+			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		ctrlAccount.updateAccount(session, id, firstName, lastName, userName, password, email, address, membershipExpiration, licenseState, licenseNumber, cardNumber, cardExpiration);
+	}
+	
+	@Override
+	public void updateCustomerStatus(int id, String customerStatus) throws RARException {
+		AccountCtrl ctrlAccount = new AccountCtrl ( objectLayer );
+		ctrlAccount.updateCustomerStatus(id, customerStatus);
+	}
+	
+	@Override
+	public void resetUserPassword(String email, String password, String fname, String lname) throws RARException {
+		AccountCtrl accountControl = new AccountCtrl(objectLayer);
+		accountControl.resetUserPassword(email, password, fname, lname);
+		
+	}
+	
 	@Override
 	public void deleteLocation(int id) throws RARException {
 		LocationCtrl ctrlLocation = new LocationCtrl ( objectLayer );
@@ -275,12 +303,5 @@ public class LogicLayerImpl
 	public void deleteComment(int id) throws RARException {
 		CommentCtrl ctrlComment = new CommentCtrl ( objectLayer );
 		ctrlComment.deleteComment(id);
-	}
-
-	@Override
-	public void resetUserPassword(String email, String password, String fname, String lname) throws RARException {
-		AccountCtrl accountControl = new AccountCtrl(objectLayer);
-		accountControl.resetUserPassword(email, password, fname, lname);
-		
 	}
 }
