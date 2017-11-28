@@ -1,10 +1,7 @@
 package edu.uga.cs.rentaride.entity.impl;
 
-import edu.uga.cs.rentaride.entity.Comment;
-import edu.uga.cs.rentaride.entity.Customer;
-import edu.uga.cs.rentaride.entity.Rental;
-import edu.uga.cs.rentaride.entity.Reservation;
-import edu.uga.cs.rentaride.entity.Vehicle;
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.persistence.impl.Persistent;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -31,18 +28,18 @@ public class RentalImpl
 		this.reservation = null;
 		this.vehicle = null;
 		this.comment = null;
-		customer = null;
+		this.customer = null;
 	}
 	
 	public RentalImpl(Date pickupTime, Reservation reservation, Vehicle vehicle){
 		super( -1 );
 		this.pickupTime = pickupTime;
-		this.returnTime = new Date(pickupTime.getTime() + (reservation.getLength()*60*60*1000));
-		this.charges = 0;//vehicle.getVehicleType().getHourlyPrices().get(0).getPrice();
+		this.returnTime = null;//new Date(pickupTime.getTime() + (reservation.getLength()*60*60*1000));
+		this.charges = 0;
 		this.reservation = reservation;
 		this.vehicle = vehicle;
 		this.comment = null;
-		customer = null;
+		this.customer = null;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -68,7 +65,9 @@ public class RentalImpl
 
 	@Override
 	public Customer getCustomer() {
-		return reservation.getCustomer();
+		if(customer == null)
+			customer = reservation.getCustomer();
+		return customer;
 	}
 
 	public Date getPickupTime() {
@@ -87,7 +86,16 @@ public class RentalImpl
 		this.returnTime = returnTime;
 	}
 
-	public int getCharges() {
+	public int getCharges() throws RARException {
+		
+		if(charges == 0){
+			for(HourlyPrice hourlyPrice : vehicle.getVehicleType().getHourlyPrices() ){
+				if(hourlyPrice.getMaxHours() == reservation.getLength()){
+					charges = hourlyPrice.getPrice();
+					break;
+				}
+			}
+		}
 		return charges;
 	}
 
@@ -122,9 +130,11 @@ public class RentalImpl
 	@Override
 	public String toString() {
 		return "RentalImpl ["
-				+ "pickupTime=" + pickupTime + ", returnTime=" + returnTime + ", charges=" + charges
-				+ ", reservations=" + this.reservation.getId()
-				+ ", vehicleId=" + this.vehicle.getId() + 
-				"]";
+				+ "reservationId=" 	+ reservation.getId()
+				+ ", vehicleId="	+ vehicle.getId()
+				+ ", pickupTime=" 	+ pickupTime 
+				+ ", returnTime=" 	+ returnTime 
+				+ ", charges=" 		+ charges 
+				+ "]";
 	}
 }

@@ -42,7 +42,7 @@ public interface Rental
     /** Return the charges applied to this rental.
      * @return the charges applied to this rental
      */
-    public int getCharges();
+    public int getCharges() throws RARException;
     
     /** Set the charges applied to this rental.
      * @param charges the new charges for this rental
