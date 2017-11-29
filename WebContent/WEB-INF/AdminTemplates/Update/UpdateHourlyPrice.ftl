@@ -1,4 +1,4 @@
-<div class="modalSeven">
+<div class="modalFive">
 	<div class="tab">
 		<label class="head"> UPDATE HOURLY PRICE </label>
 		<form class="form" id="admin" action="HourlyPriceUpdate" method='post' name="admin">

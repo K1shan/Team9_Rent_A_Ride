@@ -125,7 +125,7 @@ public class CommentManager {
     	//
     	String selectCommentQuery =
     			"SELECT "
-				+ "VEHICLE_TYPE.*, "
+				+ "VEHICLE_TYPE.type_id, VEHICLE_TYPE.name, "
 				+ "VEHICLE.*, "
 				+ "RESERVATION.*, "
 				+ "HOURLY_PRICE.*, "
@@ -141,7 +141,7 @@ public class CommentManager {
 				+ "INNER JOIN VEHICLE ON VEHICLE.type_id=VEHICLE_TYPE.type_id "
 				+ "INNER JOIN HOURLY_PRICE ON HOURLY_PRICE.type_id=VEHICLE_TYPE.type_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=VEHICLE.location_id "
-				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=COMMENT.customer_id "
+				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id";
 		
 		StringBuffer query = new StringBuffer(100);
@@ -155,15 +155,15 @@ public class CommentManager {
 		if( modelComment != null ){
 			
 			if( modelComment.getId() >= 0 ){
-				query.append( " WHERE COMMENT.comment_id=" + modelComment.getId() );
+				query.append( " where LOCATION.location_id = " + modelComment.getId() );
 			}else if( modelComment.getRental() != null ){  // name is unique
-				query.append( " WHERE RENTAL.rental_id=" + modelComment.getRental().getId() );
+				query.append( " where LOCATION.rental='" + modelComment.getRental() + "'" );
 			}else{
 				if( modelComment.getText() != null ){
-					condition.append( " WHERE COMMENT.text='" + modelComment.getText() + "'" );
+					condition.append( " where LOCATION.text='" + modelComment.getText() + "'" );
 				}
 				if( modelComment.getDate() != null ){
-					condition.append( " WHERE COMMENT.date='" + modelComment.getDate() );
+					condition.append( " where LOCATION.date='" + modelComment.getDate() );
 				}
 				if( condition.length() > 0 ){
 					query.append( condition );
@@ -183,9 +183,9 @@ public class CommentManager {
 				int		rental_reservation_id;
 				int		rental_vehicle_id;
 				Date 	rental_pickupTime = null;
-				Date		rental_returnTime = null;
-				int 		rental_late;
-				int 		rental_charges;
+				Date	rental_returnTime = null;
+				int 	rental_late;
+				int 	rental_charges;
 				
 				// COMMENT
 				int		comment_comment_id;
@@ -388,7 +388,7 @@ public class CommentManager {
 					// COMMENT
 					comment = objectLayer.createComment(comment_text, comment_date, rental);
 					comment.setId(comment_comment_id);
-					//rental.setComment(comment);
+					rental.setComment(comment);
 					comments.add(comment);
 				}
 			}

@@ -1,8 +1,9 @@
 // This will check if the user and password field are null in sign in form
-function customerUpdateNullCheck(){
-
-	var customerUpdate = document.getElementById("selectCustomerUpdateAdmin").value;
+function custoemerUpdateNullCheck(){
+	
+	var customerUpdate = document.getElementById("selectCustomerUpdate").value;
 	var statusUpdate = document.getElementById("selectCustomerStatusUpdate").value;
+	
 	
 	if(customerUpdate === ""){
 		
