@@ -41,6 +41,7 @@
 <script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomerView.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveReservation/RetrieveReservationView.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicleView.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveComments/RetrieveCommentsView.js"></script>
 
 <script type = "text/javascript" src="Javascript/Search/Search.js"></script>
 
@@ -78,10 +79,10 @@
       <#include "Update/UpdateLocation.ftl">
       <#include "Update/UpdateVehicleType.ftl">
       <#include "Update/UpdateVehicle.ftl">
-	  <#include "Update/UpdateHourlyPrice.ftl">
       <#include "Update/UpdateCustomer.ftl">
       <#include "Update/UpdateMembership.ftl">
       <#include "Update/UpdateLatefee.ftl">
+      <#include "Update/UpdateHourlyPrice.ftl">
     </section>
     
     <section id="section4">

@@ -71,7 +71,7 @@ public class CustomerStatusUpdate extends HttpServlet {
 		String statusUpdateCustomerStatusG = "";
 		String statusUpdateCustomerStatusB = "";
 		
-		int customerId = Integer.parseInt(request.getParameter("selectCustomerUpdate"));
+		int customerId = Integer.parseInt(request.getParameter("selectCustomerUpdateAdmin"));
 		String customerStatus = request.getParameter("selectCustomerStatusUpdate");
 		
 		System.out.println(customerId + customerStatus);

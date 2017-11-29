@@ -43,6 +43,7 @@ $(document).ready(function() {
 				 $('#RetrieveCustomerView').html(html);
 			},
 			error: function(exception){
+				
 				alert("exception: " + exception);
 			}
 		});
