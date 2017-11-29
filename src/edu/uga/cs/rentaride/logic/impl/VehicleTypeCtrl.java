@@ -27,7 +27,16 @@ public class VehicleTypeCtrl {
 		return objectLayer.findVehicleType(modelVehicleType);
 	}
 	
-	public void createType(String name) throws RARException{
+	public List<String> findTypePaths ( int typeId ) throws RARException {
+		if(typeId < 0)
+			return objectLayer.restoreTypePath( null );
+		
+		modelVehicleType = objectLayer.createVehicleType();
+		modelVehicleType.setId(typeId);
+		return objectLayer.restoreTypePath(modelVehicleType);
+	}
+	
+	public void createType(String name, String path) throws RARException{
 		
 		// check if type already exists
 		//
@@ -43,6 +52,7 @@ public class VehicleTypeCtrl {
 		
 		vehicleType = objectLayer.createVehicleType(name);
 		objectLayer.storeVehicleType(modelVehicleType);		
+		objectLayer.storeTypePath(modelVehicleType, path);
 	}
 	
 	public void updateVehicleType (int id, String name) throws RARException{
@@ -65,7 +75,7 @@ public class VehicleTypeCtrl {
 		objectLayer.storeVehicleType(vehicleType);
 	}
 	
-public void deleteVehicleType(int id) throws RARException {
+	public void deleteVehicleType(int id) throws RARException {
 		
 		// check if vehicle type already exists
 		//
@@ -84,5 +94,5 @@ public void deleteVehicleType(int id) throws RARException {
 	
 		objectLayer.deleteVehicleType(vehicleType);
 	}
+	
 }
-

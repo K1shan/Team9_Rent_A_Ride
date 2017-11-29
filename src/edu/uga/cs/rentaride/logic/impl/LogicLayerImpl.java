@@ -77,6 +77,12 @@ public class LogicLayerImpl
 		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
 		return ctrlType.findVehicleTypes(id);
 	}
+	
+	@Override
+	public List<String> findTypePaths(int id) throws RARException {
+		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
+		return ctrlType.findTypePaths(id);
+	}
 
 	@Override
 	public List<HourlyPrice> findHourlyPrices( int id ) throws RARException {
@@ -172,9 +178,9 @@ public class LogicLayerImpl
 	}
 
 	@Override
-	public void createType(String name) throws RARException {
+	public void createType(String name, String path) throws RARException {
 		VehicleTypeCtrl ctrlType = new VehicleTypeCtrl ( objectLayer );
-		ctrlType.createType(name);
+		ctrlType.createType(name, path);
 	}
 
 	@Override

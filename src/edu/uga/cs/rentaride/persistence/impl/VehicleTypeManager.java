@@ -257,18 +257,14 @@ public class VehicleTypeManager{
 			
 			if( vehicleType.getId() > 0 )
                 pstmt.setLong( 1, vehicleType.getId() );
-            else{
-                throw new RARException( "VehicleTypeManager.save: can't save a path: Type id undefined" );
-            }
-			
+            else
+                throw new RARException( "VehicleTypeManager.save: can't save a path: type id undefined" );
+            
 			if( path != null )
                 pstmt.setString( 2, path );
-            else{
+            else
                 throw new RARException( "VehicleTypeManager.save: can't save a path: path undefined" );
-            }
-			
-			
-			
+            
 			System.out.println( "query: " + pstmt.asSql() );
             inscnt = pstmt.executeUpdate();
 			
@@ -278,12 +274,43 @@ public class VehicleTypeManager{
 		}
     }
     
-    public String restorePath(VehicleType vehicleType) throws RARException {
+    public List<String> restoreTypePath(VehicleType vehicleType) throws RARException {
     	
+    	String selectVehicleTypePathQuery =
+				"SELECT "
+				+ "VEHICLE_TYPE_PATH.image_path "
+				+ "FROM VEHICLE_TYPE_PATH";
+		
+        Statement    stmt = null;
+        StringBuffer query = new StringBuffer( 100 );
+        StringBuffer condition = new StringBuffer( 100 );
+        String 		path = "";
+        List<String> paths = new ArrayList<String>();
+        condition.setLength( 0 );
+        query.append( selectVehicleTypePathQuery );
     	
-    	
-    	String path = "";
-    	
-    	return path;
+        if( vehicleType != null ){
+        	if( vehicleType.getId() >= 0 )
+        		query.append( " WHERE type_id=" + vehicleType.getId() );
+        }
+        
+        try {
+            stmt = (Statement) con.createStatement();
+            System.out.println("query: "+ query.toString());
+            if( stmt.execute( query.toString() ) ) { // statement returned a result
+                ResultSet rs = stmt.getResultSet();
+                while( rs.next() ){
+                	// VEHICLE_TYPE_IMAGE
+                	//
+                	path = rs.getString(1);
+                	paths.add(path);
+                }
+            }
+            return paths;
+            
+        } catch( SQLException e ) {
+            e.printStackTrace();
+            throw new RARException( "VehicleTypeManager.restorePath: failed to restore a path: " + e );       
+        }
     }
 }

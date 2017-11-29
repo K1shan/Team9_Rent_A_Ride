@@ -617,4 +617,14 @@ public interface PersistenceLayer
 	public List<VehicleType> restoreRentalLocationAvailVehicleType(RentalLocation rentalLocation) throws RARException;
 
 	public List<VehicleType> restoreRentalLocationTotalVehicleType(RentalLocation rentalLocation) throws RARException;
+	
+	public void storeTypePath( VehicleType vehicleType, String path) throws RARException;
+	
+	public List<String> restoreTypePath(VehicleType vehicleType) throws RARException;
+	
+	public int getReservationId();
+	
+	public int restoreCharges( int reservationId ) throws RARException;
+	
+	public void storeCharges(Reservation reservation, Rental rental, boolean insert) throws RARException;
 }

@@ -194,15 +194,19 @@ public class RentARideTester
         	 // 4 RESERVATIONS
              reservationWayne1 = objectLayer.createReservation(dateReservation1, lengthReservation1, truckVehicleType, rentalLocationAtlanta, customerWayne);
              persistence.storeReservation(reservationWayne1);
+             persistence.storeCharges(reservationWayne1, null, true);
              
              reservationRafael1 = objectLayer.createReservation(dateReservation2, lengthReservation2, convertibleVehicleType, rentalLocationAthens, customerRafael);
              persistence.storeReservation(reservationRafael1);
-             
+             persistence.storeCharges(reservationRafael1, null, true);
+
              reservationKishan1 = objectLayer.createReservation(dateReservation3, lengthReservation3, truckVehicleType, rentalLocationAtlanta, customerKishan);
              persistence.storeReservation(reservationKishan1);
+             persistence.storeCharges(reservationKishan1, null, true);
              
              reservationAlex1 = objectLayer.createReservation(dateReservation4, lengthReservation3, convertibleVehicleType, rentalLocationAthens, customerAlex);
              persistence.storeReservation(reservationAlex1);
+             persistence.storeCharges(reservationAlex1, null, true);
         	 
         	 // 2 RENTALS
              //

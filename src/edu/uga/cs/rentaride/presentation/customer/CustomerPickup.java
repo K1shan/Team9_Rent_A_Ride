@@ -140,6 +140,7 @@ public class CustomerPickup extends HttpServlet {
 				e1.printStackTrace();
 			}
 			statusUpdateCustomerReservationB = e.toString();
+			e.printStackTrace();
 			templateProcessor.addToRoot("statusUpdateCustomerReservationB", statusUpdateCustomerReservationB);
 	        templateProcessor.setTemplate("CustomerReservation.ftl");
 			templateProcessor.processTemplate(response);

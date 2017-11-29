@@ -468,5 +468,14 @@ public interface ObjectLayer
     public void deleteCustomer(Customer customer) throws RARException;
 
 	public void deleteEverything() throws RARException;
-
+	
+	public void storeTypePath(VehicleType vehicleType, String path) throws RARException;
+	
+	public List<String> restoreTypePath(VehicleType vehicleType) throws RARException;
+	
+	public int getReservationId();
+	
+	public void storeCharges(Reservation reservation, Rental rental, boolean insert) throws RARException;
+	
+	public int restoreCharges(int reservationId) throws RARException;
 }
