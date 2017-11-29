@@ -85,8 +85,7 @@ public class CommentManager {
 			
 			if( comment.getDate() != null ){
 				java.util.Date myDate = comment.getDate();
-	        	java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
-				pstmt.setDate( 4, sqlDate );
+	    		pstmt.setTimestamp( 4, new java.sql.Timestamp(myDate.getTime()));
 			}else{
 				throw new RARException( "Comment.save: can't save a comment: date undefined" );
 			}
@@ -122,8 +121,8 @@ public class CommentManager {
     
     public List<Comment> restore( Comment modelComment ) throws RARException{
     	
-    	//Queries
-    	
+    	// Queries
+    	//
     	String selectCommentQuery =
     			"SELECT "
 				+ "VEHICLE_TYPE.type_id, VEHICLE_TYPE.name, "

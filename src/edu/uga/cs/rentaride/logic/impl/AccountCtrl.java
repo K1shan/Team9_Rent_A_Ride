@@ -253,9 +253,16 @@ public class AccountCtrl {
 		if(customerStatus.equals("ACTIVE")){
 			// if already active
 			//
-			if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
+			if(customer.getUserStatus().equals(UserStatus.ACTIVE))
 				throw new RARException( "AccountCtrl.updateCustomerStatus: This customer is already active." );
-			}
+			
+			
+			// if cancelled
+			//
+			else if(customer.getUserStatus().equals(UserStatus.CANCELLED))
+				throw new RARException( "AccountCtrl.updateCustomerStatus: This customer is cancelled." );
+			
+			
 			// terminated -> active
 			//
 			else if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
@@ -272,12 +279,20 @@ public class AccountCtrl {
 			if(customer.getUserStatus().equals(UserStatus.TERMINATED)){
 				throw new RARException( "AccountCtrl.updateCustomerStatus: This customer is already terminated." );
 			}
+			
+			// if cancelled
+			//
+			else if(customer.getUserStatus().equals(UserStatus.CANCELLED)){
+				customer.setUserStatus(UserStatus.TERMINATED);
+				customer.getReservations();
+				objectLayer.storeCustomer(customer);
+			}
+			
 			// active -> terminated
 			//
 			else if(customer.getUserStatus().equals(UserStatus.ACTIVE)){
 				customer.setUserStatus(UserStatus.TERMINATED);
 				customer.getReservations();
-				System.out.println("customer"+customer);
 				objectLayer.storeCustomer(customer);
 			}
 		}	

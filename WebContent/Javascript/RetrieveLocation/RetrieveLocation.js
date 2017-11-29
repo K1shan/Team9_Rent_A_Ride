@@ -16,9 +16,6 @@ $(document).ready(function() {
 					 var zip = element.zip;
 					 
 					 html += '<div class="ui">';
-					 html += '<div class="statusbar">';
-					 html += '<span id="hour">Product ID ' + id + '</span>';
-					 html += '</div>';
 					 	html += '<div class="screen">';
 					 		html += '<div class="shop">';
 					 			html +='<div class="product-img"><img id = "image" src="' + image + '"></div>';

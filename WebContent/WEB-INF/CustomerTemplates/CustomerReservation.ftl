@@ -30,7 +30,7 @@
 				</p> 
    				</#if>
    				
-   				<form class="form" action="CustomerPickup" method='post' name="admin">
+   				<form class="form" action="CustomerPickup" method='post'>
    					<p class="float-label">
 						<input class="type" type="submit" value="PICKUP RENTAL" />
 					</p>
@@ -39,22 +39,28 @@
 		  			<input type="hidden" name="pickupTime" value='${reservation.pickupTime}' />
 		  			<input type="hidden" name="pickupTime" value='${reservation.length}' />
 				</form>
+				<p></p>
 				
-   				<form class="form" action="CustomerCancelReservation" method='post' name="admin">
+				<!--
+   				<form class="form" action="CustomerCancelReservation" method='post'>
    					<p>
-						<input class="type" type="submit" value="CANCEL RESERVATION" />
+						<input class="type" type="submit" value="CANCEL" />
 					</p>
 					<input type="hidden" name="reservationId" value='${reservation.id}' />
 		  			<input type="hidden" name="reservationVehicleTypeId" value='${reservation.vehicleType.id}' />
 		  			<input type="hidden" name="pickupTime" value='${reservation.pickupTime}' />
 		  			<input type="hidden" name="pickupTime" value='${reservation.length}' />
-				</form>
+				</form>-->
 				
 				<#if statusUpdateCustomerReservationG??>
-					<p>Success</p>
+					<p class="good">
+						${statusUpdateCustomerReservationG}
+					</p>
 				</#if>
 				<#if statusUpdateCustomerReservationB??>
-					<p>Failed to cancel or pickup.</p>
+					<p class="bad">
+						${statusUpdateCustomerReservationB}
+					</p>
 				</#if>
    			</#list>
    		</#if>
