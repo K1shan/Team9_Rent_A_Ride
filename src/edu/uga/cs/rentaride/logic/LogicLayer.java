@@ -63,6 +63,14 @@ public interface LogicLayer {
 	
 	/**
 	 * 
+	 * @param id
+	 * @return
+	 * @throws RARException
+	 */
+	public List<String> findTypePaths( int id ) throws RARException;
+	
+	/**
+	 * 
 	 * @param hourlyPrice
 	 * @return
 	 * @throws RARException
@@ -193,7 +201,7 @@ public interface LogicLayer {
 	 * @return
 	 * @throws RARException
 	 */
-	public void createType( String name ) throws RARException;
+	public void createType( String name, String path ) throws RARException;
 	
 	/**
 	 * 

@@ -29,6 +29,7 @@ public class ReservationCtrl {
 		
 		modelReservation.setId(id);
 		reservations = objectLayer.findReservation(modelReservation);
+	
 		return reservations;
 	}
 	
@@ -97,6 +98,10 @@ public class ReservationCtrl {
 		
 		reservation = objectLayer.createReservation(pickupTime, rentalLength, vehicleType, rentalLocation, customer);
 		objectLayer.storeReservation(reservation);
+		reservation.setId(objectLayer.getReservationId());
+		Rental modelRental = objectLayer.createRental();
+		
+		objectLayer.storeCharges(reservation, modelRental, true);
 	}
 	
 	public List<Vehicle> findReservationVehicles(int id) throws RARException {

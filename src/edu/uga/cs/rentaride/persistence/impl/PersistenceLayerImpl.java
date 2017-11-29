@@ -387,4 +387,29 @@ public class PersistenceLayerImpl
 	public List<VehicleType> restoreRentalLocationTotalVehicleType(RentalLocation rentalLocation) throws RARException {
 		return rentalLocationManager.restoreTotalTypes(rentalLocation);
 	}
+
+	@Override
+	public void storeTypePath(VehicleType vehicleType, String path) throws RARException {
+		vehicleTypeManager.storeTypePath(vehicleType, path);
+	}
+
+	@Override
+	public List<String> restoreTypePath(VehicleType vehicleType) throws RARException {
+		return vehicleTypeManager.restoreTypePath(vehicleType);
+	}
+	
+	@Override
+	public int getReservationId(){
+		return reservationManager.getReservationId();
+	}
+
+	@Override
+	public int restoreCharges(int reservationId) throws RARException {
+		return reservationManager.restoreCharges(reservationId);
+	}
+
+	@Override
+	public void storeCharges(Reservation reservation, Rental rental, boolean insert) throws RARException {
+		reservationManager.storeCharges(reservation, rental, insert);
+	}
 }
