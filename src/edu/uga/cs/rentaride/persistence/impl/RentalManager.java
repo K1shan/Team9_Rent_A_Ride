@@ -51,12 +51,9 @@ public class RentalManager {
     	
     	String updateRentalQuery = 
 				"UPDATE RENTAL SET "
-				+ "reservation_id=?, "
-				+ "vehicle_id=?, "
-				+ "pickup_date=?, "
 				+ "return_date=?, "
 				+ "late=?, "
-				+ "charges=?"
+				+ "charges=? "
 				+ "WHERE rental_id=?"; 
     	
     	PreparedStatement pstmt;
@@ -70,46 +67,64 @@ public class RentalManager {
 	            pstmt = (PreparedStatement) con.prepareStatement( updateRentalQuery );
 			}
 			
-			if( rental.getReservation().getId() != 0 ){
-				pstmt.setLong( 1, rental.getReservation().getId() );
-			}else{
-	            throw new RARException( "RentalManager.save: can't save a rental: reservation undefined" );
-	        }
 			
-			if( rental.getVehicle().getId() != 0 ){
-				pstmt.setLong( 2, rental.getVehicle().getId() );
-			}else{
-	            throw new RARException( "RentalManager.save: can't save a rental: vehicle undefined" );
-	        }
+			if( !rental.isPersistent() ){
+				if ( rental.getReservation() == null )
+					pstmt.setLong( 1, 0 );
+				else if( rental.getReservation().getId() != 0 ){
+					pstmt.setLong( 1, rental.getReservation().getId() );
+					//throw new RARException( "RentalManager.save: can't save a rental: reservation undefined" );
+				}
+				
+				if( rental.getVehicle() == null )
+					pstmt.setLong( 2, 0 );
+				else if( rental.getVehicle().getId() >= 0 )
+					pstmt.setLong( 2, rental.getVehicle().getId() );
+				
+				
+				if( rental.getPickupTime() != null ){
+					java.util.Date myDate = rental.getPickupTime();
+		    		pstmt.setTimestamp( 3, new java.sql.Timestamp(myDate.getTime()));
+				}else{
+					pstmt.setTimestamp( 3, null );
+		            //throw new RARException( "RentalManager.save: can't save a rental: pickupTime undefined" );
+		        }
 			
-			if( rental.getPickupTime() != null ){
-				java.util.Date myDate = rental.getPickupTime();
-	    		pstmt.setTimestamp( 3, new java.sql.Timestamp(myDate.getTime()));
-			}else{
-	            throw new RARException( "RentalManager.save: can't save a rental: pickupTime undefined" );
-	        }
-		
-			if(rental.getReturnTime() == null){
-				pstmt.setDate( 4, null );
-			}else{
+				if(rental.getReturnTime() == null){
+					pstmt.setDate( 4, null );
+				}else{
+					java.util.Date myDate = rental.getReturnTime();
+		    		pstmt.setTimestamp( 4, new java.sql.Timestamp(myDate.getTime() ) );
+				}
+				
+	    		if( rental.getLate() == false) {
+	    			pstmt.setLong( 5, 0 );
+	    		}else if( rental.getLate() == true ){
+	    			pstmt.setLong( 5, 1 );
+	    		}else{
+	    			throw new RARException( "RentalManager.save: can't save a rental: late undefined" );
+	    		}
+				
+	    		
+	    		if( rental.getCharges() >= 0 ){
+	    			pstmt.setLong( 6, rental.getCharges() );
+	    		}else{
+	    			throw new RARException( "RentalManager.save: can't save a rental: charges negative" );
+	    		}
+			}else if(rental.isPersistent()){
+    			
 				java.util.Date myDate = rental.getReturnTime();
-	    		pstmt.setTimestamp( 4, new java.sql.Timestamp(myDate.getTime() ) );
+    			pstmt.setTimestamp( 1, new java.sql.Timestamp(myDate.getTime() ) );
+    			
+    			if(rental.getLate() == false)
+    				pstmt.setInt(2, 0 );
+    			else
+    				pstmt.setInt(2, 1 );
+    			
+				pstmt.setLong(3, rental.getCharges() );
+				pstmt.setLong(4, rental.getId() );
+				
 			}
-			
-    		if( rental.getLate() == false) {
-    			pstmt.setLong( 5, 0 );
-    		}else if( rental.getLate() == true ){
-    			pstmt.setLong( 5, 1 );
-    		}else{
-    			throw new RARException( "RentalManager.save: can't save a rental: late undefined" );
-    		}
-			
-    		
-    		if( rental.getCharges() >= 0 ){
-    			pstmt.setLong( 6, rental.getCharges()) ;
-    		}else{
-    			throw new RARException( "RentalManager.save: can't save a rental: charges negative" );
-    		}
     		
     		System.out.println("query: "+pstmt.asSql());
 	        inscnt = pstmt.executeUpdate();
