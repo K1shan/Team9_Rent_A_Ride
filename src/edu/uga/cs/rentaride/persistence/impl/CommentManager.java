@@ -367,7 +367,7 @@ public class CommentManager {
                     // VEHICLE
 					vehicle = objectLayer.createVehicle(vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_service_date, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
 					vehicle.setId(vehicle_vehicle_id);
-                    vehicleType.getVehicles();
+                    //vehicleType.getVehicles();
                     
                     // CUSTOMER
                     customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);
@@ -376,10 +376,10 @@ public class CommentManager {
                     // RESERVATION
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
 					reservation.setId(reservation_reservation_id);
-                    vehicleType.getReservations();
+                    //vehicleType.getReservations();
                     
-                    objectLayer.createHourlyPrice(hourly_max_hrs, hourly_price, vehicleType);
-                    vehicleType.getHourlyPrices();
+                    //objectLayer.createHourlyPrice(hourly_max_hrs, hourly_price, vehicleType);
+                    //vehicleType.getHourlyPrices();
                     
                     // RENTAL
 					rental = objectLayer.createRental(rental_pickupTime, reservation, vehicle);
