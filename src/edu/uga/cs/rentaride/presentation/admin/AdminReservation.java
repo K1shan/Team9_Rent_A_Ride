@@ -78,9 +78,7 @@ public class AdminReservation extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;		
-        
-        System.out.println("Kishan");
-        
+
 		int locationId = Integer.parseInt(request.getParameter("locationId"));
 
 		
@@ -115,12 +113,12 @@ public class AdminReservation extends HttpServlet {
 			List<VehicleType> vehicleTypes = logicLayer.findLocationAvailableVehicleTypes( locationId );
 			templateProcessor.addToRoot("locationId", locationId);
 			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypes);
-			templateProcessor.setTemplate("AdminBag.ftl");
+			templateProcessor.setTemplate("AdminReservation.ftl");
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
 			e.printStackTrace();
-			templateProcessor.setTemplate("AdminBag.ftl");
+			templateProcessor.setTemplate("AdminReservation.ftl");
 			templateProcessor.processTemplate(response);
 		}
 	}
