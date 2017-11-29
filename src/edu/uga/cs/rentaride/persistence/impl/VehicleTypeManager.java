@@ -44,11 +44,11 @@ public class VehicleTypeManager{
     	String updateVehicleTypeQuery = 
 				"UPDATE VEHICLE_TYPE SET "
 				+ "name=? "
-				+ "WHERE type_id=?"; 
+				+ "WHERE type_id=?";
     	
-    	PreparedStatement pstmt;
-    	long vehicleTypeId;
-		int inscnt;
+    	PreparedStatement 	pstmt;
+    	long 				vehicleTypeId;
+		int 				inscnt;
 		
 		try{
 			
@@ -236,4 +236,54 @@ public class VehicleTypeManager{
     public void deletePrice(VehicleType vehicleType, HourlyPrice hourlyPrice) throws RARException {
 		// TODO Auto-generated method stub
 	}
+    
+    
+    public void storeTypePath ( VehicleType vehicleType, String path ) throws RARException {
+    	
+    	String insertVehicleTypePathQuery = 
+				"INSERT INTO VEHICLE_TYPE_PATH "
+				+ "( type_id, image_path ) "
+				+ "VALUES "
+				+ "( ?, ? )";
+    	
+    	PreparedStatement 	pstmt;
+    	long 				vehicleTypeId;
+		int 				inscnt;
+		
+		try{
+            
+			pstmt = (PreparedStatement) con.prepareStatement( insertVehicleTypePathQuery );
+			
+			
+			if( vehicleType.getId() > 0 )
+                pstmt.setLong( 1, vehicleType.getId() );
+            else{
+                throw new RARException( "VehicleTypeManager.save: can't save a path: Type id undefined" );
+            }
+			
+			if( path != null )
+                pstmt.setString( 2, path );
+            else{
+                throw new RARException( "VehicleTypeManager.save: can't save a path: path undefined" );
+            }
+			
+			
+			
+			System.out.println( "query: " + pstmt.asSql() );
+            inscnt = pstmt.executeUpdate();
+			
+		} catch(SQLException e){
+			e.printStackTrace();
+			throw new RARException( "VehicleType.save: failed to save a path: " + e );
+		}
+    }
+    
+    public String restorePath(VehicleType vehicleType) throws RARException {
+    	
+    	
+    	
+    	String path = "";
+    	
+    	return path;
+    }
 }
