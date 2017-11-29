@@ -106,7 +106,8 @@ public class RetrieveVehicle extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		templateProcessor.addToRoot("user", user.getFirstName());
+		if(user != null)
+			templateProcessor.addToRoot("user", user.getFirstName());
 
 		try {
 			List<Vehicle> vehicles = logicLayer.findVehicles( -1 );
