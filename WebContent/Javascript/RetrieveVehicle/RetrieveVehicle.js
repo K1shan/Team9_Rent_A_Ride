@@ -8,12 +8,12 @@ $(document).ready(function() {
 				var html = '';
 				
 				 $.each(data, function(index, element) {
-					 
+
 					 var id = element.id;
 					 var make = element.make;
 					 var model = element.model;
 					 var tag = element.registrationTag;
-					 var tag = element.year;
+					 var year = element.year;
 					 var address = element.rentalLocation.address;
 					 var city = element.rentalLocation.city;
 					 var state = element.rentalLocation.state;
@@ -22,7 +22,7 @@ $(document).ready(function() {
 					 html += '<div class="ui">';
 					 	html += '<div class="screen">';
 					 		html += '<div class="shop">';
-					 			html +='<div class="product-img"><img id = "image" src="/cars/Suv.png"></div>';
+					 			html +='<div class="product-img"><img id = "image" src="cars/Suv.png"></div>';
 				 			html += '</div>';
 				 			html += '<div class="product-des">';
 				 				html += '<form id = "formOne" action="CustomerReservation" method="post">';

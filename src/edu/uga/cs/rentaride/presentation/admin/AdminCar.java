@@ -73,6 +73,8 @@ public class AdminCar extends HttpServlet {
         Session        session = null;
         String         ssid;		
 		
+        System.out.println("HI");
+        
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
@@ -97,7 +99,7 @@ public class AdminCar extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		templateProcessor.setTemplate("AdminCar.ftl");
+		templateProcessor.setTemplate("AdminCars.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
 		templateProcessor.processTemplate(response);

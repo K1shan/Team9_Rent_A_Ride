@@ -8,7 +8,7 @@ $(document).ready(function() {
 			dataType: "JSON",
 			success: function(data) {
 				var html = '';
-				
+
 				 $.each(data, function(index, element) {
 					 
 					 var id = element.id;
@@ -29,13 +29,14 @@ $(document).ready(function() {
 				 					html += '<div class="product-description">' + address + '</div>';
 				 					html += '<div class="product-description">' + zip + '</div>';
 				 					html += '<div class="product-description"> CAPACITY: ' + ava + '</div>';
-				 					html += '<div class="product-description"> IMAGE PATH: ' + image + '</div>';
+				 					html += '<div class="product-description"> IMAGE PAT: ' + image + '</div>';
 		 						html += '</form>';
 	 						html += '</div>';
 						html += '</div>';
 					html += '</div>';
 					html += '</div>';
 				 });
+				 				 
 				 
 				 $('#RetrieveLocationView').html(html);
 			},
