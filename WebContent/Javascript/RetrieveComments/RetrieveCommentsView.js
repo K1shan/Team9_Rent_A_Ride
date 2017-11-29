@@ -34,7 +34,7 @@ $(document).ready(function() {
 					 	html += '<div class="screen">';
 				 			html += '<div class="product-des">';
 				 				html += '<form id = "formOne" action="" method="post">';
-				 					html += '<div class="product-name">'+  name + ' ' + last + '</div>';
+				 					html += '<div class="product-name">'+  first + ' ' + last + '</div>';
 				 					html += '<div class="product-name">'+  make + ' ' + model + '</div>';
 				 					html += '<div class="product-description">' + date + '</div>';
 				 					html += '<div class="product-description">' + comment + '</div>';

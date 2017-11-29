@@ -438,8 +438,8 @@ public class ReservationManager {
 					
 					rental = objectLayer.createRental(rental_pickupTime, null, null);
 					rental.setId(rental_rental_id);
-					rental.setReservation(reservation);
-					reservation.setRental(rental);
+					//rental.setReservation(reservation);
+					//reservation.setRental(rental);
 					
 					reservations.add(reservation);
 				}

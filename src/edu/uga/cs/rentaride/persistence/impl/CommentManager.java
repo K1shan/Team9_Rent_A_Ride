@@ -128,20 +128,20 @@ public class CommentManager {
 				+ "VEHICLE_TYPE.*, "
 				+ "VEHICLE.*, "
 				+ "RESERVATION.*, "
-				+ "HOURLY_PRICE.*, "
+				//+ "HOURLY_PRICE.*, "
 				+ "LOCATION.*, "
 				+ "USER.*, "
 				+ "CUSTOMER.*, "
 				+ "RENTAL.*, "
 				+ "COMMENT.* "
 				+ "FROM COMMENT "
-				+ "INNER JOIN RENTAL ON COMMENT.rental_id=RENTAL.rental_id "
-				+ "INNER JOIN RESERVATION ON RENTAL.reservation_id=RESERVATION.reservation_id "
-				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
-				+ "INNER JOIN VEHICLE ON VEHICLE.type_id=VEHICLE_TYPE.type_id "
-				+ "INNER JOIN HOURLY_PRICE ON HOURLY_PRICE.type_id=VEHICLE_TYPE.type_id "
-				+ "INNER JOIN LOCATION ON LOCATION.location_id=VEHICLE.location_id "
+				+ "INNER JOIN RENTAL ON RENTAL.rental_id=COMMENT.rental_id "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=COMMENT.customer_id "
+				+ "INNER JOIN RESERVATION ON RESERVATION.reservation_id=RENTAL.reservation_id "
+				+ "INNER JOIN VEHICLE ON VEHICLE.vehicle_id=RENTAL.vehicle_id "
+				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=VEHICLE.type_id "
+				//+ "INNER JOIN HOURLY_PRICE ON HOURLY_PRICE.type_id=VEHICLE_TYPE.type_id "
+				+ "INNER JOIN LOCATION ON LOCATION.location_id=VEHICLE.location_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id";
 		
 		StringBuffer query = new StringBuffer(100);
@@ -183,9 +183,9 @@ public class CommentManager {
 				int		rental_reservation_id;
 				int		rental_vehicle_id;
 				Date 	rental_pickupTime = null;
-				Date		rental_returnTime = null;
-				int 		rental_late;
-				int 		rental_charges;
+				Date	rental_returnTime = null;
+				int 	rental_late;
+				int 	rental_charges;
 				
 				// COMMENT
 				int		comment_comment_id;
@@ -285,10 +285,14 @@ public class CommentManager {
 					vehicle_tag 		= rs.getString(10);
 					vehicle_service_date= rs.getDate(11);
 					vehicle_status 		= rs.getInt(12);
-					if(vehicle_status == 1)
+					if(vehicle_status == 0)
+						vehicleStatus	= VehicleStatus.INLOCATION;
+					else if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
 					vehicle_cond = rs.getInt(13);
-					if(vehicle_cond == 1)
+					if(vehicle_cond == 0)
+						vehicleCondition= VehicleCondition.GOOD;
+					else if(vehicle_cond == 1)
 						vehicleCondition= VehicleCondition.NEEDSMAINTENANCE;
 					
 					// RESERVATION
@@ -300,61 +304,63 @@ public class CommentManager {
 					reservation_rentalLength 	= rs.getInt(19);
 					reservation_cancelled		= rs.getInt(20);
 					
-					// HOURLY_PRICE
-					hourly_hourly_id			= rs.getInt(21);
-					hourly_type_id				= rs.getInt(22);
-					hourly_max_hrs 				= rs.getInt(23);
-					hourly_price 				= rs.getInt(24);
+//					// HOURLY_PRICE
+//					hourly_hourly_id			= rs.getInt(21);
+//					hourly_type_id				= rs.getInt(22);
+//					hourly_max_hrs 				= rs.getInt(23);
+//					hourly_price 				= rs.getInt(24);
 					
 					// LOCATION
-					location_location_id		= rs.getInt(25);
-					location_name 				= rs.getString(26);
-					location_addr	 			= rs.getString(27);
-					location_addr_city			= rs.getString(28);
-					location_addr_state			= rs.getString(29);
-					location_addr_zip			= rs.getString(30);
-					location_image_path			= rs.getString(31);
-					location_capacity 			= rs.getInt(32);
+					location_location_id		= rs.getInt(21);
+					location_name 				= rs.getString(22);
+					location_addr	 			= rs.getString(23);
+					location_addr_city			= rs.getString(24);
+					location_addr_state			= rs.getString(25);
+					location_addr_zip			= rs.getString(26);
+					location_image_path			= rs.getString(27);
+					location_capacity 			= rs.getInt(28);
 
 					// USER
-					user_user_id 	= rs.getInt(33);
-	           	 	user_fname 		= rs.getString(34);
-	           	 	user_lname 		= rs.getString(35);
-	           	 	user_uname 		= rs.getString(36);
-	           	 	user_pword 		= rs.getString(37);
-	           	 	user_email 		= rs.getString(38);
-	           	 	user_address 	= rs.getString(39);
-	           	 	user_createDate = rs.getDate(40);
+					user_user_id 	= rs.getInt(29);
+	           	 	user_fname 		= rs.getString(30);
+	           	 	user_lname 		= rs.getString(31);
+	           	 	user_uname 		= rs.getString(32);
+	           	 	user_pword 		= rs.getString(33);
+	           	 	user_email 		= rs.getString(34);
+	           	 	user_address 	= rs.getString(35);
+	           	 	user_createDate = rs.getDate(36);
 	           	 	
 	           	 	// CUSTOMER
-	                customer_customer_id= rs.getInt(41);
-	                customer_user_id 	= rs.getInt(42);
-	                customer_memberUntil= rs.getDate(43);
-	                customer_licState 	= rs.getString(44);
-	                customer_licNum 	= rs.getString(45);
-	                customer_ccNum 		= rs.getString(46);
-	                customer_ccExp 		= rs.getDate(47);
-	                customer_status 	= rs.getInt(48);
-	                if(customer_status == 1)
-	                	userStatus = UserStatus.CANCELLED;
+	                customer_customer_id= rs.getInt(37);
+	                customer_user_id 	= rs.getInt(38);
+	                customer_memberUntil= rs.getDate(39);
+	                customer_licState 	= rs.getString(40);
+	                customer_licNum 	= rs.getString(41);
+	                customer_ccNum 		= rs.getString(42);
+	                customer_ccExp 		= rs.getDate(43);
+	                customer_status 	= rs.getInt(44);
+	                if(customer_status == 0)
+	                	userStatus 		= UserStatus.ACTIVE;
+	                else if(customer_status == 1)
+	                	userStatus 		= UserStatus.CANCELLED;
 	                else if(customer_status == 2)
-	                	userStatus = UserStatus.TERMINATED;
+	                	userStatus 		= UserStatus.TERMINATED;
 	                
 	                // RENTAL
-					rental_rental_id = rs.getInt(49);
-					rental_reservation_id = rs.getInt(50);
-					rental_vehicle_id = rs.getInt(51);
-					rental_pickupTime = rs.getDate(52);
-					rental_returnTime = rs.getDate(53);
-					rental_late = rs.getInt(54);
-					rental_charges = rs.getInt(55);
+					rental_rental_id = rs.getInt(45);
+					rental_reservation_id = rs.getInt(46);
+					rental_vehicle_id = rs.getInt(47);
+					rental_pickupTime = rs.getDate(48);
+					rental_returnTime = rs.getDate(49);
+					rental_late = rs.getInt(50);
+					rental_charges = rs.getInt(51);
 	                
 	                // COMMENT
-					comment_comment_id = rs.getInt(56);
-					comment_rental_id = rs.getInt(57);
-					comment_customer_id = rs.getInt(58);
-					comment_text = rs.getString(59);
-					comment_date = rs.getDate(60);
+					comment_comment_id = rs.getInt(52);
+					comment_rental_id = rs.getInt(53);
+					comment_customer_id = rs.getInt(54);
+					comment_text = rs.getString(55);
+					comment_date = rs.getDate(56);
 					
 					// VEHICLE_TYPE
                     vehicleType = objectLayer.createVehicleType(type_name);
