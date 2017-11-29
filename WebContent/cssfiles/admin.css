@@ -40,6 +40,18 @@ body {
   position: absolute;
 }
 
+.modalReservation{
+
+  background-color: #fff;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 36%;
+  margin: 25px 0px 0px 0px;
+  min-height: 650px;
+  position: absolute;
+}
+
 .modalThree {
   background-color: #fff;  width: 400px;
   width: 400px;
