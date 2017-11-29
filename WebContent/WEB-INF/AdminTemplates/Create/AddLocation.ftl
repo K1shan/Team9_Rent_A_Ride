@@ -29,7 +29,8 @@
 			
 			<p>
 				<input type="file" id="picAdd" name="picAdd"/>
-			</p>			
+			</p>	
+				
 			<p>
 				<input class = "location" type="submit" onclick="return locationCreateNullCheck()" value="ADD LOCATION" />
 			</p>
