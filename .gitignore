@@ -33,3 +33,9 @@ build/classes/edu/uga/cs/rentaride/presentation/.DS_Store
 *.class
 
 *.class
+
+*.class
+
+build/classes/edu/uga/cs/rentaride/persistence/impl/CommentManager.class
+
+build/classes/edu/uga/cs/rentaride/persistence/impl/VehicleTypeManager.class
