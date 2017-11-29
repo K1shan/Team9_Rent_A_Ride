@@ -97,18 +97,18 @@ public class CustomerManager{
             else
                 throw new RARException( "CustomerManager.save: can't save a user: LastName undefined" );
             if( customer.getUserName() != null )
-                pstmt.setString( 3, customer.getUserName() );
+                pstmt.setString( 3, customer.getUserName().toLowerCase() );
             else
                 throw new RARException( "CustomerManager.save: can't save a user: UserName undefined" );
             if( customer.getPassword() != null )
                 pstmt.setString( 4, customer.getPassword());
             else
                 throw new RARException( "CustomerManager.save: can't save a user: Password undefined" );
-            if( customer.getEmail() != null )
+            if( customer.getEmail().toLowerCase() != null )
                 pstmt.setString( 5, customer.getEmail());
             else
                 throw new RARException( "CustomerManager.save: can't save a user: Email undefined" );
-            if( customer.getAddress() != null )
+            if( customer.getAddress().toLowerCase() != null )
                 pstmt.setString( 6, customer.getAddress());
             else
                 throw new RARException( "CustomerManager.save: can't save a user: Address undefined" );
@@ -274,13 +274,13 @@ public class CustomerManager{
 			if(modelCustomer.getId() >= 0){
 				query.append( " where CUSTOMER.customer_id=" + modelCustomer.getId() );
 			}else if(modelCustomer.getUserName() != null){
-				query.append( " where USER.uname = '" + modelCustomer.getUserName() + "'");
+				query.append( " where USER.uname = '" + modelCustomer.getUserName().toLowerCase() + "'");
 			}else{
 				if(modelCustomer.getPassword() != null){
 					condition.append( " USER.pword = '" + modelCustomer.getPassword() + "'");
 				}
 				
-				if(modelCustomer.getEmail() != null ) {
+				if(modelCustomer.getEmail().toLowerCase() != null ) {
                     if( condition.length() > 0 ){
                         condition.append( " and" );
                     }
@@ -305,7 +305,7 @@ public class CustomerManager{
                     if( condition.length() > 0 ){
                         condition.append( " and" );
                     }
-                    condition.append( " USER.address = '" + modelCustomer.getAddress() + "'" );
+                    condition.append( " USER.address = '" + modelCustomer.getAddress().toLowerCase() + "'" );
                 }        
 				
 				if(modelCustomer.getCreatedDate() != null) {
@@ -453,7 +453,7 @@ public class CustomerManager{
 		query.append(deleteCustomerQuery);
 
 		if ( customer != null ){
-			query.append( " WHERE CUSTOMER.user_id=" + customer.getId() );
+			query.append( " WHERE CUSTOMER.customer_id=" + customer.getId() );
 		}
 		
 		try {

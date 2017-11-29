@@ -27,7 +27,7 @@ public class RegularCar extends HttpServlet {
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/AdminTemplates";
+	private String templateDir = "/WEB-INF/RegularTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
@@ -97,9 +97,7 @@ public class RegularCar extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		templateProcessor.setTemplate("RegularCar.ftl");
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.addToRoot("userSession", user);
+		templateProcessor.setTemplate("RegularCars.ftl");
 		templateProcessor.processTemplate(response);
 	}
 

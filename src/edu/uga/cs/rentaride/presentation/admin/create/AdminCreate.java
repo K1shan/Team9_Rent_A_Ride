@@ -71,7 +71,7 @@ public class AdminCreate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-        String uname = request.getParameter("username");
+        String uname = request.getParameter("admin_email");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();

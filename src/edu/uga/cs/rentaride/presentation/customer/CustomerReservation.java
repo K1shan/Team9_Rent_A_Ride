@@ -31,7 +31,7 @@ public class CustomerReservation extends HttpServlet {
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates/Create";
+	private String templateDir = "/WEB-INF/CustomerTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
@@ -111,12 +111,12 @@ public class CustomerReservation extends HttpServlet {
 			List<VehicleType> vehicleTypes = logicLayer.findLocationAvailableVehicleTypes( locationId );
 			templateProcessor.addToRoot("locationId", locationId);
 			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypes);
-			templateProcessor.setTemplate("CreateReservation.ftl");
+			templateProcessor.setTemplate("/Create/CreateReservation.ftl");
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
 			e.printStackTrace();
-			templateProcessor.setTemplate("CreateReservation.ftl");
+			templateProcessor.setTemplate("/Create/CreateReservation.ftl");
 			templateProcessor.processTemplate(response);
 		}
 	}
