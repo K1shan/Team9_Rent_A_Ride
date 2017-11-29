@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.*;
@@ -34,6 +35,13 @@ public class RentARideTester
          
          VehicleType    truckVehicleType;
          VehicleType	convertibleVehicleType;
+         
+         String			truckPath = "cars/Truck.png";
+         String			convertiblePath = "cars/Sedan.png";
+         String			minivanPath = "cars/Minivan.png";
+         String			suvPath = "cars/Suv.png";
+         
+         List<VehicleType> vehicleTypes;
          
          HourlyPrice	truckHourlyPrice1;
          HourlyPrice	truckHourlyPrice2;
@@ -159,9 +167,15 @@ public class RentARideTester
         	 // 2 VEHICLE_TYPES
              truckVehicleType = objectLayer.createVehicleType("truck");
              persistence.storeVehicleType( truckVehicleType );
+             vehicleTypes = objectLayer.findVehicleType(truckVehicleType);
+             truckVehicleType = vehicleTypes.get(0);
+             objectLayer.storeTypePath(truckVehicleType, truckPath);
              
              convertibleVehicleType = objectLayer.createVehicleType("convertible");
              persistence.storeVehicleType( convertibleVehicleType );
+             vehicleTypes = objectLayer.findVehicleType(convertibleVehicleType);
+             convertibleVehicleType = vehicleTypes.get(0);
+             objectLayer.storeTypePath(convertibleVehicleType, convertiblePath);
         	 
              // 6 HOURLY PRICES
              truckHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 50, truckVehicleType);

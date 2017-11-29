@@ -15,6 +15,7 @@ public class VehicleTypeImpl
 	implements VehicleType 
 {
 	private String name;
+	private String path;
 	private List<HourlyPrice> hourlyPrices;
 	private List<Vehicle> vehicles;
 	private List<Reservation> reservations;
@@ -22,6 +23,7 @@ public class VehicleTypeImpl
 	public VehicleTypeImpl(){
 		super( -1 );
 		this.name = null;
+		this.path = null;
 		this.hourlyPrices = null;
 		this.vehicles = null;
 		this.reservations = null;
@@ -30,6 +32,7 @@ public class VehicleTypeImpl
 	public VehicleTypeImpl(String name){
 		super( -1 );
 		this.name = name;
+		this.path = null;
 		this.hourlyPrices = null;
 		this.vehicles = null;
 		this.reservations = null;
@@ -87,5 +90,15 @@ public class VehicleTypeImpl
 				+ "[type_id=" +this.getId()
 				+ ", name=" + name +
 				"]";
+	}
+
+	@Override
+	public String getPath() {
+		return path;
+	}
+
+	@Override
+	public void setPath( String path ) {
+		this.path = path;
 	}
 }

@@ -14,6 +14,10 @@ import edu.uga.cs.rentaride.persistence.Persistable;
 public interface VehicleType
     extends Persistable
 {
+	public String getPath();
+	
+	public void setPath( String path );
+	
     /** Return the name of this vehicle type.
      * @return name of this vehicle type
      */
