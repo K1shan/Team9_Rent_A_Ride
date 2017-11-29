@@ -17,12 +17,10 @@
                 <li><a href="AdminContact">CONTACT</a></li>
                 <li><a href="AdminView">${user}</a></li>
                 <li><a href="LogoutMenu">Logout</a></li>
-                <li><a href="">BAG</a></li>
               </ul>
           </nav>
         </div>
 	</header>
-
 <body>
 
 </body>

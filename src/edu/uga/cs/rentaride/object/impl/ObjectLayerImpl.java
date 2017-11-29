@@ -456,4 +456,30 @@ public class ObjectLayerImpl
 	public void deleteEverything() throws RARException{
 		persistence.deleteEverything();
 	}
+
+	@Override
+	public void storeTypePath(VehicleType vehicleType, String path) throws RARException {
+		persistence.storeTypePath(vehicleType, path);
+	}
+
+	@Override
+	public List<String> restoreTypePath(VehicleType vehicleType) throws RARException {
+		return persistence.restoreTypePath(vehicleType);
+	}
+	
+	@Override
+	public int getReservationId(){
+		return persistence.getReservationId();
+	}
+
+	@Override
+	public void storeCharges(Reservation reservation, Rental rental, boolean insert) throws RARException {
+		persistence.storeCharges(reservation, rental, insert);
+	}
+
+	@Override
+	public int restoreCharges(int reservationId) throws RARException {
+		return persistence.restoreCharges(reservationId);
+	}
+	
 }

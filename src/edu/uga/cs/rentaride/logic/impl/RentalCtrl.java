@@ -102,37 +102,20 @@ public class RentalCtrl {
 	
 	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
 		
-		// check if reservation already exists
+		// retrieve rental
 		//
-		Reservation modelReservation = objectLayer.createReservation();
-		modelReservation.setId(reservationId);
-		List<Reservation> reservations = objectLayer.findReservation(modelReservation);
-		Reservation reservation = null;
-		if(reservations.size() > 0){
-			reservation = reservations.get(0);
-		}
-			
-		// check if reservation found
-		//
-		if(reservation == null)
-			throw new RARException( "A reservation with this id does not exist" );
+		modelRental = objectLayer.createRental();
+		modelRental.setId(rentalId);
+		rentals = objectLayer.findRental(modelRental);
+		if(rentals.size() > 0)
+			rental = rentals.get(0);
 		
-		// check if vehicle already exists
+		// check if null rental
 		//
-		Vehicle modelVehicle = objectLayer.createVehicle();
-		modelVehicle.setId(vehicleId);
-		List<Vehicle> vehicles = objectLayer.findVehicle(modelVehicle);
-		Vehicle vehicle = null;
-		if(vehicles.size() > 0)
-			vehicle = vehicles.get(0);
+		if(rental == null)
+			throw new RARException( "Rental is null" );
 		
-		// check if vehicle found
-		//
-		if(vehicle == null)
-			throw new RARException( "A vehicle with this id does not exist" );
-		
-		rental = null;
-		rental = objectLayer.createRental(pickupTime, reservation, vehicle);
+		rental.setReturnTime(new Date());
 		rental.setId(rentalId);
 		objectLayer.storeRental(rental);
 	}

@@ -1,6 +1,9 @@
-package edu.uga.cs.rentaride.presentation.admin;
+package edu.uga.cs.rentaride.presentation.customer.update;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -18,23 +22,23 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminIndex
+ * Servlet implementation class CustomerLocation
  */
-@WebServlet("/AdminCar")
-public class AdminCar extends HttpServlet {
+@WebServlet("/CustomerReturn")
+public class CustomerReturn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/AdminTemplates";
+	private String templateDir = "/WEB-INF/CustomerTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminCar() {
+    public CustomerReturn() {
         super();
     }
 
@@ -67,14 +71,17 @@ public class AdminCar extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusCreateCustomerRentalG = "";
+		String statusCreateCustomerRentalB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
-		
-        System.out.println("HI");
+        String         ssid;
+        int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
+
+        templateProcessor.setTemplate("CustomerReservation.ftl");
         
+		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
@@ -91,18 +98,37 @@ public class AdminCar extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				statusCreateCustomerRentalB = e.toString();
+				templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalB);
 				templateProcessor.processTemplate(response);
 			}
 		}
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		templateProcessor.setTemplate("AdminCars.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		templateProcessor.processTemplate(response);
+			
+		try {
+			List<Reservation> reservations = logicLayer.findReservations(reservationId);
+			Reservation reservation = reservations.get(0);
+			Rental rental = reservation.getRental();
+			int rentalId = (int)rental.getId();
+			logicLayer.updateRental( rentalId, null, reservationId, -1);
+			statusCreateCustomerRentalG = "Successfully created a rental";
+			user = session.getUser();
+	        templateProcessor.setTemplate("CustomerIndex.ftl");
+			templateProcessor.addToRoot("user", user.getFirstName());
+			templateProcessor.addToRoot("userSession", user);
+			templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalG);
+			templateProcessor.processTemplate(response);
+
+		} catch(RARException e){
+			e.printStackTrace();
+			statusCreateCustomerRentalB = "Failed to create rental";
+			templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalB);
+			templateProcessor.processTemplate(response);
+		}
 	}
 
 	/**

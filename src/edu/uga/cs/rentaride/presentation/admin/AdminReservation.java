@@ -1,6 +1,8 @@
 package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -18,10 +22,10 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminIndex
+ * Servlet implementation class AdminReservation
  */
-@WebServlet("/AdminCar")
-public class AdminCar extends HttpServlet {
+@WebServlet("/AdminReservation")
+public class AdminReservation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
@@ -34,8 +38,9 @@ public class AdminCar extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminCar() {
+    public AdminReservation() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -67,14 +72,16 @@ public class AdminCar extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;		
+
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+
 		
-        System.out.println("HI");
-        
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
@@ -99,16 +106,29 @@ public class AdminCar extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		templateProcessor.setTemplate("AdminCars.ftl");
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		templateProcessor.processTemplate(response);
+		
+		try {
+			List<VehicleType> vehicleTypes = logicLayer.findLocationAvailableVehicleTypes( locationId );
+			templateProcessor.addToRoot("locationId", locationId);
+			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypes);
+			templateProcessor.setTemplate("AdminReservation.ftl");
+			templateProcessor.processTemplate(response);
+
+		} catch(RARException e){
+			e.printStackTrace();
+			templateProcessor.setTemplate("AdminReservation.ftl");
+			templateProcessor.processTemplate(response);
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
 }

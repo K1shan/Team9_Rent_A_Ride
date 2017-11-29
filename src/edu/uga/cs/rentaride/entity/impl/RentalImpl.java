@@ -49,6 +49,8 @@ public class RentalImpl
 		if(this.returnTime == null){
 			Date date = new Date();
 			Timestamp timedate = new Timestamp(date.getTime());
+			if(this.pickupTime == null)
+				return false;
 			if(timedate.getHours()-this.pickupTime.getTime() < this.reservation.getLength()){
 				return false;
 			}else{
@@ -88,6 +90,8 @@ public class RentalImpl
 
 	public int getCharges() throws RARException {
 		
+		if(vehicle == null || reservation == null)
+			return charges;
 		if(charges == 0){
 			for(HourlyPrice hourlyPrice : vehicle.getVehicleType().getHourlyPrices() ){
 				if(hourlyPrice.getMaxHours() == reservation.getLength()){

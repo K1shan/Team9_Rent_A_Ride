@@ -73,6 +73,7 @@ public class VehicleTypeCreate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
+        String path = "";
 		templateProcessor.setTemplate("AdminView.ftl");
 		
 		// TODO
@@ -109,7 +110,7 @@ public class VehicleTypeCreate extends HttpServlet {
 		
 		try {
 			
-			logicLayer.createType(typeName);
+			logicLayer.createType(typeName, path);
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
 			templateProcessor.processTemplate(response);

@@ -11,7 +11,7 @@
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicle.js"></script>
 </head>
 
-<#include "AdminNavbar.ftl">
+<#include "CustomerNavbar.ftl">
 
 <body>
 	

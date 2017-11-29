@@ -18,6 +18,7 @@
    	<section id="section1">
    		<div class="modalTwo">
    		<div class="tab">
+   		<p>MY RESERVATIONS</p>
    		<#if reservations??>
    			<#list reservations as reservation>
    				<p class="float-label">Rental Location: ${reservation.rentalLocation.name}</p>
@@ -41,8 +42,17 @@
 				</form>
 				<p></p>
 				
-				<!--
-   				<form class="form" action="CustomerCancelReservation" method='post'>
+				<form action="CustomerReturn" method='post'>
+   					<p class="float-label">
+						<input class="type" type="submit" value="RENTAL RETURN" />
+					</p>
+		  			<input type="hidden" name="reservationId" value='${reservation.id}' />
+		  			<input type="hidden" name="reservationVehicleTypeId" value='${reservation.vehicleType.id}' />
+		  			<input type="hidden" name="pickupTime" value='${reservation.pickupTime}' />
+		  			<input type="hidden" name="pickupTime" value='${reservation.length}' />
+				</form>
+				
+   				<form action="CustomerCancelReservation" method='post'>
    					<p>
 						<input class="type" type="submit" value="CANCEL" />
 					</p>
@@ -50,7 +60,7 @@
 		  			<input type="hidden" name="reservationVehicleTypeId" value='${reservation.vehicleType.id}' />
 		  			<input type="hidden" name="pickupTime" value='${reservation.pickupTime}' />
 		  			<input type="hidden" name="pickupTime" value='${reservation.length}' />
-				</form>-->
+				</form>
 				
 				<#if statusUpdateCustomerReservationG??>
 					<p class="good">

@@ -28,6 +28,30 @@ body {
   position: absolute;
 }
 
+.modalSearch{
+
+  background-color: #fff;
+  width: 400px;
+  padding: 30px;
+/*   position: fixed; */
+  left: 35%;
+  margin: -325px 0px 0px 0px;
+  min-height: 300px;
+  position: absolute;
+}
+
+.modalReservation{
+
+  background-color: #fff;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 36%;
+  margin: 25px 0px 0px 0px;
+  min-height: 650px;
+  position: absolute;
+}
+
 .modalThree {
   background-color: #fff;  width: 400px;
   width: 400px;
@@ -242,13 +266,18 @@ button,input[type="submit"] {
   background-color: #C0C0C0;
 }
 
+.searchR{
+	
+	margin-top: 350px;
+}
+
 #more input[type="submit"] {
   text-transform: uppercase;
   font-size: 14px;
   letter-spacing: 2px;
   color: #fff;
   padding: 15px 30px;
-  margin: 15px 0px 0px 0px;
+  margin-top: 15px;
   display: block;
   width: 100%;
   background-color: #000;

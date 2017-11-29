@@ -4,7 +4,7 @@
 		<form class="form" id="admin" action="CustomerStatusUpdate" method='post' name="admin">
 			
 			<p class="float-label">
-				<select id="selectCustomerUpdate" name="selectCustomerUpdate" class="minimal">
+				<select id="selectCustomerUpdateAdmin" name="selectCustomerUpdateAdmin" class="minimal">
 						<option value="">Select Customer</option>
 				</select>
 			</p>
@@ -18,7 +18,7 @@
 			</p>
 			
 			<p>
-				<input class = "type" type="submit" onclick="return custoemerUpdateNullCheck()" value="UPDATE CUSTOMER" />
+				<input class = "type" type="submit" onclick="return customerUpdateNullCheck()" value="UPDATE CUSTOMER" />
 			</p>
 			  				
 			<#if statusUpdateCustomerStatusG??>
