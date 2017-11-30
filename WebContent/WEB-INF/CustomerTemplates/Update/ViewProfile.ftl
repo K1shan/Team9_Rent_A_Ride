@@ -4,14 +4,7 @@
 		<form class="form" id="admin" action="CustomerUpdate" method='post' name="admin">
 			
 	  		<#if userSession?has_content>
-	  			<p class="float-label">
-	  				<p class="in">
-	  					${userSession.userStatus}
-	  					<#if userSession.userStatus=="ACTIVE">
-	  						- Until ${userSession.memberUntil}
-	  					</#if>
-  					</p>
-	  			</p>
+
 	  			<!-- User input for First name -->
 				<p class="float-label">
 					<p class ="in">

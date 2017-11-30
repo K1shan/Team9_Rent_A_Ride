@@ -113,12 +113,12 @@ public class AdminReservation extends HttpServlet {
 			List<VehicleType> vehicleTypes = logicLayer.findLocationAvailableVehicleTypes( locationId );
 			templateProcessor.addToRoot("locationId", locationId);
 			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypes);
-			templateProcessor.setTemplate("AdminReservation.ftl");
+			templateProcessor.setTemplate("AdminReservationLocation.ftl");
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
 			e.printStackTrace();
-			templateProcessor.setTemplate("AdminReservation.ftl");
+			templateProcessor.setTemplate("AdminReservationLocation.ftl");
 			templateProcessor.processTemplate(response);
 		}
 	}
