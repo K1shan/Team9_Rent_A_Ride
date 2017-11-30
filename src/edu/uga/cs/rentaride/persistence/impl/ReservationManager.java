@@ -448,10 +448,167 @@ public class ReservationManager {
 			
 		} catch (SQLException e){
 			e.printStackTrace();
-			throw new RARException( "RentalLocationManager.get: failed to get any locations: " + e );
+			throw new RARException( "ReservationManager.get: failed to get any reservations: " + e );
 		}
     }
 
+	public List<Reservation> restoreNoShowReservations() throws RARException {
+		
+		String selectReservationQuery =
+				"SELECT "
+				+ "RESERVATION.*, "
+				+ "USER.*, "
+				+ "CUSTOMER.*, "
+				+ "VEHICLE_TYPE.*, "
+				+ "LOCATION.* "
+				+ "FROM RESERVATION "
+				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
+				+ "LEFT JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id "
+				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
+				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
+				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
+				+ "WHERE RENTAL.pickup_date IS NULL";
+				
+		
+		
+		StringBuffer query = new StringBuffer(100);
+		StringBuffer condition = new StringBuffer(100);
+		List<Reservation> reservations = new ArrayList<Reservation>();
+		Statement stmt = null;
+		condition.setLength(0);
+		query.append(selectReservationQuery);
+		
+		try {
+			stmt = con.createStatement();
+			System.out.println("query: " + query.toString());
+			if( stmt.execute(query.toString()) ){
+				ResultSet rs = stmt.getResultSet();
+				// RESERVATION
+				//
+				int 	reservation_reservation_id;
+				int 	reservation_location_id;
+				int		reservation_type_id;
+				int 	reservation_customer_id;
+				Date 	reservation_pickupTime;
+				int 	reservation_rentalLength;
+				int		reservation_cancelled;
+				// USER
+				//
+				int		user_user_id;
+				String 	user_fname;
+		        String 	user_lname;
+		        String 	user_uname;
+		        String 	user_pword;
+		        String 	user_email;
+		        String 	user_address;
+		        Date 	user_createDate;
+				// CUSTOMER
+		        //
+		        int		customer_customer_id;
+		        int 	customer_user_id;
+		        Date 	customer_memberUntil;
+		        String 	customer_licState;
+		        String 	customer_licNum;
+		        String 	customer_ccNum;
+		        Date 	customer_ccExp;
+		        int		customer_status;
+		        // VEHICLE_TYPE
+	            //
+	            int		vehicleType_type_id;
+	            String	vehicleType_name;
+	            // LOCATION
+	            //
+				int 	location_location_id;
+				String 	location_name;
+				String 	location_addr;
+				String 	location_addr_city;
+				String 	location_addr_state;
+				String 	location_addr_zip;
+				String 	location_image_path;
+				int 	location_capacity;
+		        // OBJECTS
+				//
+				VehicleType vehicleType = null;
+				RentalLocation rentalLocation = null;
+				Customer customer = null;
+				Reservation reservation = null;
+				Rental rental = null;
+				UserStatus userStatus = UserStatus.ACTIVE;
+		        
+		        while( rs.next() ){
+		        	// RESERVATION
+					reservation_reservation_id 	= rs.getInt(1);
+					reservation_location_id		= rs.getInt(2);
+					reservation_type_id 		= rs.getInt(3);
+					reservation_customer_id		= rs.getInt(4);
+					reservation_pickupTime 		= rs.getTimestamp(5);
+					reservation_rentalLength 	= rs.getInt(6);
+					reservation_cancelled		= rs.getInt(7);
+					
+					// USER
+					user_user_id = rs.getInt(8);
+	           	 	user_fname = rs.getString(9);
+	           	 	user_lname = rs.getString(10);
+	           	 	user_uname = rs.getString(11);
+	           	 	user_pword = rs.getString(12);
+	           	 	user_email = rs.getString(13);
+	           	 	user_address = rs.getString(14);
+	           	 	user_createDate = rs.getDate(15);
+	           	 	
+	           	 	// CUSTOMER
+	                customer_customer_id = rs.getInt(16);
+	                customer_user_id = rs.getInt(17);
+	                customer_memberUntil = rs.getDate(18);
+	                customer_licState = rs.getString(19);
+	                customer_licNum = rs.getString(20);
+	                customer_ccNum = rs.getString(21);
+	                customer_ccExp = rs.getDate(22);
+	                customer_status = rs.getInt(23);
+	                if(customer_status == 0)
+	                	userStatus = UserStatus.ACTIVE;
+	                else if(customer_status == 1)
+	                	userStatus = UserStatus.CANCELLED;
+	                else if(customer_status == 2)
+	                	userStatus = UserStatus.TERMINATED;
+	                
+	                // VEHICLE_TYPE
+					vehicleType_type_id = rs.getInt(24);
+					vehicleType_name = rs.getString(25);
+					
+					// LOCATION
+					location_location_id		= rs.getInt(26);
+					location_name 				= rs.getString(27);
+					location_addr	 			= rs.getString(28);
+					location_addr_city			= rs.getString(29);
+					location_addr_state			= rs.getString(30);
+					location_addr_zip			= rs.getString(31);
+					location_image_path			= rs.getString(32);
+					location_capacity 			= rs.getInt(33);
+					
+	                customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);
+					customer.setId(customer_customer_id);
+					
+					vehicleType = objectLayer.createVehicleType(vehicleType_name);
+					vehicleType.setId(vehicleType_type_id);
+					
+					rentalLocation = objectLayer.createRentalLocation(location_name, location_addr, location_addr_city, location_addr_state, location_addr_zip, location_image_path, location_capacity);
+					rentalLocation.setId(location_location_id);
+					
+					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
+					reservation.setId(reservation_reservation_id);
+					if(reservation_cancelled == 1) reservation.setCancelled(true);
+					else reservation.setCancelled(false);
+					reservations.add(reservation);
+		        }
+			}
+			return reservations;
+		} catch (SQLException e){
+			e.printStackTrace();
+			throw new RARException( "ReservationManager.get: failed to get any reservations: " + e );
+		}
+	}
+	
+	
 	public Customer restoreCustomerReservation(Reservation reservation) throws RARException {
 		// TODO Auto-generated method stub
 		return null;

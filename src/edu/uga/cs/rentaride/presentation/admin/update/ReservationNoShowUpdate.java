@@ -1,17 +1,18 @@
-package edu.uga.cs.rentaride.presentation.admin.create;
+package edu.uga.cs.rentaride.presentation.admin.update;
 
-import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
@@ -23,24 +24,21 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class VehicleTypeCreate
+ * Servlet implementation class ReservationUpdate
  */
-@WebServlet("/VehicleTypeCreate")
-@MultipartConfig(maxFileSize = 16177215)
-public class VehicleTypeCreate extends HttpServlet {
+@WebServlet("/ReservationNoShowUpdate")
+public class ReservationNoShowUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	private static final String SAVE_DIR = "cars";
-
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public VehicleTypeCreate() {
+    public ReservationNoShowUpdate() {
         super();
     }
 
@@ -73,26 +71,17 @@ public class VehicleTypeCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusAddTypeG = "";
-		String statusAddTypeB = "";
+		
+		String statusUpdateReservationNoShowG = "";
+		String statusUpdateReservationNoShowB = "";
+		int reservationId = Integer.parseInt(request.getParameter("selectReservationNoShowUpdate"));
+
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
 		templateProcessor.setTemplate("AdminView.ftl");
-		String savePath = getServletContext().getRealPath("/city"); 
-		File fileSaveDir = new File(savePath);
-        if(!fileSaveDir.exists()){
-        		System.out.println(fileSaveDir);
-            fileSaveDir.mkdir();
-        }
-        Part pic = request.getPart("picAdd");
-        String oneName = extractFileName(pic);
-        String path = SAVE_DIR + File.separator + oneName;
-        
-		
-		// TODO
-		String typeName = request.getParameter("type").toLowerCase();
+
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -111,8 +100,8 @@ public class VehicleTypeCreate extends HttpServlet {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
 				
-				statusAddTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
+				statusUpdateReservationNoShowB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateReservationNoShowG", statusUpdateReservationNoShowG);
 				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
@@ -124,33 +113,17 @@ public class VehicleTypeCreate extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
-			
-			logicLayer.createType(typeName, path);
-			statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			logicLayer.checkPickupTime(reservationId);
+			statusUpdateReservationNoShowG = "Woohoo!";
+			templateProcessor.addToRoot("statusUpdateReservationNoShowG", statusUpdateReservationNoShowG);
 			templateProcessor.processTemplate(response);
-			pic.write(savePath + File.separator + oneName);
-
-		} catch (RARException e){
-			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("VehicleTypeCreate: "+e.toString());
+		}catch(RARException e) {
+			e.printStackTrace();
+			statusUpdateReservationNoShowB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusUpdateReservationNoShowB", statusUpdateReservationNoShowB);
 			templateProcessor.processTemplate(response);
 			return;
 		}
-	}
-	
-	private String extractFileName(Part part) {
-		
-	    String contentDisp = part.getHeader("content-disposition");
-	    String[] items = contentDisp.split(";");
-	    for (String s : items) {
-	        if (s.trim().startsWith("filename")) {
-	            return s.substring(s.indexOf("=") + 2, s.length()-1);
-	        }
-	    }
-	    return "";
 	}
 
 	/**

@@ -36,10 +36,10 @@
 <script type = "text/javascript" src="Javascript/RetrieveHourlyPrice/RetrieveHourlyPrice.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomer.js"></script>
 
-
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocationView.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomerView.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveReservation/RetrieveReservationView.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveReservation/RetrieveReservationNoShow.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicleView.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveComments/RetrieveCommentsView.js"></script>
 
@@ -83,6 +83,7 @@
       <#include "Update/UpdateMembership.ftl">
       <#include "Update/UpdateLatefee.ftl">
       <#include "Update/UpdateHourlyPrice.ftl">
+      <#include "Update/UpdateReservationNoShow.ftl">
     </section>
     
     <section id="section4">

@@ -515,4 +515,18 @@ public interface LogicLayer {
 	 * @throws RARException
 	 */
 	public void checkPickupTime ( int reservationId ) throws RARException;
+	
+	/**
+	 * 
+	 * @param reservationId
+	 * @throws RARException
+	 */
+	public void checkReservationNoShow ( int reservationId ) throws RARException;
+	
+	/**
+	 * 
+	 * @return
+	 * @throws RARException
+	 */
+	public List<Reservation> findNoShowReservation () throws RARException;
 }
