@@ -4,13 +4,13 @@
 		<form class="form" id="admin" action="CustomerStatusUpdate" method='post' name="admin">
 			
 			<p class="float-label">
-				<select id="selectCustomerUpdateAdmin" name="selectCustomerUpdateAdmin" class="minimal">
+				<select id="selectCustomerUpdateAdmin" name="selectCustomerUpdateAdmin" class="minimal" required >
 						<option value="">Select Customer</option>
 				</select>
 			</p>
 			
 			<p class="float-label">
-				<select id="selectCustomerStatusUpdate" name="selectCustomerStatusUpdate" class="minimal">
+				<select id="selectCustomerStatusUpdate" name="selectCustomerStatusUpdate" class="minimal" required >
 					<option value="">Customer Status</option>
 					<option value="ACTIVE">ACTIVE</option>
 					<option value="TERMINATED">TERMINATED</option>

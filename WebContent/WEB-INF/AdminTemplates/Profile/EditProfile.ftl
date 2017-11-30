@@ -5,32 +5,32 @@
 
 	  			<!-- User input for First name -->
 				<p class="float-label">
-	    			 	<input id="fName" name="first-name" placeholder="First Name"/>
+	    			 	<input id="fName" name="first-name" placeholder="First Name" required />
 				</p>
 				
 				<!-- User input for Last name -->
 	  			<p class="float-label">
-	    				<input id="lName" name="last-name" placeholder="Last Name"/>
+	    				<input id="lName" name="last-name" placeholder="Last Name" required />
 	  			</p>
 	  			
 	  			<!-- User input for Email -->
 	 	 		<p class="float-label">
-	    				<input type="email" id="email" name="email" placeholder="Email"/>
+	    				<input type="email" id="email" name="email" placeholder="Email" required />
 	 			</p>
 	 			
 	 			<!-- User input for Address -->
 	  			<p class="float-label">
-	    				<input type="text" id="address" name="address" placeholder="Address"/>
+	    				<input type="text" id="address" name="address" placeholder="Address" required />
 	  			</p>
 	  			
 	  			<!-- User input for password -->
       			<p class="float-label">
-        				<input type="password" id="password" name="password" placeholder="New Password"/>
+        				<input type="password" id="password" name="password" placeholder="New Password" required />
       			</p>
       			
       			<!-- User input for confirm password -->
       			<p class="float-label">
-        				<input type="password" id="confirm-password" name="confirm" placeholder="Confirm password"/>
+        				<input type="password" id="confirm-password" name="confirm" placeholder="Confirm password" required />
       			</p>
 	  			
 	  			<p>

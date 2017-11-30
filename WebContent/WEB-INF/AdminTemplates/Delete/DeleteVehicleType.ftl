@@ -4,12 +4,12 @@
 		<form class="form" id="admin" action="VehicleTypeDelete" method='post' name="admin">
 		
 		
-			<select id="selectVehicleTypeDelete" name="selectVehicleTypeDelete" class="minimal">
+			<select id="selectVehicleTypeDelete" name="selectVehicleTypeDelete" class="minimal" required >
 					<option value="">Select Vehicle Type</option>
 			</select>
 			
 			<p>
-				<input class = "type" type="submit" onclick="return typeDeleteNullCheck()" value="DELETE VEHICLE TYPE" />
+				<input class = "type" type="submit" onclick="return typeDeleteNullCheck()" value="DELETE VEHICLE TYPE" required />
 			</p>
 			
 			<#if statusDeleteVehicleTypeG??>

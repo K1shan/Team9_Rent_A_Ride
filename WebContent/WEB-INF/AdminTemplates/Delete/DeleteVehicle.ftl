@@ -3,11 +3,11 @@
 		<label class="head">DELETE VEHICLE </label>
 		<form class="form" id="admin" action="VehicleDelete" method='post' name="admin">
 		
-			<select id="selectVehicleDelete" name="selectVehicleDelete" class="minimal">
+			<select id="selectVehicleDelete" name="selectVehicleDelete" class="minimal" required >
 					<option value="">Select Vehicle</option>
 			</select>
 	  		<p>
-	    			<input class = "type" type="submit" onclick="return vehicleDeleteNullCheck()" value="DELETE VEHICLE" />
+	    			<input class = "type" type="submit" onclick="return vehicleDeleteNullCheck()" value="DELETE VEHICLE" required />
 	  		</p>
 	  		<#if statusDeleteVehicleG??>
 						

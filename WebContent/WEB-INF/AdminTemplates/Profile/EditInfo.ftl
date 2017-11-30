@@ -4,31 +4,31 @@
 		<form class="form" id="admin" action="AdminInfo" method='post' name="admin">
 
 				<p class="float-label">
-	    				<input type="email" id="emailInfo" name="email" placeholder="Email"/>
+	    				<input type="email" id="emailInfo" name="email" placeholder="Email" required />
 	 			</p>
 	 			
 
 				<p class="float-label">
-	    			 	<input type="text" id="stateInfo" name="state" placeholder="State"/>
+	    			 	<input type="text" id="stateInfo" name="state" placeholder="State" required />
 				</p>
 				
 
 	  			<p class="float-label">
-	    				<input type="text" id="licNumInfo" name="licNum" placeholder="License Number"/>
+	    				<input type="text" id="licNumInfo" name="licNum" placeholder="License Number" required />
 	  			</p>
 	  			
 
 	 	 		<p class="float-label">
-	    				<input type="text" id="ccNumInfo" name="ccNum" placeholder="Cradit Card Number"/>
+	    				<input type="text" id="ccNumInfo" name="ccNum" placeholder="Cradit Card Number" required />
 	 			</p>
 	 			
 
 	  			<p class="float-label">
-	    				<input type="text" id="ccExpInfo" name="ccExp" placeholder="Cradit Card Exp Date"/>
+	    				<input type="text" id="ccExpInfo" name="ccExp" placeholder="Cradit Card Exp Date" required />
 	  			</p>
 	  			
 	  			<p>
-		    			<input class = "type" type="submit" onclick="return adminUpdateInfoNullCheck()" value="UPDATE INFO" />
+		    			<input class = "type" type="submit" onclick="return adminUpdateInfoNullCheck()" value="UPDATE INFO" required />
 		  		</p>
 
 	  		<#if statusUpdateInfoG??>			

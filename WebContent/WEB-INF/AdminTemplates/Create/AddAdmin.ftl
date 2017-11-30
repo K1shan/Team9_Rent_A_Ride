@@ -4,7 +4,7 @@
 		<form class="form" id="admin" action="AdminCreate" method='post' name="admin">
 			
 			<p class="float-label">
-				<input type="text" id="admin_email" name="admin_email" placeholder="Email"/>
+				<input type="text" id="admin_email" name="admin_email" placeholder="Email" required />
 			</p>
 			<p>
 				<input class = "admin" type="submit" onclick="return adminCreateNullCheck()" value="ADD ADMIN" />

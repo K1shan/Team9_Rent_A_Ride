@@ -3,12 +3,12 @@
 		<label class="head">ADD VEHICLE TYPE </label>
 		<form enctype="multipart/form-data" class="form" id="admin" action="VehicleTypeCreate" method='post' name="admin">
 		
-			<select id="selectVehicleTypeAdd" name="selectVehicleTypeAdd" class="minimal">
+			<select id="selectVehicleTypeAdd" name="selectVehicleTypeAdd" class="minimal" required >
 					<option value="">View Only</option>
 			</select>
 								
 			<p class="float-label">
-					<input type="text" id="type" name="type" placeholder="Vehicle Type Name"/>
+					<input type="text" id="type" name="type" placeholder="Vehicle Type Name" required />
 			</p>
 			  	
 			 <p>
@@ -16,7 +16,7 @@
 			</p>		
 						  										
 			<p>
-				<input class = "type" type="submit" onclick="return typeCreateNullCheck()" value="ADD VEHICLE TYPE" />
+				<input class = "type" type="submit" onclick="return typeCreateNullCheck()" value="ADD VEHICLE TYPE" required />
 			</p>
 			  				
 			<#if statusAddTypeG??>
