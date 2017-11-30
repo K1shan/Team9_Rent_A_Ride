@@ -1,9 +1,9 @@
 <div class="modalFour">
 	<div class="tab">
 		<label class="head">DELETE HOURLY PRICE </label>
-		<form class="form" id="admin" action="HourlyPriceDelete" method='post' name="admin">
+		<form class="form" id="admin" action="HourlyPriceDelete" method='post' name="admin" required >
 		
-			<select id="selectHourlyPriceDelete" name="selectHourlyPriceDelete" class="minimal">
+			<select id="selectHourlyPriceDelete" name="selectHourlyPriceDelete" class="minimal" required >
 					<option value="">Select Hourly Price</option>
 			</select>
 			

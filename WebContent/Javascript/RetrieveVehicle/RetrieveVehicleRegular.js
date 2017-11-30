@@ -33,20 +33,14 @@ $(document).ready(function() {
 			 					html += '<div class="product-description">' +  city + ', ' + state + ', ' + zip + '</div>';
 			 					html += '<div class="product-cta">';
 			 					html += '<input type="hidden" name="locationId" value=' +id+ '	>';
-		 						html += '<input type="submit" class = "cta" value="MAKE RESERVATION" />';
 		 						html += '</div>';
 	 						html += '</form>';
+ 						html += '</form>';
  						html += '</div>';
 					html += '</div>';
 				html += '</div>';
 				html += '</div>';
-				 
-				 $('#select1').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-				 $('#select2').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-				 $('#select3').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-				 $('#selectVehicle').append($('<option>').text(tag).attr('value', id));
-				 $('#selectVehicleUpdate').append($('<option>').text(id + ' - ' + make + ' - ' + model + ' - ' + tag).attr('value', id));
-				 $('#selectVehicleDelete').append($('<option>').text(id + ' - ' + make + ' - ' + model + ' - ' + tag).attr('value', id));
+
 				 counter++;
 			 });
 

@@ -3,11 +3,11 @@
 		<label class="head">DELETE LOCATION </label>
 		<form class="form" id="admin" action="LocationDelete" method='post' name="admin">
 		
-			<select id="selectLocationDelete" name="selectLocationDelete" class="minimal">
+			<select id="selectLocationDelete" name="selectLocationDelete" class="minimal" required >
 					<option value="">Select Location</option>
 			</select>
 	  		<p>
-	    			<input class = "type" type="submit" onclick="return locationDeleteNullCheck()" value="DELETE LOCATION" />
+	    			<input class = "type" type="submit" onclick="return locationDeleteNullCheck()" value="DELETE LOCATION" required />
 	  		</p>
 	  		<#if statusDeleteLocationG??>
 						

@@ -25,7 +25,7 @@
 		
 		<form class="form" id="admin" action="RentalCreate" method='post' name="admin">
   			
-  			 <select id="selectRentalVehicleAdd" name="selectRentalVehicleAdd" class="minimal">
+  			 <select id="selectRentalVehicleAdd" name="selectRentalVehicleAdd" class="minimal" required >
 				<option value="">Select Vehicle</option>
 				<#if vehicles??>
    				<#list vehicles as vehicle>
@@ -35,8 +35,8 @@
 			</select>
 			
 			<p>
-				<input type="hidden" name="reservationId" value='${reservationId}' />
-				<input class = "type" type="submit" onclick="return rentalCreateNullCheck()" value="PICKUP RENTAL" />
+				<input type="hidden" name="reservationId" value='${reservationId}' required />
+				<input class = "type" type="submit" onclick="return rentalCreateNullCheck()" value="PICKUP RENTAL" required />
 			</p>
 		
 			<#if statusCreateAdminRentalG??>

@@ -28,8 +28,6 @@ $(document).ready(function() {
 				 					html += '<div class="product-description">' + address + '</div>';
 				 					html += '<div class="product-description">' + zip + '</div>';
 				 					html += '<div class="product-cta">';
-				 					html += '<input type="hidden" name="locationId" value=' +id+ '	>';
-			 						html += '<input type="submit" class = "cta" value="MAKE RESERVATION" />';
 			 						html += '</div>';
 		 						html += '</form>';
 
@@ -38,13 +36,6 @@ $(document).ready(function() {
 					html += '</div>';
 					html += '</div>';
 					
-					$('#selectLocation').append($('<option>').text(name).attr('value', id));
-					$('#selectLocationUpdate').append($('<option>').text(name).attr('value', id));
-
-					$('#selectVehicleLocationAdd').append($('<option>').text(name).attr('value', id)); 
-					$('#selectVehicleLocationUpdate').append($('<option>').text(name).attr('value', id));
-					$('#selectLocationDelete').append($('<option>').text(name).attr('value', id)); 
-
 				 });
 				 
 				 $('#main').html(html);

@@ -22,7 +22,7 @@ $(document).ready(function() {
 					 			html +='<div class="product-img"><img id = "image" src="' + image + '"></div>';
 				 			html += '</div>';
 				 			html += '<div class="product-des">';
-				 				html += '<form id = "formOne" action="AdminReservation" method="post">';
+				 				html += '<form id = "formOne" action="CustomerReservation" method="post">';
 				 					html += '<div class="product-price" id="price">' +  ava + ' ' + '<div class="sub"> AVAILABILITY</div></div>';
 				 					html += '<div class="product-name">'+name+'</div>';
 				 					html += '<div class="product-description">' + address + '</div>';
@@ -37,13 +37,6 @@ $(document).ready(function() {
  						html += '</div>';
 					html += '</div>';
 					html += '</div>';
-					
-					$('#selectLocation').append($('<option>').text(name).attr('value', id));
-					$('#selectLocationUpdate').append($('<option>').text(name).attr('value', id));
-
-					$('#selectVehicleLocationAdd').append($('<option>').text(name).attr('value', id)); 
-					$('#selectVehicleLocationUpdate').append($('<option>').text(name).attr('value', id));
-					$('#selectLocationDelete').append($('<option>').text(name).attr('value', id)); 
 
 				 });
 				 
