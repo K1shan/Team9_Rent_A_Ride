@@ -142,14 +142,12 @@ public class ReservationManager {
 				+ "USER.*, "
 				+ "CUSTOMER.*, "
 				+ "VEHICLE_TYPE.*, "
-				+ "LOCATION.*, "
-				+ "RENTAL.* "
+				+ "LOCATION.* "
 				+ "FROM RESERVATION "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
-				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
-				+ "INNER JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id";
+				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id";
 		
 		
 		StringBuffer query = new StringBuffer(100);
@@ -328,7 +326,7 @@ public class ReservationManager {
 	            String 	customer_licNum;
 	            String 	customer_ccNum;
 	            Date 	customer_ccExp;
-	            int		customer_status = 0;
+	            int		customer_status;
 	            // VEHICLE_TYPE
 	            //
 	            int		vehicleType_type_id;
@@ -392,7 +390,9 @@ public class ReservationManager {
 	                customer_ccNum = rs.getString(21);
 	                customer_ccExp = rs.getDate(22);
 	                customer_status = rs.getInt(23);
-	                if(customer_status == 1)
+	                if(customer_status == 0)
+	                	userStatus = UserStatus.ACTIVE;
+	                else if(customer_status == 1)
 	                	userStatus = UserStatus.CANCELLED;
 	                else if(customer_status == 2)
 	                	userStatus = UserStatus.TERMINATED;
@@ -411,15 +411,15 @@ public class ReservationManager {
 					location_image_path			= rs.getString(32);
 					location_capacity 			= rs.getInt(33);
 					
-					// RENTAL
-					//
-					rental_rental_id 		= rs.getInt(34);
-					rental_reservation_id 	= rs.getInt(35);
-					rental_vehicle_id 		= rs.getInt(36);
-					rental_pickupTime 		= rs.getTimestamp(37);
-					rental_returnTime 		= rs.getTimestamp(38);
-					rental_late 			= rs.getInt(39);
-					rental_charges 			= rs.getInt(40);
+//					// RENTAL
+//					//
+//					rental_rental_id 		= rs.getInt(34);
+//					rental_reservation_id 	= rs.getInt(35);
+//					rental_vehicle_id 		= rs.getInt(36);
+//					rental_pickupTime 		= rs.getTimestamp(37);
+//					rental_returnTime 		= rs.getTimestamp(38);
+//					rental_late 			= rs.getInt(39);
+//					rental_charges 			= rs.getInt(40);
 					
 					
 					customer = objectLayer.createCustomer(user_fname, user_lname, user_uname, user_pword, user_email, user_address, user_createDate, customer_memberUntil, customer_licState, customer_licNum, customer_ccNum, customer_ccExp);

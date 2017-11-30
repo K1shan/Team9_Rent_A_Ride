@@ -117,7 +117,6 @@ public class AdminPickup extends HttpServlet {
 		
 		try {
 			logicLayer.checkPickupTime( reservationId );
-			System.out.println("ReservationID"+reservationId);
 			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
 			templateProcessor.addToRoot("vehicles", vehicles);
 	        templateProcessor.setTemplate("/Create/CreateRental.ftl");

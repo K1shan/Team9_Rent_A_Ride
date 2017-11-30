@@ -78,15 +78,8 @@ public class RentalCreate extends HttpServlet {
 		Date pickupTime = null;
 		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
 		int reservationId = Integer.parseInt(request.getParameter("reservationId"));
-		int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
-		String pickupTimeString = request.getParameter("pickupTime");
-		
-		try {
-			pickupTime = df.parse(pickupTimeString);
-		} catch (ParseException e1) {
-			System.out.println("can't parse date.");
-		}
-		
+		int vehicleId = Integer.parseInt(request.getParameter("selectRentalVehicleAdd"));
+
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -124,7 +117,7 @@ public class RentalCreate extends HttpServlet {
 		
 		try {
 			
-			logicLayer.createRental(pickupTime, reservationId, vehicleId );
+			logicLayer.createRental( new Date(), reservationId, vehicleId );
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
