@@ -32,7 +32,7 @@ public class ReservationCustomerCreate extends HttpServlet {
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates";
+	private String templateDir = "/WEB-INF";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
@@ -116,7 +116,11 @@ public class ReservationCustomerCreate extends HttpServlet {
 		
 		try {
 			logicLayer.createReservation(pickupDate, length, vehicleTypeId, locationId, customerId);
-			templateProcessor.setTemplate("CustomerIndex.ftl");
+			if(user.getIsAdmin()) {
+				templateProcessor.setTemplate("/AdminTemplates/AdminIndex.ftl");
+			}else {
+				templateProcessor.setTemplate("/CustomerTemplates/CustomerIndex.ftl");
+			}
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
