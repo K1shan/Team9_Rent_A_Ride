@@ -149,7 +149,7 @@ public class ReservationManager {
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
 				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
-				+ "RIGHT OUTER JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id";
+				+ "INNER JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id";
 		
 		
 		StringBuffer query = new StringBuffer(100);

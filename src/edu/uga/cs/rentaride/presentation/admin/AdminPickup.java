@@ -117,6 +117,7 @@ public class AdminPickup extends HttpServlet {
 		
 		try {
 			logicLayer.checkPickupTime( reservationId );
+			System.out.println("ReservationID"+reservationId);
 			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
 			templateProcessor.addToRoot("vehicles", vehicles);
 	        templateProcessor.setTemplate("/Create/CreateRental.ftl");
@@ -133,7 +134,7 @@ public class AdminPickup extends HttpServlet {
 			statusUpdateAdminReservationB = e.toString();
 			e.printStackTrace();
 			templateProcessor.addToRoot("statusUpdateAdminReservationB", statusUpdateAdminReservationB);
-	        templateProcessor.setTemplate("AdminReservation.ftl");
+	        templateProcessor.setTemplate("AdminReservations.ftl");
 			templateProcessor.processTemplate(response);
 		}	
 	}
