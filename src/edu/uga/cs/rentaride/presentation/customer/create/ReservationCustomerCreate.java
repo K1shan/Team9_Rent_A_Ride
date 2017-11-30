@@ -1,6 +1,7 @@
 package edu.uga.cs.rentaride.presentation.customer.create;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +73,10 @@ public class ReservationCustomerCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		String statusAdminCreateReservationG = "";
+		String statusAdminCreateReservationB = "";
+		String statusCustomersCreateReservationG = "";
+		String statusCustomersCreateReservationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -81,10 +85,49 @@ public class ReservationCustomerCreate extends HttpServlet {
 		int vehicleTypeId = Integer.parseInt(request.getParameter("selectReservationVehicleTypeAdd"));
 		int locationId = Integer.parseInt(request.getParameter("locationId"));
 		int length = Integer.parseInt(request.getParameter("selectReservationLengthAdd"));
-		String pickupTime = request.getParameter("pickup");
-		Date pickupDate = new Date();
 		
-
+		
+		Calendar cal = Calendar.getInstance();
+		Date pickupDate = new Date();
+		String pickupDateString = request.getParameter("date");
+		String pickupTimeString = request.getParameter("time");
+		
+		int year;
+		int month;
+		int day;
+		int hour;
+		int minute;
+		
+		System.out.println("pickupDate: "+pickupDateString);
+		System.out.println("pickupTime: "+pickupTimeString);
+		System.out.println("timestamp:  "+cal);
+		
+		year = Integer.parseInt(pickupDateString.substring(0,pickupDateString.indexOf("-")));
+		System.out.println("year: "+year);
+		
+		month = Integer.parseInt(pickupDateString.substring(pickupDateString.indexOf("-")+1, pickupDateString.indexOf("-")+3));
+		System.out.println("month: "+month);
+		
+		day = Integer.parseInt(pickupDateString.substring(pickupDateString.length()-2));
+		System.out.println("day: "+day);
+		
+		
+		
+		hour = Integer.parseInt(pickupTimeString.substring(0,pickupTimeString.indexOf(":")));
+		System.out.println("hour: "+hour);
+		
+		minute = Integer.parseInt(pickupTimeString.substring(pickupTimeString.indexOf(":")+1,pickupTimeString.indexOf(":")+3));
+		System.out.println("minute: "+minute);
+		
+		if(pickupTimeString.substring(pickupTimeString.length()-2).equals("PM")){
+			hour += 12;
+		}
+		
+		cal.set(year, month-1, day);
+		cal.set(Calendar.HOUR_OF_DAY, hour);
+		cal.set(Calendar.MINUTE, minute);
+		cal.set(Calendar.SECOND, 0);
+		pickupDate = cal.getTime();
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -102,8 +145,8 @@ public class ReservationCustomerCreate extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				statusAdminCreateReservationB = e.toString();
+				templateProcessor.addToRoot("statusAdminCreateReservationB", statusAdminCreateReservationB);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -116,18 +159,41 @@ public class ReservationCustomerCreate extends HttpServlet {
 		
 		try {
 			logicLayer.createReservation(pickupDate, length, vehicleTypeId, locationId, customerId);
-			if(user.getIsAdmin()) {
+			if(user.getIsAdmin()) 
 				templateProcessor.setTemplate("/AdminTemplates/AdminIndex.ftl");
-			}else {
+			else
 				templateProcessor.setTemplate("/CustomerTemplates/CustomerIndex.ftl");
-			}
 			templateProcessor.processTemplate(response);
+			return;
 
 		} catch(RARException e){
-			e.printStackTrace();
-			templateProcessor.setTemplate("/Create/CreateReservation.ftl");
-			templateProcessor.processTemplate(response);
+			if(user.getIsAdmin()){
+				statusAdminCreateReservationB = e.toString();
+			}else{
+				statusCustomersCreateReservationB = e.toString();
+			}
 		}
+		
+		try {
+			List<VehicleType> vehicleTypesAvail = logicLayer.findLocationAvailableVehicleTypes(locationId);
+			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypesAvail);
+			templateProcessor.addToRoot("locationId", locationId);
+		} catch (RARException e){
+			if(user.getIsAdmin()){
+				statusAdminCreateReservationB += e.toString();templateProcessor.setTemplate("/AdminTemplates/AdminReservationLocation.ftl");
+			}else{
+				statusCustomersCreateReservationB += e.toString();templateProcessor.setTemplate("/Customer/CustomerReservationLocation.ftl");
+			}
+		}
+		
+		if(user.getIsAdmin()){
+			templateProcessor.setTemplate("/AdminTemplates/AdminReservationLocation.ftl");
+		}else{
+			templateProcessor.setTemplate("/Customer/CustomerReservationLocation.ftl");
+		}
+		templateProcessor.addToRoot("statusAdminCreateReservationB", statusAdminCreateReservationB);
+		templateProcessor.addToRoot("statusCustomersCreateReservationB", statusCustomersCreateReservationB);
+		templateProcessor.processTemplate(response);
 	}
 
 	/**

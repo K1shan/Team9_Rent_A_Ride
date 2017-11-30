@@ -72,8 +72,8 @@ public class AdminPickup extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateAdminReservationG = "";
-		String statusUpdateAdminReservationB = "";
+		String statusRetrieveAdminReservationG = "";
+		String statusRetrieveAdminReservationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -97,8 +97,8 @@ public class AdminPickup extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateAdminReservationB = e.toString();
-				templateProcessor.addToRoot("statusUpdateAdminReservationB", statusUpdateAdminReservationB);
+				statusRetrieveAdminReservationB = e.toString();
+				templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -117,7 +117,6 @@ public class AdminPickup extends HttpServlet {
 		
 		try {
 			logicLayer.checkPickupTime( reservationId );
-			System.out.println("ReservationID"+reservationId);
 			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
 			templateProcessor.addToRoot("vehicles", vehicles);
 	        templateProcessor.setTemplate("/Create/CreateRental.ftl");
@@ -131,9 +130,9 @@ public class AdminPickup extends HttpServlet {
 			} catch (RARException e1) {
 				e1.printStackTrace();
 			}
-			statusUpdateAdminReservationB = e.toString();
+			statusRetrieveAdminReservationB = e.toString();
 			e.printStackTrace();
-			templateProcessor.addToRoot("statusUpdateAdminReservationB", statusUpdateAdminReservationB);
+			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
 	        templateProcessor.setTemplate("AdminReservations.ftl");
 			templateProcessor.processTemplate(response);
 		}	

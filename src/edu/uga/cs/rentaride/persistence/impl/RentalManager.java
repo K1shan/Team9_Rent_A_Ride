@@ -512,21 +512,21 @@ public class RentalManager {
 					rental_charges 			= rs.getInt(7);
 					// VEHICLE
 					//
-					vehicle_vehicle_id 	= rs.getInt(15);
-					vehicle_type_id 	= rs.getInt(16);
-					vehicle_location_id = rs.getInt(17);
-					vehicle_make 		= rs.getString(18);
-					vehicle_model 		= rs.getString(19);
-					vehicle_year 		= rs.getInt(20);
-					vehicle_mileage 	= rs.getInt(21);
-					vehicle_tag 		= rs.getString(22);
-					vehicle_service_date= rs.getDate(23);
-					vehicle_status 		= rs.getInt(24);
+					vehicle_vehicle_id 	= rs.getInt(8);
+					vehicle_type_id 	= rs.getInt(9);
+					vehicle_location_id = rs.getInt(10);
+					vehicle_make 		= rs.getString(11);
+					vehicle_model 		= rs.getString(12);
+					vehicle_year 		= rs.getInt(13);
+					vehicle_mileage 	= rs.getInt(14);
+					vehicle_tag 		= rs.getString(15);
+					vehicle_service_date= rs.getDate(16);
+					vehicle_status 		= rs.getInt(17);
 					if(vehicle_status == 0)
 						vehicleStatus	= VehicleStatus.INLOCATION;
 					else if(vehicle_status == 1)
 						vehicleStatus 	= VehicleStatus.INRENTAL;
-					vehicle_cond 		= rs.getInt(25);
+					vehicle_cond 		= rs.getInt(18);
 					if(vehicle_cond == 0)
 						vehicleCondition= VehicleCondition.GOOD;
 					else if(vehicle_cond == 1)

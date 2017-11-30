@@ -73,7 +73,7 @@ public interface Reservation
     /** Return the rental that was based on this reservation.
      * @return the Rental based on this reservation
      */
-    public Rental getRental();
+    public Rental getRental() throws RARException;
 
     /** Set the rental that was based on this reservation.
      * @param rental the new Rental based on this reservation

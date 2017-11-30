@@ -73,15 +73,15 @@ public class AdminReturn extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusCreateAdminRentalG = "";
-		String statusCreateAdminRentalB = "";
+		String statusRetrieveAdminReservationG = "";
+		String statusRetrieveAdminReservationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
 
-        templateProcessor.setTemplate("AdminReservation.ftl");
+        templateProcessor.setTemplate("AdminReservations.ftl");
         
 		
 		//Getting the http session and store it into the ssid
@@ -100,8 +100,8 @@ public class AdminReturn extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusCreateAdminRentalB = e.toString();
-				templateProcessor.addToRoot("statusCreateAdminRentalB", statusCreateAdminRentalB);
+				statusRetrieveAdminReservationB = e.toString();
+				templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -117,18 +117,27 @@ public class AdminReturn extends HttpServlet {
 			Rental rental = reservation.getRental();
 			int rentalId = (int)rental.getId();
 			logicLayer.updateRental( rentalId, null, reservationId, -1);
-			statusCreateAdminRentalG = "Successfully created a rental";
+			statusRetrieveAdminReservationG = "Successfully returned a rental";
 			user = session.getUser();
 	        templateProcessor.setTemplate("AdminIndex.ftl");
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("statusCreateAdminRentalB", statusCreateAdminRentalG);
+			templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
 			templateProcessor.processTemplate(response);
-
+			return;
 		} catch(RARException e){
 			e.printStackTrace();
-			statusCreateAdminRentalB = "Failed to create rental";
-			templateProcessor.addToRoot("statusCreateAdminRentalB", statusCreateAdminRentalB);
+			statusRetrieveAdminReservationB = e.toString();
+			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
+		}
+		
+		try {
+			List<Reservation> reservations = logicLayer.findCustomerReservations((int)user.getId());
+			templateProcessor.addToRoot("reservations", reservations);
+			templateProcessor.processTemplate(response);
+		} catch (RARException e){
+			statusRetrieveAdminReservationB += " Failed to find reservations";
+			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
 			templateProcessor.processTemplate(response);
 		}
 	}

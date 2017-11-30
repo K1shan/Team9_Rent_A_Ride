@@ -89,8 +89,17 @@ public class ReservationImpl
 	}
 
 	@Override
-	public Rental getRental() {
-		return this.rental;
+	public Rental getRental() throws RARException {
+		if(rental == null){
+			if(isPersistent() ){
+				rental = getPersistenceLayer().restoreRentalReservation( this );
+				if(rental == null)
+					throw new RARException( "This reservation object has no rentals" );
+			}else
+                throw new RARException( "This reservation object is not persistent" );
+			
+		}
+        return rental;
 	}
 
 	@Override
@@ -112,7 +121,6 @@ public class ReservationImpl
 				+ ", vehicleTypeName=" + this.vehicleType.getName()
 				+ ", rentalLocationName=" + this.rentalLocation.getName()
 				+ ", customerName=" + this.customer.getFirstName()+" "+this.customer.getLastName()
-				+ ", rental=" + this.getRental() +
-				"]";
+				+ "]";
 	}
 }

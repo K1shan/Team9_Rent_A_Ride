@@ -81,13 +81,18 @@ public class ReservationCreate extends HttpServlet {
 		int vehicleTypeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
 		int locationId = Integer.parseInt(request.getParameter("locationId"));
 		int customerId = Integer.parseInt(request.getParameter("customerId"));
-		String pickupTimeString = request.getParameter("pickupTime");
 		
-		try {
-			pickupTime = df.parse(pickupTimeString);
-		} catch (ParseException e1) {
-			System.out.println("can't parse date.");
-		}
+		String pickupDateString = request.getParameter("date");
+		String pickupTimeString = request.getParameter("time");
+		
+		System.out.println("pickupDate: "+pickupDateString);
+		System.out.println("pickupTime: "+pickupTimeString);
+		
+//		try {
+//			pickupTime = df.parse(pickupTimeString);
+//		} catch (ParseException e1) {
+//			System.out.println("can't parse date.");
+//		}
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;

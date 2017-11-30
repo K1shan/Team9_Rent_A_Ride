@@ -29,6 +29,7 @@
 	 					<div class="product-description">${reservation.vehicleType.name}</div>
 	 					<div class="product-description">Pickup Time: ${reservation.pickupTime}</div>
 	 					<div class="product-description">Length: ${reservation.length}</div>
+	 					<#if reservation.cancelled!false><div class="product-description">Cancelled</div></#if>
 					</form>
 					
 					<form id = "formOne" action="AdminPickup" method="post">
@@ -69,8 +70,8 @@
 					</p>
 				</#if>
 				<#if statusRetrieveAdminReservationB??>
-					<p class="bad">
-						${statusRetrieveAdminReservationG}
+					<p class="error">
+						${statusRetrieveAdminReservationB}
 					</p>
 				</#if>
 				</div>

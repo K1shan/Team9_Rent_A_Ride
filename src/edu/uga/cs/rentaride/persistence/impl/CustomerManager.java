@@ -256,7 +256,6 @@ public class CustomerManager{
 			throw new RARException( "CustomerManager.save: failed to save a customer: " + e );
 		}
 	    
-		System.out.println(customer.getIsAdmin());
 		if( customer.getIsAdmin() ){
 			
 			try {
