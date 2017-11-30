@@ -44,6 +44,12 @@ public class CustomerManager{
 				+ "VALUES "
 				+ "( ?, ?, ?, ?, ?, ?, ? )";
 		
+		String insertAdminQuery =
+				"INSERT INTO ADMIN "
+				+ "( user_id ) "
+				+ "VALUES "
+				+ "( ? )";
+		
 		String updateUserQuery = 
 				"UPDATE USER SET "
 				+ "fname=?, "
@@ -249,7 +255,19 @@ public class CustomerManager{
 			e.printStackTrace();
 			throw new RARException( "CustomerManager.save: failed to save a customer: " + e );
 		}
-	        
+	    
+		System.out.println(customer.getIsAdmin());
+		if( customer.getIsAdmin() ){
+			
+			try {
+				pstmt = (PreparedStatement) con.prepareStatement( insertAdminQuery );
+				pstmt.setLong( 1, userId );System.out.println("query: "+pstmt.asSql());
+	            System.out.println("query: "+pstmt.asSql());
+	            inscnt = pstmt.executeUpdate();
+			} catch (SQLException e){
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public List<Customer> restore(Customer modelCustomer ) 
@@ -486,6 +504,5 @@ public class CustomerManager{
 //			e.printStackTrace();
 //			throw new RARException("CustomerManager.delete: failed to delete a customer" + e);
 //		}
-	}
-	
+	}	
 }

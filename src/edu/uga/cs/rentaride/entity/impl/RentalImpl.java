@@ -90,12 +90,12 @@ public class RentalImpl
 
 	public int getCharges() throws RARException {
 		
-		if(vehicle == null || reservation == null)
+		if( reservation == null)
 			return charges;
 		if(charges == 0){
-			for(HourlyPrice hourlyPrice : vehicle.getVehicleType().getHourlyPrices() ){
+			for(HourlyPrice hourlyPrice : reservation.getVehicleType().getHourlyPrices() ){
 				if(hourlyPrice.getMaxHours() == reservation.getLength()){
-					charges = hourlyPrice.getPrice();
+					charges = hourlyPrice.getPrice()*reservation.getLength();
 					break;
 				}
 			}

@@ -1,5 +1,6 @@
 package edu.uga.cs.rentaride.object.impl;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -480,6 +481,11 @@ public class ObjectLayerImpl
 	@Override
 	public int restoreCharges(int reservationId) throws RARException {
 		return persistence.restoreCharges(reservationId);
+	}
+
+	@Override
+	public List<Reservation> restoreNoShowReservations() throws RARException {
+		return persistence.restoreNoShowReservations();
 	}
 	
 }

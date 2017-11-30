@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.*;
@@ -22,10 +23,10 @@ public class RentARideTester
          ObjectLayer objectLayer = null;
          PersistenceLayer persistence = null;
 
-         Administrator  adminWayne;
-         Administrator  adminRafael;
-         Administrator  adminKishan;
-         Administrator  adminAlex;
+         Customer  		adminWayne;
+         Customer  		adminRafael;
+         Customer  		adminKishan;
+         Customer  		adminAlex;
          
          Customer       customerWayne;
          Customer       customerRafael;
@@ -34,6 +35,13 @@ public class RentARideTester
          
          VehicleType    truckVehicleType;
          VehicleType	convertibleVehicleType;
+         
+         String			truckPath = "cars/Truck.png";
+         String			convertiblePath = "cars/Sedan.png";
+         String			minivanPath = "cars/Minivan.png";
+         String			suvPath = "cars/Suv.png";
+         
+         List<VehicleType> vehicleTypes;
          
          HourlyPrice	truckHourlyPrice1;
          HourlyPrice	truckHourlyPrice2;
@@ -129,25 +137,31 @@ public class RentARideTester
 
         	 // DELETE everything
         	 objectLayer.deleteEverything();
-        	 
-        	 // 4 ADMINS
-        	 adminWayne = objectLayer.createAdministrator("Wayne", "Kung", "wayneAdmin@uga.edu", "w", "wayneAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
-        	 persistence.storeAdministrator(adminWayne);
-             adminRafael = objectLayer.createAdministrator("Rafael", "Caraballo", "rbbAdmin@uga.edu", "r", "rbbAdmin@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate);
-             persistence.storeAdministrator(adminRafael);
-             adminKishan = objectLayer.createAdministrator("Kishan", "Patel", "kp021995Admin@uga.edu", "k", "kp021995Admin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
-             persistence.storeAdministrator(adminKishan);
-             adminAlex = objectLayer.createAdministrator("Alex", "White", "alexAdmin@uga.edu", "a", "alexAdmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate);
-             persistence.storeAdministrator(adminAlex);
+
              
-             // 4 CUSTOMERS
-             customerWayne = objectLayer.createCustomer("Wayne", "Kung", "wayneCustomer@uga.edu", "w", "wayneCustomer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "111111111", "1111111111111111", ccExp);
+             // 4 ADMINS AND CUSTOMERS
+             adminWayne = objectLayer.createCustomer("Wayne", "Kung", "wayneadmin@uga.edu", "w", "wayneadmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "111111111", "1111111111111111", ccExp);
+             customerWayne = objectLayer.createCustomer("Wayne", "Kung", "waynecustomer@uga.edu", "w", "waynecustomer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "999999999", "999999999", ccExp);
+             adminWayne.setIsAdmin(true);
+             persistence.storeCustomer(adminWayne);
              persistence.storeCustomer(customerWayne);
-             customerRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbCustomer@uga.edu", "r", "rbbCustomer@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "222222222", "2222222222222222", ccExp);
+             
+             adminRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbadmin@uga.edu", "r", "rbbadmin@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "222222222", "2222222222222222", ccExp);	
+             customerRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbcustomer@uga.edu", "r", "rbbcustomer@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "888888888", "888888888", ccExp);
+             adminRafael.setIsAdmin(true);
+             persistence.storeCustomer(adminRafael);
              persistence.storeCustomer(customerRafael);
-             customerKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995Customer@uga.edu", "k", "kp021995Customer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "333333333", "3333333333333333", ccExp);
+             
+             adminKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995admin@uga.edu", "k", "kp021995admin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "333333333", "3333333333333333", ccExp);
+             customerKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995customer@uga.edu", "k", "kp021995customer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "777777777", "777777777", ccExp);
+             adminKishan.setIsAdmin(true);
+             persistence.storeCustomer(adminKishan);
              persistence.storeCustomer(customerKishan);
-             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexCustomer@uga.edu", "a", "alexCustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "444444444", "4444444444444444", ccExp );
+             
+             adminAlex = objectLayer.createCustomer( "Alex", "White", "alexadmin@uga.edu", "a", "alexadmin@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "444444444", "4444444444444444", ccExp );
+             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexcustomer@uga.edu", "a", "alexcustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "66666666", "66666666", ccExp );
+             adminAlex.setIsAdmin(true);
+             persistence.storeCustomer(adminAlex);
              persistence.storeCustomer(customerAlex);
         	 
         	 // 2 LOCATIONS
@@ -159,9 +173,15 @@ public class RentARideTester
         	 // 2 VEHICLE_TYPES
              truckVehicleType = objectLayer.createVehicleType("truck");
              persistence.storeVehicleType( truckVehicleType );
+             vehicleTypes = objectLayer.findVehicleType(truckVehicleType);
+             truckVehicleType = vehicleTypes.get(0);
+             objectLayer.storeTypePath(truckVehicleType, truckPath);
              
              convertibleVehicleType = objectLayer.createVehicleType("convertible");
              persistence.storeVehicleType( convertibleVehicleType );
+             vehicleTypes = objectLayer.findVehicleType(convertibleVehicleType);
+             convertibleVehicleType = vehicleTypes.get(0);
+             objectLayer.storeTypePath(convertibleVehicleType, convertiblePath);
         	 
              // 6 HOURLY PRICES
              truckHourlyPrice1 = objectLayer.createHourlyPrice(hourRange1, 50, truckVehicleType);

@@ -1,6 +1,7 @@
 package edu.uga.cs.rentaride.persistence.impl;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import edu.uga.cs.rentaride.RARException;
@@ -411,5 +412,10 @@ public class PersistenceLayerImpl
 	@Override
 	public void storeCharges(Reservation reservation, Rental rental, boolean insert) throws RARException {
 		reservationManager.storeCharges(reservation, rental, insert);
+	}
+
+	@Override
+	public List<Reservation> restoreNoShowReservations() throws RARException {
+		return reservationManager.restoreNoShowReservations();
 	}
 }
