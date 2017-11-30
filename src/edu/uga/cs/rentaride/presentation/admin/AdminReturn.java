@@ -81,7 +81,7 @@ public class AdminReturn extends HttpServlet {
         String         ssid;
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
 
-        templateProcessor.setTemplate("AdminReservation.ftl");
+        templateProcessor.setTemplate("AdminReservations.ftl");
         
 		
 		//Getting the http session and store it into the ssid
