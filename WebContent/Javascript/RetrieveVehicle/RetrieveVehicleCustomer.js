@@ -26,7 +26,7 @@ $(document).ready(function() {
 				 		html +='<div class="product-img"><img id = "image" src='+path+'></div>';
 			 			html += '</div>';
 			 			html += '<div class="product-des">';
-			 				html += '<form id = "formOne" action="AdminReservation" method="post">';
+			 				html += '<form id = "formOne" action="CustomerReservation" method="post">';
 			 					html += '<div class="product-price" id="price">' +  year + '</div>';
 			 					html += '<div class="product-name">'+  make + ' ' + model + '</div>';
 			 					html += '<div class="product-description">' + address + '</div>';
@@ -46,13 +46,7 @@ $(document).ready(function() {
 					html += '</div>';
 				html += '</div>';
 				html += '</div>';
-				 
-				 $('#select1').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-				 $('#select2').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-				 $('#select3').append($('<option>').text(id + ' - ' +  name).attr('value', id));
-				 $('#selectVehicle').append($('<option>').text(tag).attr('value', id));
-				 $('#selectVehicleUpdate').append($('<option>').text(id + ' - ' + make + ' - ' + model + ' - ' + tag).attr('value', id));
-				 $('#selectVehicleDelete').append($('<option>').text(id + ' - ' + make + ' - ' + model + ' - ' + tag).attr('value', id));
+
 				 counter++;
 			 });
 
