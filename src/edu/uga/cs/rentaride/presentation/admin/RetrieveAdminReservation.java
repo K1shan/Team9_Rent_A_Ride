@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.Reservation;
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -22,23 +22,23 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class AdminReservation
+ * Servlet implementation class RetrieveAdminReservation
  */
-@WebServlet("/AdminReservation")
-public class AdminReservation extends HttpServlet {
+@WebServlet("/RetrieveAdminReservation")
+public class RetrieveAdminReservation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminReservation() {
+    public RetrieveAdminReservation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -72,17 +72,13 @@ public class AdminReservation extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String status = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
-
-		int locationId = Integer.parseInt(request.getParameter("locationId"));
-
+        String         ssid;	
 		
-		//Getting the http session and store it into the ssid
+      //Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
         
@@ -108,17 +104,16 @@ public class AdminReservation extends HttpServlet {
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
+		int customerId = (int) user.getId();
 		
 		try {
-			List<VehicleType> vehicleTypes = logicLayer.findLocationAvailableVehicleTypes( locationId );
-			templateProcessor.addToRoot("locationId", locationId);
-			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypes);
-			templateProcessor.setTemplate("AdminReservationLocation.ftl");
+			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId); 
+			templateProcessor.addToRoot("reservations", reservations);
+			templateProcessor.setTemplate("AdminReservation.ftl");
 			templateProcessor.processTemplate(response);
-
 		} catch(RARException e){
 			e.printStackTrace();
-			templateProcessor.setTemplate("AdminReservationLocation.ftl");
+			templateProcessor.setTemplate("AdminIndex.ftl");
 			templateProcessor.processTemplate(response);
 		}
 	}
@@ -127,7 +122,6 @@ public class AdminReservation extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

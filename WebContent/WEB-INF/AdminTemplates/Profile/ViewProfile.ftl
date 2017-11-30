@@ -4,6 +4,7 @@
 		<form class="form" id="admin" action="AdminUpdate" method='post' name="admin">
 			
 	  		<#if userSession?has_content>
+	  			
 	  			<!-- User input for First name -->
 				<p class="float-label">
 					<p class ="in">

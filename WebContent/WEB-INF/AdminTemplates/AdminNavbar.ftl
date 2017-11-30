@@ -16,6 +16,7 @@
                 <li><a href="AdminLocation">LOCATIONS</a></li>
                 <li><a href="AdminContact">CONTACT</a></li>
                 <li><a href="AdminView">${user}</a></li>
+                <li><a href="RetriveAdminReservation">Reservations</a></li>
                 <li><a href="LogoutMenu">Logout</a></li>
               </ul>
           </nav>
