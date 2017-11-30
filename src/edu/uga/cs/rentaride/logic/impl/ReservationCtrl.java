@@ -33,6 +33,10 @@ public class ReservationCtrl {
 		return reservations;
 	}
 	
+	public List<Reservation> findNoShowReservation () throws RARException{
+		return objectLayer.restoreNoShowReservations();
+	}
+	
 	public List<Reservation> findCustomerReservation( int id ) throws RARException{
 		
 		Customer customer = null;
@@ -50,7 +54,7 @@ public class ReservationCtrl {
 	
 	public void createReservation(Date pickupTime, int rentalLength, int vehicleTypeId, int locationId, int customerId) throws RARException {
 		
-		// check if type already exists
+		// retrieve type
 		//
 		VehicleType modelVehicleType = objectLayer.createVehicleType();
 		modelVehicleType.setId(vehicleTypeId);
@@ -63,7 +67,7 @@ public class ReservationCtrl {
 			throw new RARException("A vehicle type with this id does not exist exists");
 		
 				
-		// check if location exists
+		// retrieve location
 		//
 		RentalLocation modelRentalLocation = objectLayer.createRentalLocation();
 		modelRentalLocation.setId(locationId);
@@ -77,7 +81,7 @@ public class ReservationCtrl {
 		if(rentalLocation == null)
 			throw new RARException( "A location with this id does not exist" );
 		
-		// check if customer exists
+		// retrieve customer
 		//
 		Customer modelCustomer = objectLayer.createCustomer();
 		modelCustomer.setId(customerId);
@@ -96,11 +100,17 @@ public class ReservationCtrl {
 		if(!(customer.getUserStatus().equals(UserStatus.ACTIVE)))
 			throw new RARException( "You must be an active member to reserve a vehicle." );
 		
+		// check member until
+		//
+		if(customer.getMemberUntil().getTime() < new Date().getTime())
+			throw new RARException( "You must renew your membership to use our system." );
+		
+		// create reservation
+		//
 		reservation = objectLayer.createReservation(pickupTime, rentalLength, vehicleType, rentalLocation, customer);
 		objectLayer.storeReservation(reservation);
 		reservation.setId(objectLayer.getReservationId());
 		Rental modelRental = objectLayer.createRental();
-		
 		objectLayer.storeCharges(reservation, modelRental, true);
 	}
 	
@@ -248,5 +258,59 @@ public class ReservationCtrl {
 		reservation.setId(id);
 		reservation.setCancelled(true);
 		objectLayer.storeReservation(reservation);
+	}
+
+	public void checkReservationNoShow(int reservationId) throws RARException {
+		
+		// retrieve reservation
+		//
+		modelReservation = objectLayer.createReservation();
+		modelReservation.setId(reservationId);
+		reservations = objectLayer.findReservation(modelReservation);
+		if(reservations.size() > 0)
+			reservation = reservations.get(0);
+		
+		// check null
+		//
+		if(reservation == null)
+			throw new RARException( "Reservation null" );
+		
+		// check if rental record exists
+		//
+		Rental modelRental = objectLayer.createRental();
+		modelRental.setReservation(reservation);
+		List<Rental> rentals = objectLayer.findRental(modelRental);
+		Rental rental = null;
+		if(rentals.size() > 0)
+			rental = rentals.get(0);
+		
+		// check if rental is null and current time
+		//
+		if(rental == null){
+			
+			// check if time is after pickup
+			//
+			if( new Date().getTime() > reservation.getPickupTime().getTime() ){
+				
+				// check if not picked up within the hour
+				//
+				if( new Date().getTime() - reservation.getPickupTime().getTime() > 3600000 ){
+					
+					// no show
+					//
+					reservation.setLength(1);
+					objectLayer.storeReservation(reservation);
+					
+					// change charges
+					//
+					rental = objectLayer.createRental();
+					rental.setReservation(reservation);
+					rental.getCharges();
+					//rental.setCharges(rental.getCharges()/reservation.getLength());
+					objectLayer.storeCharges(reservation, rental, false);
+				}
+			}else
+				throw new RARException( "A Rental record with this reservation does not exist." );
+		}
 	}
 }

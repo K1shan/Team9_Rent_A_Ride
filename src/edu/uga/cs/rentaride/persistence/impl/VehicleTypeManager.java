@@ -132,6 +132,9 @@ public class VehicleTypeManager{
 					//vehicleType.getVehicles();
 					//vehicleType.getReservations();
                     //vehicleType.getHourlyPrices();
+                    List<String> paths = restoreTypePath(vehicleType);
+                    if(paths.size() > 0)
+                    	vehicleType.setPath(paths.get(0));
 					vehicleTypes.add( vehicleType );
                 }
                 return vehicleTypes;

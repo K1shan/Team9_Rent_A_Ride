@@ -1,5 +1,6 @@
 package edu.uga.cs.rentaride.object;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -478,4 +479,6 @@ public interface ObjectLayer
 	public void storeCharges(Reservation reservation, Rental rental, boolean insert) throws RARException;
 	
 	public int restoreCharges(int reservationId) throws RARException;
+	
+	public List<Reservation> restoreNoShowReservations() throws RARException;
 }

@@ -1,7 +1,6 @@
-package edu.uga.cs.rentaride.presentation.customer.create;
+package edu.uga.cs.rentaride.presentation.admin.retrieve;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -12,34 +11,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.uga.cs.rentaride.RARException;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleType;
+import edu.uga.cs.rentaride.entity.Vehicle;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import edu.uga.cs.rentaride.RARException;
 
 /**
- * Servlet implementation class CustomerLocation
+ * Servlet implementation class AdminLocation
  */
-@WebServlet("/ReservationCustomerCreate")
-public class ReservationCustomerCreate extends HttpServlet {
+@WebServlet("/RetrieveVehicleTypePath")
+public class RetrieveVehicleTypePath extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF";
+	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReservationCustomerCreate() {
+    public RetrieveVehicleTypePath() {
         super();
     }
 
@@ -77,14 +81,6 @@ public class ReservationCustomerCreate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;		
-        
-		int vehicleTypeId = Integer.parseInt(request.getParameter("selectReservationVehicleTypeAdd"));
-		int locationId = Integer.parseInt(request.getParameter("locationId"));
-		int length = Integer.parseInt(request.getParameter("selectReservationLengthAdd"));
-		String pickupTime = request.getParameter("pickup");
-		Date pickupDate = new Date();
-		
-
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -110,23 +106,21 @@ public class ReservationCustomerCreate extends HttpServlet {
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		int customerId = (int) user.getId();
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.addToRoot("userSession", user);
-		
-		try {
-			logicLayer.createReservation(pickupDate, length, vehicleTypeId, locationId, customerId);
-			if(user.getIsAdmin()) {
-				templateProcessor.setTemplate("/AdminTemplates/AdminIndex.ftl");
-			}else {
-				templateProcessor.setTemplate("/CustomerTemplates/CustomerIndex.ftl");
-			}
-			templateProcessor.processTemplate(response);
+		if(user != null)
+			templateProcessor.addToRoot("user", user.getFirstName());
 
-		} catch(RARException e){
+		try {
+			List<String> paths = logicLayer.findTypePaths(-1);
+			// Making json objects
+			Gson gson = new Gson();
+			JsonElement element = gson.toJsonTree(paths, new TypeToken<List<String>>() {}.getType());
+			System.out.println("gson element: "+element);
+			// Sending object to js
+			JsonArray jsonArray = element.getAsJsonArray();response.setContentType("application/json");
+			response.getWriter().print(jsonArray);
+		} catch (RARException e) {
+			
 			e.printStackTrace();
-			templateProcessor.setTemplate("/Create/CreateReservation.ftl");
-			templateProcessor.processTemplate(response);
 		}
 	}
 

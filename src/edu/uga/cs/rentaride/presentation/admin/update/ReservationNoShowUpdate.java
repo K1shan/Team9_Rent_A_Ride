@@ -1,8 +1,10 @@
-package edu.uga.cs.rentaride.presentation.customer.create;
+package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,7 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -23,23 +24,21 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class CustomerLocation
+ * Servlet implementation class ReservationUpdate
  */
-@WebServlet("/ReservationCustomerCreate")
-public class ReservationCustomerCreate extends HttpServlet {
+@WebServlet("/ReservationNoShowUpdate")
+public class ReservationNoShowUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	Configuration cfg = null;
 	
-	//This the folder the it will return too
-	private String templateDir = "/WEB-INF";
+	Configuration cfg = null;
+	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReservationCustomerCreate() {
+    public ReservationNoShowUpdate() {
         super();
     }
 
@@ -72,18 +71,16 @@ public class ReservationCustomerCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		
+		String statusUpdateReservationNoShowG = "";
+		String statusUpdateReservationNoShowB = "";
+		int reservationId = Integer.parseInt(request.getParameter("selectReservationNoShowUpdate"));
+
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;		
-        
-		int vehicleTypeId = Integer.parseInt(request.getParameter("selectReservationVehicleTypeAdd"));
-		int locationId = Integer.parseInt(request.getParameter("locationId"));
-		int length = Integer.parseInt(request.getParameter("selectReservationLengthAdd"));
-		String pickupTime = request.getParameter("pickup");
-		Date pickupDate = new Date();
-		
+        String         ssid;
+		templateProcessor.setTemplate("AdminView.ftl");
 
 		
 		//Getting the http session and store it into the ssid
@@ -99,34 +96,33 @@ public class ReservationCustomerCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-				
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				
+				statusUpdateReservationNoShowB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateReservationNoShowG", statusUpdateReservationNoShowG);
+				System.out.println("LocationCreate: "+e.toString());
 				templateProcessor.processTemplate(response);
 			}
 		}
-        
+		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		int customerId = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
-			logicLayer.createReservation(pickupDate, length, vehicleTypeId, locationId, customerId);
-			if(user.getIsAdmin()) {
-				templateProcessor.setTemplate("/AdminTemplates/AdminIndex.ftl");
-			}else {
-				templateProcessor.setTemplate("/CustomerTemplates/CustomerIndex.ftl");
-			}
+			logicLayer.checkPickupTime(reservationId);
+			statusUpdateReservationNoShowG = "Woohoo!";
+			templateProcessor.addToRoot("statusUpdateReservationNoShowG", statusUpdateReservationNoShowG);
 			templateProcessor.processTemplate(response);
-
-		} catch(RARException e){
+		}catch(RARException e) {
 			e.printStackTrace();
-			templateProcessor.setTemplate("/Create/CreateReservation.ftl");
+			statusUpdateReservationNoShowB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusUpdateReservationNoShowB", statusUpdateReservationNoShowB);
 			templateProcessor.processTemplate(response);
+			return;
 		}
 	}
 

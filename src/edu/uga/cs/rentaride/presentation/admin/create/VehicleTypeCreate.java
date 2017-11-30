@@ -1,14 +1,17 @@
 package edu.uga.cs.rentaride.presentation.admin.create;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import edu.uga.cs.rentaride.RARException;
 import edu.uga.cs.rentaride.entity.User;
@@ -23,6 +26,7 @@ import freemarker.template.TemplateExceptionHandler;
  * Servlet implementation class VehicleTypeCreate
  */
 @WebServlet("/VehicleTypeCreate")
+@MultipartConfig(maxFileSize = 16177215)
 public class VehicleTypeCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -30,6 +34,8 @@ public class VehicleTypeCreate extends HttpServlet {
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
+	private static final String SAVE_DIR = "cars";
+
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -73,8 +79,17 @@ public class VehicleTypeCreate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-        String path = "";
 		templateProcessor.setTemplate("AdminView.ftl");
+		String savePath = getServletContext().getRealPath("/city"); 
+		File fileSaveDir = new File(savePath);
+        if(!fileSaveDir.exists()){
+        		System.out.println(fileSaveDir);
+            fileSaveDir.mkdir();
+        }
+        Part pic = request.getPart("picAdd");
+        String oneName = extractFileName(pic);
+        String path = SAVE_DIR + File.separator + oneName;
+        
 		
 		// TODO
 		String typeName = request.getParameter("type").toLowerCase();
@@ -114,6 +129,8 @@ public class VehicleTypeCreate extends HttpServlet {
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
 			templateProcessor.processTemplate(response);
+			pic.write(savePath + File.separator + oneName);
+
 		} catch (RARException e){
 			
 			statusAddTypeB = "NONEXISTENT.";
@@ -122,6 +139,18 @@ public class VehicleTypeCreate extends HttpServlet {
 			templateProcessor.processTemplate(response);
 			return;
 		}
+	}
+	
+	private String extractFileName(Part part) {
+		
+	    String contentDisp = part.getHeader("content-disposition");
+	    String[] items = contentDisp.split(";");
+	    for (String s : items) {
+	        if (s.trim().startsWith("filename")) {
+	            return s.substring(s.indexOf("=") + 2, s.length()-1);
+	        }
+	    }
+	    return "";
 	}
 
 	/**

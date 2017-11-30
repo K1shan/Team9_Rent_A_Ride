@@ -359,4 +359,16 @@ public class LogicLayerImpl
 		RentalCtrl ctrlRental = new RentalCtrl ( objectLayer );
 		ctrlRental.checkPickupTime(reservationId);
 	}
+
+	@Override
+	public void checkReservationNoShow(int reservationId) throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		ctrlReservation.checkReservationNoShow(reservationId);
+	}
+
+	@Override
+	public List<Reservation> findNoShowReservation() throws RARException {
+		ReservationCtrl ctrlReservation = new ReservationCtrl ( objectLayer );
+		return ctrlReservation.findNoShowReservation();
+	}
 }

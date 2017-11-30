@@ -107,6 +107,17 @@ body {
   position: absolute;
 }
 
+.modalEight {
+  background-color: #fff;  width: 400px;
+  width: 400px;
+  padding: 30px;
+  position: fixed;
+  left: 35%;
+  margin: 1425px 0px 0px 0px;
+  min-height: 650px;
+  position: absolute;
+}
+
 
 .head {
   font-weight: 700;

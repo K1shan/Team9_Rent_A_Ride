@@ -365,6 +365,7 @@ public class VehicleManager {
 					
 					vehicleType = objectLayer.createVehicleType(type_name);
 					vehicleType.setId(vehicle_type_id);
+					vehicleType.setPath(restoreTypePath(vehicleType).get(0));
 					
 					vehicle = objectLayer.createVehicle(vehicle_make, vehicle_model, vehicle_year, vehicle_tag, vehicle_mileage, vehicle_service_date, vehicleType, rentalLocation, vehicleCondition, vehicleStatus);
 					vehicle.setId(vehicle_vehicle_id);
@@ -378,6 +379,46 @@ public class VehicleManager {
 			throw new RARException("VehicleManager.get: failed to get any vehicles: " + e);
 		}
 	}
+	
+	public List<String> restoreTypePath(VehicleType vehicleType) throws RARException {
+    	
+    	String selectVehicleTypePathQuery =
+				"SELECT "
+				+ "VEHICLE_TYPE_PATH.image_path "
+				+ "FROM VEHICLE_TYPE_PATH";
+		
+        Statement    stmt = null;
+        StringBuffer query = new StringBuffer( 100 );
+        StringBuffer condition = new StringBuffer( 100 );
+        String 		path = "";
+        List<String> paths = new ArrayList<String>();
+        condition.setLength( 0 );
+        query.append( selectVehicleTypePathQuery );
+    	
+        if( vehicleType != null ){
+        	if( vehicleType.getId() >= 0 )
+        		query.append( " WHERE type_id=" + vehicleType.getId() );
+        }
+        
+        try {
+            stmt = (Statement) con.createStatement();
+            System.out.println("query: "+ query.toString());
+            if( stmt.execute( query.toString() ) ) { // statement returned a result
+                ResultSet rs = stmt.getResultSet();
+                while( rs.next() ){
+                	// VEHICLE_TYPE_IMAGE
+                	//
+                	path = rs.getString(1);
+                	paths.add(path);
+                }
+            }
+            return paths;
+            
+        } catch( SQLException e ) {
+            e.printStackTrace();
+            throw new RARException( "VehicleTypeManager.restorePath: failed to restore a path: " + e );       
+        }
+    }
 	
     
     public void delete( Vehicle vehicle ) throws RARException{

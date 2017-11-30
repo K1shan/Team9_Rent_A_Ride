@@ -30,6 +30,7 @@ public class CustomerImpl
 	private String licenseNumber;
 	private String cardNumber;
 	private Date cardExpiration;
+	private boolean isAdmin;
 	private UserStatus userStatus;
 	private List<Reservation> reservations;
 	private List<Rental> rentals;
@@ -296,14 +297,12 @@ public class CustomerImpl
 
 	@Override
 	public void setIsAdmin(boolean isAdmin) {
-		// TODO Auto-generated method stub
-		
+		this.isAdmin = isAdmin;
 	}
 
 	@Override
 	public boolean getIsAdmin() {
-		// TODO Auto-generated method stub
-		return false;
+		return isAdmin;
 	}
 
 	@Override
