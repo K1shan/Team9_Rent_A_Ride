@@ -139,31 +139,38 @@ public class RentARideTester
         	 objectLayer.deleteEverything();
 
              
-             // 4 ADMINS AND CUSTOMERS
+             // 4 ADMINS
+        	 //
              adminWayne = objectLayer.createCustomer("Wayne", "Kung", "wayneadmin@uga.edu", "w", "wayneadmin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "111111111", "1111111111111111", ccExp);
-             customerWayne = objectLayer.createCustomer("Wayne", "Kung", "waynecustomer@uga.edu", "w", "waynecustomer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "999999999", "999999999", ccExp);
              adminWayne.setIsAdmin(true);
              persistence.storeCustomer(adminWayne);
-             persistence.storeCustomer(customerWayne);
              
-             adminRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbadmin@uga.edu", "r", "rbbadmin@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "222222222", "2222222222222222", ccExp);	
-             customerRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbcustomer@uga.edu", "r", "rbbcustomer@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "888888888", "888888888", ccExp);
+             adminRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbadmin@uga.edu", "r", "rbbadmin@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "222222222", "2222222222222222", ccExp);
              adminRafael.setIsAdmin(true);
              persistence.storeCustomer(adminRafael);
-             persistence.storeCustomer(customerRafael);
              
              adminKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995admin@uga.edu", "k", "kp021995admin@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "333333333", "3333333333333333", ccExp);
-             customerKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995customer@uga.edu", "k", "kp021995customer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "777777777", "777777777", ccExp);
              adminKishan.setIsAdmin(true);
              persistence.storeCustomer(adminKishan);
-             persistence.storeCustomer(customerKishan);
              
              adminAlex = objectLayer.createCustomer( "Alex", "White", "alexadmin@uga.edu", "a", "alexadmin@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "444444444", "4444444444444444", ccExp );
-             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexcustomer@uga.edu", "a", "alexcustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "66666666", "66666666", ccExp );
              adminAlex.setIsAdmin(true);
              persistence.storeCustomer(adminAlex);
-             persistence.storeCustomer(customerAlex);
         	 
+             // 4 CUSTOMERS
+             //
+             customerWayne = objectLayer.createCustomer("Wayne", "Kung", "waynecustomer@uga.edu", "w", "waynecustomer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "999999999", "999999999", ccExp);
+             persistence.storeCustomer(customerWayne);
+             
+             customerRafael = objectLayer.createCustomer("Rafael", "Caraballo", "rbbcustomer@uga.edu", "r", "rbbcustomer@uga.edu", "111 Goodbye St., Big Town, GA. 30129", createDate, dateMemberTill, "GA", "888888888", "888888888", ccExp);
+             persistence.storeCustomer(customerRafael);
+             
+             customerKishan = objectLayer.createCustomer("Kishan", "Patel", "kp021995customer@uga.edu", "k", "kp021995customer@uga.edu", "000 Hello St., Small Town, GA. 30129", createDate, dateMemberTill, "GA", "777777777", "777777777", ccExp);
+             persistence.storeCustomer(customerKishan);
+             
+             customerAlex = objectLayer.createCustomer( "Alex", "White", "alexcustomer@uga.edu", "a", "alexcustomer@uga.edu", "133 Maple St., Big Town, AZ. 87888", createDate, dateMemberTill, "GA", "66666666", "66666666", ccExp );
+             persistence.storeCustomer(customerAlex);
+             
         	 // 2 LOCATIONS
              rentalLocationAtlanta = objectLayer.createRentalLocation("Atlanta", "999 Broad St.", "Atlanta", "GA", "30301", "city/Atlanta.png", 500);
              persistence.storeRentalLocation( rentalLocationAtlanta );
@@ -228,27 +235,27 @@ public class RentARideTester
              persistence.storeReservation(reservationAlex1);
              persistence.storeCharges(reservationAlex1, null, true);
         	 
-        	 // 2 RENTALS
-             //
-             rentalWayne1 = objectLayer.createRental(dateReservation1, reservationWayne1, truck1);
-             truck1.setStatus(VehicleStatus.INRENTAL);
-             persistence.storeVehicle(truck1);
-             persistence.storeRental(rentalWayne1);
-             
-             rentalRafael1 = objectLayer.createRental(dateReservation2, reservationRafael1, convertible1);
-             convertible1.setStatus(VehicleStatus.INRENTAL);
-             persistence.storeVehicle(convertible1);
-             persistence.storeRental(rentalRafael1);
-             
-             // 2 COMMENTS
-             //
-             commentWayne1 = objectLayer.createComment("great experience", commentDate1, rentalWayne1);
-             rentalWayne1.setComment(commentWayne1);
-             persistence.storeComment(commentWayne1);
-             		
-             commentRafael1 = objectLayer.createComment("horrible experience", commentDate2, rentalRafael1);
-             rentalRafael1.setComment(commentRafael1);
-             persistence.storeComment(commentRafael1);
+//        	 // 2 RENTALS
+//             //
+//             rentalWayne1 = objectLayer.createRental(dateReservation1, reservationWayne1, truck1);
+//             truck1.setStatus(VehicleStatus.INRENTAL);
+//             persistence.storeVehicle(truck1);
+//             persistence.storeRental(rentalWayne1);
+//             
+//             rentalRafael1 = objectLayer.createRental(dateReservation2, reservationRafael1, convertible1);
+//             convertible1.setStatus(VehicleStatus.INRENTAL);
+//             persistence.storeVehicle(convertible1);
+//             persistence.storeRental(rentalRafael1);
+//             
+//             // 2 COMMENTS
+//             //
+//             commentWayne1 = objectLayer.createComment("great experience", commentDate1, rentalWayne1);
+//             rentalWayne1.setComment(commentWayne1);
+//             persistence.storeComment(commentWayne1);
+//             		
+//             commentRafael1 = objectLayer.createComment("horrible experience", commentDate2, rentalRafael1);
+//             rentalRafael1.setComment(commentRafael1);
+//             persistence.storeComment(commentRafael1);
              
              // PARAMS
              //

@@ -69,14 +69,14 @@ public class AdminCancelReservation extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateAdminReservationG = "";
-		String statusUpdateAdminReservationB = "";
+		String statusRetrieveAdminReservationG = "";
+		String statusRetrieveAdminReservationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
-        templateProcessor.setTemplate("AdminReservation.ftl");
+        templateProcessor.setTemplate("AdminReservations.ftl");
 
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -92,8 +92,8 @@ public class AdminCancelReservation extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateAdminReservationB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateAdminReservationB", statusUpdateAdminReservationB);
+				statusRetrieveAdminReservationB = "Failed to create a session";
+				templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
 				
 				System.out.println("statusUpdateAdminB: "+e.toString());
 				templateProcessor.processTemplate(response);
@@ -111,20 +111,20 @@ public class AdminCancelReservation extends HttpServlet {
 			reservations = logicLayer.findCustomerReservations((int)user.getId());
 			logicLayer.cancelReservation(reservationId);
 			reservations = logicLayer.findCustomerReservations((int)user.getId());
-			statusUpdateAdminReservationG = "Amazing!";
+			statusRetrieveAdminReservationG = "Cancelled Reservation!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("reservations", reservations);
-			templateProcessor.addToRoot("statusUpdateAdminReservationG", statusUpdateAdminReservationG);
+			templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			statusUpdateAdminReservationB = "Huh ?";
+			statusRetrieveAdminReservationB = e.toString();
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("reservations", reservations);
-			templateProcessor.addToRoot("statusUpdateAdminReservationB", statusUpdateAdminReservationB);
+			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
     		templateProcessor.processTemplate(response);
 		}
 	}

@@ -93,9 +93,11 @@ public class ReservationImpl
 		if(rental == null){
 			if(isPersistent() ){
 				rental = getPersistenceLayer().restoreRentalReservation( this );
-			}else{
+				if(rental == null)
+					throw new RARException( "This reservation object has no rentals" );
+			}else
                 throw new RARException( "This reservation object is not persistent" );
-			}
+			
 		}
         return rental;
 	}

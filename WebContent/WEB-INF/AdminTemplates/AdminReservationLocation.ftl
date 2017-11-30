@@ -63,7 +63,7 @@
 				<input class = "type" type="submit" onclick="return reservationAdminCreateNullCheck()" value="CREATE RESERVATION" />
 			</p>
 		
-			<#if statusCreateReservationG??>
+			<#if statusAdminCreateReservationG??>
 				
 				<p class="good">
    					<label> ${statusAdminCreateReservationG} </label>
@@ -71,7 +71,7 @@
 					
 			</#if>
 			
-			<#if statusCreateReservationB??>
+			<#if statusAdminCreateReservationB??>
 			
 				<p class="error">
 					 <label> ${statusAdminCreateReservationB} </label>

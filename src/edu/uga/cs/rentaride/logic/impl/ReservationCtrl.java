@@ -54,6 +54,11 @@ public class ReservationCtrl {
 	
 	public void createReservation(Date pickupTime, int rentalLength, int vehicleTypeId, int locationId, int customerId) throws RARException {
 		
+		// check pickupTime
+		//
+		if(pickupTime.getTime() < new Date().getTime())
+			throw new RARException("You cannot schedule a reservation for a past date.");
+		
 		// retrieve type
 		//
 		VehicleType modelVehicleType = objectLayer.createVehicleType();
@@ -251,7 +256,7 @@ public class ReservationCtrl {
 		// 3600000 ms in an hour
 		//
 		if(reservation.getPickupTime().getTime() - new Date().getTime() < 3600000)
-			throw new RARException( "You cannot cancel a reservation within an hour of the pickup time" );
+			// TODO throw new RARException( "You cannot cancel a reservation within an hour of the pickup time" );
 		
 		// update reservation to cancelled
 		//
