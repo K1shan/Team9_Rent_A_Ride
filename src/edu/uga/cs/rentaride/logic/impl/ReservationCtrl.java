@@ -125,8 +125,10 @@ public class ReservationCtrl {
 		
 		// check if reservation found
 		//
-		if(reservation == null)
+		if(reservation == null) {
+			
 			throw new RARException( "A reservation with this id does not exist." );
+		}
 		
 		Vehicle modelVehicle = objectLayer.createVehicle();
 		modelVehicle.setRentalLocation(reservation.getRentalLocation());

@@ -1,7 +1,6 @@
-package edu.uga.cs.rentaride.presentation.customer;
+package edu.uga.cs.rentaride.presentation.admin;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -13,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.*;
+import edu.uga.cs.rentaride.entity.Rental;
+import edu.uga.cs.rentaride.entity.Reservation;
+import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -22,23 +23,23 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class CustomerLocation
+ * Servlet implementation class AdminReturn
  */
-@WebServlet("/CustomerPickup")
-public class CustomerPickup extends HttpServlet {
+@WebServlet("/AdminReturn")
+public class AdminReturn extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF/CustomerTemplates";
+	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerPickup() {
+    public AdminReturn() {
         super();
     }
 
@@ -46,6 +47,7 @@ public class CustomerPickup extends HttpServlet {
 	 * @see Servlet#init(ServletConfig)
 	 */
 	public void init() throws ServletException {
+		
 		// Create your Configuration instance, and specify if up to what FreeMarker
 		// version (here 2.3.25) do you want to apply the fixes that are not 100%
 		// backward-compatible. See the Configuration JavaDoc for details.
@@ -71,13 +73,15 @@ public class CustomerPickup extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateCustomerReservationG = "";
-		String statusUpdateCustomerReservationB = "";
+		String statusCreateAdminRentalG = "";
+		String statusCreateAdminRentalB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
+
+        templateProcessor.setTemplate("AdminReservation.ftl");
         
 		
 		//Getting the http session and store it into the ssid
@@ -96,53 +100,37 @@ public class CustomerPickup extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateCustomerReservationB = e.toString();
-				templateProcessor.addToRoot("statusUpdateCustomerReservationB", statusUpdateCustomerReservationB);
+				statusCreateAdminRentalB = e.toString();
+				templateProcessor.addToRoot("statusCreateAdminRentalB", statusCreateAdminRentalB);
 				templateProcessor.processTemplate(response);
 			}
 		}
         
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
-		int customerId = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		Date timeStamp = new Date();
-		
-//		if(!(timeStamp.equals(reservationPickup))){
-//		statusCreateCustomerRentalB = "Cannot pickup before the reservation time";
-//		templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalG);
-//		templateProcessor.processTemplate(response);
-//		return;
-//	}
 			
-		user = session.getUser();
-		templateProcessor.addToRoot("user", user.getFirstName());
-		templateProcessor.addToRoot("userSession", user);
-		templateProcessor.addToRoot("reservationId", reservationId);
-		templateProcessor.addToRoot("userSession", user);
-		
 		try {
-			logicLayer.checkPickupTime( reservationId );
-			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
-			templateProcessor.addToRoot("vehicles", vehicles);
-	        templateProcessor.setTemplate("/Create/CreateRental.ftl");
+			List<Reservation> reservations = logicLayer.findReservations(reservationId);
+			Reservation reservation = reservations.get(0);
+			Rental rental = reservation.getRental();
+			int rentalId = (int)rental.getId();
+			logicLayer.updateRental( rentalId, null, reservationId, -1);
+			statusCreateAdminRentalG = "Successfully created a rental";
+			user = session.getUser();
+	        templateProcessor.setTemplate("AdminIndex.ftl");
+			templateProcessor.addToRoot("user", user.getFirstName());
+			templateProcessor.addToRoot("userSession", user);
+			templateProcessor.addToRoot("statusCreateAdminRentalB", statusCreateAdminRentalG);
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
-			try {
-				List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
-				templateProcessor.addToRoot("reservations", reservations);
-
-			} catch (RARException e1) {
-				e1.printStackTrace();
-			}
-			statusUpdateCustomerReservationB = e.toString();
 			e.printStackTrace();
-			templateProcessor.addToRoot("statusUpdateCustomerReservationB", statusUpdateCustomerReservationB);
-	        templateProcessor.setTemplate("CustomerReservation.ftl");
+			statusCreateAdminRentalB = "Failed to create rental";
+			templateProcessor.addToRoot("statusCreateAdminRentalB", statusCreateAdminRentalB);
 			templateProcessor.processTemplate(response);
-		}	
+		}
 	}
 
 	/**
@@ -151,4 +139,5 @@ public class CustomerPickup extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }
