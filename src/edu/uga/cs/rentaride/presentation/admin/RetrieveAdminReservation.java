@@ -109,7 +109,7 @@ public class RetrieveAdminReservation extends HttpServlet {
 		try {
 			List<Reservation> reservations = logicLayer.findCustomerReservations(adminId); 
 			templateProcessor.addToRoot("reservations", reservations);
-			templateProcessor.setTemplate("AdminReservation.ftl");
+			templateProcessor.setTemplate("AdminReservations.ftl");
 			templateProcessor.processTemplate(response);
 		} catch(RARException e){
 			e.printStackTrace();
