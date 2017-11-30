@@ -104,10 +104,10 @@ public class RetrieveAdminReservation extends HttpServlet {
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		int customerId = (int) user.getId();
+		int adminId = (int) user.getId();
 		
 		try {
-			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId); 
+			List<Reservation> reservations = logicLayer.findCustomerReservations(adminId); 
 			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.setTemplate("AdminReservation.ftl");
 			templateProcessor.processTemplate(response);
