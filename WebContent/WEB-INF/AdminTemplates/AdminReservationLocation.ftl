@@ -29,7 +29,7 @@
 	<div class="modalReservation">
 	<div class="tab">
 	<label class="head">CREATE RESERVATION</label>	
-	<form class="form" id="admin" action="ReservationCustomerCreate" method='post' name="admin">
+	<form class="form" id="admin" action="ReservationCreate" method='post' name="admin">
 	
   			<#if locationId??>
   				<input type="hidden" name="locationId" value='${locationId}' />

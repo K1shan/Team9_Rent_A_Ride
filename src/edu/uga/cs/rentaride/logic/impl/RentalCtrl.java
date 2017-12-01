@@ -138,8 +138,24 @@ public class RentalCtrl {
 		
 		// compare times
 		//
-		if(new Date().getTime() < reservation.getPickupTime().getTime())
-			throw new RARException( "You cannot pickup your vehicle before your pickup time." );
+		//if(new Date().getTime() < reservation.getPickupTime().getTime())
+			//throw new RARException( "You cannot pickup your vehicle before your pickup time." );
 		
+		
+		Rental modelRental = objectLayer.createRental();
+		modelRental.setReservation(reservation);
+		List <Rental> rentals = objectLayer.findRental(modelRental);
+		Rental rental = null;
+		
+		System.out.println("rentals: "+rentals);
+		
+		if(rentals.size() > 0) {
+			System.out.println("inside size");
+			rental = rentals.get(0);
+		}
+		
+		if(rental != null) {
+			throw new RARException ("This vehicle has already been rented out.");
+		}
 	}
 }

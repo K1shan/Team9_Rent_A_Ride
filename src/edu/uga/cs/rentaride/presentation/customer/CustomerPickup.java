@@ -107,14 +107,6 @@ public class CustomerPickup extends HttpServlet {
 		int customerId = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		Date timeStamp = new Date();
-		
-//		if(!(timeStamp.equals(reservationPickup))){
-//		statusCreateCustomerRentalB = "Cannot pickup before the reservation time";
-//		templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalG);
-//		templateProcessor.processTemplate(response);
-//		return;
-//	}
 			
 		user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());

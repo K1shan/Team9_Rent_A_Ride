@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.Reservation;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
@@ -162,7 +163,10 @@ public class ReservationCustomerCreate extends HttpServlet {
 			if(user.getIsAdmin()) 
 				templateProcessor.setTemplate("/AdminTemplates/AdminIndex.ftl");
 			else
-				templateProcessor.setTemplate("/CustomerTemplates/CustomerIndex.ftl");
+				templateProcessor.setTemplate("/CustomerTemplates/CustomerReservation.ftl");
+			
+			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId); 
+			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.processTemplate(response);
 			return;
 

@@ -1,10 +1,9 @@
 package edu.uga.cs.rentaride.presentation.admin.create;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.Reservation;
 import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.VehicleType;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -24,17 +25,19 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class ReservationCreate
+ * Servlet implementation class CustomerLocation
  */
 @WebServlet("/ReservationCreate")
 public class ReservationCreate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+       
 	Configuration cfg = null;
-	private String templateDir = "/WEB-INF/AdminTemplates";
+	
+	//This the folder the it will return too
+	private String templateDir = "/WEB-INF";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-       
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -71,35 +74,61 @@ public class ReservationCreate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String statusAddTypeG = "";
-		String statusAddTypeB = "";
-		
-		Date pickupTime = null;
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
-		int rentalLength = Integer.parseInt(request.getParameter("pickupTime"));
-		int vehicleTypeId = Integer.parseInt(request.getParameter("vehicleTypeId"));
-		int locationId = Integer.parseInt(request.getParameter("locationId"));
-		int customerId = Integer.parseInt(request.getParameter("customerId"));
-		
-		String pickupDateString = request.getParameter("date");
-		String pickupTimeString = request.getParameter("time");
-		
-		System.out.println("pickupDate: "+pickupDateString);
-		System.out.println("pickupTime: "+pickupTimeString);
-		
-//		try {
-//			pickupTime = df.parse(pickupTimeString);
-//		} catch (ParseException e1) {
-//			System.out.println("can't parse date.");
-//		}
-		
+		String statusAdminCreateReservationG = "";
+		String statusAdminCreateReservationB = "";
+		String statusCustomersCreateReservationG = "";
+		String statusCustomersCreateReservationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;
-		templateProcessor.setTemplate("AdminView.ftl");
-
+        String         ssid;		
+        
+		int vehicleTypeId = Integer.parseInt(request.getParameter("selectReservationVehicleTypeAdd"));
+		int locationId = Integer.parseInt(request.getParameter("locationId"));
+		int length = Integer.parseInt(request.getParameter("selectReservationLengthAdd"));
+		
+		
+		Calendar cal = Calendar.getInstance();
+		Date pickupDate = new Date();
+		String pickupDateString = request.getParameter("date");
+		String pickupTimeString = request.getParameter("time");
+		
+		int year;
+		int month;
+		int day;
+		int hour;
+		int minute;
+		
+		System.out.println("pickupDate: "+pickupDateString);
+		System.out.println("pickupTime: "+pickupTimeString);
+		System.out.println("timestamp:  "+cal);
+		
+		year = Integer.parseInt(pickupDateString.substring(0,pickupDateString.indexOf("-")));
+		System.out.println("year: "+year);
+		
+		month = Integer.parseInt(pickupDateString.substring(pickupDateString.indexOf("-")+1, pickupDateString.indexOf("-")+3));
+		System.out.println("month: "+month);
+		
+		day = Integer.parseInt(pickupDateString.substring(pickupDateString.length()-2));
+		System.out.println("day: "+day);
+		
+		
+		
+		hour = Integer.parseInt(pickupTimeString.substring(0,pickupTimeString.indexOf(":")));
+		System.out.println("hour: "+hour);
+		
+		minute = Integer.parseInt(pickupTimeString.substring(pickupTimeString.indexOf(":")+1,pickupTimeString.indexOf(":")+3));
+		System.out.println("minute: "+minute);
+		
+		if(pickupTimeString.substring(pickupTimeString.length()-2).equals("PM")){
+			hour += 12;
+		}
+		
+		cal.set(year, month-1, day);
+		cal.set(Calendar.HOUR_OF_DAY, hour);
+		cal.set(Calendar.MINUTE, minute);
+		cal.set(Calendar.SECOND, 0);
+		pickupDate = cal.getTime();
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -114,36 +143,61 @@ public class ReservationCreate extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-		 		
+				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				
-				statusAddTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-				System.out.println("LocationCreate: "+e.toString());
+				statusAdminCreateReservationB = e.toString();
+				templateProcessor.addToRoot("statusAdminCreateReservationB", statusAdminCreateReservationB);
 				templateProcessor.processTemplate(response);
 			}
 		}
-		
+        
 		logicLayer = session.getLogicLayer();
-		User user = session.getUser();		
+		User user = session.getUser();
+		int customerId = (int) user.getId();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-
+		
 		try {
+			logicLayer.createReservation(pickupDate, length, vehicleTypeId, locationId, customerId);
+			if(user.getIsAdmin()) 
+				templateProcessor.setTemplate("/AdminTemplates/AdminReservations.ftl");
+			else
+				templateProcessor.setTemplate("/CustomerTemplates/CustomerIndex.ftl");
 			
-			logicLayer.createReservation(pickupTime, rentalLength, vehicleTypeId, locationId, customerId);
-			statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
-			templateProcessor.processTemplate(response);
-		}catch(RARException e) {
-			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("ReservationCreate: "+e.toString());
+			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId); 
+			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.processTemplate(response);
 			return;
-		}	
+
+		} catch(RARException e){
+			if(user.getIsAdmin()){
+				statusAdminCreateReservationB = e.toString();
+			}else{
+				statusCustomersCreateReservationB = e.toString();
+			}
+		}
+		
+		try {
+			List<VehicleType> vehicleTypesAvail = logicLayer.findLocationAvailableVehicleTypes(locationId);
+			templateProcessor.addToRoot("vehicleTypesAvail", vehicleTypesAvail);
+			templateProcessor.addToRoot("locationId", locationId);
+		} catch (RARException e){
+			if(user.getIsAdmin()){
+				statusAdminCreateReservationB += e.toString();templateProcessor.setTemplate("/AdminTemplates/AdminReservationLocation.ftl");
+			}else{
+				statusCustomersCreateReservationB += e.toString();templateProcessor.setTemplate("/Customer/CustomerReservationLocation.ftl");
+			}
+		}
+		
+		if(user.getIsAdmin()){
+			templateProcessor.setTemplate("/AdminTemplates/AdminReservationLocation.ftl");
+		}else{
+			templateProcessor.setTemplate("/Customer/CustomerReservationLocation.ftl");
+		}
+		templateProcessor.addToRoot("statusAdminCreateReservationB", statusAdminCreateReservationB);
+		templateProcessor.addToRoot("statusCustomersCreateReservationB", statusCustomersCreateReservationB);
+		templateProcessor.processTemplate(response);
 	}
 
 	/**

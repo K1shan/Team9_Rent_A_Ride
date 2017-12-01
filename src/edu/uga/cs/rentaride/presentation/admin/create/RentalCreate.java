@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.Reservation;
 import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
@@ -75,8 +77,6 @@ public class RentalCreate extends HttpServlet {
 		String statusAddTypeG = "";
 		String statusAddTypeB = "";
 		
-		Date pickupTime = null;
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
 		int reservationId = Integer.parseInt(request.getParameter("reservationId"));
 		int vehicleId = Integer.parseInt(request.getParameter("selectRentalVehicleAdd"));
 
@@ -84,7 +84,7 @@ public class RentalCreate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-		templateProcessor.setTemplate("AdminView.ftl");
+        templateProcessor.setTemplate("/Create/CreateRental.ftl");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -120,6 +120,9 @@ public class RentalCreate extends HttpServlet {
 			logicLayer.createRental( new Date(), reservationId, vehicleId );
 			statusAddTypeG = "Woohoo!";
 			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			templateProcessor.setTemplate("AdminReservations.ftl");
+			List<Reservation> reservations = logicLayer.findCustomerReservations((int)user.getId()); 
+			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.processTemplate(response);
 		}catch(RARException e) {
 			
