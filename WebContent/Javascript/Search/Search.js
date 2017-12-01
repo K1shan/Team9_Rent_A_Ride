@@ -223,6 +223,9 @@ $(document).ready(function() {
 									html += '</div>';
 									html += '</div>';
 									
+								 }else{
+									 
+									 $("#searchError").show();
 								 }
 								 
 							 });
@@ -245,6 +248,8 @@ $(document).ready(function() {
 
 								 if ((element.customer.firstName.search(regex) != -1) || (element.customer.lastName.search(regex) != -1)) {
 
+									 $("#searchError").hide();
+									 
 									 var id = element.id;
 									 var pickupTime = element.pickupTime;
 									 var rentalLength = element.rentalLength;
