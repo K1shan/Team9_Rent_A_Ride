@@ -1,5 +1,6 @@
 package edu.uga.cs.rentaride.logic.impl;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -102,21 +103,29 @@ public class RentalCtrl {
 	
 	public void updateRental(int rentalId, Date pickupTime, int reservationId, int vehicleId) throws RARException {
 		
+		// retrieve reservation
+		//
+		Reservation modelReservation = objectLayer.createReservation();
+		modelReservation.setId(reservationId);
+		List<Reservation> reservations = objectLayer.findReservation(modelReservation);
+		Reservation reservation = null;
+		if(reservations.size() > 0) 
+			reservation = reservations.get(0);
+		
+		// check if reservation is found
+		//
+		if(reservation == null) 
+			throw new RARException( "A reservation with this id does not exist exist" );
+		
 		// retrieve rental
 		//
-		modelRental = objectLayer.createRental();
-		modelRental.setId(rentalId);
-		rentals = objectLayer.findRental(modelRental);
-		if(rentals.size() > 0)
-			rental = rentals.get(0);
-		
-		// check if null rental
-		//
-		if(rental == null)
-			throw new RARException( "Rental is null" );
-		
+		rental = null;
+		rental = objectLayer.createRental();
+		rental.setReservation(reservation);
+		rental.setPickupTime(pickupTime);
 		rental.setReturnTime(new Date());
 		rental.setId(rentalId);
+		System.out.println("rental: "+rental);
 		objectLayer.storeRental(rental);
 	}
 	
