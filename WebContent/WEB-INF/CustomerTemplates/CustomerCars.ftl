@@ -8,6 +8,7 @@
 <link href='cssfiles/additionalCustomer.css' rel='stylesheet' type='text/css'>
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicleCustomer.js"></script>
+<link href='cssfiles/carsSearch.css' rel='stylesheet' type='text/css'>
 </head>
 
 <#include "CustomerNavbar.ftl">
@@ -16,6 +17,12 @@
 	
 		<h1 id = "product"> Cars </h1>
 	
+		<form class="search-cars">
+    			<input type="text" id="cars-bar" placeholder="What can I help you with ${user}?">
+  		</form>
+
+		<div id='searchCars'></div>
+
 		<div id='main'></div>
 
 </body>

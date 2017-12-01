@@ -9,7 +9,7 @@
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocationCustomer.js"></script>
 <link href='cssfiles/location.css' rel='stylesheet' type='text/css'>
 <link href='cssfiles/additionalCustomer.css' rel='stylesheet' type='text/css'>
-<link href='cssfiles/locationCustomerSearch.css' rel='stylesheet' type='text/css'>
+<link href='cssfiles/locationSearch.css' rel='stylesheet' type='text/css'>
 </head>
 
 <#include "CustomerNavbar.ftl">
@@ -18,11 +18,11 @@
 	
 	<h1 id = "product"> Location </h1>
 	
-  	<form class="search-location">
-    		<input type="text" id="locaiton-bar" placeholder="What can I help you with ${user}?">
-  	</form>
+	<form class="search-location">
+		<input type="text" id="location-bar" placeholder="What can I help you with ${user}?">
+	</form>
 
-	<div class="searchR"id="search"></div>	
+	<div id='searchLocation'></div>
 	
 	<div id='main'></div>
 
