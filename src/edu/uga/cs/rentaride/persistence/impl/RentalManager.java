@@ -167,7 +167,6 @@ public class RentalManager {
 				+ "INNER JOIN RESERVATION on RESERVATION.reservation_id=RENTAL.reservation_id "
 				+ "INNER JOIN VEHICLE ON VEHICLE.vehicle_id=RENTAL.vehicle_id "
 				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=VEHICLE.type_id "
-				+ "AND VEHICLE_TYPE.type_id=RESERVATION.type_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
@@ -183,7 +182,11 @@ public class RentalManager {
 		
 		// NULL CHECKER
 		if( modelRental != null ){
-			
+			if(modelRental.getReservation() != null){
+				if(modelRental.getReservation().getId() >= 0){
+				query.append(" WHERE RESERVATION.reservation_id="+modelRental.getReservation().getId());
+				}
+			}
 		}
 		
 		try {

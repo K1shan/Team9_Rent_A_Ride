@@ -114,10 +114,13 @@ public class RentalCustomerCreate extends HttpServlet {
 			logicLayer.createRental(new Date(), reservationId, vehicleId);
 			statusCreateCustomerRentalG = "Successfully created a rental";
 			user = session.getUser();
-	        templateProcessor.setTemplate("CustomerIndex.ftl");
+	        templateProcessor.setTemplate("CustomerReservation.ftl");
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalG);
+			
+			List<Reservation> reservations = logicLayer.findCustomerReservations((int)user.getId()); 
+			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
