@@ -36,12 +36,6 @@ $(document).ready(function() {
 		 						html += '<input type="submit" class = "cta" value="MAKE RESERVATION" />';
 		 						html += '</div>';
 	 						html += '</form>';
-	 						html += '<form id = "formOne" action="ViewVehicle" method="post">';
-		 						html += '<div class="product-cta">';
-		 							html += '<input type="hidden" name="locationId" value=' +id+ '	>';
-		 						html += '<input type="submit" class = "cta" value="VIEW VEHICLE" />';
-	 						html += '</div>';
- 						html += '</form>';
  						html += '</div>';
 					html += '</div>';
 				html += '</div>';

@@ -1,0 +1,32 @@
+.search-location {
+	
+  width: 500px;
+  display: block;
+  margin: 0 auto;
+}
+
+input#location-bar{
+	
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  height: 45px;
+  padding: 0 20px;
+  font-size: 1rem;
+  border: 1px solid #D0CFCE;
+  outline: none;
+}
+
+input#location-bar:focus {
+  border: 1px solid #000;
+  transition: 0.35s ease;
+  color: #000;
+}
+input#location-bar:focus::-webkit-input-placeholder {
+		
+  transition: opacity 0.45s ease;
+  opacity: 0;
+}
+
+

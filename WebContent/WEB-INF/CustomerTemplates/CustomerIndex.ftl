@@ -5,7 +5,6 @@
 <title>Rent-A-Ride</title>
 <link href='index.css' rel='stylesheet' type='text/css'>
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script type = "text/javascript" src="javascriptNavbar/navbar.js"></script>
 </head>
 
 <#include "CustomerNavbar.ftl">

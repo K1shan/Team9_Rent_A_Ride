@@ -32,7 +32,6 @@
 
 <script type = "text/javascript" src="Javascript/RetrieveType/RetrieveType.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveLocation/RetrieveLocationAdmin.js"></script>
-<script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicle.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveHourlyPrice/RetrieveHourlyPrice.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveCustomer/RetrieveCustomer.js"></script>
 
