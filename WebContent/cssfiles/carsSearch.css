@@ -5,7 +5,7 @@
   margin: 0 auto;
 }
 
-input#cars-bar{
+#cars-bar{
 	
   text-transform: uppercase;
   text-align: center;
@@ -18,12 +18,12 @@ input#cars-bar{
   outline: none;
 }
 
-input#cars-bar:focus {
+#cars-bar:focus {
   border: 1px solid #000;
   transition: 0.35s ease;
   color: #000;
 }
-input#cars-bar:focus::-webkit-input-placeholder {
+#cars-bar:focus::-webkit-input-placeholder {
 		
   transition: opacity 0.45s ease;
   opacity: 0;
