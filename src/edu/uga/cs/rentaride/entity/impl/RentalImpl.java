@@ -46,19 +46,21 @@ public class RentalImpl
 	@Override
 	public boolean getLate() {
 		
-		if(this.returnTime == null){
-			Date date = new Date();
-			Timestamp timedate = new Timestamp(date.getTime());
-			if(this.pickupTime == null)
-				return false;
-			if(timedate.getHours()-this.pickupTime.getTime() < this.reservation.getLength()){
+		if(returnTime == null){
+			
+			Timestamp timedate = new Timestamp(new Date().getTime());
+	
+			// when return check time diff w/ reservation len
+			//
+			if(timedate.getTime()-pickupTime.getTime() < reservation.getLength()*60*60*1000){
 				return false;
 			}else{
 				return true;
 			}
-		}
-		
-		if(this.returnTime.getTime() - this.pickupTime.getTime() > this.reservation.getLength()*60*60*1000){
+			
+			// already been returned
+			//
+		}else if(returnTime.getTime() - pickupTime.getTime() > reservation.getLength()*60*60*1000){
 			return true;
 		}else{
 			return false;
@@ -134,9 +136,7 @@ public class RentalImpl
 	@Override
 	public String toString() {
 		return "RentalImpl ["
-				+ "reservationId=" 	+ reservation.getId()
-				+ ", vehicleId="	+ vehicle.getId()
-				+ ", pickupTime=" 	+ pickupTime 
+				+ "pickupTime=" 	+ pickupTime 
 				+ ", returnTime=" 	+ returnTime 
 				+ ", charges=" 		+ charges 
 				+ "]";

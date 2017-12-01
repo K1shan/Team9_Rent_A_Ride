@@ -116,7 +116,7 @@ public class AdminReturn extends HttpServlet {
 			Reservation reservation = reservations.get(0);
 			Rental rental = reservation.getRental();
 			int rentalId = (int)rental.getId();
-			logicLayer.updateRental( rentalId, null, reservationId, -1);
+			logicLayer.updateRental( rentalId, rental.getPickupTime(), reservationId, -1);
 			statusRetrieveAdminReservationG = "Successfully returned a rental";
 			user = session.getUser();
 	        templateProcessor.setTemplate("AdminIndex.ftl");
