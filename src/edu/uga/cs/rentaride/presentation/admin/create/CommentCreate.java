@@ -73,26 +73,17 @@ public class CommentCreate extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String statusAddTypeG = "";
-		String statusAddTypeB = "";
+		String statusCreateAdminCommentG = "";
+		String statusCreateAdminCommentB = "";
 		
-		Date commentDate = null;
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
 		int rentalId = Integer.parseInt(request.getParameter("rentalId"));
-		String text = request.getParameter("text");
-		String commentDateString = request.getParameter("commentDate");
+		String text = request.getParameter("comment");
 		
-		try {
-			commentDate = df.parse(commentDateString);
-		} catch (ParseException e1) {
-			System.out.println("can't parse date.");
-		}		
 		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-		templateProcessor.setTemplate("AdminView.ftl");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
@@ -111,9 +102,8 @@ public class CommentCreate extends HttpServlet {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
 				
-				statusAddTypeB = "Failed to create a session";
-				templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-				System.out.println("LocationCreate: "+e.toString());
+				statusCreateAdminCommentB = "Failed to create a session";
+				templateProcessor.addToRoot("statusCreateAdminCommentG", statusCreateAdminCommentG);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -125,14 +115,16 @@ public class CommentCreate extends HttpServlet {
 
 		
 		try {
-			logicLayer.createComment(rentalId, text, commentDate);statusAddTypeG = "Woohoo!";
-			templateProcessor.addToRoot("statusAddTypeG", statusAddTypeG);
+			logicLayer.createComment(rentalId, text, new Date());
+			statusCreateAdminCommentG = "Woohoo!";
+			templateProcessor.addToRoot("statusCreateAdminCommentG", statusCreateAdminCommentB);
+			templateProcessor.setTemplate("AdminReservations.ftl");
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
 			
-			statusAddTypeB = "NONEXISTENT.";
-			templateProcessor.addToRoot("statusAddTypeB", statusAddTypeB);
-			System.out.println("CommentCreate: "+e.toString());
+			statusCreateAdminCommentB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusCreateAdminCommentB", statusCreateAdminCommentB);
+			templateProcessor.setTemplate("/Create/CreateComment.ftl");
 			templateProcessor.processTemplate(response);
 			return;
 		}

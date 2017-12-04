@@ -135,6 +135,11 @@ public class ReservationCtrl {
 			throw new RARException( "A reservation with this id does not exist." );
 		}
 		
+		// check if reservation cancelled
+		//
+		if(reservation.getCancelled())
+			throw new RARException( "This reservation has been cancelled." );
+		
 		Vehicle modelVehicle = objectLayer.createVehicle();
 		modelVehicle.setRentalLocation(reservation.getRentalLocation());
 		modelVehicle.setVehicleType(reservation.getVehicleType());

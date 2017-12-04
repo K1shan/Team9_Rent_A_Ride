@@ -120,6 +120,11 @@ public class RentalCtrl {
 		if(pickupTime == null)
 			throw new RARException( "This vehicle was never picked up" );
 		
+		// check if cancelled
+		//
+		if(reservation.getCancelled())
+			throw new RARException( "This reservation was cancelled" );
+		
 		// retrieve rental
 		//
 		rental = null;

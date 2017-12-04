@@ -19,7 +19,6 @@
 	
 	<#if reservations??>
 	   			<#list reservations as reservation>
-
 		 <div class="ui">
 		 	<div class="screen">
 	 			<div class="product-des">
@@ -34,7 +33,6 @@
 					</form>
 					
 					<form id = "formOne" action="AdminPickup" method="post">
-	 				
 		  				<input type="hidden" name="reservationId" value='${reservation.id}' />
 		  				<input type="hidden" name="reservationVehicleTypeId" value='${reservation.vehicleType.id}' />
 		  				<input type="hidden" name="pickupTime" value='${reservation.pickupTime}' />

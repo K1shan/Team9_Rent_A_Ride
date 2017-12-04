@@ -120,9 +120,10 @@ public class AdminReturn extends HttpServlet {
 			logicLayer.updateRental( rentalId, rental.getPickupTime(), reservationId, -1);
 			statusRetrieveAdminReservationG = "Successfully returned a rental";
 			user = session.getUser();
-	        templateProcessor.setTemplate("AdminComment.ftl");
+	        templateProcessor.setTemplate("/Create/CreateComment.ftl");
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
+			templateProcessor.addToRoot("rentalId", rentalId);
 			templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
 			templateProcessor.addToRoot("reservations", reservationAll);
 			templateProcessor.processTemplate(response);
