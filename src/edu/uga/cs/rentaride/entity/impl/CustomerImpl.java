@@ -224,6 +224,7 @@ public class CustomerImpl
 			}
 		}
 		
+		
 		// if customer is terminated
 		//
 		if(userStatus.equals(UserStatus.TERMINATED)){

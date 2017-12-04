@@ -630,4 +630,6 @@ public interface PersistenceLayer
 	public void storeCharges(Reservation reservation, Rental rental, boolean insert) throws RARException;
 	
 	public List<Reservation> restoreNoShowReservations() throws RARException;
+	
+	public boolean rentalFromReservation(int id) throws RARException;
 }

@@ -116,20 +116,15 @@ public class AdminPickup extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
+			templateProcessor.addToRoot("reservations", reservations);
 			logicLayer.checkPickupTime( reservationId );
 			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
 			templateProcessor.addToRoot("vehicles", vehicles);
-	        templateProcessor.setTemplate("/Create/CreateRental.ftl");
+	        templateProcessor.setTemplate("AdminRental.ftl");
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
-			try {
-				List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
-				templateProcessor.addToRoot("reservations", reservations);
-
-			} catch (RARException e1) {
-				e1.printStackTrace();
-			}
 			statusRetrieveAdminReservationB = e.toString();
 			e.printStackTrace();
 			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);

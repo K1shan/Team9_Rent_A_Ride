@@ -135,6 +135,11 @@ public class ReservationCtrl {
 			throw new RARException( "A reservation with this id does not exist." );
 		}
 		
+		// check if reservation cancelled
+		//
+		if(reservation.getCancelled())
+			throw new RARException( "This reservation has been cancelled." );
+		
 		Vehicle modelVehicle = objectLayer.createVehicle();
 		modelVehicle.setRentalLocation(reservation.getRentalLocation());
 		modelVehicle.setVehicleType(reservation.getVehicleType());
@@ -242,7 +247,26 @@ public class ReservationCtrl {
 		if(reservations.size() > 0){
 			reservation = reservations.get(0);
 		}
+		
+		Rental modelRental = objectLayer.createRental();
+		modelRental.setReservation(reservation);
+		List<Rental> rentals = objectLayer.findRental(modelRental);
+		Rental rental = null;
+		if(rentals.size() > 0)
+			rental = rentals.get(0);
+		
+		// check if already picked up rental
+		//
+		if(rental != null){
+			if(rental.getPickupTime() != null)
+				throw new RARException( "This rental has already been picked up." );
 			
+			// check if already returned rental
+			//
+			if(rental.getReturnTime() != null)
+				throw new RARException( "This rental has already been returned." );
+		}
+		
 		// check if reservation found
 		//
 		if(reservation == null)
@@ -253,11 +277,6 @@ public class ReservationCtrl {
 		if(reservation.getCancelled())
 			throw new RARException( "This reservation is already cancelled" );
 		
-		// 3600000 ms in an hour
-		//
-		if(reservation.getPickupTime().getTime() - new Date().getTime() < 3600000)
-			// TODO throw new RARException( "You cannot cancel a reservation within an hour of the pickup time" );
-		
 		// update reservation to cancelled
 		//
 		reservation = objectLayer.createReservation(reservation.getPickupTime(), reservation.getLength(), 
@@ -265,6 +284,13 @@ public class ReservationCtrl {
 		reservation.setId(id);
 		reservation.setCancelled(true);
 		objectLayer.storeReservation(reservation);
+		
+		// 3600000 ms in an hour
+		//
+		if(reservation.getPickupTime().getTime() - new Date().getTime() < 3600000){
+			RentARideParams params = objectLayer.findRentARideParams();
+			throw new RARException( "You have been charged a late fee for cancelling within an hour of reservation time: $" + params.getLateFee());
+		}
 	}
 
 	public void checkReservationNoShow(int reservationId) throws RARException {

@@ -79,7 +79,6 @@ public class CustomerReturn extends HttpServlet {
         String         ssid;
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
 
-        templateProcessor.setTemplate("CustomerReservation.ftl");
         
 		
 		//Getting the http session and store it into the ssid
@@ -114,18 +113,20 @@ public class CustomerReturn extends HttpServlet {
 			Reservation reservation = reservations.get(0);
 			Rental rental = reservation.getRental();
 			int rentalId = (int)rental.getId();
-			logicLayer.updateRental( rentalId, null, reservationId, -1);
+			logicLayer.updateRental( rentalId, rental.getPickupTime(), reservationId, -1);
 			statusCreateCustomerRentalG = "Successfully created a rental";
 			user = session.getUser();
-	        templateProcessor.setTemplate("CustomerIndex.ftl");
+	        templateProcessor.setTemplate("CustomerReservation.ftl");
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
+			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalG);
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
 			e.printStackTrace();
 			statusCreateCustomerRentalB = "Failed to create rental";
+	        templateProcessor.setTemplate("CustomerReservation.ftl");
 			templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalB);
 			templateProcessor.processTemplate(response);
 		}

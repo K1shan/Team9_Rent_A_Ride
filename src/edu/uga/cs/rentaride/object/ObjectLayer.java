@@ -481,4 +481,6 @@ public interface ObjectLayer
 	public int restoreCharges(int reservationId) throws RARException;
 	
 	public List<Reservation> restoreNoShowReservations() throws RARException;
+	
+	public boolean rentalFromReservation(int id) throws RARException;
 }

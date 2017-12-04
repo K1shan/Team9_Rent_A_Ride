@@ -149,6 +149,7 @@ public class ReservationManager {
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
 				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id";
 		
+    	String	order = " ORDER BY RESERVATION.pickup_date ASC";
 		
 		StringBuffer query = new StringBuffer(100);
 		StringBuffer condition = new StringBuffer(100);
@@ -292,6 +293,7 @@ public class ReservationManager {
 		}
 				
 		try {
+			query.append(order);
 			stmt = con.createStatement();
 			System.out.println("query: " + query.toString());
 

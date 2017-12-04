@@ -97,8 +97,14 @@ public class RentalImpl
 		if(charges == 0){
 			for(HourlyPrice hourlyPrice : reservation.getVehicleType().getHourlyPrices() ){
 				if(hourlyPrice.getMaxHours() == reservation.getLength()){
-					charges = hourlyPrice.getPrice()*reservation.getLength();
-					break;
+					if(pickupTime != null && returnTime != null){
+						long diff = returnTime.getTime()-pickupTime.getTime();
+						long diffHours = diff / (60 * 60 * 1000);
+						charges = (int) (hourlyPrice.getPrice()*diffHours);
+						if(charges == 0)
+							charges = hourlyPrice.getPrice();
+						break;
+					}
 				}
 			}
 		}
