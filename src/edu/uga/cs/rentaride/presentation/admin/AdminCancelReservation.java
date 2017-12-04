@@ -116,7 +116,10 @@ public class AdminCancelReservation extends HttpServlet {
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
 			templateProcessor.addToRoot("reservations", reservations);
-			templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
+			//
+			// don't remove, breaks css
+			//
+			//templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
 			statusRetrieveAdminReservationB = e.toString();

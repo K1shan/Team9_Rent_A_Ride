@@ -117,6 +117,9 @@ public class RentalCtrl {
 		if(reservation == null) 
 			throw new RARException( "A reservation with this id does not exist exist" );
 		
+		if(pickupTime == null)
+			throw new RARException( "This vehicle was never picked up" );
+		
 		// retrieve rental
 		//
 		rental = null;

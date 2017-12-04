@@ -24,12 +24,13 @@
 		 	<div class="screen">
 	 			<div class="product-des">
 	 				<form id = "formOne" action="" method="post">
-	 				
 	 					<div class="product-name" name="reservationId" value='${reservation.id}'>${reservation.rentalLocation.name}</div>
 	 					<div class="product-description">${reservation.vehicleType.name}</div>
 	 					<div class="product-description">Pickup Time: ${reservation.pickupTime}</div>
 	 					<div class="product-description">Length: ${reservation.length}</div>
-	 					<#if reservation.cancelled!false><div class="product-description">Cancelled</div></#if>
+	 					<#if reservation.cancelled!false>
+	 						<div class="product-description">Cancelled</div>
+			 			</#if>
 					</form>
 					
 					<form id = "formOne" action="AdminPickup" method="post">
