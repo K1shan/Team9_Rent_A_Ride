@@ -487,5 +487,10 @@ public class ObjectLayerImpl
 	public List<Reservation> restoreNoShowReservations() throws RARException {
 		return persistence.restoreNoShowReservations();
 	}
+
+	@Override
+	public boolean rentalFromReservation(int id) throws RARException {
+		return persistence.rentalFromReservation(id);
+	}
 	
 }

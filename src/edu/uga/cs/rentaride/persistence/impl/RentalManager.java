@@ -67,7 +67,7 @@ public class RentalManager {
 	            pstmt = (PreparedStatement) con.prepareStatement( updateRentalQuery );
 			}
 			
-			
+			// pickup
 			if( !rental.isPersistent() ){
 				if ( rental.getReservation() == null )
 					pstmt.setLong( 1, 0 );
@@ -111,7 +111,10 @@ public class RentalManager {
 	    		}else{
 	    			throw new RARException( "RentalManager.save: can't save a rental: charges negative" );
 	    		}
-			}else if(rental.isPersistent()){
+			}
+			
+			// return
+			else if(rental.isPersistent()){
     			
 				java.util.Date myDate = rental.getReturnTime();
     			pstmt.setTimestamp( 1, new java.sql.Timestamp(myDate.getTime() ) );
@@ -152,6 +155,26 @@ public class RentalManager {
 		}
     }
 	
+	public boolean rentalFromReservation(int id) throws RARException{
+		String query = "SELECT RENTAL.* FROM RENTAL WHERE RENTAL.reservation_id="+id;
+		
+		System.out.println("query: "+query);
+		Statement stmt = null;
+
+		try {
+			stmt = con.createStatement();
+			if( stmt.execute(query) ){
+				ResultSet rs = stmt.getResultSet();
+				if(rs.next())
+					return true;
+			}
+			return false;
+		} catch(SQLException e){
+			e.printStackTrace();
+			throw new RARException("RentalManager.get: failed to get any rentals from reservation: " + e);
+		}
+	}
+	
 	public List<Rental> restore( Rental modelRental ) throws RARException{
 		
 		String selectRentalQuery = "SELECT "
@@ -170,7 +193,7 @@ public class RentalManager {
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
-				+ "INNER JOIN COMMENT ON COMMENT.rental_id=RENTAL.rental_id";
+				+ "LEFT JOIN COMMENT ON COMMENT.rental_id=RENTAL.rental_id";
 
 		
 		Statement stmt = null;
@@ -186,6 +209,8 @@ public class RentalManager {
 				if(modelRental.getReservation().getId() >= 0){
 				query.append(" WHERE RESERVATION.reservation_id="+modelRental.getReservation().getId());
 				}
+			}else if( modelRental.getId() >= 0 ){
+				query.append(" WHERE RENTAL.rental_id="+modelRental.getId());
 			}
 		}
 		
@@ -394,6 +419,7 @@ public class RentalManager {
 					
 					rental = objectLayer.createRental(rental_pickupTime, reservation, vehicle);
 					rental.setId(rental_rental_id);
+					rental.setReturnTime(rental_returnTime);
 					
 					comment = objectLayer.createComment(comment_text, comment_date, rental);
 					rental.setComment(comment);

@@ -81,7 +81,7 @@ public class AdminReturn extends HttpServlet {
         String         ssid;
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
 
-        templateProcessor.setTemplate("AdminReservations.ftl");
+        
         
 		
 		//Getting the http session and store it into the ssid
@@ -115,15 +115,24 @@ public class AdminReturn extends HttpServlet {
 			List<Reservation> reservations = logicLayer.findReservations(reservationId);
 			List<Reservation> reservationAll = logicLayer.findCustomerReservations((int)user.getId());
 			Reservation reservation = reservations.get(0);
-			Rental rental = reservation.getRental();
-			int rentalId = (int)rental.getId();
-			logicLayer.updateRental( rentalId, rental.getPickupTime(), reservationId, -1);
+			if(reservation.getRental() != null){
+				Rental rental = reservation.getRental();
+				int rentalId = (int)rental.getId();
+				logicLayer.updateRental( rentalId, rental.getPickupTime(), reservationId, -1);
+				List<Rental> rentals = logicLayer.findRentals(rentalId);
+				rental = rentals.get(0);
+				long diff = rental.getReturnTime().getTime()-rental.getPickupTime().getTime();
+				long hours = diff / (60 * 60 * 1000);
+				templateProcessor.addToRoot("charges", rental.getCharges());
+				templateProcessor.addToRoot("rentalId", rentalId);
+				templateProcessor.addToRoot("hours", hours);
+			}
 			statusRetrieveAdminReservationG = "Successfully returned a rental";
 			user = session.getUser();
-	        templateProcessor.setTemplate("/Create/CreateComment.ftl");
+	        templateProcessor.setTemplate("AdminComment.ftl");
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("rentalId", rentalId);
+			templateProcessor.addToRoot("reservationId", reservationId);
 			templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
 			templateProcessor.addToRoot("reservations", reservationAll);
 			templateProcessor.processTemplate(response);
@@ -131,6 +140,7 @@ public class AdminReturn extends HttpServlet {
 
 			return;
 		} catch(RARException e){
+			templateProcessor.setTemplate("AdminReservations.ftl");
 			e.printStackTrace();
 			statusRetrieveAdminReservationB = e.toString();
 			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);

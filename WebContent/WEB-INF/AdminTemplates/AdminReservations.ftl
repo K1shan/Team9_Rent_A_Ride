@@ -17,6 +17,19 @@
 	
 	<h1 id = "product"> Reservations </h1>
 	
+	<div id="errorCtnr">
+	<#if statusRetrieveAdminReservationG??>
+		<p class="good">
+			${statusRetrieveAdminReservationG}
+		</p>
+	</#if>
+	<#if statusRetrieveAdminReservationB??>
+		<p class="error">
+			${statusRetrieveAdminReservationB}
+		</p>
+	</#if>
+	</div>
+	
 	<#if reservations??>
 	   			<#list reservations as reservation>
 		 <div class="ui">
@@ -62,17 +75,6 @@
 	 						<input type="submit" class = "cta" value="CANCEL RENTAL" />
 	 					</div>
 					</form>
-					
-				<#if statusRetrieveAdminReservationG??>
-					<p class="good">
-						${statusRetrieveAdminReservationG}
-					</p>
-				</#if>
-				<#if statusRetrieveAdminReservationB??>
-					<p class="error">
-						${statusRetrieveAdminReservationB}
-					</p>
-				</#if>
 				</div>
 			</div>
 		</div>

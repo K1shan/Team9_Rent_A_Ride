@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Rent-A-Ride | Admin View</title>
+<title>Rent-A-Ride</title>
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
 <link href='cssfiles/location.css' rel='stylesheet' type='text/css'>
 
@@ -11,12 +11,10 @@
 
 </head>
 
-
-
+<#include "AdminNavbar.ftl">
 
 <body>
 
-	<div id="header"></div>
 	
 	<h1 id = "product">Comment </h1>
 	
@@ -27,11 +25,13 @@
 		<form class="form" id="admin" action="CommentCreate" method='post' name="admin">
   			
   			<#if charges??>
+  			<#if hours??>
   			<p class="float-label">
   				You returned your rental after ${hours} hours.<br>
   				You have been charged $${charges} for your rental.<br>
   				Thank you!
   			</p>
+  			</#if>
   			</#if>
   			
   			 <p class="float-label">

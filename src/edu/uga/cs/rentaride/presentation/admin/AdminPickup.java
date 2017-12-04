@@ -121,7 +121,7 @@ public class AdminPickup extends HttpServlet {
 			logicLayer.checkPickupTime( reservationId );
 			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
 			templateProcessor.addToRoot("vehicles", vehicles);
-	        templateProcessor.setTemplate("/Create/CreateRental.ftl");
+	        templateProcessor.setTemplate("AdminRental.ftl");
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){

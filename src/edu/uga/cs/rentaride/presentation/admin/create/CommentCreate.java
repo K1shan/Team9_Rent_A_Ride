@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -115,9 +116,12 @@ public class CommentCreate extends HttpServlet {
 
 		
 		try {
-			logicLayer.createComment(rentalId, text, new Date());
+			if(!(text.equals("")))
+				logicLayer.createComment(rentalId, text, new Date());
 			statusCreateAdminCommentG = "Woohoo!";
+			List<Reservation> reservations = logicLayer.findCustomerReservations((int)user.getId());
 			templateProcessor.addToRoot("statusCreateAdminCommentG", statusCreateAdminCommentB);
+			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.setTemplate("AdminReservations.ftl");
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){

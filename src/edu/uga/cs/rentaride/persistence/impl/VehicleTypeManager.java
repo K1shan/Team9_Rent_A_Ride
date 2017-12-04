@@ -108,7 +108,7 @@ public class VehicleTypeManager{
         List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
         condition.setLength( 0 );
         query.append( selectVehicleTypeQuery );
-        System.out.println("query: "+ query.toString());
+        
         
         if( modelVehicleType != null ) {
             if( modelVehicleType.getId() >= 0 ) // id is unique, so it is sufficient to get a person
@@ -117,6 +117,7 @@ public class VehicleTypeManager{
                 query.append( " where VEHICLE_TYPE.name = '" + modelVehicleType.getName() + "'" );
         }
         try {
+        	System.out.println("query: "+ query.toString());
             stmt = (Statement) con.createStatement();
             if( stmt.execute( query.toString() ) ) {
                 ResultSet rs = stmt.getResultSet();

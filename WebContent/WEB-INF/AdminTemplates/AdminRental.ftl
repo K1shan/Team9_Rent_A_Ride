@@ -5,18 +5,17 @@
 <title>Rent-A-Ride</title>
 <link href='index.css' rel='stylesheet' type='text/css'>
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
+
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script type = "text/javascript" src="Javascript/Navbar/navbar.js"></script>
-<link href='cssfiles/location.css' rel='stylesheet' type='text/css'>
-<link href='cssfiles/additionalCustomer.css' rel='stylesheet' type='text/css'>
 
 
 </head>
 
+<#include "AdminNavbar.ftl">
 
 <body>
 
-	<div id="header"></div>
 	
 	<h1 id = "product">Rental </h1>
 	

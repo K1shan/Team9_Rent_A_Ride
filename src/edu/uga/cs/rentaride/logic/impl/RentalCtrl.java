@@ -78,8 +78,15 @@ public class RentalCtrl {
 		if(vehicle == null)
 			throw new RARException( "An available vehicle is not available" );
 		
+		// create rental
+		//
 		rental = objectLayer.createRental(pickupTime, reservation, vehicle);
 		objectLayer.storeRental(rental);
+		
+		// set vehicle to INRENTAL
+		//
+		vehicle.setStatus(VehicleStatus.INRENTAL);
+		objectLayer.storeVehicle(vehicle);
 	}
 	
 	public void deleteRental(int id) throws RARException {
@@ -111,12 +118,27 @@ public class RentalCtrl {
 		Reservation reservation = null;
 		if(reservations.size() > 0) 
 			reservation = reservations.get(0);
-		
+
 		// check if reservation is found
 		//
 		if(reservation == null) 
 			throw new RARException( "A reservation with this id does not exist exist" );
+
+		// check if already returned
+		//
+		rental = objectLayer.createRental();
+		modelRental = objectLayer.createRental();
+		modelRental.setId(rentalId);
+		rentals = objectLayer.findRental(modelRental);
+		if(rentals.size() > 0){
+			rental = rentals.get(0);
+		}
 		
+		if(rental.getReturnTime() != null)
+			throw new RARException( "This vehicle has already been returned" );
+		
+		// check if already picked up
+		//
 		if(pickupTime == null)
 			throw new RARException( "This vehicle was never picked up" );
 		
@@ -125,7 +147,7 @@ public class RentalCtrl {
 		if(reservation.getCancelled())
 			throw new RARException( "This reservation was cancelled" );
 		
-		// retrieve rental
+		// update rental
 		//
 		rental = null;
 		rental = objectLayer.createRental();
@@ -133,8 +155,31 @@ public class RentalCtrl {
 		rental.setPickupTime(pickupTime);
 		rental.setReturnTime(new Date());
 		rental.setId(rentalId);
-		System.out.println("rental: "+rental);
+		rental.getCharges();
+
+		if(rental.getLate()){
+			RentARideParams params = objectLayer.createRentARideParams();
+			params = objectLayer.findRentARideParams();
+			rental.setCharges(rental.getCharges()+params.getLateFee());
+		}
+		
 		objectLayer.storeRental(rental);
+		
+		// retrieve vehicle
+		//
+		rental = objectLayer.createRental();
+		modelRental = objectLayer.createRental();
+		modelRental.setId(rentalId);
+		rentals = objectLayer.findRental(modelRental);
+		if(rentals.size() > 0){
+			rental = rentals.get(0);
+		}
+		
+		// update vehicle status to in location
+		//
+		Vehicle vehicle = rental.getVehicle();
+		vehicle.setStatus(VehicleStatus.INLOCATION);
+		objectLayer.storeVehicle(vehicle);
 	}
 	
 	public void checkPickupTime(int reservationId) throws RARException{
@@ -153,25 +198,16 @@ public class RentalCtrl {
 		if(reservation == null)
 			throw new RARException( "Reservation is null" );
 		
-		// compare times
+		// current time-10 minutes < reservation time = error
 		//
-		//if(new Date().getTime() < reservation.getPickupTime().getTime())
-			//throw new RARException( "You cannot pickup your vehicle before your pickup time." );
+//		if( new Date().getTime() < reservation.getPickupTime().getTime()-600000 )
+//			throw new RARException( "You can only pickup your vehicle 10 minutes before your pickup time." );
 		
+
 		
-		Rental modelRental = objectLayer.createRental();
-		modelRental.setReservation(reservation);
-		List <Rental> rentals = objectLayer.findRental(modelRental);
-		Rental rental = null;
-		
-		System.out.println("rentals: "+rentals);
-		
-		if(rentals.size() > 0) {
-			System.out.println("inside size");
-			rental = rentals.get(0);
-		}
-		
-		if(rental != null) {
+		// check if already checked out
+		//
+		if(objectLayer.rentalFromReservation(reservationId)){
 			throw new RARException ("This vehicle has already been rented out.");
 		}
 	}
