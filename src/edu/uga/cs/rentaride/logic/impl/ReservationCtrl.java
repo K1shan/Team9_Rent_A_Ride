@@ -56,8 +56,8 @@ public class ReservationCtrl {
 		
 		// check pickupTime
 		//
-		if(pickupTime.getTime() < new Date().getTime())
-			throw new RARException("You cannot schedule a reservation for a past date.");
+		//if(pickupTime.getTime() < new Date().getTime())
+			//throw new RARException("You cannot schedule a reservation for a past date.");
 		
 		// retrieve type
 		//
@@ -332,6 +332,7 @@ public class ReservationCtrl {
 					// no show
 					//
 					reservation.setLength(1);
+					reservation.setCancelled(true);
 					objectLayer.storeReservation(reservation);
 					
 					// change charges

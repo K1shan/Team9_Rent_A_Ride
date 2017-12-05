@@ -1,7 +1,7 @@
 <div class="modalEight">
 	<div class="tab">
 		<label class="head">UPDATE RESERVATION NO SHOW</label>
-		<form class="form" id="admin" action="ReservationUpdateNoShow" method='post' name="admin">
+		<form class="form" id="admin" action="ReservationNoShowUpdate" method='post' name="admin">
 						
 			<select id="selectReservationNoShowUpdate" name="selectReservationNoShowUpdate" class="minimal">
 				<option value="">Select Reservation No Show</option>
