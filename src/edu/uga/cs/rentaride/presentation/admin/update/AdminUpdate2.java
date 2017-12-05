@@ -123,6 +123,7 @@ public class AdminUpdate2 extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			System.out.println("user state: " + user.getLicenseState());
 			logicLayer.updateAdmin(session, id, null, null, null, null, null, null, null, state, licenseNumber, ccNumber, ccExp);
 			statusUpdateAdminG = "Amazing!";
 			user = session.getUser();

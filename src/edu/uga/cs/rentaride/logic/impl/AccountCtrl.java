@@ -82,19 +82,31 @@ public class AccountCtrl {
 		List<Administrator> administrators = objectLayer.findAdministrator(modelAdmin);
 		if(administrators.size() > 0){
 			Administrator admin = administrators.get(0);
-			User user = new UserImpl();
-			user.setId(admin.getId());
-   	 		user.setFirstName(admin.getFirstName());
-   	 		user.setLastName(admin.getLastName());
-   	 		user.setUserName(admin.getUserName());
-   	 		user.setEmail(admin.getEmail());
-   	 		user.setPassword(admin.getPassword());
-   	 		user.setAddress(admin.getAddress());
-   	 		user.setCreateDate(admin.getCreatedDate());
-   	 		user.setUserStatus(admin.getUserStatus());
-   	 		user.setIsAdmin(true);
-   	 		session.setUser( user );
-			ssid = SessionManager.storeSession(session);
+			
+			Customer modelCustomer = objectLayer.createCustomer();
+			modelCustomer.setId(admin.getId());
+			List<Customer> customers = objectLayer.findCustomer(modelCustomer);
+			Customer customer = customers.get(0);
+			if(customers.size() > 0) {
+				User user = new UserImpl();
+				user.setId(customer.getId());
+				user.setFirstName(customer.getFirstName());
+	   	 		user.setLastName(customer.getLastName());
+	   	 		user.setUserName(customer.getUserName());
+	   	 		user.setEmail(customer.getEmail());
+	   	 		user.setPassword(customer.getPassword());
+	   	 		user.setAddress(customer.getAddress());
+	   	 		user.setCreateDate(customer.getCreatedDate());
+	   	 		user.setUserStatus(customer.getUserStatus());
+	   	 		user.setLicenseState(customer.getLicenseState());
+	   	 		user.setLicenseNum(customer.getLicenseNumber());
+	   	 		user.setCcNum(customer.getCreditCardNumber());
+	   	 		user.setCcExp(customer.getCreditCardExpiration());
+	   	 		user.setIsAdmin(true);
+	   	 		session.setUser( user );
+				ssid = SessionManager.storeSession(session);
+			}
+			
    	 	}else
    	 		throw new RARException( "AccountCtrl.login: Invalid User Name or Password" );
    	 	return ssid;
@@ -154,36 +166,7 @@ public class AccountCtrl {
 
 	public void updateAccount(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
 			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
-//		Administrator administrator = null;
-//		Administrator modelAdministrator = objectLayer.createAdministrator();
-//		modelAdministrator.setId(session.getUser().getId());
-//		List<Administrator> administrators = objectLayer.findAdministrator(modelAdministrator);
-//		if(administrators.size() > 0){
-//			administrator = administrators.get( 0 );
-//			if(!(firstName == null) && !firstName.equals(""))
-//				administrator.setFirstName(firstName);
-//			if(!(lastName == null) && !lastName.equals(""))
-//				administrator.setLastName(lastName);
-//			if(!(userName == null) && !userName.equals(""))
-//				administrator.setUserName(userName);
-//			if(!(password == null) && !password.equals(""))
-//				administrator.setPassword(password);
-//			if(!(address == null) && !address.equals(""))
-//				administrator.setAddress(address);
-//			objectLayer.storeAdministrator(administrator);
-//			User user = new UserImpl();
-//   	 		user.setFirstName(administrator.getFirstName());
-//   	 		user.setLastName(administrator.getLastName());
-//   	 		user.setUserName(administrator.getUserName());
-//   	 		user.setEmail(administrator.getEmail());
-//   	 		user.setPassword(administrator.getPassword());
-//   	 		user.setAddress(administrator.getAddress());
-//   	 		user.setCreateDate(administrator.getCreatedDate());
-//   	 		user.setUserStatus(administrator.getUserStatus());
-//   	 		user.setIsAdmin(true);
-//   	 		session.setUser( user );
-//			return;
-//		}
+
 		Customer customer = null;
 		Customer modelCustomer = objectLayer.createCustomer();
 		modelCustomer.setId(session.getUser().getId());
