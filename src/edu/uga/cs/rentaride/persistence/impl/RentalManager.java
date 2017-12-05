@@ -568,6 +568,8 @@ public class RentalManager {
                 	
                 	rental = objectLayer.createRental(rental_pickupTime, reservation, vehicle);
                 	rental.setId(rental_rental_id);
+                	rental.setReturnTime(rental_returnTime);
+                	rental.getCharges();
                 	return rental;
                 }
             }
