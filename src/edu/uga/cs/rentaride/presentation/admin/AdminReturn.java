@@ -130,16 +130,15 @@ public class AdminReturn extends HttpServlet {
 				templateProcessor.addToRoot("charges", rental.getCharges());
 				templateProcessor.addToRoot("rentalId", rentalId);
 				templateProcessor.addToRoot("hours", hours);
-			
-			statusRetrieveAdminReservationG = "Successfully returned a rental";
-			user = session.getUser();
-	        templateProcessor.setTemplate("AdminComment.ftl");
-			templateProcessor.addToRoot("user", user.getFirstName());
-			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("reservationId", reservationId);
-			templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
-			templateProcessor.addToRoot("reservations", reservationAll);
-			templateProcessor.processTemplate(response);
+				statusRetrieveAdminReservationG = "Successfully returned a rental";
+				user = session.getUser();
+		        templateProcessor.setTemplate("AdminComment.ftl");
+				templateProcessor.addToRoot("user", user.getFirstName());
+				templateProcessor.addToRoot("userSession", user);
+				templateProcessor.addToRoot("reservationId", reservationId);
+				templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
+				templateProcessor.addToRoot("reservations", reservationAll);
+				//templateProcessor.processTemplate(response);
 			}else{
 				throw new RARException("rental was never picked up");
 			}

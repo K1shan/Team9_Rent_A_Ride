@@ -12,10 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.RentARideParams;
-import edu.uga.cs.rentaride.entity.Rental;
-import edu.uga.cs.rentaride.entity.Reservation;
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -42,7 +39,6 @@ public class RetrieveAdminReservation extends HttpServlet {
      */
     public RetrieveAdminReservation() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -111,13 +107,13 @@ public class RetrieveAdminReservation extends HttpServlet {
 		try {
 			RentARideParams params = logicLayer.findParams();
 			int latefee = params.getLateFee();
+			templateProcessor.addToRoot("latefee", latefee);
 			List<Reservation> reservations = logicLayer.findCustomerReservations(adminId);
 			for(Reservation reservation : reservations){
 				if(reservation.getRental() != null){
 					reservation.getRental().getCharges();
 				}
 			}
-			templateProcessor.addToRoot("latefee", latefee);
 			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.setTemplate("AdminReservations.ftl");
 			templateProcessor.processTemplate(response);
@@ -134,5 +130,4 @@ public class RetrieveAdminReservation extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

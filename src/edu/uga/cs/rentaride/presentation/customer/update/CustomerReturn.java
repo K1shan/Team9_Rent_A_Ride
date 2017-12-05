@@ -71,8 +71,8 @@ public class CustomerReturn extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusCreateCustomerRentalG = "";
-		String statusCreateCustomerRentalB = "";
+		String statusRetrieveCustomerReservationG = "";
+		String statusRetrieveCustomerReservationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -97,8 +97,8 @@ public class CustomerReturn extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusCreateCustomerRentalB = e.toString();
-				templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalB);
+				statusRetrieveCustomerReservationB = e.toString();
+				templateProcessor.addToRoot("statusRetrieveCustomerReservationB", statusRetrieveCustomerReservationB);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -106,28 +106,56 @@ public class CustomerReturn extends HttpServlet {
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
+		System.out.println("sessionuser: "+user);
 		templateProcessor.addToRoot("userSession", user);
 			
 		try {
+			RentARideParams params = logicLayer.findParams();
+			int latefee = params.getLateFee();
+			templateProcessor.addToRoot("latefee", latefee);
 			List<Reservation> reservations = logicLayer.findReservations(reservationId);
+			List<Reservation> reservationAll = logicLayer.findCustomerReservations((int)user.getId());
 			Reservation reservation = reservations.get(0);
-			Rental rental = reservation.getRental();
-			int rentalId = (int)rental.getId();
-			logicLayer.updateRental( rentalId, rental.getPickupTime(), reservationId, -1);
-			statusCreateCustomerRentalG = "Successfully created a rental";
-			user = session.getUser();
-	        templateProcessor.setTemplate("CustomerReservation.ftl");
-			templateProcessor.addToRoot("user", user.getFirstName());
-			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("reservations", reservations);
-			templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalG);
-			templateProcessor.processTemplate(response);
+			if(reservation.getRental() != null){
+				Rental rental = reservation.getRental();
+				int rentalId = (int)rental.getId();
+				logicLayer.updateRental( rentalId, rental.getPickupTime(), reservationId, -1);
+				List<Rental> rentals = logicLayer.findRentals(rentalId);
+				rental = rentals.get(0);
+				long diff = rental.getReturnTime().getTime()-rental.getPickupTime().getTime();
+				long hours = diff / (60 * 60 * 1000);
+				templateProcessor.addToRoot("charges", rental.getCharges());
+				templateProcessor.addToRoot("rentalId", rentalId);
+				templateProcessor.addToRoot("hours", hours);
+				statusRetrieveCustomerReservationG = "Successfully returned a rental";
+				user = session.getUser();
+		        templateProcessor.setTemplate("CustomerComment.ftl");
+				templateProcessor.addToRoot("user", user.getFirstName());
+				templateProcessor.addToRoot("userSession", user);
+				templateProcessor.addToRoot("reservationId", reservationId);
+				templateProcessor.addToRoot("statusRetrieveCustomerReservationG", statusRetrieveCustomerReservationG);
+				templateProcessor.addToRoot("reservations", reservationAll);
+				//templateProcessor.processTemplate(response);
+			}else{
+				throw new RARException("rental was never picked up");
+			}
+			
 
 		} catch(RARException e){
+			templateProcessor.setTemplate("CustomerReservation.ftl");
 			e.printStackTrace();
-			statusCreateCustomerRentalB = "Failed to create rental";
-	        templateProcessor.setTemplate("CustomerReservation.ftl");
-			templateProcessor.addToRoot("statusCreateCustomerRentalB", statusCreateCustomerRentalB);
+			statusRetrieveCustomerReservationB = e.toString();
+			templateProcessor.addToRoot("statusRetrieveCustomerReservationB", statusRetrieveCustomerReservationB);
+		}
+		
+		
+		try {
+			List<Reservation> reservations = logicLayer.findCustomerReservations((int)user.getId());
+			templateProcessor.addToRoot("reservations", reservations);
+			templateProcessor.processTemplate(response);
+		} catch (RARException e){
+			statusRetrieveCustomerReservationB += " Failed to find reservations";
+			templateProcessor.addToRoot("statusRetrieveCustomerReservationB", statusRetrieveCustomerReservationB);
 			templateProcessor.processTemplate(response);
 		}
 	}
