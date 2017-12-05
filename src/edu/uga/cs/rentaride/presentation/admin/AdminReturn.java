@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.RentARideParams;
 import edu.uga.cs.rentaride.entity.Rental;
 import edu.uga.cs.rentaride.entity.Reservation;
 import edu.uga.cs.rentaride.entity.User;
@@ -112,6 +113,9 @@ public class AdminReturn extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 			
 		try {
+			RentARideParams params = logicLayer.findParams();
+			int latefee = params.getLateFee();
+			templateProcessor.addToRoot("latefee", latefee);
 			List<Reservation> reservations = logicLayer.findReservations(reservationId);
 			List<Reservation> reservationAll = logicLayer.findCustomerReservations((int)user.getId());
 			Reservation reservation = reservations.get(0);

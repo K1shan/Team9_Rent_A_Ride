@@ -116,6 +116,9 @@ public class CommentCreate extends HttpServlet {
 
 		
 		try {
+			RentARideParams params = logicLayer.findParams();
+			int latefee = params.getLateFee();
+			templateProcessor.addToRoot("latefee", latefee);
 			if(!(text.equals("")))
 				logicLayer.createComment(rentalId, text, new Date());
 			statusCreateAdminCommentG = "Woohoo!";

@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.Reservation;
-import edu.uga.cs.rentaride.entity.User;
-import edu.uga.cs.rentaride.entity.Vehicle;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -116,6 +114,11 @@ public class AdminPickup extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			RentARideParams params = logicLayer.findParams();
+			int latefee = params.getLateFee();
+			templateProcessor.addToRoot("latefee", latefee);
+
+			
 			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
 			templateProcessor.addToRoot("reservations", reservations);
 			logicLayer.checkPickupTime( reservationId );
@@ -125,6 +128,7 @@ public class AdminPickup extends HttpServlet {
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
+			
 			statusRetrieveAdminReservationB = e.toString();
 			e.printStackTrace();
 			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
