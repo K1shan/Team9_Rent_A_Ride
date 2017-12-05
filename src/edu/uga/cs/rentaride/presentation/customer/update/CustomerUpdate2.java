@@ -112,7 +112,7 @@ public class CustomerUpdate2 extends HttpServlet {
 				statusUpdateCustomerB = "Failed to create a session";
 				templateProcessor.addToRoot("statusUpdateCustomerB", statusUpdateCustomerB);
 				
-				System.out.println("AdminUpdate: "+e.toString());
+				System.out.println("CustomerUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
 				return;
 			}
