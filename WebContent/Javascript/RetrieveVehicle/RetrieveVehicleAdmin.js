@@ -115,9 +115,9 @@ $(document).ready(function() {
 				 $('#select2').append($('<option>').text(id + ' - ' +  name).attr('value', id));
 				 $('#select3').append($('<option>').text(id + ' - ' +  name).attr('value', id));
 				 $('#selectVehicle').append($('<option>').text(tag).attr('value', id));
+				 
 				 $('#selectVehicleUpdate').append($('<option>').text(id + ' - ' + make + ' - ' + model + ' - ' + tag).attr('value', id));
 				 $('#selectVehicleDelete').append($('<option>').text(id + ' - ' + make + ' - ' + model + ' - ' + tag).attr('value', id));
-				 counter++;
 			 });
 
 			 $('#main').html(html);
