@@ -465,7 +465,7 @@ public class ReservationManager {
 				+ "LOCATION.* "
 				+ "FROM RESERVATION "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
-				+ "LEFT JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id "
+				+ "RIGHT JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
 				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
