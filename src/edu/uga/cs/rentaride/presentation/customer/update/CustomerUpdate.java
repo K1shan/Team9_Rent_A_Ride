@@ -125,7 +125,7 @@ public class CustomerUpdate extends HttpServlet {
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("statusUpdateInfoG", statusUpdateInfoB);
+			templateProcessor.addToRoot("statusUpdateInfoG", statusUpdateInfoG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
 			statusUpdateInfoB = "Huh ?";

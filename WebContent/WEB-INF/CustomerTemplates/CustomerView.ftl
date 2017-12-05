@@ -12,8 +12,6 @@ CUSTOMER VIEW
 <script type = "text/javascript" src="Javascript/Null/CustomerView/updateProfile.js"></script>
 <link href='cssfiles/additionalCustomer.css' rel='stylesheet' type='text/css'>
 
-
-
 </head>
 
 <#include "CustomerNavbar.ftl">
@@ -21,25 +19,28 @@ CUSTOMER VIEW
 <body>
     
     <h1 id="product"> WELCOME ${user} </h1>
+    
    	<section id="section1">
-   		<div id="errorCt">
+   	
 			<#if statusUpdateInfoG??>			
 				<p class="good">
-   					<label> ${statusUpdateInfoG} </label>
-  				</p>
+					<label>${statusUpdateInfoG} </label>
+				</p>
 			</#if>
+			
 			<#if statusUpdateInfoB??>
 				<p class="error">
 					 <label> ${statusUpdateInfoB} </label>
 				</p>
 			</#if>
-		</div>
+			
    	  <#include "Update/ViewProfile.ftl">
       <#include "Update/EditProfile.ftl">
       <#include "Update/RenewMembership.ftl">
       <#include "Update/ViewProfile2.ftl">
       <#include "Update/EditProfile2.ftl">
       <#include "Update/CancelMembership.ftl">
+      
     </section>
 	
 </body>

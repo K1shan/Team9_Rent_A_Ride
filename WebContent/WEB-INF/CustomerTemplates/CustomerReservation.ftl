@@ -16,19 +16,17 @@
 <body>
 	
 	<h1 id = "product"> Reservations </h1>
-	
-	<div id="errorCt">
-		<#if statusRetrieveCustomerReservationG??>
-			<p class="good">
-				<label>${statusRetrieveCustomerReservationG}</label>
-			</p>
-		</#if>
-		<#if statusRetrieveCustomerReservationB??>
-			<p class="error">
-				<label>${statusRetrieveCustomerReservationB}</label>
-			</p>
-		</#if>
-	</div>
+
+	<#if statusRetrieveCustomerReservationG??>
+		<p class="good">
+			<label>${statusRetrieveCustomerReservationG}</label>
+		</p>
+	</#if>
+	<#if statusRetrieveCustomerReservationB??>
+		<p class="error">
+			<label>${statusRetrieveCustomerReservationB}</label>
+		</p>
+	</#if>
 	
 	<#if reservations??>
 	   			<#list reservations as reservation>

@@ -46,6 +46,8 @@
 <script type = "text/javascript" src="Javascript/Search/Search.js"></script>
 
 <script type = "text/javascript" src="Javascript/Tab/tab.js"></script>
+
+<link href='cssfiles/additionalCustomer.css' rel='stylesheet' type='text/css'>
 </head>
 
 <#include "AdminNavbar.ftl">
@@ -62,18 +64,18 @@
       <li><a href="#section5">View</a></li>
     </ul>
     <section id="section1">
-	    <div id="errorCt">
-			<#if statusUpdateInfoG??>			
-				<p class="good">
-   					<label> ${statusUpdateInfoG} </label>
-  				</p>
-			</#if>
-			<#if statusUpdateInfoB??>
-				<p class="error">
-					 <label> ${statusUpdateInfoB} </label>
-				</p>
-			</#if>
-		</div>
+    
+		<#if statusUpdateInfoG??>			
+			<p class="good">
+				<label> ${statusUpdateInfoG} </label>
+			</p>
+		</#if>
+		<#if statusUpdateInfoB??>
+			<p class="error">
+				 <label> ${statusUpdateInfoB} </label>
+			</p>
+		</#if>
+		
    	  <#include "Profile/ViewProfile.ftl">
       <#include "Profile/EditProfile.ftl">
       <#include "Profile/EditInfo.ftl">
