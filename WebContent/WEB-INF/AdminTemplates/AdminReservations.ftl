@@ -17,17 +17,17 @@
 	
 	<h1 id = "product"> Reservations </h1>
 	
-	<div id="errorCtnr">
-	<#if statusRetrieveAdminReservationG??>
-		<p class="good">
-			${statusRetrieveAdminReservationG}
-		</p>
-	</#if>
-	<#if statusRetrieveAdminReservationB??>
-		<p class="error">
-			${statusRetrieveAdminReservationB}
-		</p>
-	</#if>
+	<div id="errorCt">
+		<#if statusRetrieveAdminReservationG??>
+			<p class="good">
+				<label>${statusRetrieveAdminReservationG}</label>
+			</p>
+		</#if>
+		<#if statusRetrieveAdminReservationB??>
+			<p class="error">
+				<label>${statusRetrieveAdminReservationB}</label>
+			</p>
+		</#if>
 	</div>
 	
 	<#if reservations??>
