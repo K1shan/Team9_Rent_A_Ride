@@ -5,10 +5,10 @@
 <title>Rent-A-Ride</title>
 <link href='index.css' rel='stylesheet' type='text/css'>
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
-
 <script type = "text/javascript" src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script type = "text/javascript" src="Javascript/Navbar/navbar.js"></script>
-
+<link href='cssfiles/additionalCustomer.css' rel='stylesheet' type='text/css'>
+<link href='cssfiles/location.css' rel='stylesheet' type='text/css'>
 
 </head>
 
@@ -36,7 +36,7 @@
 			
 			<p>
 				<input type="hidden" name="reservationId" value='${reservationId}' required />
-				<input class = "type" type="submit" onclick="return rentalCreateNullCheck()" value="PICKUP RENTAL" required />
+				<input class = "admin" type="submit" onclick="return rentalCreateNullCheck()" value="PICKUP RENTAL" required />
 			</p>
 		
 			<#if statusCreateAdminRentalG??>

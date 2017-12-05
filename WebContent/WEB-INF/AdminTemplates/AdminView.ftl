@@ -65,6 +65,7 @@
    	  <#include "Profile/ViewProfile.ftl">
       <#include "Profile/EditProfile.ftl">
       <#include "Profile/EditInfo.ftl">
+      <#include "Profile/ViewProfile2.ftl">
     </section>
     
     <section id="section2">

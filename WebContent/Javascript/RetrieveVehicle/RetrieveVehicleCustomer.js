@@ -80,6 +80,7 @@ $(document).ready(function() {
 			var counter = 1;
 			 $.each(data, function(index, element) {
 				 var id = element.id;
+				 var locatonId = element.rentalLocation.id;
 				 var make = element.make;
 				 var model = element.model;
 				 var tag = element.registrationTag;
@@ -102,7 +103,7 @@ $(document).ready(function() {
 			 					html += '<div class="product-description">' + address + '</div>';
 			 					html += '<div class="product-description">' +  city + ', ' + state + ', ' + zip + '</div>';
 			 					html += '<div class="product-cta">';
-			 					html += '<input type="hidden" name="locationId" value=' +id+ '	>';
+			 					html += '<input type="hidden" name="locationId" value=' +locatonId+ '	>';
 		 						html += '<input type="submit" class = "cta" value="MAKE RESERVATION" />';
 		 						html += '</div>';
 	 						html += '</form>';
