@@ -1,11 +1,7 @@
 <div class="modalThree">
 	<div class="tab">
 		<label class="head">UPDATE INFORMATION </label>
-		<form class="form" id="admin" action="AdminInfo" method='post' name="admin">
-
-				<p class="float-label">
-	    				<input type="email" id="emailInfo" name="email" placeholder="Email" required />
-	 			</p>
+		<form class="form" id="admin" action="AdminUpdate2" method='post' name="admin">
 	 			
 
 				<p class="float-label">
@@ -14,17 +10,17 @@
 				
 
 	  			<p class="float-label">
-	    				<input type="text" id="licNumInfo" name="licNum" placeholder="License Number" required />
+	    				<input type="text" id="licNumInfo" name="licenseNumber" placeholder="License Number" required />
 	  			</p>
 	  			
 
 	 	 		<p class="float-label">
-	    				<input type="text" id="ccNumInfo" name="ccNum" placeholder="Cradit Card Number" required />
+	    				<input type="text" id="ccNumInfo" name="ccNumber" placeholder="Credit Card Number" required />
 	 			</p>
 	 			
 
 	  			<p class="float-label">
-	    				<input type="text" id="ccExpInfo" name="ccExp" placeholder="Cradit Card Exp Date" required />
+	    				<input type="text" id="ccExpInfo" name="expDate" placeholder="Credit Card Exp Date" required />
 	  			</p>
 	  			
 	  			<p>

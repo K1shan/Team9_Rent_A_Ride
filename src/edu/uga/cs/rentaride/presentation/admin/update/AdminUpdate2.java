@@ -1,6 +1,10 @@
 package edu.uga.cs.rentaride.presentation.admin.update;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.uga.cs.rentaride.RARException;
-import edu.uga.cs.rentaride.entity.*;
+import edu.uga.cs.rentaride.entity.User;
 import edu.uga.cs.rentaride.logic.LogicLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
@@ -20,21 +24,21 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class LocationUpdate
+ * Servlet implementation class AdminUpdate2
  */
-@WebServlet("/AdminUpdate")
-public class AdminUpdate extends HttpServlet {
+@WebServlet("/AdminUpdate2")
+public class AdminUpdate2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	
 	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/AdminTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminUpdate() {
+    public AdminUpdate2() {
         super();
     }
 
@@ -74,11 +78,18 @@ public class AdminUpdate extends HttpServlet {
         Session        session = null;
         String         ssid;
         templateProcessor.setTemplate("AdminView.ftl");
-        String fName = request.getParameter("first-name");
-		String lName = request.getParameter("last-name");
-		String address = request.getParameter("address");
-		String pwd = request.getParameter("password");
-		String confirm = request.getParameter("confirm");
+		String state = request.getParameter("state");
+		String licenseNumber = request.getParameter("licenseNumber");
+		String ccNumber =request.getParameter("ccNumber");
+		String expDate = request.getParameter("expDate");
+		
+		Date ccExp = new Date();
+    	int year = Integer.parseInt(expDate.substring(expDate.indexOf("/")+1)); // gets year after "/"
+    	int month = Integer.parseInt(expDate.substring(0, expDate.indexOf("/"))); // gets month before "/"
+    	YearMonth yearMonth = YearMonth.of(year, month);
+    	LocalDate ccExpLocalDate = yearMonth.atEndOfMonth(); // gets the last day of the month
+    	ccExpLocalDate.format(DateTimeFormatter.ISO_LOCAL_DATE); // formats it to YYYY-MM-DD
+    	ccExp = java.sql.Date.valueOf(ccExpLocalDate); // converts LocalDate object back to Date
 		
 
     	
@@ -97,7 +108,7 @@ public class AdminUpdate extends HttpServlet {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
 				statusUpdateAdminB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+				templateProcessor.addToRoot("statusUpdate2TypeB", statusUpdateAdminB);
 				
 				System.out.println("AdminUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
@@ -111,33 +122,27 @@ public class AdminUpdate extends HttpServlet {
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
 		
-		if(!pwd.equals(confirm)){
-			statusUpdateAdminB = "Passwords don't match.";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
-			templateProcessor.processTemplate(response);
-			return;
-		}
-		
 		try {
-			logicLayer.updateAdmin(session, id, fName, lName, null, pwd, user.getEmail(), address, null, null, null, null, null);
-
+			logicLayer.updateAdmin(session, id, null, null, null, null, null, null, null, state, licenseNumber, ccNumber, ccExp);
 			statusUpdateAdminG = "Amazing!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("statusUpdateAdminG", statusUpdateAdminG);
+			templateProcessor.addToRoot("statusUpdate2AdminG", statusUpdateAdminG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
 			statusUpdateAdminB = "Huh ?";
 			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
-    			templateProcessor.processTemplate(response);
+    		templateProcessor.processTemplate(response);
 		}
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+
 }
