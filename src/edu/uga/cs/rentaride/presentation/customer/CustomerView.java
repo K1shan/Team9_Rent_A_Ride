@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.uga.cs.rentaride.entity.User;
+import edu.uga.cs.rentaride.RARException;
+import edu.uga.cs.rentaride.entity.*;
 import edu.uga.cs.rentaride.logic.LogicLayer;
+import edu.uga.cs.rentaride.object.ObjectLayer;
 import edu.uga.cs.rentaride.presentation.regular.TemplateProcessor;
 import edu.uga.cs.rentaride.session.Session;
 import edu.uga.cs.rentaride.session.SessionManager;
@@ -30,6 +32,7 @@ public class CustomerView extends HttpServlet {
 	private String templateDir = "/WEB-INF/CustomerTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
+
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -99,6 +102,14 @@ public class CustomerView extends HttpServlet {
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
+		
+		try {
+			RentARideParams params = logicLayer.findParams();
+			templateProcessor.addToRoot("memberFee", params.getMembershipPrice());
+		} catch (RARException e) {
+			e.printStackTrace();
+		}
+		
 		templateProcessor.setTemplate("CustomerView.ftl");
 		templateProcessor.processTemplate(response);
 	}

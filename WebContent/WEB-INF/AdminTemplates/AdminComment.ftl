@@ -39,7 +39,7 @@
 			</p>
 			
 			<p>
-				<input type="hidden" name="rentalId" value='${reservationId}' required />
+				<input type="hidden" name="reservationId" value='${reservationId}' required />
 				<input type="hidden" name="rentalId" value='${rentalId}' required />
 				<input class = "type" type="submit" value="LEAVE COMMENT" required />
 			</p>

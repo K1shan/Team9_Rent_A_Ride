@@ -465,7 +465,7 @@ public class ReservationManager {
 				+ "LOCATION.* "
 				+ "FROM RESERVATION "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
-				+ "LEFT JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id "
+				+ "RIGHT JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
 				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
@@ -790,10 +790,12 @@ public class ReservationManager {
 				String 	location_addr_zip;
 				String 	location_image_path;
 				int 	location_capacity;
-				
+				// OBJECTS
+				//
 	            VehicleType vehicleType = null;
 				RentalLocation rentalLocation = null;
 				Reservation reservation = null;
+				Rental rental = null;
 				
 				while( rs.next() ){
 					
@@ -823,6 +825,8 @@ public class ReservationManager {
 					location_image_path	= rs.getString(16);
 					location_capacity 	= rs.getInt(17);
 					
+					// OBJECTS
+					//
 					vehicleType = objectLayer.createVehicleType(type_name);
 					vehicleType.setId(type_type_id);
 					
@@ -831,6 +835,7 @@ public class ReservationManager {
 					
 					reservation = objectLayer.createReservation(reservation_pickupTime, reservation_rentalLength, vehicleType, rentalLocation, customer);
 					reservation.setId(reservation_reservation_id);
+					reservation.getRental();
 					
 					if(reservation_cancelled == 1) reservation.setCancelled(true);
 					else reservation.setCancelled(false);

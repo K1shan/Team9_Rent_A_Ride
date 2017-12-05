@@ -120,6 +120,7 @@ public class AdminUpdate extends HttpServlet {
 		
 		try {
 			logicLayer.updateAdmin(session, id, fName, lName, null, pwd, user.getEmail(), address, null, null, null, null, null);
+
 			statusUpdateAdminG = "Amazing!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
@@ -129,7 +130,7 @@ public class AdminUpdate extends HttpServlet {
 		} catch (RARException e){
 			statusUpdateAdminB = "Huh ?";
 			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
-    		templateProcessor.processTemplate(response);
+    			templateProcessor.processTemplate(response);
 		}
 	}
 	

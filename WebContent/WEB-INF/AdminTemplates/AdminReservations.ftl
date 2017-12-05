@@ -17,17 +17,17 @@
 	
 	<h1 id = "product"> Reservations </h1>
 	
-	<div id="errorCtnr">
-	<#if statusRetrieveAdminReservationG??>
-		<p class="good">
-			${statusRetrieveAdminReservationG}
-		</p>
-	</#if>
-	<#if statusRetrieveAdminReservationB??>
-		<p class="error">
-			${statusRetrieveAdminReservationB}
-		</p>
-	</#if>
+	<div id="errorCt">
+		<#if statusRetrieveAdminReservationG??>
+			<p class="good">
+				<label>${statusRetrieveAdminReservationG}</label>
+			</p>
+		</#if>
+		<#if statusRetrieveAdminReservationB??>
+			<p class="error">
+				<label>${statusRetrieveAdminReservationB}</label>
+			</p>
+		</#if>
 	</div>
 	
 	<#if reservations??>
@@ -40,9 +40,19 @@
 	 					<div class="product-description">${reservation.vehicleType.name}</div>
 	 					<div class="product-description">Pickup Time: ${reservation.pickupTime}</div>
 	 					<div class="product-description">Length: ${reservation.length}</div>
+	 					<#if reservation.rental??>
+	 						<div class="product-description">Charges: $${reservation.rental.charges}</div>
+	 						<#if reservation.rental.charges < 1>
+			 					<div class="product-description">Vehicle Pickedup</div>
+			 				<#else>
+			 					<div class="product-description">Vehicle Returned</div>
+			 				</#if>
+	 					</#if>
 	 					<#if reservation.cancelled!false>
 	 						<div class="product-description">Cancelled</div>
 			 			</#if>
+			 			
+			 			
 					</form>
 					
 					<form id = "formOne" action="AdminPickup" method="post">

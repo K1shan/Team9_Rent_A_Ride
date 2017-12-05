@@ -134,6 +134,9 @@ public class RentalCtrl {
 			rental = rentals.get(0);
 		}
 		
+		if(rental == null)
+			throw new RARException( "This vehicle was never picked up" );
+			
 		if(rental.getReturnTime() != null)
 			throw new RARException( "This vehicle has already been returned" );
 		

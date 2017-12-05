@@ -17,7 +17,7 @@
 <body>
 
 	
-	<h1 id = "product">Rental </h1>
+	<h1 id = "product">Rental</h1>
 	
 	<div class="modalTwo">
 	 <div class="tab">

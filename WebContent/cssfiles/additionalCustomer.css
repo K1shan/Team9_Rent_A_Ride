@@ -1,6 +1,7 @@
 @CHARSET "UTF-8";
 
 body {
+	
   font-family: 'Montserrat', sans-serif;
   background-color: #374954;
 }
@@ -11,4 +12,24 @@ button,input[type="submit"] {
           appearance: none;
   background-color: transparent;
   border: none;
+}
+
+.error label{
+
+	display: block;
+	color: red;
+	text-align: center;
+  	text-transform: uppercase;
+  	font-size: 12px;
+  	letter-spacing: 2px;
+}
+
+.good label{
+
+	display: block;
+	color: green;
+	text-align: center;
+  	text-transform: uppercase;
+  	font-size: 12px;
+  	letter-spacing: 2px;
 }
