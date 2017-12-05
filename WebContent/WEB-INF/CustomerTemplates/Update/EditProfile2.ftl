@@ -1,4 +1,4 @@
-<div class="modalFive">
+<div class="modalThree">
 	<div class="tab">
 		<label class="head">UPDATE PROFILE </label>
 		<form class="form" id="admin" action="CustomerUpdate2" method='post' name="admin">
