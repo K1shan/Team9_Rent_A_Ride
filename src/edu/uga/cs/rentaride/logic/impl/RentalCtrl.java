@@ -201,10 +201,11 @@ public class RentalCtrl {
 		if(reservation == null)
 			throw new RARException( "Reservation is null" );
 		
-		// current time-10 minutes < reservation time = error
-		//
-//		if( new Date().getTime() < reservation.getPickupTime().getTime()-600000 )
-//			throw new RARException( "You can only pickup your vehicle 10 minutes before your pickup time." );
+		// right now < reservation time = error
+		// 
+		if( new Date().getTime() < reservation.getPickupTime().getTime()-3600000 )
+			throw new RARException( "You can only pickup your vehicle an hour before your pickup time." );
+		
 		
 
 		
