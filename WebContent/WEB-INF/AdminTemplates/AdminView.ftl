@@ -62,6 +62,18 @@
       <li><a href="#section5">View</a></li>
     </ul>
     <section id="section1">
+	    <div id="errorCt">
+			<#if statusUpdateInfoG??>			
+				<p class="good">
+   					<label> ${statusUpdateInfoG} </label>
+  				</p>
+			</#if>
+			<#if statusUpdateInfoB??>
+				<p class="error">
+					 <label> ${statusUpdateInfoB} </label>
+				</p>
+			</#if>
+		</div>
    	  <#include "Profile/ViewProfile.ftl">
       <#include "Profile/EditProfile.ftl">
       <#include "Profile/EditInfo.ftl">

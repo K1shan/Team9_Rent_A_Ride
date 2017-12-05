@@ -34,19 +34,6 @@
 	  			</p>
 	  			
 	  		</#if>
-	  		
-	  		
-	  		
-	  		<#if statusUpdateCustomerG??>			
-				<p class="good">
-   					<label> ${statusUpdateCustomerG} </label>
-  				</p>
-			</#if>
-			<#if statusUpdateAdminB??>
-				<p class="error">
-					 <label> ${statusUpdateCustomerB} </label>
-				</p>
-			</#if>
 		</form>
 	</div>
 </div>

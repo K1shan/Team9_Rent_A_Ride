@@ -67,8 +67,8 @@ public class AdminUpdate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateAdminG = "";
-		String statusUpdateAdminB = "";
+		String statusUpdateInfoG = "";
+		String statusUpdateInfoB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -96,8 +96,8 @@ public class AdminUpdate extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateAdminB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+				statusUpdateInfoB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateInfoG", statusUpdateInfoB);
 				
 				System.out.println("AdminUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
@@ -112,23 +112,23 @@ public class AdminUpdate extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		if(!pwd.equals(confirm)){
-			statusUpdateAdminB = "Passwords don't match.";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+			statusUpdateInfoB = "Passwords don't match.";
+			templateProcessor.addToRoot("statusUpdateInfoB", statusUpdateInfoB);
 			templateProcessor.processTemplate(response);
 			return;
 		}
 		
 		try {
 			logicLayer.updateAdmin(session, id, fName, lName, null, pwd, user.getEmail(), address, null, null, null, null, null);
-			statusUpdateAdminG = "Amazing!";
+			statusUpdateInfoG = "Amazing!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("statusUpdateAdminG", statusUpdateAdminG);
+			templateProcessor.addToRoot("statusUpdateInfoG", statusUpdateInfoG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			statusUpdateAdminB = "Huh ?";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+			statusUpdateInfoB = "Huh ?";
+			templateProcessor.addToRoot("statusUpdateInfoB", statusUpdateInfoB);
     		templateProcessor.processTemplate(response);
 		}
 	}
