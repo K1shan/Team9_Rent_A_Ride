@@ -113,7 +113,7 @@ public class ReservationNoShowUpdate extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
-			logicLayer.checkPickupTime(reservationId);
+			logicLayer.checkReservationNoShow(reservationId);
 			statusUpdateReservationNoShowG = "Woohoo!";
 			templateProcessor.addToRoot("statusUpdateReservationNoShowG", statusUpdateReservationNoShowG);
 			templateProcessor.processTemplate(response);
