@@ -128,7 +128,7 @@ public class CommentCreate extends HttpServlet {
 			
 			statusCreateAdminCommentB = "NONEXISTENT.";
 			templateProcessor.addToRoot("statusCreateAdminCommentB", statusCreateAdminCommentB);
-			templateProcessor.setTemplate("/Create/CreateComment.ftl");
+			templateProcessor.setTemplate("AdminComment.ftl");
 			templateProcessor.processTemplate(response);
 			return;
 		}
