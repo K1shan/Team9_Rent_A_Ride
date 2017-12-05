@@ -71,8 +71,8 @@ public class CancelMembership extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateCustomerG = "";
-		String statusUpdateCustomerB = "";
+		String statusUpdateInfoG = "";
+		String statusUpdateInfoB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -94,8 +94,8 @@ public class CancelMembership extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateCustomerB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdateCustomerB", statusUpdateCustomerB);
+				statusUpdateInfoG = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateInfoB", statusUpdateInfoB);
 				
 				System.out.println("statusUpdateCustomerB: "+e.toString());
 				templateProcessor.processTemplate(response);
@@ -111,15 +111,15 @@ public class CancelMembership extends HttpServlet {
 		
 		try {
 			logicLayer.cancelMembership(session);
-			statusUpdateCustomerG = "Amazing!";
+			statusUpdateInfoG = "Amazing!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("statusUpdateCustomerG", statusUpdateCustomerG);
+			templateProcessor.addToRoot("statusUpdateInfoG", statusUpdateInfoG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			statusUpdateCustomerB = "Huh ?";
-			templateProcessor.addToRoot("statusUpdateCustomerB", statusUpdateCustomerB);
+			statusUpdateInfoB = "Huh ?";
+			templateProcessor.addToRoot("statusUpdateInfoB", statusUpdateInfoB);
     		templateProcessor.processTemplate(response);
 		}
 	}

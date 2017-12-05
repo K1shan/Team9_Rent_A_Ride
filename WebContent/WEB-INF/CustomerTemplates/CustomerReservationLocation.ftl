@@ -74,7 +74,7 @@
 			<#if statusCustomersCreateReservationB??>
 			
 				<p class="error">
-					 <label> ${statusCustomersCreateReservation} </label>
+					 <label> ${statusCustomersCreateReservationB} </label>
 				</p>
 				
 			</#if>

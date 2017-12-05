@@ -545,18 +545,3 @@ input#search-bar:focus:-ms-placeholder {
   top: -62px;
   right: -45px;
 }
-
-
-#errorCt{
-	
-	text-align: center;
- 	margin-top: 80px;
- 	text-transform: uppercase;
-  	font-size: 30px;
-  	letter-spacing: 2px;
-  	font-family: 'Hind', sans-serif;
-  	text-decoration: none;
-  	display:center; 
-  	border-bottom: 2px solid #f4f7f8;
-	color: #f4f7f8;
-} 

@@ -71,8 +71,8 @@ public class AdminUpdate2 extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateAdminG = "";
-		String statusUpdateAdminB = "";
+		String statusUpdateInfoG = "";
+		String statusUpdateInfoB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -107,8 +107,8 @@ public class AdminUpdate2 extends HttpServlet {
 		 	try {
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateAdminB = "Failed to create a session";
-				templateProcessor.addToRoot("statusUpdate2TypeB", statusUpdateAdminB);
+				statusUpdateInfoB = "Failed to create a session";
+				templateProcessor.addToRoot("statusUpdateInfoB", statusUpdateInfoB);
 				
 				System.out.println("AdminUpdate: "+e.toString());
 				templateProcessor.processTemplate(response);
@@ -125,15 +125,15 @@ public class AdminUpdate2 extends HttpServlet {
 		try {
 			System.out.println("user state: " + user.getLicenseState());
 			logicLayer.updateAdmin(session, id, null, null, null, null, null, null, null, state, licenseNumber, ccNumber, ccExp);
-			statusUpdateAdminG = "Amazing!";
+			statusUpdateInfoG = "Amazing!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
 			templateProcessor.addToRoot("userSession", user);
-			templateProcessor.addToRoot("statusUpdate2AdminG", statusUpdateAdminG);
+			templateProcessor.addToRoot("statusUpdateInfoG", statusUpdateInfoG);
 			templateProcessor.processTemplate(response);
 		} catch (RARException e){
-			statusUpdateAdminB = "Huh ?";
-			templateProcessor.addToRoot("statusUpdateTypeB", statusUpdateAdminB);
+			statusUpdateInfoB = "Huh ?";
+			templateProcessor.addToRoot("statusUpdateInfoB", statusUpdateInfoB);
     		templateProcessor.processTemplate(response);
 		}
 	}
