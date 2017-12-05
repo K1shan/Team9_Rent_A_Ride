@@ -13,10 +13,6 @@
 	    				<input id="lName" name="last-name" placeholder="Last Name"/>
 	  			</p>
 	  			
-	  			<!-- User input for Email -->
-	 	 		<p class="float-label">
-	    				<input type="email" id="email" name="email" placeholder="Email"/>
-	 			</p>
 	 			
 	 			<!-- User input for Address -->
 	  			<p class="float-label">
