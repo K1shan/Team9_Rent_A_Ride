@@ -132,18 +132,17 @@ public class AdminReturn extends HttpServlet {
 				templateProcessor.addToRoot("hours", hours);
 				statusRetrieveAdminReservationG = "Successfully returned a rental";
 				user = session.getUser();
+				System.out.println("yo");
 		        templateProcessor.setTemplate("AdminComment.ftl");
 				templateProcessor.addToRoot("user", user.getFirstName());
 				templateProcessor.addToRoot("userSession", user);
 				templateProcessor.addToRoot("reservationId", reservationId);
 				templateProcessor.addToRoot("statusRetrieveAdminReservationG", statusRetrieveAdminReservationG);
 				templateProcessor.addToRoot("reservations", reservationAll);
-				//templateProcessor.processTemplate(response);
 			}else{
 				throw new RARException("rental was never picked up");
 			}
 
-			return;
 		} catch(RARException e){
 			templateProcessor.setTemplate("AdminReservations.ftl");
 			e.printStackTrace();
@@ -154,12 +153,13 @@ public class AdminReturn extends HttpServlet {
 		try {
 			List<Reservation> reservations = logicLayer.findCustomerReservations((int)user.getId());
 			templateProcessor.addToRoot("reservations", reservations);
-			templateProcessor.processTemplate(response);
 		} catch (RARException e){
 			statusRetrieveAdminReservationB += " Failed to find reservations";
 			templateProcessor.addToRoot("statusRetrieveAdminReservationB", statusRetrieveAdminReservationB);
-			templateProcessor.processTemplate(response);
 		}
+		
+		templateProcessor.processTemplate(response);
+
 	}
 
 	/**
