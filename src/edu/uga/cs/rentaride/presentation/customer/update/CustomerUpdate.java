@@ -120,7 +120,7 @@ public class CustomerUpdate extends HttpServlet {
 		
 		try {
 
-			logicLayer.updateCustomer(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
+			logicLayer.updateCustomer(session, id, fName, lName, null, pwd, user.getEmail(), address, null, null, null, null, null);
 			statusUpdateInfoG = "Amazing!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());

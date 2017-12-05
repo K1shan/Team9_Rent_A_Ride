@@ -2,12 +2,11 @@ function customerUpdateNullCheck(){
 	
 	var fname = document.getElementById("fName").value;
 	var lname = document.getElementById("lName").value;
-	var email = document.getElementById("email").value;
 	var address = document.getElementById("address").value;
 	var password = document.getElementById("password").value;
 	var cPassword = document.getElementById("confirm-password").value;
 	
-	if(fname === "" && lname === "" && email === "" && password === "" && cPassword === ""){
+	if(fname === "" && lname === "" && password === "" && cPassword === ""){
 		alert("You must input something");
 		return false;
 	}else if(password === "" && cPassword !== "" ){

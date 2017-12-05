@@ -70,6 +70,7 @@ public class LocationCtrl {
 		modelRentalLocation = objectLayer.createRentalLocation();
 		modelRentalLocation.setId(locationId);
 		rentalLocations = objectLayer.findRentalLocation(modelRentalLocation);
+		rentalLocation = null;
 		if(rentalLocations.size() > 0)
 			rentalLocation = rentalLocations.get(0);
 		

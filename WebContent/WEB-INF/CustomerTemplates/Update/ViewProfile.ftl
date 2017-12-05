@@ -5,6 +5,14 @@
 			
 	  		<#if userSession?has_content>
 
+				<!-- User input for First name -->
+				<#if userSession.memberUntil??>
+				<p class="float-label">
+					<p class ="in">
+	    				 	<b>ACTIVE UNTIL:</b><br><br> ${userSession.memberUntil?date}
+	    				</p> 	    				
+				</p>
+				</#if>
 	  			<!-- User input for First name -->
 				<p class="float-label">
 					<p class ="in">

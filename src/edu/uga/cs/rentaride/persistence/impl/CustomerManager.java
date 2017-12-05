@@ -366,13 +366,13 @@ public class CustomerManager{
                     }
                     condition.append( " CUSTOMER.cc_exp = '" + modelCustomer.getCreditCardExpiration() + "'" );
                 }
-				
-				if(modelCustomer.getUserStatus() != null){
-					if( condition.length() > 0 ){
-                        condition.append( " and" );
-                    }
-                    condition.append( " CUSTOMER.status='"+modelCustomer.getUserStatus()+"'");
-				}
+//				
+//				if(modelCustomer.getUserStatus() != null){
+//					if( condition.length() > 0 ){
+//                        condition.append( " and" );
+//                    }
+//                    condition.append( " CUSTOMER.status='"+modelCustomer.getUserStatus()+"'");
+//				}
 				
 				if( condition.length() > 0 ) {
                     query.append(  " where " );

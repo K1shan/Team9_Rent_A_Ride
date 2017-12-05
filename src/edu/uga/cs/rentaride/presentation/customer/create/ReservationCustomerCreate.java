@@ -34,7 +34,7 @@ public class ReservationCustomerCreate extends HttpServlet {
 	Configuration cfg = null;
 	
 	//This the folder the it will return too
-	private String templateDir = "/WEB-INF";
+	private String templateDir = "WEB-INF";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
 	
@@ -186,14 +186,14 @@ public class ReservationCustomerCreate extends HttpServlet {
 			if(user.getIsAdmin()){
 				statusAdminCreateReservationB += e.toString();templateProcessor.setTemplate("/AdminTemplates/AdminReservationLocation.ftl");
 			}else{
-				statusCustomersCreateReservationB += e.toString();templateProcessor.setTemplate("/Customer/CustomerReservationLocation.ftl");
+				statusCustomersCreateReservationB += e.toString();templateProcessor.setTemplate("/CustomerTemplates/CustomerReservationLocation.ftl");
 			}
 		}
 		
 		if(user.getIsAdmin()){
 			templateProcessor.setTemplate("/AdminTemplates/AdminReservationLocation.ftl");
 		}else{
-			templateProcessor.setTemplate("/Customer/CustomerReservationLocation.ftl");
+			templateProcessor.setTemplate("/CustomerTemplates/CustomerReservationLocation.ftl");
 		}
 		templateProcessor.addToRoot("statusAdminCreateReservationB", statusAdminCreateReservationB);
 		templateProcessor.addToRoot("statusCustomersCreateReservationB", statusCustomersCreateReservationB);
