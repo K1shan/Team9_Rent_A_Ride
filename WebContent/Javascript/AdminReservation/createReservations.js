@@ -13,8 +13,8 @@ $(document).ready(function() {
 		 
 		 $('#timeAdmin').timepicker({
 			    timeFormat: 'h:mm p',
-			    interval: 60,
-			    minTime: '10',
+			    interval: 30,
+			    minTime: '24',
 			    maxTime: '11:00pm',
 			    startTime: '4',
 			    dynamic: true,
