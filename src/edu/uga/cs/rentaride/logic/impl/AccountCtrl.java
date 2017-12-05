@@ -154,38 +154,36 @@ public class AccountCtrl {
 
 	public void updateAccount(Session session, int id, String firstName, String lastName, String userName, String password, String email, String address, 
 			Date membershipExpiration, String licenseState, String licenseNumber, String cardNumber, Date cardExpiration) throws RARException {
-		Administrator administrator = null;
-		Administrator modelAdministrator = objectLayer.createAdministrator();
-		modelAdministrator.setEmail(email);
-		List<Administrator> administrators = objectLayer.findAdministrator(modelAdministrator);
-		if(administrators.size() > 0){
-			administrator = administrators.get( 0 );
-			if(!firstName.equals(null) && !firstName.equals(""))
-				administrator.setFirstName(firstName);
-			if(!lastName.equals(null) && !lastName.equals(""))
-				administrator.setLastName(lastName);
-			if(!userName.equals(null) && !userName.equals(""))
-				administrator.setUserName(userName);
-			if(!password.equals(null) && !password.equals(""))
-				administrator.setPassword(password);
-			if(!email.equals(null) && !email.equals(""))
-				administrator.setEmail(email);
-			if(!address.equals(null) && !address.equals(""))
-				administrator.setAddress(address);
-			objectLayer.storeAdministrator(administrator);
-			User user = new UserImpl();
-   	 		user.setFirstName(administrator.getFirstName());
-   	 		user.setLastName(administrator.getLastName());
-   	 		user.setUserName(administrator.getUserName());
-   	 		user.setEmail(administrator.getEmail());
-   	 		user.setPassword(administrator.getPassword());
-   	 		user.setAddress(administrator.getAddress());
-   	 		user.setCreateDate(administrator.getCreatedDate());
-   	 		user.setUserStatus(administrator.getUserStatus());
-   	 		user.setIsAdmin(true);
-   	 		session.setUser( user );
-			return;
-		}
+//		Administrator administrator = null;
+//		Administrator modelAdministrator = objectLayer.createAdministrator();
+//		modelAdministrator.setId(session.getUser().getId());
+//		List<Administrator> administrators = objectLayer.findAdministrator(modelAdministrator);
+//		if(administrators.size() > 0){
+//			administrator = administrators.get( 0 );
+//			if(!(firstName == null) && !firstName.equals(""))
+//				administrator.setFirstName(firstName);
+//			if(!(lastName == null) && !lastName.equals(""))
+//				administrator.setLastName(lastName);
+//			if(!(userName == null) && !userName.equals(""))
+//				administrator.setUserName(userName);
+//			if(!(password == null) && !password.equals(""))
+//				administrator.setPassword(password);
+//			if(!(address == null) && !address.equals(""))
+//				administrator.setAddress(address);
+//			objectLayer.storeAdministrator(administrator);
+//			User user = new UserImpl();
+//   	 		user.setFirstName(administrator.getFirstName());
+//   	 		user.setLastName(administrator.getLastName());
+//   	 		user.setUserName(administrator.getUserName());
+//   	 		user.setEmail(administrator.getEmail());
+//   	 		user.setPassword(administrator.getPassword());
+//   	 		user.setAddress(administrator.getAddress());
+//   	 		user.setCreateDate(administrator.getCreatedDate());
+//   	 		user.setUserStatus(administrator.getUserStatus());
+//   	 		user.setIsAdmin(true);
+//   	 		session.setUser( user );
+//			return;
+//		}
 		Customer customer = null;
 		Customer modelCustomer = objectLayer.createCustomer();
 		modelCustomer.setId(session.getUser().getId());

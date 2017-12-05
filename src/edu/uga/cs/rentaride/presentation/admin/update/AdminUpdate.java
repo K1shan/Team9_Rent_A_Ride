@@ -76,7 +76,6 @@ public class AdminUpdate extends HttpServlet {
         templateProcessor.setTemplate("AdminView.ftl");
         String fName = request.getParameter("first-name");
 		String lName = request.getParameter("last-name");
-		String email = request.getParameter("email");
 		String address = request.getParameter("address");
 		String pwd = request.getParameter("password");
 		String confirm = request.getParameter("confirm");
@@ -120,7 +119,7 @@ public class AdminUpdate extends HttpServlet {
 		}
 		
 		try {
-			logicLayer.updateAdmin(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
+			logicLayer.updateAdmin(session, id, fName, lName, null, pwd, user.getEmail(), address, null, null, null, null, null);
 			statusUpdateAdminG = "Amazing!";
 			user = session.getUser();
 			templateProcessor.addToRoot("user", user.getFirstName());
