@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -456,6 +458,12 @@ public class ReservationManager {
 
 	public List<Reservation> restoreNoShowReservations() throws RARException {
 		
+		java.util.Date myDate = new Date();
+   	 	Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, -1);
+        myDate = cal.getTime();
+        Timestamp timestamp =  new java.sql.Timestamp(myDate.getTime());
+		
 		String selectReservationQuery =
 				"SELECT "
 				+ "RESERVATION.*, "
@@ -465,13 +473,13 @@ public class ReservationManager {
 				+ "LOCATION.* "
 				+ "FROM RESERVATION "
 				+ "INNER JOIN CUSTOMER ON CUSTOMER.customer_id=RESERVATION.customer_id "
-				+ "RIGHT JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id "
+				+ "LEFT JOIN RENTAL ON RENTAL.reservation_id=RESERVATION.reservation_id "
 				+ "INNER JOIN USER ON USER.user_id=CUSTOMER.user_id "
 				+ "INNER JOIN LOCATION ON LOCATION.location_id=RESERVATION.location_id "
 				+ "INNER JOIN VEHICLE_TYPE ON VEHICLE_TYPE.type_id=RESERVATION.type_id "
-				+ "WHERE RENTAL.pickup_date IS NULL";
-				
-		
+				+ "WHERE RESERVATION.pickup_date <= '" + timestamp.toString() + "'"
+				+ "AND RENTAL.pickup_date IS NULL "
+				+ "AND RESERVATION.cancelled=0";
 		
 		StringBuffer query = new StringBuffer(100);
 		StringBuffer condition = new StringBuffer(100);
