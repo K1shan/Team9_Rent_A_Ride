@@ -36,17 +36,6 @@
 	  			<p>
 		    			<input class = "type" type="submit" onclick="return customerUpdateNullCheck()" value="UPDATE CUSTOMER" />
 		  		</p>
-
-	  		<#if statusUpdateCustomerG??>			
-				<p class="good">
-   					<label> ${statusUpdateCustomerG} </label>
-  				</p>
-			</#if>
-			<#if statusUpdateCustomerB??>
-				<p class="error">
-					 <label> ${statusUpdateCustomerB} </label>
-				</p>
-			</#if>
 		</form>
 	</div>
 </div>

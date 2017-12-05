@@ -32,17 +32,6 @@
 	  			<p>
 		    			<input class = "type" type="submit" onclick="return adminUpdateNullCheck()" value="UPDATE ADMIN" />
 		  		</p>
-
-	  		<#if statusUpdateAdminG??>			
-				<p class="good">
-   					<label> ${statusUpdateAdminG} </label>
-  				</p>
-			</#if>
-			<#if statusUpdateAdminB??>
-				<p class="error">
-					 <label> ${statusUpdateAdminB} </label>
-				</p>
-			</#if>
 		</form>
 	</div>
 </div>
