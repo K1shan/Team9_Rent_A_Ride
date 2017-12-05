@@ -44,6 +44,7 @@ $(document).ready(function() {
 						html += '</div>';
 					html += '</div>';
 					html += '</div>';
+										
 				 });
 
 				 $('#RetrieveVehicleView').html(html);

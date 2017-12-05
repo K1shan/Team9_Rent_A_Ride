@@ -1,8 +1,0 @@
-<html>
-
-<body>
-<p>nice</p>
-
-</body>
-
-</html>

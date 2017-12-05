@@ -40,6 +40,7 @@
 <script type = "text/javascript" src="Javascript/RetrieveReservation/RetrieveReservationView.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveReservation/RetrieveReservationNoShow.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicleView.js"></script>
+<script type = "text/javascript" src="Javascript/RetrieveVehicle/RetrieveVehicleAdmin.js"></script>
 <script type = "text/javascript" src="Javascript/RetrieveComments/RetrieveCommentsView.js"></script>
 
 <script type = "text/javascript" src="Javascript/Search/Search.js"></script>
