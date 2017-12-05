@@ -76,7 +76,6 @@ public class CustomerUpdate extends HttpServlet {
         templateProcessor.setTemplate("CustomerView.ftl");
         String fName = request.getParameter("first-name");
 		String lName = request.getParameter("last-name");
-		String email = request.getParameter("email");
 		String address = request.getParameter("address");
 		String pwd = request.getParameter("password");
 		String confirm = request.getParameter("confirm");
@@ -120,6 +119,7 @@ public class CustomerUpdate extends HttpServlet {
 		}
 		
 		try {
+
 			logicLayer.updateCustomer(session, id, fName, lName, email, pwd, user.getEmail(), address, null, null, null, null, null);
 			statusUpdateInfoG = "Amazing!";
 			user = session.getUser();
