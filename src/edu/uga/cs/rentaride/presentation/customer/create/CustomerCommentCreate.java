@@ -1,8 +1,13 @@
-package edu.uga.cs.rentaride.presentation.customer;
+package edu.uga.cs.rentaride.presentation.customer.create;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,15 +25,14 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * Servlet implementation class RetrieveCustomerReservation
+ * Servlet implementation class CommentCreate
  */
-@WebServlet("/RetrieveCustomerReservation")
-public class RetrieveCustomerReservation extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-    
-	Configuration cfg = null;
+@WebServlet("/CustomerCommentCreate")
+public class CustomerCommentCreate extends HttpServlet {
 	
-	//This the folder the it will return too
+	private static final long serialVersionUID = 1L;
+	
+	Configuration cfg = null;
 	private String templateDir = "/WEB-INF/CustomerTemplates";
 	private TemplateProcessor templateProcessor = null;
 	private LogicLayer logicLayer = null;
@@ -36,11 +40,14 @@ public class RetrieveCustomerReservation extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RetrieveCustomerReservation() {
+    public CustomerCommentCreate() {
         super();
     }
-    
-    public void init() throws ServletException {
+
+	/**
+	 * @see Servlet#init(ServletConfig)
+	 */
+	public void init() throws ServletException {
 		// Create your Configuration instance, and specify if up to what FreeMarker
 		// version (here 2.3.25) do you want to apply the fixes that are not 100%
 		// backward-compatible. See the Configuration JavaDoc for details.
@@ -66,13 +73,20 @@ public class RetrieveCustomerReservation extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String status = "";
+		
+		String statusCreateCustomerCommentG = "";
+		String statusCreateCustomerCommentB = "";
+		
+		int rentalId = Integer.parseInt(request.getParameter("rentalId"));
+		String text = request.getParameter("comment");
+		
+		
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
-        String         ssid;	
+        String         ssid;
 		
-      //Getting the http session and store it into the ssid
+		//Getting the http session and store it into the ssid
         httpSession = request.getSession();
 		ssid = (String) httpSession.getAttribute( "ssid" );
         
@@ -85,38 +99,41 @@ public class RetrieveCustomerReservation extends HttpServlet {
 		//Here it will create the session id 
 		if( session == null ){
 		 	try {
-				
+		 		
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				status = e.toString();
-				templateProcessor.addToRoot("status", status);
+				
+				statusCreateCustomerCommentB = "Failed to create a session";
+				templateProcessor.addToRoot("statusCreateCustomerCommentB", statusCreateCustomerCommentB);
 				templateProcessor.processTemplate(response);
 			}
 		}
-        
+		
 		logicLayer = session.getLogicLayer();
 		User user = session.getUser();
 		templateProcessor.addToRoot("user", user.getFirstName());
 		templateProcessor.addToRoot("userSession", user);
-		int customerId = (int) user.getId();
+
 		
 		try {
 			RentARideParams params = logicLayer.findParams();
 			int latefee = params.getLateFee();
 			templateProcessor.addToRoot("latefee", latefee);
-			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
-			for(Reservation reservation : reservations){
-				if(reservation.getRental() != null){
-					reservation.getRental().getCharges();
-				}
-			}
+			if(!(text.equals("")))
+				logicLayer.createComment(rentalId, text, new Date());
+			statusCreateCustomerCommentG = "Woohoo!";
+			List<Reservation> reservations = logicLayer.findCustomerReservations((int)user.getId());
+			templateProcessor.addToRoot("statusCreateCustomerCommentG", statusCreateCustomerCommentG);
 			templateProcessor.addToRoot("reservations", reservations);
 			templateProcessor.setTemplate("CustomerReservation.ftl");
 			templateProcessor.processTemplate(response);
-		} catch(RARException e){
-			e.printStackTrace();
-			templateProcessor.setTemplate("CustomerIndex.ftl");
+		} catch (RARException e){
+			
+			statusCreateCustomerCommentB = "NONEXISTENT.";
+			templateProcessor.addToRoot("statusCreateCustomerCommentB", statusCreateCustomerCommentB);
+			templateProcessor.setTemplate("CustomerComment.ftl");
 			templateProcessor.processTemplate(response);
+			return;
 		}
 	}
 

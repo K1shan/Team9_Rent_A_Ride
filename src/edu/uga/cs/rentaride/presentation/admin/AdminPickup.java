@@ -117,8 +117,6 @@ public class AdminPickup extends HttpServlet {
 			RentARideParams params = logicLayer.findParams();
 			int latefee = params.getLateFee();
 			templateProcessor.addToRoot("latefee", latefee);
-
-			
 			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
 			templateProcessor.addToRoot("reservations", reservations);
 			logicLayer.checkPickupTime( reservationId );

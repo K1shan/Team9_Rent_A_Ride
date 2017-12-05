@@ -80,7 +80,7 @@ public class RentalCustomerCreate extends HttpServlet {
         int 		   reservationId = Integer.parseInt(request.getParameter("reservationId"));
         int 		   vehicleId = Integer.parseInt(request.getParameter("selectRentalVehicleAdd"));
 
-        templateProcessor.setTemplate("/Create/CreateRental.ftl");
+        templateProcessor.setTemplate("CustomerRental.ftl");
         
 		
 		//Getting the http session and store it into the ssid

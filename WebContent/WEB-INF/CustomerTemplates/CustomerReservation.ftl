@@ -51,6 +51,9 @@
 	 					<#if reservation.cancelled!false>
 	 						<div class="product-description">Cancelled</div>
 			 			</#if>
+			 			<#if reservation.length == 1>
+	 						<div class="product-description">Charges: $${latefee}</div>
+			 			</#if>
 			 			
 			 			
 					</form>

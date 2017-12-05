@@ -22,7 +22,7 @@
 	 <div class="tab">
 		<label class="head">CREATE COMMENT</label>	
 		
-		<form class="form" id="admin" action="CommentCustomerCreate" method='post' name="admin">
+		<form class="form" id="admin" action="CustomerCommentCreate" method='post' name="admin">
   			
   			<#if charges??>
 	  			<#if hours??>

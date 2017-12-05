@@ -84,7 +84,7 @@ public class RentalCreate extends HttpServlet {
 		HttpSession    httpSession = null;
         Session        session = null;
         String         ssid;
-        templateProcessor.setTemplate("/Create/CreateRental.ftl");
+        templateProcessor.setTemplate("AdminRental.ftl");
 		
 		//Getting the http session and store it into the ssid
         httpSession = request.getSession();

@@ -71,8 +71,8 @@ public class CustomerPickup extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String statusUpdateCustomerReservationG = "";
-		String statusUpdateCustomerReservationB = "";
+		String statusRetrieveCustomerReservationG = "";
+		String statusRetrieveCustomerReservationB = "";
 		//Setting the session to null
 		HttpSession    httpSession = null;
         Session        session = null;
@@ -96,8 +96,8 @@ public class CustomerPickup extends HttpServlet {
 				
 				session = SessionManager.createSession();
 			} catch ( Exception e ){
-				statusUpdateCustomerReservationB = e.toString();
-				templateProcessor.addToRoot("statusUpdateCustomerReservationB", statusUpdateCustomerReservationB);
+				statusRetrieveCustomerReservationB = e.toString();
+				templateProcessor.addToRoot("statusRetrieveCustomerReservationB", statusRetrieveCustomerReservationB);
 				templateProcessor.processTemplate(response);
 			}
 		}
@@ -115,23 +115,21 @@ public class CustomerPickup extends HttpServlet {
 		templateProcessor.addToRoot("userSession", user);
 		
 		try {
+			RentARideParams params = logicLayer.findParams();
+			int latefee = params.getLateFee();
+			templateProcessor.addToRoot("latefee", latefee);
+			List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
+			templateProcessor.addToRoot("reservations", reservations);
 			logicLayer.checkPickupTime( reservationId );
 			List<Vehicle> vehicles = logicLayer.findReservationVehicles( reservationId );
 			templateProcessor.addToRoot("vehicles", vehicles);
-	        templateProcessor.setTemplate("/Create/CreateRental.ftl");
+	        templateProcessor.setTemplate("CustomerRental.ftl");
 			templateProcessor.processTemplate(response);
 
 		} catch(RARException e){
-			try {
-				List<Reservation> reservations = logicLayer.findCustomerReservations(customerId);
-				templateProcessor.addToRoot("reservations", reservations);
-
-			} catch (RARException e1) {
-				e1.printStackTrace();
-			}
-			statusUpdateCustomerReservationB = e.toString();
+			statusRetrieveCustomerReservationB = e.toString();
 			e.printStackTrace();
-			templateProcessor.addToRoot("statusUpdateCustomerReservationB", statusUpdateCustomerReservationB);
+			templateProcessor.addToRoot("statusRetrieveCustomerReservationB", statusRetrieveCustomerReservationB);
 	        templateProcessor.setTemplate("CustomerReservation.ftl");
 			templateProcessor.processTemplate(response);
 		}	
