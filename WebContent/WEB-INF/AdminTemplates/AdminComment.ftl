@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Rent-A-Ride</title>
+
 <link href='cssfiles/admin.css' rel='stylesheet' type='text/css'>
 <link href='cssfiles/location.css' rel='stylesheet' type='text/css'>
 
@@ -14,7 +15,6 @@
 <#include "AdminNavbar.ftl">
 
 <body>
-
 	
 	<h1 id = "product">Comment </h1>
 	
@@ -58,4 +58,5 @@
 	</div>
 </div>
 </body>
+
 </html>
